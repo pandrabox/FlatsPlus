@@ -68,6 +68,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## FlatEmo
 - そのまま再配布
 
-## 使用リソース
+# 使用リソース
 - Camera
   - 各種メニュー表示等に使用
