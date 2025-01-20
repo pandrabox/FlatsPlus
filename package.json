@@ -1,0 +1,16 @@
+{
+  "name": "com.github.pandrabox.flatsplus",
+  "version": "0.0.0",
+  "displayName": "FlatsPlus",
+  "author": {
+    "name": "pandra"
+  },
+  "unity": "2019.4",
+  "description": "Basic Avatar Gimmick Set for Flats (Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)",
+  "vpmDependencies": {
+    "com.vrchat.avatars": ">=3.4.0",
+    "nadena.dev.modular-avatar": ">=1.9.0",
+    "jp.lilxyzw.liltoon": ">=1.0.0"
+  },
+  "license": "MIT"
+}
