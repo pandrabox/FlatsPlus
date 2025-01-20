@@ -71,3 +71,8 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 # 使用リソース
 - Camera
   - 各種メニュー表示等に使用
+
+# 依存
+- liltoon
+- Modular Avatar
+- PandraVase
