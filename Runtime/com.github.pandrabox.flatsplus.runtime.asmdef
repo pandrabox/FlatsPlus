@@ -1,0 +1,30 @@
+{
+    "name": "com.github.pandrabox.flatsplus.runtime",
+    "references": [
+        "nadena.dev.modular-avatar.core",
+        "VRC.SDK3A",
+        "VRC.SDKBase",
+        "nadena.dev.ndmf",
+        "nadena.dev.ndmf.vrchat",
+        "VRC.SDK3A.Editor",
+        "com.github.pandrabox.pandravase.runtime",
+        "com.github.pandrabox.pandravase.editor",
+        "nadena.dev.ndmf.runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        "VRCSDKBase.dll",
+        "VRCSDK3A.dll",
+        "VRC.Dynamics.dll",
+        "VRC.SDK3.Dynamics.Contact.dll",
+        "VRC.SDK3.Dynamics.PhysBone.dll",
+        "System.Collections.Immutable.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
