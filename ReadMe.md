@@ -3,6 +3,7 @@
 # 概要
 Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバターギミックセットです
 
+
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
 ## Emo
@@ -76,3 +77,9 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - liltoon
 - Modular Avatar
 - PandraVase
+
+
+
+# Thanks
+- [Display Number](https://github.com/noriben327/DisplayNumber) … Commの開発・デバッグにあたって活用させて頂きました
+- [cgtrader Teddy bear](https://www.cgtrader.com/3d-models/animals/mammal/teddy-bear-dc0f9bd6-2d21-4c9b-b3fc-9c8d7d9c1c93) … Moverの位置確認用キャラクターとして使用しています
