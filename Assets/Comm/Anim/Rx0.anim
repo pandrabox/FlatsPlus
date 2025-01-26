@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SRx0
+  m_Name: Rx0
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -32,7 +32,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: FlatsPlus/Comm/SafeRx
+    attribute: FlatsPlus/Comm/Rx
     path: 
     classID: 95
     script: {fileID: 0}
@@ -46,7 +46,7 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 0
-      attribute: 580180104
+      attribute: 4236695960
       script: {fileID: 0}
       typeID: 95
       customType: 0
@@ -88,7 +88,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: FlatsPlus/Comm/SafeRx
+    attribute: FlatsPlus/Comm/Rx
     path: 
     classID: 95
     script: {fileID: 0}
