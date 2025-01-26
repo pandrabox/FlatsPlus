@@ -34,7 +34,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlendTree
+  m_Name: Dist
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: b81f263692f507643bffeba4a34a0574, type: 2}
@@ -135,7 +135,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 8099747671675390391}
-    m_Threshold: 0.25
+    m_Threshold: 0.2
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -143,15 +143,15 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7436228112551772390}
-    m_Threshold: 0.5
+    m_Threshold: 0.4
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Pan/ONE
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -6434655875615132166}
-    m_Threshold: 0.75
+    m_Motion: {fileID: -6097934466269564745}
+    m_Threshold: 0.6
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -159,6 +159,14 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 5856473543719634117}
+    m_Threshold: 0.8
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Pan/ONE
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -6434655875615132166}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -529,7 +537,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlendTree
+  m_Name: MAIN
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 2409556891539935756}
@@ -653,6 +661,37 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!206 &-6097934466269564745
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: StationCollider
+  m_Childs:
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 149d6a98e9018bb4a9b3acd53e4e4ca7, type: 2}
+    m_Threshold: 0
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: IsLocal
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: e899d75afaf81ee42881c74e45060c97, type: 2}
+    m_Threshold: 1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Pan/ONE
+    m_Mirror: 0
+  m_BlendParameter: IsLocal
+  m_BlendParameterY: Pan/ONE
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0
 --- !u!1102 &-6056169940600163369
 AnimatorState:
   serializedVersion: 6
@@ -2340,7 +2379,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlendTree
+  m_Name: RingColor
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 6477977058975013692}
@@ -2461,7 +2500,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlendTree
+  m_Name: CalcRunTakeMe
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 9b8eeae3bd43e114eb53f4728d216fc1, type: 2}
@@ -2508,7 +2547,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlendTree
+  m_Name: Rot
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 53279cb7d04c80843b5d617123a78b5e, type: 2}
