@@ -1,4 +1,4 @@
-﻿Shader "Hidden/AlphaBlend"
+﻿Shader "Hidden/Pan/AlphaBlend"
 {
     Properties
     {
