@@ -25,49 +25,19 @@ public class TTIEditorWindow : EditorWindow
 
         if (GUILayout.Button("Run"))
         {
-            CaptureTextToImage();
+            CaptureTextToImage("FlatsPlus");
         }
     }
 
 
-    public string GetVPMVer(string projectName)
+
+    private void CaptureTextToImage(string projectName)
     {
-        PandraProject prj = new PandraProject(projectName, ProjectTypes.VPM);
-        string packageJsonPath = Path.Combine(prj.ProjectFolder, "package.json");
-        if (!File.Exists(packageJsonPath))
-        {
-            prj.DebugPrint($@"{packageJsonPath}が見つかりませんでした");
-            return null;
-        }
-        string jsonContent = File.ReadAllText(packageJsonPath);
-        if(jsonContent == null)
-        {
-            prj.DebugPrint("package.jsonの読み込みに失敗しました");
-            return null;
-        }
-        string versionPattern = @"""version"":\s*""([0-9]+\.[0-9]+\.[0-9]+)""";
-        Match match = Regex.Match(jsonContent, versionPattern);
-        if (match.Success)
-        {
-            string version = match.Groups[1].Value;
-            return version;
-        }
-        prj.DebugPrint("バージョンの正規表現がマッチしませんでした");
-        return null;
-    }
-
-
-
-
-
-
-
-    private void CaptureTextToImage()
-    {
+        PandraProject _prj = new PandraProject(projectName, ProjectTypes.VPM);
         Texture2D strImg;
         using (var imageGenerator = new ImageGenerator(170))
         {
-            strImg = imageGenerator.DrawText($"FlatsPlus\n\r{GetVPMVer("FlatsPlus")}").Capture();
+            strImg = imageGenerator.DrawText($"{_prj.ProjectName}\n\r{_prj.VPMVersion}").Capture();
         }
         //Texture2D BG = AssetDatabase.LoadAssetAtPath<Texture2D>($@"Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i1.png");
         //strImg = ResizeTexture(strImg, BG.width, BG.height);
@@ -82,9 +52,7 @@ public class TTIEditorWindow : EditorWindow
         textures.Add(AddMergin(strImg,20));
         Texture2D BG = CreateTileTexture( textures, 3, 170*3);
 
-
         SaveTexture(BG, "Assets/ico2.png");
-
     }
 
     // マージンの作成(色を指定しない場合入力テクスチャの左上)
@@ -136,7 +104,21 @@ public class TTIEditorWindow : EditorWindow
         return textures;
     }
 
-    //SetReadableの配列版
+    //指定サイズにリサイズする
+    private Texture2D ResizeTexture(Texture2D texture, int width, int height)
+    {
+        RenderTexture rt = RenderTexture.GetTemporary(width, height);
+        rt.filterMode = FilterMode.Bilinear;
+        RenderTexture.active = rt;
+        Graphics.Blit(texture, rt);
+        Texture2D resizedTexture = new Texture2D(width, height);
+        resizedTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        resizedTexture.Apply();
+        RenderTexture.ReleaseTemporary(rt);
+        return resizedTexture;
+    }
+
+    //配列内の画像を全てReadableに設定する
     public static Texture2D[] SetReadable(Texture2D[] textures)
     {
         for (int i = 0; i < textures.Length; i++)
@@ -182,53 +164,7 @@ public class TTIEditorWindow : EditorWindow
         return texture;
     }
 
-    private Texture2D ResizeTexture(Texture2D texture, int width, int height)
-    {
-        RenderTexture rt = RenderTexture.GetTemporary(width, height);
-        rt.filterMode = FilterMode.Bilinear;
-        RenderTexture.active = rt;
-        Graphics.Blit(texture, rt);
-        Texture2D resizedTexture = new Texture2D(width, height);
-        resizedTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-        resizedTexture.Apply();
-        RenderTexture.ReleaseTemporary(rt);
-        return resizedTexture;
-    }
-
-
-    private Texture2D MergeTexture(Texture2D target, Texture2D source)
-    {
-        if (source.width != target.width || source.height != target.height)
-        {
-            Debug.LogError("Source and target textures must have the same dimensions.");
-            return null;
-        }
-
-        RenderTexture rt = RenderTexture.GetTemporary(source.width, source.height);
-        RenderTexture.active = rt;
-
-        // Clear the RenderTexture
-        GL.Clear(true, true, Color.clear);
-
-        // Create a material with a shader that blends based on alpha
-        Material blendMaterial = new Material(Shader.Find("Hidden/Pan/AlphaBlend"));
-        blendMaterial.SetTexture("_SourceTex", source);
-        blendMaterial.SetTexture("_TargetTex", target);
-
-        // Draw the textures with blending
-        Graphics.Blit(null, rt, blendMaterial);
-
-        // Create a new Texture2D to store the result
-        Texture2D mergedTexture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false);
-        mergedTexture.ReadPixels(new Rect(0, 0, source.width, source.height), 0, 0);
-        mergedTexture.Apply();
-
-        RenderTexture.ReleaseTemporary(rt);
-
-        return mergedTexture;
-    }
-
-
+    // テクスチャを保存する
     private void SaveTexture(Texture2D texture, string path)
     {
         byte[] bytes = texture.EncodeToPNG();
