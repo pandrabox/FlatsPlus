@@ -42,10 +42,12 @@ namespace com.github.pandrabox.pandravase.editor
 
     public class IcoMain
     {
-        private const int iconum=7;
+        private const int ICONUM=7;
+        private const int MENUMAX = 8; // iconum+1(VeryView)
         GameObject _callPlane;
+        GameObject _verViewObj => _menuItems[MENUMAX-1].gameObject;
         VRCAvatarDescriptor _desc;
-        ModularAvatarMenuItem[] _menuItems = new ModularAvatarMenuItem[iconum];
+        ModularAvatarMenuItem[] _menuItems = new ModularAvatarMenuItem[MENUMAX];
         public IcoMain(VRCAvatarDescriptor desc)
         {
             LowLevelDebugPrint("IcoMain");
@@ -55,12 +57,13 @@ namespace com.github.pandrabox.pandravase.editor
             foreach (var t in tgt)
             {
                 if (!GetStructure(t)) continue;
-                for(int i = 0; i < iconum; i++)
+                for(int i = 0; i < ICONUM; i++)
                 {
                     LowLevelDebugPrint($@"アイコンの置換を行います{i}");
                     _menuItems[i].Control.icon = ResizeTexture(t.textures[i], 256);
                 }
                 ReplacePackTexture(t);
+                if (!t.VerView) GameObject.DestroyImmediate(_verViewObj);
             }
         }
 
@@ -106,13 +109,13 @@ namespace com.github.pandrabox.pandravase.editor
 
             Array.Clear(_menuItems, 0, _menuItems.Length);
             var menuItems = root.transform.GetComponentsInChildren<ModularAvatarMenuItem>();
-            if(menuItems.Length < iconum)
+            if(menuItems.Length < ICONUM)
             {
                 LowLevelDebugPrint($@"Structureの取得に失敗しました:menuItems(Length={menuItems.Length})", false);
                 return false;
             }
             var icoMenuItems = menuItems.Where(x => x.Control.parameter.name == "FlatsPlus/Ico/IcoType").ToList();
-            for (int i = 0; i < iconum; i++)
+            for (int i = 0; i < MENUMAX; i++)
             {
                 var item = icoMenuItems.FirstOrDefault(x => x.Control.value == i + 1);
                 if (item == null)

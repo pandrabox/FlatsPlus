@@ -10,6 +10,7 @@ namespace com.github.pandrabox.flatsplus.runtime
     public class FlatsPlusIco : PandraComponent
     {
         public Texture2D[] textures = new Texture2D[6];
+        public bool VerView = false;
 
     }
 }
