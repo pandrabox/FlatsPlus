@@ -21,6 +21,7 @@ namespace com.github.pandrabox.flatsplus.editor
             Sequence seq;
             seq = InPhase(BuildPhase.Transforming).BeforePlugin("nadena.dev.modular-avatar");
             seq.Run(MoverPass.Instance);
+            seq.Run(FlatsPlusIcoPass.Instance);
         }
     }
 }
