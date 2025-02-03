@@ -3,6 +3,27 @@
 # 概要
 Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバターギミックセットです
 
+# 実装済み
+
+## Link
+- FlatsPlus利用者同士でパラメータの通信を行う
+
+## Sync
+- アンチカリング
+
+## Mover (ABTから学んだ内容が含まれます)
+- 他者を移動
+  - シンプルな椅子
+  - テレポータ設置(自動強制同期)
+- 他者にMoverを出させる
+
+## Ico
+- 頭の上にアイコンを出す
+  - Resonance … Link対応の人にも出す
+  - VerView … Link対応の人にFlatsPlusのバージョンを出す
+
+
+# 未実装
 
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
@@ -53,10 +74,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## Light (Discordから学んだ内容が含まれます)
 - 懐中電灯
 - ワールドライト
-## Mover (ABTから学んだ内容が含まれます)
-- 他者を移動
-  - シンプルな椅子
-  - テレポータ設置(自動強制同期)
 ## Explorer (ABTから学んだ内容が含まれます)
 - 軌跡表示
 - 位置表示（自動強制同期）
