@@ -2,7 +2,7 @@
 using com.github.pandrabox.pandravase.editor;
 using nadena.dev.ndmf;
 using nadena.dev.ndmf.fluent;
-using static com.github.pandrabox.pandravase.runtime.Util;
+using static com.github.pandrabox.pandravase.editor.Util;
 
 [assembly: ExportsPlugin(typeof(PanPluginDefinition))]
 

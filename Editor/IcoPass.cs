@@ -9,12 +9,12 @@ using System.Collections.Generic;
 using nadena.dev.ndmf.util;
 using nadena.dev.ndmf;
 using com.github.pandrabox.pandravase.runtime;
-using static com.github.pandrabox.pandravase.runtime.Util;
+using static com.github.pandrabox.pandravase.editor.Util;
 using System.Linq;
 using VRC.SDK3.Avatars.Components;
 using com.github.pandrabox.flatsplus.runtime;
-using static com.github.pandrabox.flatsplus.runtime.Global;
-using static com.github.pandrabox.pandravase.runtime.TextureUtil;
+using static com.github.pandrabox.flatsplus.editor.Global;
+using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using System.Text.RegularExpressions;
 
 
