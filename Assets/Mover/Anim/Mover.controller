@@ -189,7 +189,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 2.5
   - m_ConditionMode: 3
     m_ConditionEvent: FlatsPlus/Mover/CallTakeMe
@@ -270,10 +270,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 1.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 2.5
   - m_ConditionMode: 4
     m_ConditionEvent: FlatsPlus/Mover/AutoTakeMe
@@ -304,7 +304,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 0.0293
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
@@ -570,8 +570,8 @@ BlendTree:
   m_PrefabAsset: {fileID: 0}
   m_Name: Blend Tree
   m_Childs: []
-  m_BlendParameter: FlatsPlus/Comm/SafeRx
-  m_BlendParameterY: FlatsPlus/Comm/SafeRx
+  m_BlendParameter: FlatsPlus/Link/SafeRx
+  m_BlendParameterY: FlatsPlus/Link/SafeRx
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1
@@ -729,10 +729,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 1.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 2.5
   - m_ConditionMode: 4
     m_ConditionEvent: FlatsPlus/Mover/Adjusting
@@ -1060,7 +1060,7 @@ AnimatorStateTransition:
     m_ConditionEvent: FlatsPlus/Mover/FixTakeMe
     m_EventTreshold: 0.5
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/IsGlobal
+    m_ConditionEvent: FlatsPlus/Link/IsGlobal
     m_EventTreshold: 0.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8560865510274996107}
@@ -1085,7 +1085,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 1.5
   - m_ConditionMode: 3
     m_ConditionEvent: FlatsPlus/Mover/CallTakeMe
@@ -1475,19 +1475,19 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: FlatsPlus/Comm/Tx
+  - m_Name: FlatsPlus/Link/Tx
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: FlatsPlus/Comm/Rx
+  - m_Name: FlatsPlus/Link/Rx
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: FlatsPlus/Comm/IsGlobal
+  - m_Name: FlatsPlus/Link/IsGlobal
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1539,7 +1539,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 1.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
@@ -1659,7 +1659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters:
   - type: 0
-    name: FlatsPlus/Comm/Tx
+    name: FlatsPlus/Link/Tx
     source: 
     value: 0
     valueMin: 0
@@ -1838,7 +1838,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 1.5
   - m_ConditionMode: 3
     m_ConditionEvent: FlatsPlus/Mover/Adjusting
@@ -1973,7 +1973,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 1.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
@@ -2131,7 +2131,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 2.5
   - m_ConditionMode: 3
     m_ConditionEvent: FlatsPlus/Mover/Adjusting
@@ -2275,7 +2275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters:
   - type: 0
-    name: FlatsPlus/Comm/Tx
+    name: FlatsPlus/Link/Tx
     source: 
     value: 2
     valueMin: 0
@@ -2534,7 +2534,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Pan/ONE
     m_Mirror: 0
-  m_BlendParameter: FlatsPlus/Comm/Rx
+  m_BlendParameter: FlatsPlus/Link/Rx
   m_BlendParameterY: Blend
   m_MinThreshold: 1.5
   m_MaxThreshold: 2.51

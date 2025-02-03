@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Rx01
+    m_ConditionEvent: FlatsPlus/Link/Rx01
     m_EventTreshold: 0.01
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
@@ -62,7 +62,7 @@ BlendTree:
   m_PrefabAsset: {fileID: 0}
   m_Name: BlendTree
   m_Childs: []
-  m_BlendParameter: FlatsPlus/Comm/IsGlobal
+  m_BlendParameter: FlatsPlus/Link/IsGlobal
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -81,7 +81,7 @@ AnimatorStateTransition:
     m_ConditionEvent: IsLocal
     m_EventTreshold: 0.1
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Rx01
+    m_ConditionEvent: FlatsPlus/Link/Rx01
     m_EventTreshold: 0.01
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7582436524263691658}
@@ -120,7 +120,7 @@ BlendTree:
   m_PrefabAsset: {fileID: 0}
   m_Name: BlendTree
   m_Childs: []
-  m_BlendParameter: FlatsPlus/Comm/Tx
+  m_BlendParameter: FlatsPlus/Link/Tx
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -133,7 +133,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Comm
+  m_Name: Link
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Pan/ONE
@@ -142,13 +142,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: FlatsPlus/Comm/Tx
+  - m_Name: FlatsPlus/Link/Tx
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: FlatsPlus/Comm/Rx
+  - m_Name: FlatsPlus/Link/Rx
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -160,7 +160,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: FlatsPlus/Comm/IsGlobal
+  - m_Name: FlatsPlus/Link/IsGlobal
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -172,7 +172,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: FlatsPlus/Comm/Rx01
+  - m_Name: FlatsPlus/Link/Rx01
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -180,7 +180,7 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: FlatsPlus/Comm/IsGlobal
+    m_Name: FlatsPlus/Link/IsGlobal
     m_StateMachine: {fileID: 2203610778498381859}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -192,7 +192,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: FlatsPlus/Comm/Tx
+    m_Name: FlatsPlus/Link/Tx
     m_StateMachine: {fileID: 720953273978394630}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -210,7 +210,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FlatsPlus/Comm/Tx
+  m_Name: FlatsPlus/Link/Tx
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2892115332557160889}
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters:
   - type: 0
-    name: FlatsPlus/Comm/IsGlobal
+    name: FlatsPlus/Link/IsGlobal
     source: 
     value: 0
     valueMin: 0
@@ -259,7 +259,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FlatsPlus/Comm/IsGlobal
+  m_Name: FlatsPlus/Link/IsGlobal
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2832479809505437129}
@@ -579,7 +579,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Pan/ONE
     m_Mirror: 0
-  m_BlendParameter: FlatsPlus/Comm/Rx01
+  m_BlendParameter: FlatsPlus/Link/Rx01
   m_BlendParameterY: Blend
   m_MinThreshold: 0.0292
   m_MaxThreshold: 0.9706
@@ -621,7 +621,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FlatsPlus/Comm/Tx(WD On)
+  m_Name: FlatsPlus/Link/Tx(WD On)
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -664,7 +664,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Pan/ONE
     m_Mirror: 0
-  m_BlendParameter: FlatsPlus/Comm/Tx
+  m_BlendParameter: FlatsPlus/Link/Tx
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 17
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters:
   - type: 0
-    name: FlatsPlus/Comm/IsGlobal
+    name: FlatsPlus/Link/IsGlobal
     source: 
     value: 1
     valueMin: 0
@@ -738,7 +738,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Pan/ONE
     m_Mirror: 0
-  m_BlendParameter: FlatsPlus/Comm/Tx
+  m_BlendParameter: FlatsPlus/Link/Tx
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -769,7 +769,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Pan/ONE
     m_Mirror: 0
-  m_BlendParameter: FlatsPlus/Comm/IsGlobal
+  m_BlendParameter: FlatsPlus/Link/IsGlobal
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -784,7 +784,7 @@ BlendTree:
   m_PrefabAsset: {fileID: 0}
   m_Name: BlendTree
   m_Childs: []
-  m_BlendParameter: FlatsPlus/Comm/Tx
+  m_BlendParameter: FlatsPlus/Link/Tx
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1

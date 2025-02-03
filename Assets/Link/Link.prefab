@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameters:
-  - nameOrPrefix: FlatsPlus/Comm/Tx
+  - nameOrPrefix: FlatsPlus/Link/Tx
     remapTo: 
     internalParameter: 0
     isPrefix: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
     saved: 0
     hasExplicitDefaultValue: 0
     m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Comm/IsGlobal
+  - nameOrPrefix: FlatsPlus/Link/IsGlobal
     remapTo: 
     internalParameter: 0
     isPrefix: 0
@@ -335,5 +335,5 @@ MonoBehaviour:
   allowOthers: 1
   localOnly: 0
   receiverType: 2
-  parameter: FlatsPlus/Comm/Rx01
+  parameter: FlatsPlus/Link/Rx01
   minVelocity: 0.05

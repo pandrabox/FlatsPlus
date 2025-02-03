@@ -117,10 +117,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 1.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 14.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1294184195602350677}
@@ -412,10 +412,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 0.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 1.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6877823181119452852}
@@ -1062,7 +1062,7 @@ MonoBehaviour:
     destMin: 0
     destMax: 0
   - type: 0
-    name: FlatsPlus/Comm/Tx
+    name: FlatsPlus/Link/Tx
     source: 
     value: 1
     valueMin: 0
@@ -1594,7 +1594,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 0.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1294184195602350677}
@@ -1911,7 +1911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters:
   - type: 0
-    name: FlatsPlus/Comm/Tx
+    name: FlatsPlus/Link/Tx
     source: 
     value: 0
     valueMin: 0
@@ -2041,13 +2041,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: FlatsPlus/Comm/Rx
+  - m_Name: FlatsPlus/Link/Rx
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: FlatsPlus/Comm/Tx
+  - m_Name: FlatsPlus/Link/Tx
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -2262,10 +2262,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 15.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 16.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3598204429367429176}
@@ -2642,10 +2642,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 15.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 16.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3598204429367429176}
@@ -2711,7 +2711,7 @@ MonoBehaviour:
     destMin: 0
     destMax: 0
   - type: 0
-    name: FlatsPlus/Comm/Tx
+    name: FlatsPlus/Link/Tx
     source: 
     value: 16
     valueMin: 0
@@ -2837,10 +2837,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 0.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Rx
+    m_ConditionEvent: FlatsPlus/Link/Rx
     m_EventTreshold: 1.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6877823181119452852}
@@ -2974,10 +2974,10 @@ AnimatorStateTransition:
     m_ConditionEvent: FlatsPlus/Ico/IcoType
     m_EventTreshold: 8
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 15.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 16.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5238749742887007527}
@@ -3141,10 +3141,10 @@ AnimatorStateTransition:
     m_ConditionEvent: FlatsPlus/Ico/IcoType
     m_EventTreshold: 8
   - m_ConditionMode: 3
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 0.5
   - m_ConditionMode: 4
-    m_ConditionEvent: FlatsPlus/Comm/Tx
+    m_ConditionEvent: FlatsPlus/Link/Tx
     m_EventTreshold: 1.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5238749742887007527}

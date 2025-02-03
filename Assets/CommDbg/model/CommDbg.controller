@@ -35,7 +35,7 @@ AnimatorController:
   m_Name: CommDbg
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: FlatsPlus/Comm/Rx
+  - m_Name: FlatsPlus/Link/Rx
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -78,7 +78,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Blend
     m_Mirror: 0
-  m_BlendParameter: FlatsPlus/Comm/Rx
+  m_BlendParameter: FlatsPlus/Link/Rx
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 17
