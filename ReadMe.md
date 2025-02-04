@@ -6,24 +6,34 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 # 実装済み
 
 ## Link
-- FlatsPlus利用者同士でパラメータの通信を行う
+- FlatsPlus:Link利用者同士でパラメータの通信を行う
 
 ## Sync
 - アンチカリング
 
-## Mover (ABTから学んだ内容が含まれます)
+## Carry (ABTから学んだ内容が含まれます)
 - 他者を移動
-  - シンプルな椅子
-  - テレポータ設置(自動強制同期)
-- 他者にMoverを出させる
+  - Gate(テレポータ)設置(自動強制同期)
+  - Link:他者にGateを出させる
+  - 他者をだっこ
+  - 他者をおんぶ
 
 ## Ico
 - 頭の上にアイコンを出す
-  - Resonance … Link対応の人にも出す
-  - VerView … Link対応の人にFlatsPlusのバージョンを出す
+  - Link:Resonance … 他者にアイコンを出させる
+  - Link:VerView … 他者にFlatsPlusのバージョンを出させる
 
 
 # 未実装
+
+## Move
+- 色々な移動ツール
+  - 浮遊
+  - 超高速ダッシュ (速度調整)
+  - 連続ダッシュ (高度調整)
+  - おんぶ(Carry呼び出し)
+- NDMF
+  - 乗り物変更
 
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
@@ -33,10 +43,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - 変更時間の設定
 ## MakeEmo 
 - 任意の表情を作ってロック
-## Fly
-- 空中移動・高速移動
-  - 乗り物の設定
-  - 移動速度の設定
 ## Pen
 - 空中に文字を書く
   - 左利きモード
