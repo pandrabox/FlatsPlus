@@ -23,9 +23,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - Link:Resonance … 他者にアイコンを出させる
   - Link:VerView … 他者にFlatsPlusのバージョンを出させる
 
-
-# 未実装
-
 ## Move
 - 色々な移動ツール
   - 浮遊
@@ -33,7 +30,12 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - 連続ダッシュ (高度調整)
   - おんぶ(Carry呼び出し)
 - NDMF
-  - 乗り物変更
+  - (乗り物変更)
+
+## FlatEmo
+- そのまま再配布
+
+# 未実装
 
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
@@ -88,8 +90,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## SOM2.0
 - そのまま再配布
 ## DressSW
-- そのまま再配布
-## FlatEmo
 - そのまま再配布
 
 # 使用リソース
