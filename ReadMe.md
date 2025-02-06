@@ -35,6 +35,10 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## FlatEmo
 - そのまま再配布
 
+## Pen
+- 空中に文字を書く
+  - (左利きモード)
+  
 # 未実装
 
 ## Manager
@@ -45,9 +49,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - 変更時間の設定
 ## MakeEmo 
 - 任意の表情を作ってロック
-## Pen
-- 空中に文字を書く
-  - 左利きモード
 ## HopePoyo
 - ほっぺたをぽよぽよに
   - 触ると揺れる
