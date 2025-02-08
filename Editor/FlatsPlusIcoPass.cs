@@ -50,7 +50,6 @@ namespace com.github.pandrabox.pandravase.editor
         ModularAvatarMenuItem[] _menuItems = new ModularAvatarMenuItem[MENUMAX];
         public IcoMain(VRCAvatarDescriptor desc)
         {
-            LowLevelDebugPrint("IcoMain");
             _desc = desc;
             var tgt = desc.transform.GetComponentsInChildren<FlatsPlusIco>();
             if (tgt.Length == 0) return;
