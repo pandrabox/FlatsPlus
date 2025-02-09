@@ -71,15 +71,13 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## HaraPoyo
 - おなかをぽよぽよに
   - 判定深度
-## TailSize
-- しっぽの大きさを変更
-## TailSwing
-- しっぽを揺らす
-  - 幅・周期時間の調整
+## Tail
+  - サイズ変更
+  - ゆらす
+  - PB判定の適正化
+  - 表情連携
 ## EarEmo
 - 表情に合わせて耳を動かす
-## TailEmo
-- 表情に合わせてしっぽを動かす
 ## MMD
 - MMD時表情が動く
 ## FxMinimize
