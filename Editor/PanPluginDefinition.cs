@@ -22,6 +22,7 @@ namespace com.github.pandrabox.flatsplus.editor
             seq = InPhase(BuildPhase.Transforming).BeforePlugin("com.github.pandrabox.pandravase");
             seq.Run(FlatsPlusIcoPass.Instance);
             seq.Run(FlatsPlusMeshSettingPass.Instance);
+            seq.Run(FlatsPlusLightPass.Instance);
             seq = InPhase(BuildPhase.Transforming).BeforePlugin("nadena.dev.modular-avatar");
             //seq.Run(MoverPass.Instance);
         }
