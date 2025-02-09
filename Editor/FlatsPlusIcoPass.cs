@@ -16,18 +16,19 @@ using com.github.pandrabox.flatsplus.runtime;
 using static com.github.pandrabox.flatsplus.editor.Global;
 using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using System.Text.RegularExpressions;
+using com.github.pandrabox.pandravase.editor;
 
 
-namespace com.github.pandrabox.pandravase.editor
+namespace com.github.pandrabox.flatsplus.editor
 {
 #if PANDRADBG
-    public class IcoDebug
+    public class FlatsPlusIcoDebug
     {
-        [MenuItem("PanDbg/Ico")]
-        public static void Ico_Debug()
+        [MenuItem("PanDbg/FlatsPlusIco")]
+        public static void FlatsPlusIco_Debug()
         {
             SetDebugMode(true);
-            new IcoMain(TopAvatar);
+            new FlatsPlusIcoMain(TopAvatar);
         }
     }
 #endif
@@ -36,11 +37,11 @@ namespace com.github.pandrabox.pandravase.editor
     {
         protected override void Execute(BuildContext ctx)
         {
-            new IcoMain(ctx.AvatarDescriptor);
+            new FlatsPlusIcoMain(ctx.AvatarDescriptor);
         }
     }
 
-    public class IcoMain
+    public class FlatsPlusIcoMain
     {
         private const int ICONUM=7;
         private const int MENUMAX = 8; // iconum+1(VeryView)
@@ -48,7 +49,7 @@ namespace com.github.pandrabox.pandravase.editor
         GameObject _verViewObj => _menuItems[MENUMAX-1].gameObject;
         VRCAvatarDescriptor _desc;
         ModularAvatarMenuItem[] _menuItems = new ModularAvatarMenuItem[MENUMAX];
-        public IcoMain(VRCAvatarDescriptor desc)
+        public FlatsPlusIcoMain(VRCAvatarDescriptor desc)
         {
             _desc = desc;
             var tgt = desc.transform.GetComponentsInChildren<FlatsPlusIco>();
