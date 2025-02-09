@@ -41,7 +41,12 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   
 ## MeshSetting
 - 全体的な明るさ等の自動調整
+
   
+## Light (Discordから学んだ内容が含まれます)
+- 懐中電灯
+- ワールドライト
+- 
 # 未実装
 
 ## Manager
@@ -81,9 +86,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - デフォルト配布のFxレイヤを最適化
 ## Sleep
 - 3点睡眠
-## Light (Discordから学んだ内容が含まれます)
-- 懐中電灯
-- ワールドライト
 ## Explorer (ABTから学んだ内容が含まれます)
 - 軌跡表示
 - 位置表示（自動強制同期）
