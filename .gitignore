@@ -74,3 +74,5 @@ crashlytics-build.properties
 Debug/*
 Debug.meta
 LICENSE.meta
+Assets/FlatsDB/.~lock.db.csv\#
+*.csv#

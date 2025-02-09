@@ -52,7 +52,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private PandraProject _prj;
 
         private string GetAvatarName(AvatarType avatar) => Enum.GetName(typeof(AvatarType), avatar).ToLower();
-        private string CurrentAvatarName => GetAvatarName(_currentAvatar);
+        public string CurrentAvatarName => GetAvatarName(_currentAvatar);
 
         public FlatsDB(PandraProject prj, AvatarType currentAvatar=0)
         {

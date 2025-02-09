@@ -3,9 +3,11 @@ AttributePosX,-0.0002531733,-0.03153284,-0.000832884,-0.004839427,0.00661528,-0.
 AnimatorAvatarName,flatver.1.01Avatar,flatVer2Avatar,comodoAvatar,FelAvatar,HeonAvatar,KewfAvatar
 FormalName,flatver.1.01,flatVer2,comodo,Fel,Heon,Kewf
 JpName,フラット,フラット2,コモド,フェル,ヘオン,キューフ
-TotalBoundsCenterX,0,,,,,
-TotalBoundsCenterY,0.005,,,,,
-TotalBoundsCenterZ,0,,,,,
-TotalBoundsExtentX,0.02116214,,,,,
-TotalBoundsExtentY,0.02116214,,,,,
-TotalBoundsExtentZ,0.02116214,,,,,
+PrefabScale,0.83,0.83,0.83,1,1,1
+ArmatureScale,74.01261,0.7401261,100,90.19184,100,100
+TotalBoundsCenterX,0,0,0,0,0,0
+TotalBoundsCenterY,0.005290535,0.529053447865494,0.00391566265060241,0.00360343019945042,0.00325,0.00325
+TotalBoundsCenterZ,0,0,0,0,0,0
+TotalBoundsExtentX,0.02116214,2.11621379146197,0.0156626506024096,0.0144137207978017,0.013,0.013
+TotalBoundsExtentY,0.02116214,2.11621379146197,0.0156626506024096,0.0144137207978017,0.013,0.013
+TotalBoundsExtentZ,0.02116214,2.11621379146197,0.0156626506024096,0.0144137207978017,0.013,0.013
