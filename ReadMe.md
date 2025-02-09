@@ -39,6 +39,9 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - 空中に文字を書く
   - (左利きモード)
   
+## MeshSetting
+- 全体的な明るさ等の自動調整
+  
 # 未実装
 
 ## Manager
@@ -74,8 +77,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - 表情に合わせてしっぽを動かす
 ## MMD
 - MMD時表情が動く
-## MeshSetting
-- 全体的な明るさ等の自動調整
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
 ## Sleep
