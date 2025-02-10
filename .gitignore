@@ -76,3 +76,5 @@ Debug.meta
 LICENSE.meta
 Assets/FlatsDB/.~lock.db.csv\#
 *.csv#
+Dev/
+Dev.meta

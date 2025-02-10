@@ -54,6 +54,9 @@ namespace com.github.pandrabox.flatsplus.editor
         private string GetAvatarName(AvatarType avatar) => Enum.GetName(typeof(AvatarType), avatar).ToLower();
         public string CurrentAvatarName => GetAvatarName(_currentAvatar);
 
+
+        public string TailName => GetString("TailName");
+        public string GetString(string key) { var (a, b) = Get<string>(key); return b ? a : null; }
         public FlatsDB(PandraProject prj, AvatarType currentAvatar=0)
         {
             _prj = prj;
