@@ -18,56 +18,63 @@ using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using System.Text.RegularExpressions;
 using com.github.pandrabox.pandravase.editor;
 using System.Globalization;
+using static NUnit.Framework.Internal.OSPlatform;
+using static UnityEngine.UI.CanvasScaler;
 
 
 namespace com.github.pandrabox.flatsplus.editor
 {
-    public class FlatsDB
+    public class FlatsProject : PandraProject
     {
 
 #if PANDRADBG
-        public class FlatsPlusMeshSettingDebug
-        {
-            [MenuItem("PanDbg/FlatsDBDebug")]
-            public static void FlatsDBDebug()
-            {
-                SetDebugMode(true);
-                foreach (var a in AllAvatar)
-                {
-                    PandraProject p = FlatsPlusProject(a);
-                    var fdb = new FlatsDB(p);
-                    var body = p.RootTransform.GetComponentsInChildren<SkinnedMeshRenderer>().FirstOrDefault(x => x.name == "Body");
-                    var AttributePoint = body.sharedMesh.vertices[26];
-                    LowLevelDebugPrint($@"x::{AttributePoint.x},  name:{p.RootObject.name}");
-                }
-            }
-        }
+        //public static class FlatsPlusFlatsProjectDebug
+        //{
+        //    [MenuItem("PanDbg/FlatsProjectDebug")]
+        //    public static void FlatsProjectDebug()
+        //    {
+        //        foreach (var a in AllAvatar)
+        //        {
+        //            PandraProject p = FlatsPlusProject(a);
+        //            p.SetDebugMode(true); // 修正: インスタンスメソッドとして呼び出し
+        //            var fdb = new FlatsProject(p);
+        //            var body = p.RootTransform.GetComponentsInChildren<SkinnedMeshRenderer>().FirstOrDefault(x => x.name == "Body");
+        //            var AttributePoint = body.sharedMesh.vertices[26];
+        //            LowLevelDebugPrint($@"x::{AttributePoint.x},  name:{p.RootObject.name}");
+        //        }
+        //    }
+        //}
 #endif
+
+        public string CurrentAvatarName => GetAvatarName(_currentAvatar);
+        public string TailName => GetDBString("TailName");
+        public float TailScaleLimit0 => GetDBFloat("TailScaleLimit0");
+        public float TailScaleXLimit0 => GetDBFloat("TailScaleXLimit0");
+        public float TailScaleLimit1 => GetDBFloat("TailScaleLimit1");
+        public string GetDBString(string key) { var (a, b) = Get<string>(key); return b ? a : null; }
+        public float GetDBFloat(string key) { var (a, b) = Get<float>(key); return b ? a : -1; }
+        public (T value, bool success) Get<T>(string key) => GetDirect<T>(_currentAvatar, key);
+
+
+
 
         private const int ATTRIBUTEINDEX = 26;
         private const int FLOORINDEX = 7;
         private const string CSVPATH = "Packages/com.github.pandrabox.flatsplus/Assets/FlatsDB/db.csv";
         private Dictionary<string, Dictionary<string, string>> data;
         private AvatarType _currentAvatar;
-        private PandraProject _prj;
-
         private string GetAvatarName(AvatarType avatar) => Enum.GetName(typeof(AvatarType), avatar).ToLower();
-        public string CurrentAvatarName => GetAvatarName(_currentAvatar);
-
-
-        public string TailName => GetString("TailName");
-        public string GetString(string key) { var (a, b) = Get<string>(key); return b ? a : null; }
-        public FlatsDB(PandraProject prj, AvatarType currentAvatar=0)
+        public FlatsProject(VRCAvatarDescriptor desc, AvatarType currentAvatar = 0) 
         {
-            _prj = prj;
-            data = new Dictionary<string, Dictionary<string, string>>();            
+            Init(desc, "FlatsPlus", ProjectTypes.VPM);
+            data = new Dictionary<string, Dictionary<string, string>>();
             if (!File.Exists(CSVPATH))
             {
                 LowLevelDebugPrint($@"CSV:{CSVPATH}が見つかりませんでした");
                 return;
             }
-            string tmpPath = Path.Combine(_prj.TmpFolder, $"flatDB{Guid.NewGuid()}.csv");
-            CreateDir(_prj.TmpFolder);
+            string tmpPath = Path.Combine(TmpFolder, $"flatDB{Guid.NewGuid()}.csv");
+            CreateDir(TmpFolder);
             File.Copy(CSVPATH, tmpPath, true);
 
             string[] lines = File.ReadAllLines(tmpPath);
@@ -103,7 +110,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             if (avatar == AvatarType.Undef)
             {
-                var body = _prj?.RootTransform?.GetComponentsInChildren<SkinnedMeshRenderer>()?.FirstOrDefault(x => x.name == "Body");
+                var body = RootTransform?.GetComponentsInChildren<SkinnedMeshRenderer>()?.FirstOrDefault(x => x.name == "Body");
                 Vector3? attributePoint = body?.sharedMesh?.vertices[ATTRIBUTEINDEX];
                 if (attributePoint != null)
                 {
@@ -121,7 +128,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
                 LowLevelDebugPrint("AttributePointによる判定に失敗しました");
 
-                var tmpAvatarName = _prj?.Animator?.avatar?.name;
+                var tmpAvatarName = Animator?.avatar?.name;
                 if (tmpAvatarName != null)
                 {
                     foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
@@ -137,7 +144,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
                 LowLevelDebugPrint("AnimatorAvatarNameによる判定に失敗しました");
 
-                tmpAvatarName = _prj?.RootObject?.name;
+                tmpAvatarName = RootObject?.name;
                 if (tmpAvatarName != null)
                 {
                     foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
@@ -155,7 +162,6 @@ namespace com.github.pandrabox.flatsplus.editor
             }
         }
 
-        public (T value, bool success) Get<T>(string key) => GetDirect<T>(_currentAvatar, key);
         public (T value, bool success) GetDirect<T>(AvatarType avatarType, string key)
         {
             if (data.TryGetValue(key, out var row) && row.TryGetValue(GetAvatarName(avatarType), out var value))
@@ -175,5 +181,16 @@ namespace com.github.pandrabox.flatsplus.editor
             LowLevelDebugPrint($@"DBの取得に失敗しました (データ見つからず): {avatarType},{key}");
             return (default(T), false);
         }
+
+
+        //メソッドチェーンのオーバーライド
+        public new FlatsProject SetSuffixMode(bool mode)
+        {
+            base.SetSuffixMode(mode);  // 基底クラスのSetSuffixModeを呼び出す
+            return this;  // FlatsProject型を返す
+        }
+
+
+
     }
 }

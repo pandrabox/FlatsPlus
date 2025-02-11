@@ -45,7 +45,7 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public FlatsPlusLightMain(VRCAvatarDescriptor desc)
         {
-            PandraProject prj = FlatsPlusProject(desc).SetSuffixMode(false);
+            FlatsProject prj = new FlatsProject(desc).SetSuffixMode(false);
             FlatsPlusLight[] lights = desc.GetComponentsInChildren<FlatsPlusLight>();
             string animFolder = $@"{prj.ProjectFolder}Assets/Light/Anim/";
             foreach (FlatsPlusLight light in lights)

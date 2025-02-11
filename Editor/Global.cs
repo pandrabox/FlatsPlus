@@ -8,14 +8,12 @@ using VRC.SDK3.Avatars.Components;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
+    public enum AvatarType
+    {
+        Undef, Flat, Flat2, Comodo, Fel, Heon, Kewf
+    }
     public static class Global
     {
-        public const string PROJECT_NAME = "FlatsPlus";
-        public const ProjectTypes PROJECT_TYPE = ProjectTypes.VPM;
-        public static PandraProject FlatsPlusProject(VRCAvatarDescriptor desc) => new PandraProject(desc, PROJECT_NAME, PROJECT_TYPE);
-        public enum AvatarType
-        {
-            Undef, Flat, Flat2, Comodo, Fel, Heon, Kewf
-        }
+        public const string PRJNAME = "FlatsPlus";
     }
 }

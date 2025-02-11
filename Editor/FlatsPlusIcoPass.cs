@@ -71,7 +71,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             using (var capture = new PanCapture(BGColor: new Color(1, 1, 1, 1), margin: 10, padding: 10, width: 170))
             {
-                PandraProject prj = FlatsPlusProject(_desc);
+                FlatsProject prj = new FlatsProject(_desc);
                 var strImg = capture.TextToImage($"{prj.ProjectName}\n\r{prj.VPMVersion}");
                 List<Texture2D> textures = t.textures.ToList();
                 textures.Add(strImg);

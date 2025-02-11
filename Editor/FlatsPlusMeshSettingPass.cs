@@ -51,28 +51,28 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FlatsPlusMeshSettingMain
     {
         GameObject _root;
+        FlatsProject _prj;
         public FlatsPlusMeshSettingMain(VRCAvatarDescriptor desc)
         {
-            var prj = FlatsPlusProject(desc);
-            var flatsDB = new FlatsDB(prj);
+            _prj = new FlatsProject(desc);
             var tgt = desc.transform.GetComponentsInChildren<FlatsPlusMeshSetting>();
             if (tgt.Length == 0) return;
             _root = desc.gameObject;
             ModularAvatarMeshSettings modularAvatarMeshSettings = _root.GetComponent<ModularAvatarMeshSettings>();
             if (modularAvatarMeshSettings != null) return;
-            var HipsReference = prj.HumanoidObjectReference(HumanBodyBones.Hips);
+            var HipsReference = _prj.HumanoidObjectReference(HumanBodyBones.Hips);
             modularAvatarMeshSettings = _root.AddComponent<ModularAvatarMeshSettings>();
             modularAvatarMeshSettings.InheritProbeAnchor = ModularAvatarMeshSettings.InheritMode.Set;
             modularAvatarMeshSettings.ProbeAnchor = HipsReference;
             modularAvatarMeshSettings.InheritBounds = ModularAvatarMeshSettings.InheritMode.Set;
             modularAvatarMeshSettings.RootBone = HipsReference;
 
-            var (totalBoundsCenterX, s1) = flatsDB.Get<float>("TotalBoundsCenterX");
-            var (totalBoundsCenterY, s2) = flatsDB.Get<float>("TotalBoundsCenterY");
-            var (totalBoundsCenterZ, s3) = flatsDB.Get<float>("TotalBoundsCenterZ");
-            var (totalBoundsExtentX, s4) = flatsDB.Get<float>("TotalBoundsExtentX");
-            var (totalBoundsExtentY, s5) = flatsDB.Get<float>("TotalBoundsExtentY");
-            var (totalBoundsExtentZ, s6) = flatsDB.Get<float>("TotalBoundsExtentZ");
+            var (totalBoundsCenterX, s1) = _prj.Get<float>("TotalBoundsCenterX");
+            var (totalBoundsCenterY, s2) = _prj.Get<float>("TotalBoundsCenterY");
+            var (totalBoundsCenterZ, s3) = _prj.Get<float>("TotalBoundsCenterZ");
+            var (totalBoundsExtentX, s4) = _prj.Get<float>("TotalBoundsExtentX");
+            var (totalBoundsExtentY, s5) = _prj.Get<float>("TotalBoundsExtentY");
+            var (totalBoundsExtentZ, s6) = _prj.Get<float>("TotalBoundsExtentZ");
             if (!(s1 && s2 && s3 && s4 && s5 && s6)) return;
 
             modularAvatarMeshSettings.Bounds = new Bounds()
