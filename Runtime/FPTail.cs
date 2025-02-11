@@ -9,6 +9,7 @@ namespace com.github.pandrabox.flatsplus.runtime
 {
     public class FPTail : PandraComponent
     {
-        //実装なし
+        public float SwingPeriod = 1.5f;
+        public float SwingAngle = 60;
     }
 }

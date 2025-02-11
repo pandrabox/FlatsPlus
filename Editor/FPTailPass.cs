@@ -44,23 +44,6 @@ namespace com.github.pandrabox.flatsplus.editor
 
     public class FPTailMain
     {
-        /// <summary>
-        /// targetをrotationAngleで回転させた角度(Quaternion)を返す
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="rotationAngle"></param>
-        /// <returns></returns>
-        public static Quaternion CalQuaternionRotation(GameObject target, Vector3 rotationAngle)
-        {
-            Quaternion currentRotation = target.transform.localRotation;
-            Quaternion deltaRotation = Quaternion.Euler(rotationAngle);
-            Quaternion newRotation = currentRotation * deltaRotation;
-            return newRotation;
-        }
-        public static Quaternion CalcQuaternionRotationY(GameObject target, float yAngle)=>CalQuaternionRotation(target, new Vector3(0, yAngle, 0));
-
-
-
         public FPTailMain(VRCAvatarDescriptor desc)
         {
             FPTail[] fpTails = desc.GetComponentsInChildren<FPTail>();
@@ -76,12 +59,12 @@ namespace com.github.pandrabox.flatsplus.editor
 
             tailPB.isAnimated = true;
             
-            float swingAngle = 60f;
-            float swingTime = 2f;
+            float swingAngle = fpTails[0].SwingAngle;
+            float swingPeriod = fpTails[0].SwingPeriod;
 
             var ac = new AnimationClipsBuilder();
-            Quaternion[] sPos = new Quaternion[3];
-            sPos[0]= CalcQuaternionRotationY(tail, swingAngle);
+            Quaternion[] sPos = new Quaternion[3]; //Eularだとぺちゃっとした変な動きになったがQuaternionだと奇麗だった
+            sPos[0] = CalcQuaternionRotationY(tail, swingAngle);
             sPos[1] = CalcQuaternionRotationY(tail, -swingAngle);
             ac.Clip($@"Swing").SetLoop(true);
             for (int i = 0; i < 4; i++)
@@ -91,9 +74,9 @@ namespace com.github.pandrabox.flatsplus.editor
                 ac.CurrentClip
                     .Bind("", typeof(Transform), $"m_LocalRotation.{axisName}")
                     .Smooth(
-                        swingTime * 0, sPos[0].GetAxis(axis)
-                        , swingTime * 1, sPos[1].GetAxis(axis)
-                        , swingTime * 2, sPos[0].GetAxis(axis)
+                        swingPeriod * 0, sPos[0].GetAxis(axis)
+                        , swingPeriod * 1, sPos[1].GetAxis(axis)
+                        , swingPeriod * 2, sPos[0].GetAxis(axis)
                     )
                     .SetAllFlat();
             }
