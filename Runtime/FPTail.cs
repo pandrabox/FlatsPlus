@@ -11,5 +11,8 @@ namespace com.github.pandrabox.flatsplus.runtime
     {
         public float SwingPeriod = 1.5f;
         public float SwingAngle = 60;
+        public float SizeMax = 1;
+        public float SizeMin = 0.01f;
+        public bool SizePerfectSync = false;
     }
 }
