@@ -74,9 +74,30 @@ namespace com.github.pandrabox.flatsplus.editor
 
             _bb = new BlendTreeBuilder(prj, false, "Tail", targetObj: _tail);
             _bb.RootDBT(() => {
+                Gravity();
                 CreateScale();
             });
             CreateSwing();
+        }
+
+
+        private void Gravity()
+        {
+            var ac = new AnimationClipsBuilder();
+            ac.Clip("Gravity-1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(-1);
+            ac.Clip("Gravity1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(1);
+            _bb.Add1D("FlatsPlus/Tail/GravityRx", () => {
+                _bb.Param(0).AddMotion(ac.Outp("Gravity-1"));
+                _bb.Param(1).AddMotion(ac.Outp("Gravity1"));
+            });
+            _bb.AssignmentBy1D("FlatsPlus/Tail/GravityRx", -1f, 1f, "FlatsPlus/Tail/GravityRxLog");
+
+            ac.Clip("PBSwitch").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled")
+                .Smooth();
+
+            var mb = new MenuBuilder(prj).AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Gravity", "Gravity", .5f);
+            var sync = prj.CreateComponentObject<PVnBitSync>("sync");
+            sync.Set("FlatsPlus/Tail/Gravity", 3, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.GravityPerfectSync);
         }
 
         private void CreateScale()
