@@ -55,7 +55,7 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         private FPTail[] _FPTails;
         private GameObject _tail;
-        private FlatsProject prj;
+        private FlatsProject _prj;
         private VRCPhysBone _tailPB;
         private BlendTreeBuilder _bb;
         public FPTail TailConfig => _FPTails[0];
@@ -64,87 +64,58 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             _FPTails = desc.GetComponentsInChildren<FPTail>();
             if (_FPTails.Length == 0) return;
-            prj = new FlatsProject(desc).SetSuffixMode(false);
-            _tail = prj.ArmatureTransform.GetComponentsInChildren<Transform>().FirstOrDefault(x => x.name == prj.TailName)?.gameObject;
+            _prj = new FlatsProject(desc).SetSuffixMode(false);
+            _tail = _prj.ArmatureTransform.GetComponentsInChildren<Transform>().FirstOrDefault(x => x.name == _prj.TailName)?.gameObject;
             if (_tail == null) { LowLevelDebugPrint("Tailがみつかりませんでした"); return; }
 
             _tailPB = _tail.GetComponent<VRCPhysBone>();
             if (_tailPB == null) _tailPB = _tail.AddComponent<VRCPhysBone>();
             _tailPB.isAnimated = true;
 
-            _bb = new BlendTreeBuilder(prj, false, "Tail", targetObj: _tail);
+            _bb = new BlendTreeBuilder("FlatsPlus/Tail");
             _bb.RootDBT(() => {
-                Gravity();
                 CreateScale();
             });
             CreateSwing();
-        }
-
-
-        private void Gravity()
-        {
-            var ac = new AnimationClipsBuilder();
-            ac.Clip("Gravity-1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(-1);
-            ac.Clip("Gravity1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(1);
-            _bb.Add1D("FlatsPlus/Tail/GravityRx", () => {
-                _bb.Param(0).AddMotion(ac.Outp("Gravity-1"));
-                _bb.Param(1).AddMotion(ac.Outp("Gravity1"));
-            });
-            _bb.AssignmentBy1D("FlatsPlus/Tail/GravityRx", -1f, 1f, "FlatsPlus/Tail/GravityRxLog");
-
-            ac.Clip("PBSwitch").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled")
-                .Smooth();
-
-            var mb = new MenuBuilder(prj).AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Gravity", "Gravity", .5f);
-            var sync = prj.CreateComponentObject<PVnBitSync>("sync");
-            sync.Set("FlatsPlus/Tail/Gravity", 3, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.GravityPerfectSync);
+            _bb.Attach(_tail);
         }
 
         private void CreateScale()
         {
             Vector3 tail0NormalSize = _tail.transform.localScale;
-            Vector3 tail0BigParam = Vector3.one * prj.TailScaleLimit0 * TailConfig.SizeMax;
-            if (prj.TailScaleXLimit0 != -1) tail0BigParam.x = prj.TailScaleXLimit0;
+            Vector3 tail0BigParam = Vector3.one * _prj.TailScaleLimit0 * TailConfig.SizeMax;
+            if (_prj.TailScaleXLimit0 != -1) tail0BigParam.x = _prj.TailScaleXLimit0;
             Vector3 tail0Big = tail0NormalSize.HadamardProduct(tail0BigParam);
 
             Transform tail1 = GetDirectChildren(_tail).FirstOrDefault(child => child.name.ToLower().Contains("tail"));
             Vector3 tail1NormalSize = tail1.transform.localScale;
-            Vector3 tail1BigParam = Vector3.one * prj.TailScaleLimit1;
+            Vector3 tail1BigParam = Vector3.one * _prj.TailScaleLimit1;
             Vector3 tail1Big = tail1NormalSize.HadamardProduct(tail1BigParam);
 
             AnimationClipsBuilder ac = new AnimationClipsBuilder();
             float smallVal = TailConfig.SizeMin;
-            for (int i = 0; i < 3; i++)
-            {
-                Axis axis = (Axis)i;
-                string axisName = axis.ToString().ToLower();
-                ac.Clip("Small")
-                    .Bind("", typeof(Transform), $"m_LocalScale.{axisName}")
-                    .Const2F(smallVal)
-                    .Bind(tail1?.name, typeof(Transform), $"m_LocalScale.{axisName}")
-                    .Const2F(tail1NormalSize[i]);
-                ac.Clip("Normal")
-                    .Bind("", typeof(Transform), $"m_LocalScale.{axisName}")
-                    .Const2F(tail0NormalSize[i])
-                    .Bind(tail1?.name, typeof(Transform), $"m_LocalScale.{axisName}")
-                    .Const2F(tail1NormalSize[i]);
-                ac.Clip("Big")
-                    .Bind("", typeof(Transform), $"m_LocalScale.{axisName}")
-                    .Const2F(tail0Big[i])
-                    .Bind(tail1?.name, typeof(Transform), $"m_LocalScale.{axisName}")
-                    .Const2F(tail1Big[i]);
-            }
-
+            ac.Clip("Small").IsVector3((x) => {
+                x.Bind("", typeof(Transform), $"m_LocalScale.@a").Const2F(smallVal);
+                x.Bind(tail1?.name, typeof(Transform), $"m_LocalScale.@a").Const2F(tail1NormalSize);
+            });
+            ac.Clip("Normal").IsVector3((x) => {
+                x.Bind("", typeof(Transform), $"m_LocalScale.@a").Const2F(tail0NormalSize);
+                x.Bind(tail1?.name, typeof(Transform), $"m_LocalScale.@a").Const2F(tail1NormalSize);
+            });
+            ac.Clip("Big").IsVector3((x) => {
+                x.Bind("", typeof(Transform), $"m_LocalScale.@a").Const2F(tail0Big);
+                x.Bind(tail1?.name, typeof(Transform), $"m_LocalScale.@a").Const2F(tail1Big);
+            });
             _bb.NName("TailSize").Param("1").Add1D("FlatsPlus/Tail/SizeRx", () => {
                 _bb.Param(0).AddMotion(ac.Outp("Small"));
                 _bb.Param(0.5f).AddMotion(ac.Outp("Normal"));
                 _bb.Param(1).AddMotion(ac.Outp("Big"));
             });
 
-            MenuBuilder mb = new MenuBuilder(prj);
+            MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Size", "Size", .5f);
 
-            var sync = prj.CreateComponentObject<PVnBitSync>("sync");
+            var sync = _prj.CreateComponentObject<PVnBitSync>("sync");
             sync.Set("FlatsPlus/Tail/Size", 4, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.SizePerfectSync);
         }
 
@@ -158,30 +129,27 @@ namespace com.github.pandrabox.flatsplus.editor
             sPos[0] = CalcQuaternionRotationY(_tail, swingAngle);
             sPos[1] = CalcQuaternionRotationY(_tail, -swingAngle);
             sPos[2] = CalcQuaternionRotationY(_tail, 0);
-            ac.Clip($@"Swing").SetLoop(true);
-            for (int i = 0; i < 4; i++)
-            {
-                Axis axis = (Axis)i;
-                string axisName = axis.ToString().ToLower();
-                ac.Clip($@"Swing")
-                    .Bind("", typeof(Transform), $"m_LocalRotation.{axisName}")
-                    .Smooth(
-                        swingPeriod * 0, sPos[0].GetAxis(axis)
-                        , swingPeriod * 1, sPos[1].GetAxis(axis)
-                        , swingPeriod * 2, sPos[0].GetAxis(axis)
-                    )
-                    .SetAllFlat();
-                ac.Clip($@"Stop").Bind("", typeof(Transform), $"m_LocalRotation.{axisName}").Const2F(sPos[2].GetAxis(axis));
-            }
+            ac.Clip($@"Swing").SetLoop(true).IsQuaternion((x) => { 
+                x.Bind("", typeof(Transform), $"m_LocalRotation.@a")
+                .Smooth(
+                    swingPeriod * 0, sPos[0]
+                    , swingPeriod * 1, sPos[1]
+                    , swingPeriod * 2, sPos[0]
+                )
+                .SetAllFlat();
+            });
+            ac.Clip($@"Stop").IsQuaternion((x) => { 
+                x.Bind("", typeof(Transform), $"m_LocalRotation.@a").Const2F(sPos[2]);
+            });
 
             var ab = new AnimatorBuilder("TailSwing").AddLayer();
             ab.SetMotion(ac.Outp("Stop"));
             ab.AddState("on", ac.Outp("Swing"))
                 .TransToCurrent(ab.InitialState, new AnimatorBuilder.TransitionInfo(false, 0, true, 1.5f, 0))
                 .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Tail/Swing", true);
-            ab.BuildAndAttach(_tail, true);
+            ab.Attach(_tail, true);
 
-            new MenuBuilder(prj).AddFolder(PRJNAME, true).AddFolder("Tail", true).AddToggle("FlatsPlus/Tail/Swing", 1, ParameterSyncType.Bool, "Swing", 1, false);
+            new MenuBuilder(_prj).AddFolder(PRJNAME, true).AddFolder("Tail", true).AddToggle("FlatsPlus/Tail/Swing", 1, ParameterSyncType.Bool, "Swing", 1, false);
         }
     }
 }

@@ -18,12 +18,13 @@ using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using System.Text.RegularExpressions;
 using com.github.pandrabox.pandravase.editor;
 using System.Globalization;
-using static NUnit.Framework.Internal.OSPlatform;
-using static UnityEngine.UI.CanvasScaler;
 
 
 namespace com.github.pandrabox.flatsplus.editor
 {
+    /// <summary>
+    /// PandraProjectにFlats用DB機能を追加したクラス
+    /// </summary>
     public class FlatsProject : PandraProject
     {
 
@@ -46,15 +47,30 @@ namespace com.github.pandrabox.flatsplus.editor
         //}
 #endif
 
-        public string CurrentAvatarName => GetAvatarName(_currentAvatar);
+        public string CurrentAvatarName => GetAvatarName(CurrentAvatarType);
         public string TailName => GetDBString("TailName");
         public float TailScaleLimit0 => GetDBFloat("TailScaleLimit0");
         public float TailScaleXLimit0 => GetDBFloat("TailScaleXLimit0");
         public float TailScaleLimit1 => GetDBFloat("TailScaleLimit1");
         public string GetDBString(string key) { var (a, b) = Get<string>(key); return b ? a : null; }
         public float GetDBFloat(string key) { var (a, b) = Get<float>(key); return b ? a : -1; }
-        public (T value, bool success) Get<T>(string key) => GetDirect<T>(_currentAvatar, key);
+        public (T value, bool success) Get<T>(string key) => GetDirect<T>(CurrentAvatarType, key);
 
+
+        private bool initialized = false;
+        private AvatarType _currentAvatarType;
+        private AvatarType CurrentAvatarType
+        {
+            get
+            {
+                if (!initialized)
+                {
+                    initialized = true;
+                    Initialization();
+                }
+                return _currentAvatarType;
+            }
+        }
 
 
 
@@ -62,11 +78,26 @@ namespace com.github.pandrabox.flatsplus.editor
         private const int FLOORINDEX = 7;
         private const string CSVPATH = "Packages/com.github.pandrabox.flatsplus/Assets/FlatsDB/db.csv";
         private Dictionary<string, Dictionary<string, string>> data;
-        private AvatarType _currentAvatar;
-        private string GetAvatarName(AvatarType avatar) => Enum.GetName(typeof(AvatarType), avatar).ToLower();
-        public FlatsProject(VRCAvatarDescriptor desc, AvatarType currentAvatar = 0) 
+        private Dictionary<string, Dictionary<string, string>> Data
+        {
+            get
+            {
+                if (!initialized)
+                {
+                    initialized = true;
+                    Initialization();
+                }
+                return data;
+            }
+        }
+        public FlatsProject(VRCAvatarDescriptor desc)
         {
             Init(desc, "FlatsPlus", ProjectTypes.VPM);
+        }
+
+
+        private void Initialization()
+        {
             data = new Dictionary<string, Dictionary<string, string>>();
             if (!File.Exists(CSVPATH))
             {
@@ -99,72 +130,76 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            SetCurrentAvatar(currentAvatar);
+            SetCurrentAvatar();
         }
+
+
+        private string GetAvatarName(AvatarType avatar) => Enum.GetName(typeof(AvatarType), avatar).ToLower();
 
         private float AttributeFloor(float a)
         {
             return Mathf.Floor(a * Mathf.Pow(10, FLOORINDEX));
         }
-        public void SetCurrentAvatar(AvatarType avatar)
+
+        public void SetCurrentAvatar()
         {
-            if (avatar == AvatarType.Undef)
+            var body = RootTransform?.GetComponentsInChildren<SkinnedMeshRenderer>()?.FirstOrDefault(x => x.name == "Body");
+            Vector3? attributePoint = body?.sharedMesh?.vertices[ATTRIBUTEINDEX];
+            if (attributePoint != null)
             {
-                var body = RootTransform?.GetComponentsInChildren<SkinnedMeshRenderer>()?.FirstOrDefault(x => x.name == "Body");
-                Vector3? attributePoint = body?.sharedMesh?.vertices[ATTRIBUTEINDEX];
-                if (attributePoint != null)
+                float attributeVal = AttributeFloor(((Vector3)attributePoint).x);
+                foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
                 {
-                    float attributeVal = AttributeFloor(((Vector3)attributePoint).x);
-                    foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
+                    if (avatarType == AvatarType.Undef) continue;
+                    var (attributePosX, stat) = GetDirect<float>(avatarType, "AttributePosX");
+                    if (stat && attributeVal == AttributeFloor(attributePosX))
                     {
-                        if (avatarType == AvatarType.Undef) continue;
-                        var (attributePosX, stat) = GetDirect<float>(avatarType, "AttributePosX");
-                        if (stat && attributeVal == AttributeFloor(attributePosX))
-                        {
-                            _currentAvatar = avatarType;
-                            return;
-                        }
+                        _currentAvatarType = avatarType;
+                        return;
                     }
                 }
-                LowLevelDebugPrint("AttributePointによる判定に失敗しました");
-
-                var tmpAvatarName = Animator?.avatar?.name;
-                if (tmpAvatarName != null)
-                {
-                    foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
-                    {
-                        if (avatarType == AvatarType.Undef) continue;
-                        var (ttAvatarName, stat) = GetDirect<string>(avatarType, "AnimatorAvatarName");
-                        if (stat && ttAvatarName == tmpAvatarName)
-                        {
-                            _currentAvatar = avatarType;
-                            return;
-                        }
-                    }
-                }
-                LowLevelDebugPrint("AnimatorAvatarNameによる判定に失敗しました");
-
-                tmpAvatarName = RootObject?.name;
-                if (tmpAvatarName != null)
-                {
-                    foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
-                    {
-                        if (avatarType == AvatarType.Undef) continue;
-                        var (ttAvatarName, stat) = GetDirect<string>(avatarType, "FormalName");
-                        if (stat && ttAvatarName == tmpAvatarName)
-                        {
-                            _currentAvatar = avatarType;
-                            return;
-                        }
-                    }
-                }
-                LowLevelDebugPrint("アバターの判定に失敗しました");
             }
+            LowLevelDebugPrint("AttributePointによる判定に失敗しました");
+
+            var tmpAvatarName = Animator?.avatar?.name;
+            if (tmpAvatarName != null)
+            {
+                foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
+                {
+                    if (avatarType == AvatarType.Undef) continue;
+                    var (ttAvatarName, stat) = GetDirect<string>(avatarType, "AnimatorAvatarName");
+                    if (stat && ttAvatarName == tmpAvatarName)
+                    {
+                        _currentAvatarType = avatarType;
+                        return;
+                    }
+                }
+            }
+            LowLevelDebugPrint("AnimatorAvatarNameによる判定に失敗しました");
+
+            tmpAvatarName = RootObject?.name;
+            if (tmpAvatarName != null)
+            {
+                foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
+                {
+                    if (avatarType == AvatarType.Undef) continue;
+                    var (ttAvatarName, stat) = GetDirect<string>(avatarType, "FormalName");
+                    if (stat && ttAvatarName == tmpAvatarName)
+                    {
+                        _currentAvatarType = avatarType;
+                        return;
+                    }
+                }
+            }
+            LowLevelDebugPrint("アバターの判定に失敗しました");
         }
 
+        /// <summary>
+        /// 辞書参照の基本
+        /// </summary>
         public (T value, bool success) GetDirect<T>(AvatarType avatarType, string key)
         {
-            if (data.TryGetValue(key, out var row) && row.TryGetValue(GetAvatarName(avatarType), out var value))
+            if (Data.TryGetValue(key, out var row) && row.TryGetValue(GetAvatarName(avatarType), out var value))
             {
                 try
                 {
@@ -189,8 +224,5 @@ namespace com.github.pandrabox.flatsplus.editor
             base.SetSuffixMode(mode);  // 基底クラスのSetSuffixModeを呼び出す
             return this;  // FlatsProject型を返す
         }
-
-
-
     }
 }
