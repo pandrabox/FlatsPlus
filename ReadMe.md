@@ -76,6 +76,7 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - ゆらす
   - PB判定の適正化
   - 表情連携
+  - 重力変更
 ## EarEmo
 - 表情に合わせて耳を動かす
 ## MMD
