@@ -46,7 +46,17 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## Light (Discordから学んだ内容が含まれます)
 - 懐中電灯
 - ワールドライト
-- 
+- ONOFFに課題あり
+
+
+## Tail
+  - サイズ変更
+  - ゆらす
+  - PB判定の適正化
+  - (表情連携)
+  - 重力変更
+
+
 # 未実装
 
 ## Manager
@@ -71,12 +81,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## HaraPoyo
 - おなかをぽよぽよに
   - 判定深度
-## Tail
-  - サイズ変更
-  - ゆらす
-  - PB判定の適正化
-  - 表情連携
-  - 重力変更
 ## EarEmo
 - 表情に合わせて耳を動かす
 ## MMD
