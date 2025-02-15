@@ -86,24 +86,24 @@ namespace com.github.pandrabox.flatsplus.editor
             touchArea.transform.localScale = Vector3.one;
             _hips001.transform.SetParent(touchArea.transform, true);
 
-            //途中のポイントの作成
-            var currentTransform = onakaBase.transform;
-            for (int i = 1; i <= 2; i++)
-            {
-                Vector3 startPos = onakaBase.transform.position;
-                Vector3 endPos = touchArea.transform.position;
-                float t = i / 3f;
-                Vector3 newPos = Vector3.Lerp(startPos, endPos, t);
-                var midPoint = new GameObject($"MidPoint{i}");
-                midPoint.transform.SetParent(currentTransform);
-                midPoint.transform.position = newPos;
-                midPoint.transform.localEulerAngles = Vector3.zero;
-                midPoint.transform.localScale = Vector3.one;
-                currentTransform= midPoint.transform;
-            }
+            ////途中のポイントの作成
+            //var currentTransform = onakaBase.transform;
+            //for (int i = 1; i <= 2; i++)
+            //{
+            //    Vector3 startPos = onakaBase.transform.position;
+            //    Vector3 endPos = touchArea.transform.position;
+            //    float t = i / 3f;
+            //    Vector3 newPos = Vector3.Lerp(startPos, endPos, t);
+            //    var midPoint = new GameObject($"MidPoint{i}");
+            //    midPoint.transform.SetParent(currentTransform);
+            //    midPoint.transform.position = newPos;
+            //    midPoint.transform.localEulerAngles = Vector3.zero;
+            //    midPoint.transform.localScale = Vector3.one;
+            //    currentTransform= midPoint.transform;
+            //}
 
-            //TouchAreaの組み換え
-            touchArea.transform.SetParent(currentTransform, true);
+            ////TouchAreaの組み換え
+            //touchArea.transform.SetParent(currentTransform, true);
 
 
 
@@ -117,7 +117,7 @@ namespace com.github.pandrabox.flatsplus.editor
             pb.maxAngleX = _FPOnaka.LimitAngle;
             pb.radius = _prj.OnakaRadius * _FPOnaka.RadiusTuning;
             pb.ignoreTransforms = new List<Transform> { _hips001 };
-            pb.radiusCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(.9f, 0), new Keyframe(1, 1));
+            pb.radiusCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
             pb.allowGrabbing = VRCPhysBoneBase.AdvancedBool.False;
             pb.allowPosing = VRCPhysBoneBase.AdvancedBool.False;
             pb.immobileType=VRCPhysBoneBase.ImmobileType.World;
