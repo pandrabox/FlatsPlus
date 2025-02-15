@@ -14,8 +14,8 @@ namespace com.github.pandrabox.flatsplus.runtime
         public float Spring = 0.1f;
         public float Gravity = 0.1f;
         public float GravityFallOff = 1f;
-        public float Immobile=0.9f;
-        public float LimigAngle = 30f;
+        public float Immobile = 0.5f;
+        public float LimitAngle = 7f;
         public float RadiusTuning = 1f;
     }
 }

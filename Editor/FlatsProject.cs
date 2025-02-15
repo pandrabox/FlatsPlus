@@ -58,8 +58,10 @@ namespace com.github.pandrabox.flatsplus.editor
         public float TailColliderSize => GetDBFloat("TailColliderSize");
         public string TailColliderCurve => GetDBString("TailColliderCurve");
         public float OnakaRadius => GetDBFloat("OnakaRadius");
-        public float OnakaY => GetDBFloat("OnakaY");
-        public float OnakaZ => GetDBFloat("OnakaZ");
+        public float OnakaY1 => GetDBFloat("OnakaY1");
+        public float OnakaZ1 => GetDBFloat("OnakaZ1");
+        public float OnakaY2 => GetDBFloat("OnakaY2");
+        public float OnakaZ2 => GetDBFloat("OnakaZ2");
 
 
         private bool initialized = false;
