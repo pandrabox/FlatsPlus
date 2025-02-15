@@ -143,9 +143,8 @@ namespace com.github.pandrabox.flatsplus.editor
             ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater,.5f, "FlatsPlus/Tail/GravityRxIsDiff");
             ab.Attach(_tail);
 
-            var mb = new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Gravity", "Gravity", TailConfig.DefaultGravity);
-            var sync = _prj.CreateComponentObject<PVnBitSync>("sync");
-            sync.Set("FlatsPlus/Tail/Gravity", 3, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.GravityPerfectSync);
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Gravity", "Gravity", TailConfig.DefaultGravity);
+            _prj.VirtualSync("FlatsPlus/Tail/Gravity", 3, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.GravityPerfectSync);
         }
 
         private void CreateSize()
@@ -180,11 +179,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 _bb.Param(1).AddMotion(ac.Outp("Big"));
             });
 
-            MenuBuilder mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Size", "Size", TailConfig.DefaultSize);
-
-            var sync = _prj.CreateComponentObject<PVnBitSync>("sync");
-            sync.Set("FlatsPlus/Tail/Size", 4, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.SizePerfectSync);
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Size", "Size", TailConfig.DefaultSize);
+            _prj.VirtualSync("FlatsPlus/Tail/Size", 4, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.SizePerfectSync);
         }
 
         private void CreateSwing()
