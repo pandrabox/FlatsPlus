@@ -24,6 +24,7 @@ namespace com.github.pandrabox.flatsplus.editor
             seq.Run(FlatsPlusMeshSettingPass.Instance);
             seq.Run(FlatsPlusLightPass.Instance);
             seq.Run(FPTailPass.Instance);
+            seq.Run(FPOnakaPass.Instance);
             seq = InPhase(BuildPhase.Transforming).BeforePlugin("nadena.dev.modular-avatar");
             //seq.Run(MoverPass.Instance);
         }

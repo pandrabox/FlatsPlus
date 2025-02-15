@@ -57,6 +57,9 @@ namespace com.github.pandrabox.flatsplus.editor
         public (T value, bool success) Get<T>(string key) => GetDirect<T>(CurrentAvatarType, key);
         public float TailColliderSize => GetDBFloat("TailColliderSize");
         public string TailColliderCurve => GetDBString("TailColliderCurve");
+        public float OnakaRadius => GetDBFloat("OnakaRadius");
+        public float OnakaY => GetDBFloat("OnakaY");
+        public float OnakaZ => GetDBFloat("OnakaZ");
 
 
         private bool initialized = false;
