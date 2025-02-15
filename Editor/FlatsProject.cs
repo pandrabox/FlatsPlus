@@ -55,6 +55,8 @@ namespace com.github.pandrabox.flatsplus.editor
         public string GetDBString(string key) { var (a, b) = Get<string>(key); return b ? a : null; }
         public float GetDBFloat(string key) { var (a, b) = Get<float>(key); return b ? a : -1; }
         public (T value, bool success) Get<T>(string key) => GetDirect<T>(CurrentAvatarType, key);
+        public float TailColliderSize => GetDBFloat("TailColliderSize");
+        public string TailColliderCurve => GetDBString("TailColliderCurve");
 
 
         private bool initialized = false;
@@ -199,16 +201,23 @@ namespace com.github.pandrabox.flatsplus.editor
         /// </summary>
         public (T value, bool success) GetDirect<T>(AvatarType avatarType, string key)
         {
-            if (Data.TryGetValue(key, out var row) && row.TryGetValue(GetAvatarName(avatarType), out var value))
+            if (Data.TryGetValue(key, out var row) && row.TryGetValue(GetAvatarName(avatarType), out var rawValue))
             {
+                string valueStr = rawValue?.ToString();
+                if (valueStr == null)
+                {
+                    LowLevelDebugPrint($@"DBの取得に失敗しました (値がnull): {avatarType},{key}");
+                    return (default(T), false);
+                }
+
                 try
                 {
-                    T result = (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+                    T result = (T)Convert.ChangeType(valueStr, typeof(T), CultureInfo.InvariantCulture);
                     return (result, true);
                 }
                 catch (Exception ex)
                 {
-                    LowLevelDebugPrint($@"DBの取得に失敗しました (型変換エラー): {avatarType},{key} - {ex.Message}");
+                    LowLevelDebugPrint($@"DBの取得に失敗しました (型変換エラー): {avatarType},{key}, 値: {valueStr} - {ex.Message}");
                     return (default(T), false);
                 }
             }

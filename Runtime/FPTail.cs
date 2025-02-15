@@ -14,5 +14,10 @@ namespace com.github.pandrabox.flatsplus.runtime
         public float SizeMax = 1;
         public float SizeMin = 0.01f;
         public bool SizePerfectSync = false;
+        public float DefaultSize = .5f; //0～1
+
+        public float GravityRange = .3f; //0～1
+        public bool GravityPerfectSync = false;
+        public float DefaultGravity = .5f; //0～1
     }
 }

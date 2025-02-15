@@ -15,3 +15,5 @@ TailName,Tail Root,Tail Root,Tail Root,Tail Root,Tail Root,Tail Root
 TailScaleLimit0,1,1,1,10,3,3
 TailScaleLimit1,3,3,3,1,1,1
 TailScaleXLimit0,-1,-1,-1,8.5,-1,-1
+TailColliderSize,0.004,0.4,0.0024,0.0007,0.001,0.001
+TailColliderCurve,0.0-0.3-0-0.7-0.8-0-1-0.2-0,0.0-0.3-0-0.7-0.8-0-1-0.2-0,0-0.68-0-0.78-1-1-1-0-0,0-0.5-1-0.1-1-1-0.98-1-1-1-0.5-1,0-0.505-0-0.5-0.8-1-1-0.557-0,0-1-0-0.5-0.8-1-1-1-0
