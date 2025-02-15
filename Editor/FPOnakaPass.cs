@@ -116,8 +116,8 @@ namespace com.github.pandrabox.flatsplus.editor
             pb.limitType = VRCPhysBoneBase.LimitType.Angle;
             pb.maxAngleX = _FPOnaka.LimitAngle;
             pb.radius = _prj.OnakaRadius * _FPOnaka.RadiusTuning;
-            pb.ignoreTransforms = new List<Transform> { _hips001 };
-            pb.radiusCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
+            //pb.ignoreTransforms = new List<Transform> { _hips001 };
+            pb.radiusCurve = new AnimationCurve(new Keyframe(.23f, 0), new Keyframe(.33f, 1), new Keyframe(.43f, 0));
             pb.allowGrabbing = VRCPhysBoneBase.AdvancedBool.False;
             pb.allowPosing = VRCPhysBoneBase.AdvancedBool.False;
             pb.immobileType=VRCPhysBoneBase.ImmobileType.World;
