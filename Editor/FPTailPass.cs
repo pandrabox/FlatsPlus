@@ -141,7 +141,7 @@ namespace com.github.pandrabox.flatsplus.editor
             ab.AddLayer().AddState("Reload", ac.Outp("PBReload"));
             ab.TransFromCurrent(ab.InitialState, new AnimatorBuilder.TransitionInfo(true,0,false,0,0)).MoveInstant();
             ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater,.5f, "FlatsPlus/Tail/GravityRxIsDiff");
-            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.IfNot, 1, "IsAnimatorEnabled");
+            //ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.IfNot, 1, "IsAnimatorEnabled");
             ab.Attach(_tail);
 
             new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Tail", true).AddRadial("FlatsPlus/Tail/Gravity", "Gravity", TailConfig.DefaultGravity);
