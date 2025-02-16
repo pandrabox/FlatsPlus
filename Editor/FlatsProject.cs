@@ -62,6 +62,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public float OnakaZ1 => GetDBFloat("OnakaZ1");
         public float OnakaY2 => GetDBFloat("OnakaY2");
         public float OnakaZ2 => GetDBFloat("OnakaZ2");
+        public float OnakaCurveTop => GetDBFloat("OnakaCurveTop");
 
 
         private bool initialized = false;
@@ -108,7 +109,7 @@ namespace com.github.pandrabox.flatsplus.editor
             data = new Dictionary<string, Dictionary<string, string>>();
             if (!File.Exists(CSVPATH))
             {
-                LowLevelDebugPrint($@"CSV:{CSVPATH}が見つかりませんでした");
+                LowLevelExeption($@"CSV:{CSVPATH}が見つかりませんでした");
                 return;
             }
             string tmpPath = Path.Combine(TmpFolder, $"flatDB{Guid.NewGuid()}.csv");
@@ -198,7 +199,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            LowLevelDebugPrint("アバターの判定に失敗しました");
+            LowLevelExeption("アバターの判定に失敗しました");
         }
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 string valueStr = rawValue?.ToString();
                 if (valueStr == null)
                 {
-                    LowLevelDebugPrint($@"DBの取得に失敗しました (値がnull): {avatarType},{key}");
+                    LowLevelExeption($@"DBの取得に失敗しました (値がnull): {avatarType},{key}");
                     return (default(T), false);
                 }
 
@@ -222,12 +223,12 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
                 catch (Exception ex)
                 {
-                    LowLevelDebugPrint($@"DBの取得に失敗しました (型変換エラー): {avatarType},{key}, 値: {valueStr} - {ex.Message}");
+                    LowLevelExeption($@"DBの取得に失敗しました (型変換エラー): {avatarType},{key}, 値: {valueStr} - {ex.Message}");
                     return (default(T), false);
                 }
             }
 
-            LowLevelDebugPrint($@"DBの取得に失敗しました (データ見つからず): {avatarType},{key}");
+            LowLevelExeption($@"DBの取得に失敗しました (データ見つからず): {avatarType},{key}");
             return (default(T), false);
         }
 
