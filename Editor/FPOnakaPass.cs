@@ -20,6 +20,7 @@ using com.github.pandrabox.pandravase.editor;
 using VRC.SDK3.Dynamics.PhysBone.Components;
 using VRC.Dynamics;
 using System.Globalization;
+using UnityEngine.Animations;
 
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -34,6 +35,15 @@ namespace com.github.pandrabox.flatsplus.editor
             foreach (var a in AllAvatar)
             {
                 new FPOnakaMain(a);
+            }
+        }
+        [MenuItem("PanDbg/FPOnaka_DBCreate")]
+        public static void FPOnaka_Debug_DBCreate()
+        {
+            SetDebugMode(true);
+            foreach (var a in AllAvatar)
+            {
+                new FPOnakaMain(a, true);
             }
         }
     }
@@ -58,7 +68,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private Transform _hips;
         private Transform _pbRoot;
 
-        public FPOnakaMain(VRCAvatarDescriptor desc)
+        public FPOnakaMain(VRCAvatarDescriptor desc, bool dbCreateMode=false)
         {
             _FPOnaka = desc.GetComponentInChildren<FPOnaka>();
             if (_FPOnaka == null) return;
@@ -67,9 +77,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _hips001 = _hips?.Find("Hips.001");
             if (_hips001 == null) { Msgbox("Onaka: Hips.001が見つかりません"); return; }
             VRCPhysBone legacyPB = _hips001.GetComponent<VRCPhysBone>();
-            if (legacyPB != null) { GameObject.DestroyImmediate(legacyPB); }
-
-
+            if (!dbCreateMode && legacyPB != null) { GameObject.DestroyImmediate(legacyPB); }
 
             //OnakaBaseの作成
             var onakaBase = new GameObject("OnakaBase");
@@ -84,29 +92,25 @@ namespace com.github.pandrabox.flatsplus.editor
             touchArea.transform.localPosition = new Vector3(0, _prj.OnakaY2, _prj.OnakaZ2);
             touchArea.transform.localEulerAngles = Vector3.zero;
             touchArea.transform.localScale = Vector3.one;
+
+            if (dbCreateMode)
+            {
+                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                sphere.transform.SetParent(touchArea.transform, false);
+                sphere.transform.localScale = Vector3.one * _prj.OnakaRadius * 2;
+                //SphereのサイズはOnakaRadiusの2倍になるので注意（例えば1.8でちょうどいいならDBは0.9を入れる）
+                sphere.GetComponent<Renderer>().material = AssetDatabase.LoadAssetAtPath<Material>("Packages/com.github.pandrabox.flatsplus/Assets/Onaka/res/DevMat.mat");
+                PositionConstraint positionConstraint = sphere.AddComponent<PositionConstraint>();
+                positionConstraint.constraintActive = false;
+                ConstraintSource source = new ConstraintSource{sourceTransform = touchArea.transform,weight = 1f};
+                positionConstraint.AddSource(source);
+                positionConstraint.translationAtRest = Vector3.zero;
+                positionConstraint.locked = true;
+                positionConstraint.constraintActive = true;
+                return;
+            }
+
             _hips001.transform.SetParent(touchArea.transform, true);
-
-            ////途中のポイントの作成
-            //var currentTransform = onakaBase.transform;
-            //for (int i = 1; i <= 2; i++)
-            //{
-            //    Vector3 startPos = onakaBase.transform.position;
-            //    Vector3 endPos = touchArea.transform.position;
-            //    float t = i / 3f;
-            //    Vector3 newPos = Vector3.Lerp(startPos, endPos, t);
-            //    var midPoint = new GameObject($"MidPoint{i}");
-            //    midPoint.transform.SetParent(currentTransform);
-            //    midPoint.transform.position = newPos;
-            //    midPoint.transform.localEulerAngles = Vector3.zero;
-            //    midPoint.transform.localScale = Vector3.one;
-            //    currentTransform= midPoint.transform;
-            //}
-
-            ////TouchAreaの組み換え
-            //touchArea.transform.SetParent(currentTransform, true);
-
-
-
             var pb = onakaBase.AddComponent<VRCPhysBone>();
             pb.pull = _FPOnaka.Pull;
             pb.spring = _FPOnaka.Spring;
@@ -116,8 +120,7 @@ namespace com.github.pandrabox.flatsplus.editor
             pb.limitType = VRCPhysBoneBase.LimitType.Angle;
             pb.maxAngleX = _FPOnaka.LimitAngle;
             pb.radius = _prj.OnakaRadius * _FPOnaka.RadiusTuning;
-            //pb.ignoreTransforms = new List<Transform> { _hips001 };
-            pb.radiusCurve = new AnimationCurve(new Keyframe(.23f, 0), new Keyframe(.33f, 1), new Keyframe(.43f, 0));
+            pb.radiusCurve = new AnimationCurve(new Keyframe(_prj.OnakaCurveTop-.1f, 0), new Keyframe(_prj.OnakaCurveTop, 1), new Keyframe(_prj.OnakaCurveTop + .1f, 0));
             pb.allowGrabbing = VRCPhysBoneBase.AdvancedBool.False;
             pb.allowPosing = VRCPhysBoneBase.AdvancedBool.False;
             pb.immobileType=VRCPhysBoneBase.ImmobileType.World;
