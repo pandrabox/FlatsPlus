@@ -9,6 +9,6 @@ namespace com.github.pandrabox.flatsplus.runtime
 {
     public class FlatsPlusLight : PandraComponent
     {
-        //実装なし
+        public bool IntensityPerfectSync = false;
     }
 }

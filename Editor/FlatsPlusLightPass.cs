@@ -46,52 +46,35 @@ namespace com.github.pandrabox.flatsplus.editor
         public FlatsPlusLightMain(VRCAvatarDescriptor desc)
         {
             FlatsProject prj = new FlatsProject(desc).SetSuffixMode(false);
-            FlatsPlusLight[] lights = desc.GetComponentsInChildren<FlatsPlusLight>();
+            FlatsPlusLight fpLight = desc.GetComponentInChildren<FlatsPlusLight>();
+            if (fpLight == null) return;
             string animFolder = $@"{prj.ProjectFolder}Assets/Light/Anim/";
-            foreach (FlatsPlusLight light in lights)
-            {
-                var bb = new BlendTreeBuilder("FlatsPlus/Light", "FlatsPlus/Light/");
-                bb.RootDBT(() => {
-                    bb.Param("1").Add1D("IsLocal", () =>
+            var bb = new BlendTreeBuilder("FlatsPlus/Light");
+            bb.RootDBT(() => {
+                bb.Param("1").Add1D("FlatsPlus/Light/LightModeRx", () =>
+                {
+                    bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
+                    bb.Param(1).Add1D("FlatsPlus/Light/IntensityRx", () =>
                     {
-                        bb.Param(0).Add1D("Rx", () =>
-                        {
-                            bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
-                            bb.Param(1).Add1D("IntensityRx", () =>
-                            {
-                                bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
-                                bb.Param(15).AddMotion($@"{animFolder}/Spot.anim");
-                            });
-                            bb.Param(2).Add1D("IntensityRx", () =>
-                            {
-                                bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
-                                bb.Param(15).AddMotion($@"{animFolder}/Area.anim");
-                            });
-                            bb.Param(3).AddMotion($@"{animFolder}/Off.anim");
-                        });
-                        bb.Param(1).AddD(() =>
-                        {
-                            bb.Param("Global").AssignmentBy1D("LightMode", 0, 2, "Tx");
-                            bb.Param("1").AssignmentBy1D("Intensity", 0, 1, "IntensityTx", 0, 15);
-                            bb.Param("1").Add1D("LightMode", () =>
-                            {
-                                bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
-                                bb.Param(1).Add1D("Intensity", () =>
-                                {
-                                    bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
-                                    bb.Param(1).AddMotion($@"{animFolder}/Spot.anim");
-                                });
-                                bb.Param(2).Add1D("Intensity", () =>
-                                {
-                                    bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
-                                    bb.Param(1).AddMotion($@"{animFolder}/Area.anim");
-                                });                                
-                            });
-                        });
+                        bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
+                        bb.Param(1).AddMotion($@"{animFolder}/Spot.anim");
+                    });
+                    bb.Param(2).Add1D("FlatsPlus/Light/IntensityRx", () =>
+                    {
+                        bb.Param(0).AddMotion($@"{animFolder}/Off.anim");
+                        bb.Param(1).AddMotion($@"{animFolder}/Area.anim");
                     });
                 });
-                bb.Attach(light.gameObject);
-            }
+            });
+            bb.Attach(fpLight.gameObject);
+            var mSync = prj.VirtualSync("FlatsPlus/Light/LightMode", 2, PVnBitSync.nBitSyncMode.IntMode, toggleSync:true);
+            prj.VirtualSync("FlatsPlus/Light/Intensity", 4, PVnBitSync.nBitSyncMode.FloatMode, fpLight.IntensityPerfectSync);
+
+            new MenuBuilder(prj).AddFolder("FlatsPlus", true).AddFolder("Light")
+                .AddToggle("FlatsPlus/Light/LightMode", 1, ParameterSyncType.Int, "Spot")
+                .AddToggle("FlatsPlus/Light/LightMode", 2, ParameterSyncType.Int, "Area")
+                .AddRadial("FlatsPlus/Light/Intensity", "Intensity", .5f)
+                .AddToggle(mSync.SyncParameter, 1, ParameterSyncType.Bool, "Global");
         }
     }
 }
