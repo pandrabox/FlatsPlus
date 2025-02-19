@@ -115,3 +115,5 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - [cgtrader Teddy bear](https://www.cgtrader.com/3d-models/animals/mammal/teddy-bear-dc0f9bd6-2d21-4c9b-b3fc-9c8d7d9c1c93) … Moverの位置確認用キャラクターとして使用しています
 - [tabler icons](https://tabler.io/icons) … 電球、星、ミュートアイコン
 - [SVG REPO](https://www.svgrepo.com/svg/525369/heart) … ハートアイコン
+- [SVG REPO](https://www.svgrepo.com/svg/525539/star) … 星アイコン
+- [手描きMatcap集](https://booth.pm/ja/items/3809629) … ピン画像素材
