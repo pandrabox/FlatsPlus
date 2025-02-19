@@ -1,4 +1,4 @@
-﻿Shader "Custom/Pin"
+﻿Shader "Pan/Pin"
 {
     Properties
     {
