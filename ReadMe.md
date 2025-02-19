@@ -56,6 +56,9 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - (表情連携)
   - 重力変更
 
+## Onaka
+- おなかをぽよぽよに
+  - 判定深度
 
 # 未実装
 
@@ -78,9 +81,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - 撫でられ範囲の設定
   - 表示オブジェクトの設定
   - アニメ調/マテリアル式の設定
-## HaraPoyo
-- おなかをぽよぽよに
-  - 判定深度
 ## EarEmo
 - 表情に合わせて耳を動かす
 ## MMD
