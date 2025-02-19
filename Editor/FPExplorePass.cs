@@ -43,7 +43,7 @@ namespace com.github.pandrabox.flatsplus.editor
             SetDebugMode(true);
             foreach (var a in AllAvatar)
             {
-                new FPExploreMain(a, true);
+                new FPExploreMain(a);
             }
         }
     }
@@ -69,19 +69,28 @@ namespace com.github.pandrabox.flatsplus.editor
             _prj = new FlatsProject(desc);
 
             var ac = new AnimationClipsBuilder();
-            ac.AddClip("Color0")
+            ac.Clip("Color0").Bind("Pin", typeof(MeshRenderer), "material._Hue").Const2F(0);
+            ac.Clip("Color1").Bind("Pin", typeof(MeshRenderer), "material._Hue").Const2F(1);
+
             var bb = new BlendTreeBuilder("Explore");
             bb.RootDBT(() => {
                 bb.Param("1").Add1D("FlatsPlus/Explore/SW", () => {
                     bb.Param(0).AddMotion(ac.OffAnim("Pin"));
                     bb.Param(1).AddMotion(ac.OnAnim("Pin"));
                 });
-                bb.Param("1").Add1D("FlatsPlus/Explore/Color", () =>
+                bb.Param("1").Add1D("FlatsPlus/Explore/ColorRx", () =>
                 {
-                    bb.Param(0).AddMotion(ac.OffAnim("Pin"));
-                    bb.Param(1+1/9f).AddMotion(ac.OnAnim("Pin"));
+                    bb.Param(0).AddMotion(ac.Outp("Color0"));
+                    bb.Param(1+1/9f).AddMotion(ac.Outp("Color1"));
                 });
             });
+            bb.Attach(_FPExplore.gameObject);
+
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Explore")
+                .AddToggle("FlatsPlus/Explore/SW", 1, ParameterSyncType.Bool, "Pin", 0, false)
+                .AddRadial("FlatsPlus/Explore/Color","Color");
+
+            _prj.VirtualSync("FlatsPlus/Explore/Color", 3, PVnBitSync.nBitSyncMode.FloatMode, true);
         }
     }
 }
