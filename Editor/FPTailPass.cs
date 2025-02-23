@@ -139,7 +139,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 .Smooth(0f, 0f, unitTime, 0f, unitTime, 1f, 3 * unitTime, 1f);
             AnimatorBuilder ab = new AnimatorBuilder("FlatsPlus/Tail/PBReload");
             ab.AddLayer().AddState("Reload", ac.Outp("PBReload"));
-            ab.TransFromCurrent(ab.InitialState, new AnimatorBuilder.TransitionInfo(true,0,false,0,0)).MoveInstant();
+            ab.TransFromCurrent(ab.InitialState).MoveInstant();
             ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater,.5f, "FlatsPlus/Tail/GravityRxIsDiff");
             //ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.IfNot, 1, "IsAnimatorEnabled");
             ab.Attach(_tail);
@@ -210,7 +210,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var ab = new AnimatorBuilder("FlatsPlus/Tail/Swing").AddLayer();
             ab.SetMotion(ac.Outp("Stop"));
             ab.AddState("on", ac.Outp("Swing"))
-                .TransToCurrent(ab.InitialState, new AnimatorBuilder.TransitionInfo(false, 0, true, 1.5f, 0))
+                .TransToCurrent(ab.InitialState, transitionDuration:1.5f)
                 .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Tail/Swing", true);
             ab.Attach(_tail, true);
 
