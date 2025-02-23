@@ -26,8 +26,8 @@ namespace com.github.pandrabox.flatsplus.editor
             seq.Run(FPTailPass.Instance);
             seq.Run(FPOnakaPass.Instance);
             seq.Run(FPExplorePass.Instance);
+            seq.Run(FPPenPass.Instance);
             seq = InPhase(BuildPhase.Transforming).BeforePlugin("nadena.dev.modular-avatar");
-            //seq.Run(MoverPass.Instance);
         }
     }
 }
