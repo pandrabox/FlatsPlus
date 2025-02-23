@@ -64,6 +64,10 @@ namespace com.github.pandrabox.flatsplus.editor
         public float OnakaZ2 => GetDBFloat("OnakaZ2");
         public float OnakaCurveTop => GetDBFloat("OnakaCurveTop");
         public float PinY => GetDBFloat("PinY");
+        public float FaceCapSize => GetDBFloat("FaceCapSize");
+        public float FaceCapX => GetDBFloat("FaceCapX");
+        public float FaceCapY => GetDBFloat("FaceCapY");
+        public float FaceCapZ => GetDBFloat("FaceCapZ");
 
 
         private bool initialized = false;

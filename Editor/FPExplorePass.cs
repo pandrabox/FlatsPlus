@@ -87,9 +87,10 @@ namespace com.github.pandrabox.flatsplus.editor
             });
             bb.Attach(_FPExplore.gameObject);
 
-            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Explore")
-                .AddToggle("FlatsPlus/Explore/SW", 1, ParameterSyncType.Bool, "Pin", 0, false)
-                .AddRadial("FlatsPlus/Explore/Color", "Color");
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Explore").SetMessage("探索ツール",null,1)
+                .AddToggle("FlatsPlus/Explore/SW", 1, ParameterSyncType.Bool, "Pin", 0, false).SetMessage("どこからでも見えるピン 有効化", "ピン 無効化")
+                .AddToggle("FlatsPlus/Pen/ExploreOverride", 1, ParameterSyncType.Bool, "Path", 0, false).SetMessage("軌跡描画 有効化", "軌跡 無効化")
+                .AddRadial("FlatsPlus/Explore/Color", "Color").SetMessage("ピン・軌跡 色調整");
 
             _prj.VirtualSync("FlatsPlus/Explore/Color", 3, PVnBitSync.nBitSyncMode.FloatMode, true);
         }
