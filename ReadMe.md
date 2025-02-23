@@ -60,6 +60,10 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - おなかをぽよぽよに
   - 判定深度
 
+## Explorer (ABTから学んだ内容が含まれます)
+- 軌跡表示
+- 位置表示（自動強制同期）
+  
 # 未実装
 
 ## Manager
@@ -89,9 +93,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - デフォルト配布のFxレイヤを最適化
 ## Sleep
 - 3点睡眠
-## Explorer (ABTから学んだ内容が含まれます)
-- 軌跡表示
-- 位置表示（自動強制同期）
 ## PoseClipper
 - そのまま再配布
 ## SOM2.0
