@@ -56,6 +56,7 @@ namespace com.github.pandrabox.flatsplus.editor
         const float epsilon = 1.401298e-45F;
         const int COLORNUM = 8;
         const int OFFSET = 3;
+        const int EXPLORENO = 15;
 
         public FPPenMain(VRCAvatarDescriptor desc)
         {
@@ -69,8 +70,8 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 ac.Clip(name)
                .Bind("Obj/HandR/Offset/Eraser", typeof(SphereCollider), "m_Enabled").Const2F(erace ? 1 : 0)
-               .Bind("Obj/HandR/Offset/Ink", typeof(ParticleSystem), "EmissionModule.enabled").Const2F(inkParticle ? 1 : 0)
-               .Bind("Obj/HandR/Offset/Ink", typeof(GameObject), "m_IsActive").Const2F(inkObj ? 1 : 0);
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "EmissionModule.enabled").Const2F(inkParticle ? 1 : 0)
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(GameObject), "m_IsActive").Const2F(inkObj ? 1 : 0);
             }
             Set("Clear", false, false, false);
             Set("OFF", false, false, true);
@@ -105,8 +106,19 @@ namespace com.github.pandrabox.flatsplus.editor
                     x.Bind("Obj/HandR/Offset/pen", typeof(MeshRenderer), "material._MainTex_ST.@a").Const2F(q);
                     x.Bind("Obj/HandR/Offset/pen", typeof(MeshRenderer), "material._EmissionMap_ST.@a").Const2F(q);
                 })
-                .Color("Obj/HandR/Offset/Ink", typeof(ParticleSystem), "InitialModule.startColor.maxColor", penColors[i]);
+                .Color("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "InitialModule.startColor.maxColor", penColors[i]);
             }
+
+            ac.Clip("ModeWrite")
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "InitialModule.startSize.scalar").Const2F(0.01f)
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[0].weight").Const2F(1)
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[1].weight").Const2F(0);
+            ac.Clip("ModeExplore")
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "InitialModule.startSize.scalar").Const2F(0.1f)
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[0].weight").Const2F(0)
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[1].weight").Const2F(1);
+
+
 
             var bb = new BlendTreeBuilder("FlatsPlus/Pen/DBT");
             bb.RootDBT(() => {
@@ -115,21 +127,24 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param(0.5f / COLORNUM).AddAAP("FlatsPlus/Pen/Mem", 0);
                     bb.Param(0.5f / COLORNUM + 1).AddAAP("FlatsPlus/Pen/Mem", epsilon * COLORNUM);
                 });
-                bb.NName("CalcCom").Param("1").Add1D("FlatsPlus/Pen/Clear", () => {
-                    bb.Param(0).Add1D("FlatsPlus/Pen/Mode", () => {
-                        bb.Param(0).AddAAP("FlatsPlus/Pen/Com", 0);
-                        bb.Param(1).AddAAP("FlatsPlus/Pen/Com", 1);
-                        bb.Param(2).AddD(() =>
-                        {
-                            bb.Param("1").AddAAP("FlatsPlus/Pen/Com", OFFSET);
-                            bb.Param("1").Add1D("FlatsPlus/Pen/Mem", () =>
+                bb.NName("CalcCom").Param("1").Add1D("FlatsPlus/Pen/ExploreOverride", () => { 
+                    bb.Param(0).Add1D("FlatsPlus/Pen/Clear", () => {
+                        bb.Param(0).Add1D("FlatsPlus/Pen/Mode", () => {
+                            bb.Param(0).AddAAP("FlatsPlus/Pen/Com", 0);
+                            bb.Param(1).AddAAP("FlatsPlus/Pen/Com", 1);
+                            bb.Param(2).AddD(() =>
                             {
-                                bb.Param(0).AddAAP("FlatsPlus/Pen/Com", 0);
-                                bb.Param(epsilon * COLORNUM).AddAAP("FlatsPlus/Pen/Com", COLORNUM);
+                                bb.Param("1").AddAAP("FlatsPlus/Pen/Com", OFFSET);
+                                bb.Param("1").Add1D("FlatsPlus/Pen/Mem", () =>
+                                {
+                                    bb.Param(0).AddAAP("FlatsPlus/Pen/Com", 0);
+                                    bb.Param(epsilon * COLORNUM).AddAAP("FlatsPlus/Pen/Com", COLORNUM);
+                                });
                             });
                         });
+                        bb.Param(1).AddAAP("FlatsPlus/Pen/Com", 2);
                     });
-                    bb.Param(1).AddAAP("FlatsPlus/Pen/Com", 2);
+                    bb.Param(1).AddAAP("FlatsPlus/Pen/Com", EXPLORENO);
                 });
                 bb.NName("Mode").Param("1").Add1D("FlatsPlus/Pen/ComRx", () =>
                 {
@@ -149,6 +164,7 @@ namespace com.github.pandrabox.flatsplus.editor
                         bb.Param(1.4f).AddMotion(ac.Outp("Write"));
                         bb.Param(1.5f).AddMotion(ac.Outp("OFF"));
                     });
+                    bb.Param(EXPLORENO).AddMotion(ac.Outp("Write"));
                 });
                 bb.NName("Color").Param("1").Add1D("FlatsPlus/Pen/ComRx", () =>
                 {
@@ -156,15 +172,29 @@ namespace com.github.pandrabox.flatsplus.editor
                     {
                         bb.Param(i + OFFSET).AddMotion(ac.Outp($@"Color{i}"));
                     }
+                    bb.Param(EXPLORENO).Add1D("FlatsPlus/Explore/ColorRx", () =>
+                    {
+                        for (int i = 0; i < COLORNUM; i++)
+                        {
+                            bb.Param((float)i/COLORNUM).AddMotion(ac.Outp($@"Color{i}"));
+                        }
+                    });
                 });
+                bb.NName("Mode2").Param("1").Add1D("FlatsPlus/Pen/ComRx", () => {
+                    bb.Param(EXPLORENO-.5f).AddMotion(ac.Outp("ModeWrite"));
+                    bb.Param(EXPLORENO).AddMotion(ac.Outp("ModeExplore"));
+                }); 
             });
 
 
             var ab = new AnimatorBuilder("FlatsPlus/Pen/Pose").AddLayer();
             ab.SetMotion(ac.Outp("PenOff"));
             ab.AddState("PenOn", ac.Outp("PenOn"))
-                .TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater, OFFSET - .5f, "FlatsPlus/Pen/ComRx")
-                .TransFromCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Less, .5f, "FlatsPlus/Pen/ComRx");
+                .TransToCurrent(ab.InitialState)
+                    .AddCondition(AnimatorConditionMode.Greater, OFFSET - .5f, "FlatsPlus/Pen/ComRx")
+                    .AddCondition(AnimatorConditionMode.Less, EXPLORENO - .5f, "FlatsPlus/Pen/ComRx")
+                .TransFromCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Less, .5f, "FlatsPlus/Pen/ComRx")
+                .TransFromCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater, EXPLORENO - .5f, "FlatsPlus/Pen/ComRx");
             var onState = ab.CurrentState;
             ab.AddState("PenErace", ac.Outp("PenErace"))
                 .TransToCurrent(ab.InitialState)
