@@ -63,15 +63,17 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## Explorer (ABTから学んだ内容が含まれます)
 - 軌跡表示
 - 位置表示（自動強制同期）
+
+
+## Emo
+- Gestureに対する表情を設定
+  - anim/shapekeyとは別の抽象化された名称による設定
+  - 変更時間の設定
   
 # 未実装
 
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
-## Emo
-- Gestureに対する表情を設定
-  - anim/shapekeyとは別の抽象化された名称による設定
-  - 変更時間の設定
 ## MakeEmo 
 - 任意の表情を作ってロック
 ## HopePoyo
