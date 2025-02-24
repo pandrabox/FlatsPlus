@@ -24,13 +24,13 @@ namespace com.github.pandrabox.flatsplus.editor
 {
     public class EmoAnalyzeMenuDefinition
     {
-        [MenuItem("PanDbg/**EmoAnalyzer")]
+        [MenuItem("PanDbg/EmoAnalyzer")]
         private static void EmoAnalyzeM()
         {
             SetDebugMode(true);
             new EmoAnalyze(TopAvatar).Run();
         }
-        [MenuItem("PanDbg/**EmoAnalyzer_ForSetting")]
+        [MenuItem("PanDbg/EmoAnalyzer_ForSetting")]
         private static void EmoAnalyzeM_ForSetting()
         {
             SetDebugMode(true);
@@ -80,7 +80,8 @@ namespace com.github.pandrabox.flatsplus.editor
             var size = _prj.FaceCapSize;
             var c = new PanCapture();
             GameObject cTgt = c.CreateClone(tgt);
-            c.ManualRun(cTgt, size, head, offset);
+            Texture2D t = c.ManualRun(cTgt, size, head, offset);
+            var p = OutpAsset(t, $@"{RESDIR}/{_prj.CurrentAvatarName}.png");
             GameObject.DestroyImmediate(cTgt);
             Selection.activeGameObject = c.Camera.gameObject;
             c.Camera.cullingMask = 1;
