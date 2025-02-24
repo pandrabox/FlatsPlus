@@ -55,7 +55,7 @@ namespace com.github.pandrabox.flatsplus.editor
             SkinnedMeshRenderer bodyMesh = _prj.RootTransform.GetComponentsInChildren<SkinnedMeshRenderer>(true).FirstOrDefault(mesh => mesh.name == "Body");
             _emoInfo = new EmoInfo(bodyMesh);
 
-            AnimatorController ac = (AnimatorController)_prj.FXLayer.animatorController;
+            AnimatorController ac = _prj.FXAnimatorController;
             foreach (var layer in ac.layers)
             {
                 HashSet<AnimatorStateTransition> uniqueTransitions = new HashSet<AnimatorStateTransition>();
