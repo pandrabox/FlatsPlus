@@ -16,4 +16,12 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public const string PRJNAME = "FlatsPlus";
     }
+
+    public enum FaceType
+    {
+        Mouth,
+        Eye,
+        Other,
+        Ignore
+    }
 }

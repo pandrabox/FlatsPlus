@@ -61,8 +61,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 if (skinnedMeshRenderer != null)
                 {
                     for (int i = 0; i < skinnedMeshRenderer.sharedMesh.blendShapeCount; i++)
-                    //for (int i = 0; i < 2; i++)
-                        {
+                    {
                         string blendShapeName = skinnedMeshRenderer.sharedMesh.GetBlendShapeName(i);
                         skinnedMeshRenderer.SetBlendShapeWeight(i, 100);
                         Texture2D t = c.ManualRun(cTgt, size, head, offset);

@@ -28,3 +28,7 @@ FaceCapSize,0.25,0.25,0.23,0.22,0.22,0.22
 FaceCapX,0,0,0,0,0,0
 FaceCapY,0.0027,0.27,0.00188,0.00146,0.00146,0.00146
 FaceCapZ,0.02,2,0.02,0.02,0.02,0.02
+EyeShapes,笑い-まばたき-ウィンク-ウィンク右-ぐるぐる-はぅ-なき-ビックリ-おこ-じとめ-なごみ-とろめ-とろめ2-ウィンク2-ウィンク右2-おまけ2,,,,,
+MouthShapes,あ-い-う-え-お,,,,,
+OtherShapes,!-しただし-ぴきっ-おまけ1,,,,,
+IgnoreShapes,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th,,,,,

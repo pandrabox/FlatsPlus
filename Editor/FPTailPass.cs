@@ -144,10 +144,6 @@ namespace com.github.pandrabox.flatsplus.editor
             //ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.IfNot, 1, "IsAnimatorEnabled");
             ab.Attach(_tail);
 
-            new MenuBuilder(_prj)
-                .AddFolder("FlatsPlus", true)
-                .AddFolder("Tail", true).SetMessage("しっぽの設定")
-                .AddRadial("FlatsPlus/Tail/Gravity", "Gravity", TailConfig.DefaultGravity).SetMessage("しっぽの重さを変える");
             _prj.VirtualSync("FlatsPlus/Tail/Gravity", 3, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.GravityPerfectSync);
         }
 
@@ -183,10 +179,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 _bb.Param(1).AddMotion(ac.Outp("Big"));
             });
 
-            new MenuBuilder(_prj)
-                .AddFolder("FlatsPlus", true)
-                .AddFolder("Tail", true).SetMessage("しっぽの設定")
-                .AddRadial("FlatsPlus/Tail/Size", "Size", TailConfig.DefaultSize).SetMessage("しっぽサイズの変更");
             _prj.VirtualSync("FlatsPlus/Tail/Size", 4, PVnBitSync.nBitSyncMode.FloatMode, TailConfig.SizePerfectSync);
         }
 
@@ -220,9 +212,15 @@ namespace com.github.pandrabox.flatsplus.editor
                 .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Tail/Swing", true);
             ab.Attach(_tail, true);
 
+        }
+
+        private void CreateMenu()
+        {
             new MenuBuilder(_prj)
                 .AddFolder(PRJNAME, true)
                 .AddFolder("Tail", true).SetMessage("しっぽの設定")
+                .AddRadial("FlatsPlus/Tail/Gravity", "Gravity", TailConfig.DefaultGravity).SetMessage("しっぽの重さを変える")
+                .AddRadial("FlatsPlus/Tail/Size", "Size", TailConfig.DefaultSize).SetMessage("しっぽサイズの変更")
                 .AddToggle("FlatsPlus/Tail/Swing", 1, ParameterSyncType.Bool, "Swing", 1, false).SetMessage("しっぽの揺れをON", "しっぽの揺れをOFF");
         }
     }

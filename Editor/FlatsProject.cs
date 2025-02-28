@@ -68,7 +68,24 @@ namespace com.github.pandrabox.flatsplus.editor
         public float FaceCapX => GetDBFloat("FaceCapX");
         public float FaceCapY => GetDBFloat("FaceCapY");
         public float FaceCapZ => GetDBFloat("FaceCapZ");
+        public string[] IgnoreShapes => GetDBString("IgnoreShapes")?.Split(',');
 
+        public Dictionary<string, FaceType> GeneralShapes {
+            get
+            {
+                Dictionary<string, FaceType> s = new Dictionary<string, FaceType>();
+                foreach (FaceType type in Enum.GetValues(typeof(FaceType)))
+                {
+                    string shapes = GetDBString($@"{type}Shapes");
+                    string[] splitShapes = shapes.Split('-');
+                    foreach (var shape in splitShapes)
+                    {
+                        s.Add(shape, type);
+                    }
+                }
+                return s;
+            }
+        }
 
         private bool initialized = false;
         private AvatarType _currentAvatarType;
