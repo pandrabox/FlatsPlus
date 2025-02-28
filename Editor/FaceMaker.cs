@@ -116,8 +116,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     foreach (var face2 in faces)
                     {
-                        clips.Clip($@"{face.Name}Off").Bind("Body", typeof(SkinnedMeshRenderer), face.PropertyName).Const2F(0);
-                        clips.Clip($@"{face.Name}On").Bind("Body", typeof(SkinnedMeshRenderer), face.PropertyName).Const2F(face2 == face ? 100 : 0);
+                        clips.Clip($@"{face.Name}Off").Bind("Body", typeof(SkinnedMeshRenderer), face2.PropertyName).Const2F(0);
+                        clips.Clip($@"{face.Name}On").Bind("Body", typeof(SkinnedMeshRenderer), face2.PropertyName).Const2F(face2 == face ? 100 : 0);
                     }
                     face.OffClip = clips.Outp($@"{face.Name}Off");
                     face.OnClip = clips.Outp($@"{face.Name}On");
@@ -132,7 +132,7 @@ namespace com.github.pandrabox.flatsplus.editor
             using (var c = new PanCapture(width: TexSize))
             {
                 GameObject cTgt = c.CreateClone(_prj.RootObject);
-                var skinnedMeshRenderer = _prj.RootTransform.Find("Body").GetComponent<SkinnedMeshRenderer>();
+                var skinnedMeshRenderer = cTgt.transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
                 if (skinnedMeshRenderer == null)
                 {
                     LowLevelExeption("BodyMeshが見つかりませんでした。");
@@ -142,9 +142,11 @@ namespace com.github.pandrabox.flatsplus.editor
                 foreach (var face in Faces.All)
                 {
                     skinnedMeshRenderer.SetBlendShapeWeight(face.BlendShapeCount, 100);
-                    Texture2D t = c.ManualRun(cTgt, size, head, offset);
+                    face.Tex = c.ManualRun(cTgt, size, head, offset);
+                    OutpAsset(face.Tex);
                     skinnedMeshRenderer.SetBlendShapeWeight(face.BlendShapeCount, 0);
-                    face.Tex = t;
+                    //OutpAsset(t);
+                    //LowLevelDebugPrint($"FaceMaker CreateTex: {face.BlendShapeCount}{face.Name}");
                 }
             }
         }

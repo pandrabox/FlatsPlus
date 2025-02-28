@@ -172,14 +172,14 @@ namespace com.github.pandrabox.flatsplus.editor
                 ab.ChangeCurrentState(states[nTo]).TransFromAny(transitionDuration: _FPEmo.TransitionTime)
                     .AddCondition(AnimatorConditionMode.Equals, left, "GestureLeft")
                     .AddCondition(AnimatorConditionMode.Equals, right, "GestureRight")
-                    .AddCondition(AnimatorConditionMode.IfNot, 1, "FlatsPlus/Emo/Disable");
+                    .AddCondition(AnimatorConditionMode.Less, 0.5f, "FlatsPlus/Emo/Disable");
             }
             ab.ChangeCurrentState(ab.InitialState).TransFromAny()
-                .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Emo/Disable");
+                .AddCondition(AnimatorConditionMode.Greater, 0.5f, "FlatsPlus/Emo/Disable");
             ab.Attach(_prj.RootObject, true);
 
             ///Debug
-            new MenuBuilder(_prj).AddFolder("FlatsPlus").AddToggle("FlatsPlus/Emo/Disable", 1,ParameterSyncType.Bool, localOnly: false);
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Emo").AddToggle("FlatsPlus/Emo/Disable", 1,ParameterSyncType.Bool, localOnly: false);
         }
 
     }

@@ -54,7 +54,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
     public class FPMakeEmoMain
     {
-        private const int TEXTUREXADD = 1;
+        private const int TEXTUREXADD = 0;
         private const int TILESIZE = 256;
         private FPMakeEmo _FPMakeEmo;
         private PVGridUI _gridUI;
@@ -65,6 +65,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private static string enable = $@"{pName}/Enable";
         private static string eyeLevel = $@"{pName}/EyeLevel";
         private static string mouth = $@"{pName}/Mouth";
+        private static string mouthRx = $@"{pName}/MouthRx";
         private static string other = $@"{pName}/Other";
         private static string reset = $@"{pName}/Reset";
         private static string eyeselecting = $@"{pName}/EyeSelecting";
@@ -108,7 +109,7 @@ namespace com.github.pandrabox.flatsplus.editor
         //制御部
         private void Control()
         {
-            var bb = new BlendTreeBuilder("MakeEmo");
+            var bb = new BlendTreeBuilder("MakeEmoForBody");
             bb.RootDBT(() =>
             {
                 bb.Param(enable).AddD(() =>
@@ -117,7 +118,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param("1").Add1D(eyeLevel, () =>
                     {
                         bb.Param(0).AddMotion(eyes[0].OffClip);
-                        bb.Param(1).Add1D(_gridUI.n, () =>
+                        bb.Param(1).Add1D(_gridUI.nRx, () =>
                         {
                             bb.Param(0).AddMotion(eyes[0].OffClip);
                             for (int i = 0; i < eyes.Count; i++)
@@ -127,7 +128,7 @@ namespace com.github.pandrabox.flatsplus.editor
                         });
                     });
                     List<Face> mouths = _faces.Mouths;
-                    bb.Param("1").Add1D(mouth, () =>
+                    bb.Param("1").Add1D(mouthRx, () =>
                     {
                         bb.Param(0).AddMotion(mouths[0].OffClip);
                         for (int i = 0; i < mouths.Count; i++)
@@ -146,17 +147,19 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                     bb.Param("1").AddAAP("FlatsPlus/Emo/Disable", 1);
                 });
-                bb.Param("1").Add1D(eyeselecting, () =>
-                {
-                    bb.Param(0).Add1D(enable, () =>
-                    {
-                        bb.Param(0).AddAAP(_gridUI.IsEnable, 0);
-                        bb.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 0);
-                    });
-                    bb.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 1);
-                });
             });
-            bb.Attach(_FPMakeEmo.gameObject);
+            bb.Attach(_prj.RootObject);
+            var bb2 = new BlendTreeBuilder("MakeEmoForDisp");
+            bb2.Param("1").Add1D(eyeselecting, () =>
+            {
+                bb2.Param(0).Add1D(enable, () =>
+                {
+                    bb2.Param(0).AddAAP(_gridUI.IsEnable, 0);
+                    bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 0);
+                });
+                bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 1);
+            });
+            bb2.Attach(_FPMakeEmo.gameObject);
             var ab = new AnimatorBuilder(pName);
             ab.AddLayer().AddState("Clear")
                 .SetParameterDriver(enable, 0)
@@ -178,23 +181,24 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateExMenu()
         {
             MenuBuilder mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus").AddFolder("MakeEmo").SetMessage("表情の作成・固定");
+            mb.AddFolder("FlatsPlus", true).AddFolder("MakeEmo").SetMessage("表情の作成・固定");
             mb.AddToggle(enable, 1, ParameterSyncType.Bool, "SW", 0, false).SetMessage("表情を固定", "固定を解除");
-            mb.Add2Axis(_gridUI.Inputx, _gridUI.Inputy, eyeselecting, "Eye", 0, 0, true).SetMessage("Stickで表情を選択");
+            mb.Add2Axis(_gridUI.Inputx, _gridUI.Inputy, eyeselecting, "Eye", 0, 0, true).SetMessage("Stickで選択 Triggerで確定");
             mb.AddRadial(eyeLevel, "EyeLevel", 1, false).SetMessage("目設定の強さ");
             mb.AddFolder("Mouth").SetMessage("口の設定");
             var mouths = _faces.Mouths;
+            mb.AddToggle(mouth, 0, ParameterSyncType.Int, "None").SetIco(_faces.VoidIco);
             for (int i = 0; i < mouths.Count; i++)
             {
                 var name = mouths[i].Name;
-                mb.AddToggle(mouth, i, ParameterSyncType.Int, name).SetIco(mouths[i].Tex);
+                mb.AddToggle(mouth, i+1, ParameterSyncType.Int, name).SetIco(mouths[i].Tex);
             }
             _prj.VirtualSync(mouth, TransmissionBit(mouths.Count), PVnBitSync.nBitSyncMode.IntMode);
             mb.ExitFolder();
             mb.AddFolder("Other").SetMessage("その他の設定");
             foreach (var o in _faces.Others)
             {
-                mb.AddToggle($"{other}/{o.Name}").SetIco(o.Tex);
+                mb.AddToggle($"{other}/{o.Name}",localOnly:false).SetIco(o.Tex);
             }
             mb.ExitFolder();
             mb.AddButton(reset).SetMessage("表情設定をクリア");
