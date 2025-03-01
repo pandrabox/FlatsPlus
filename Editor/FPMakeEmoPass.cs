@@ -57,7 +57,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private const int TEXTUREXADD = 0;
         private const int TILESIZE = 256;
         private FPMakeEmo _FPMakeEmo;
-        private PVGridUI _gridUI;
+        private PVGridUI _ui;
         private FlatsProject _prj;
         private Faces _faces;
 
@@ -77,6 +77,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _prj = new FlatsProject(desc);
             _faces = new FaceMaker(_prj, TILESIZE).Faces;
             GetStructure();
+            SetConfig();
             CreateGridUI();
             Control();
             CreateExMenu();
@@ -84,11 +85,20 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void GetStructure()
         {
-            _gridUI = _FPMakeEmo.GetComponentInChildren<PVGridUI>();
-            if(_gridUI == null)
+            _ui = _FPMakeEmo.GetComponentInChildren<PVGridUI>();
+            if(_ui == null)
             {
                 LowLevelExeption("GridUIが見つかりませんでした。");
             }
+        }
+
+        private void SetConfig()
+        {
+            _ui.MenuOpacity = _FPMakeEmo.MenuOpacity;
+            _ui.MenuSize = _FPMakeEmo.MenuSize;
+            _ui.SelectColor = _FPMakeEmo.SelectColor;
+            _ui.Speed = _FPMakeEmo.ScrollSpeed;
+            _ui.DeadZone = _FPMakeEmo.DeadZone;
         }
 
         // GridUIの作成
@@ -99,11 +109,12 @@ namespace com.github.pandrabox.flatsplus.editor
             int eyeCount = eyeTextures.Count;
             x = Mathf.CeilToInt(Mathf.Sqrt(eyeCount)) + TEXTUREXADD;
             y = Mathf.CeilToInt((float)eyeCount / x);
-            _gridUI.ParameterName = "FlatsPlus/MakeEmo/GUI";
-            _gridUI.xMax = x;
-            _gridUI.yMax = y;
+            _ui.ParameterName = "FlatsPlus/MakeEmo/GUI";
+            _ui.xMax = x;
+            _ui.yMax = y;
+            _ui.ItemCount = eyeCount;
             LowLevelDebugPrint($"EyeCount:{eyeCount}, x:{x}, y:{y}");
-            _gridUI.MainTex = PackTexture(eyeTextures, x, x * TILESIZE, y * TILESIZE);
+            _ui.MainTex = PackTexture(eyeTextures, x, x * TILESIZE, y * TILESIZE,_FPMakeEmo.BackGroundColor,true, _FPMakeEmo.Margin);
         }
 
         //制御部
@@ -118,7 +129,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param("1").Add1D(eyeLevel, () =>
                     {
                         bb.Param(0).AddMotion(eyes[0].OffClip);
-                        bb.Param(1).Add1D(_gridUI.nRx, () =>
+                        bb.Param(1).Add1D(_ui.nRx, () =>
                         {
                             bb.Param(0).AddMotion(eyes[0].OffClip);
                             for (int i = 0; i < eyes.Count; i++)
@@ -159,14 +170,14 @@ namespace com.github.pandrabox.flatsplus.editor
                     {
                         bb2.Param(0).Add1D(enable, () =>
                         {
-                            bb2.Param(0).AddAAP(_gridUI.IsEnable, 0);
-                            bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 0);
+                            bb2.Param(0).AddAAP(_ui.IsEnable, 0);
+                            bb2.Param(1).AddAAP(_ui.IsEnable, 1, _ui.IsMode0, 0);
                         });
-                        bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 1);
+                        bb2.Param(1).AddAAP(_ui.IsEnable, 1, _ui.IsMode0, 1);
                     });
                     bb2.Param("1").AddD(() =>
                     {
-                        bb2.Param("1").FDiffChecker(_gridUI.n, isChanged, max: _gridUI.xMax * _gridUI.yMax);
+                        bb2.Param("1").FDiffChecker(_ui.n, isChanged, max: _ui.xMax * _ui.yMax);
                         bb2.Param("1").FDiffChecker(mouth, isChanged, max: _faces.Mouths.Count + 1);
                         bb2.Param("1").FDiffChecker(eyeLevel, isChanged);
                         foreach (var o in _faces.Others)
@@ -188,13 +199,13 @@ namespace com.github.pandrabox.flatsplus.editor
                 .SetParameterDriver(enable, 0)
                 .SetParameterDriver(eyeLevel, 1)
                 .SetParameterDriver(mouth, 0)
-                .SetParameterDriver(_gridUI.Inputx, 0)
-                .SetParameterDriver(_gridUI.Inputy, 0);
+                .SetParameterDriver(_ui.Inputx, 0)
+                .SetParameterDriver(_ui.Inputy, 0);
             foreach (var o in _faces.Others)
             {
                 ab.SetParameterDriver($"{other}/{o.Name}", 0);
             }
-            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.If, 1, _gridUI.Reset)
+            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.If, 1, _ui.Reset)
                 .TransFromCurrent(ab.InitialState).MoveInstant();
             ab.Attach(_prj.PrjRootObj);
 
@@ -206,8 +217,8 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder("MakeEmo").SetMessage("表情の作成・固定");
-            mb.AddToggle(enable, 1, ParameterSyncType.Bool, "SW", 0, false).SetMessage("表情を固定", "固定を解除");
-            mb.Add2Axis(_gridUI.Inputx, _gridUI.Inputy, eyeselecting, "Eye", 0, 0, true).SetMessage("Stickで選択 Triggerで確定");
+            mb.AddToggle(enable, 1, ParameterSyncType.Bool, "SW", 0, false).SetMessage(null, "固定を解除");
+            mb.Add2Axis(_ui.Inputx, _ui.Inputy, eyeselecting, "Eye", 0, 0, true).SetMessage("Stickで選択 Triggerで確定");
             mb.AddRadial(eyeLevel, "EyeLevel", 1, false).SetMessage("目設定の強さ");
             mb.AddFolder("Mouth").SetMessage("口の設定");
             var mouths = _faces.Mouths;
@@ -225,7 +236,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 mb.AddToggle($"{other}/{o.Name}",localOnly:false).SetIco(o.Tex);
             }
             mb.ExitFolder();
-            mb.AddButton(_gridUI.Reset).SetMessage("表情設定をクリア");
+            mb.AddButton(_ui.Reset).SetMessage("表情設定をクリア");
         }
     }
 }

@@ -71,6 +71,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 var FM = new FaceMaker(TopAvatar,unitMode:true);
                 foreach (var face in FM.Faces.All)
                 {
+                    if (face.Tex == null) continue;
                     OutpAsset(face.Tex);
                     OutpAsset(face.OnClip);
                     OutpAsset(face.OffClip);
@@ -82,7 +83,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public Faces Faces;
         public int TexSize;
         private bool _unitMode;
-        public FaceMaker(VRCAvatarDescriptor desc, int texSize=512, bool unitMode=false)=> main(new FlatsProject(desc), texSize, unitMode);
+        public FaceMaker(VRCAvatarDescriptor desc, int texSize=512, bool unitMode=false) => main(new FlatsProject(desc), texSize, unitMode);
         public FaceMaker(FlatsProject prj, int texSize = 512, bool unitMode = false) => main(prj, texSize, unitMode);
         private void main(FlatsProject prj, int texSize = 512, bool unitMode = false)
         {
