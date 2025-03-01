@@ -52,7 +52,7 @@ namespace com.github.pandrabox.flatsplus.editor
 #if PANDRADBG
         public class FaceMakerDebug
         {
-            [MenuItem("PanDbg/FaceMaker")]
+            [MenuItem("PanDbg/FaceMaker/all")]
             public static void FaceMaker_Debug()
             {
                 SetDebugMode(true);
@@ -64,15 +64,29 @@ namespace com.github.pandrabox.flatsplus.editor
                     OutpAsset(face.OffClip);
                 }
             }
+            [MenuItem("PanDbg/FaceMaker/unit")]
+            public static void FaceMaker_DebugUnit()
+            {
+                SetDebugMode(true);
+                var FM = new FaceMaker(TopAvatar,unitMode:true);
+                foreach (var face in FM.Faces.All)
+                {
+                    OutpAsset(face.Tex);
+                    OutpAsset(face.OnClip);
+                    OutpAsset(face.OffClip);
+                }
+            }
         }
 #endif
         private FlatsProject _prj;
         public Faces Faces;
         public int TexSize;
-        public FaceMaker(VRCAvatarDescriptor desc, int texSize=512)=> main(new FlatsProject(desc), texSize);
-        public FaceMaker(FlatsProject prj, int texSize = 512) => main(prj, texSize);
-        private void main(FlatsProject prj, int texSize = 512)
+        private bool _unitMode;
+        public FaceMaker(VRCAvatarDescriptor desc, int texSize=512, bool unitMode=false)=> main(new FlatsProject(desc), texSize, unitMode);
+        public FaceMaker(FlatsProject prj, int texSize = 512, bool unitMode = false) => main(prj, texSize, unitMode);
+        private void main(FlatsProject prj, int texSize = 512, bool unitMode = false)
         {
+            _unitMode = unitMode;
             TexSize = texSize;
             _prj = prj;
             Faces = new Faces();
@@ -142,9 +156,13 @@ namespace com.github.pandrabox.flatsplus.editor
                 foreach (var face in Faces.All)
                 {
                     skinnedMeshRenderer.SetBlendShapeWeight(face.BlendShapeCount, 100);
-                    face.Tex = c.ManualRun(cTgt, size, head, offset);
-                    OutpAsset(face.Tex);
+                    var t = c.ManualRun(cTgt, size, head, offset);
+                    t.name = face.Name;
+                    t.wrapMode = TextureWrapMode.Clamp;
+                    face.Tex = t;
+                    OutpAsset(t);
                     skinnedMeshRenderer.SetBlendShapeWeight(face.BlendShapeCount, 0);
+                    if (_unitMode) break;
                     //OutpAsset(t);
                     //LowLevelDebugPrint($"FaceMaker CreateTex: {face.BlendShapeCount}{face.Name}");
                 }

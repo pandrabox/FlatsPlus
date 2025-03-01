@@ -28,7 +28,7 @@ FaceCapSize,0.25,0.25,0.23,0.22,0.22,0.22
 FaceCapX,0,0,0,0,0,0
 FaceCapY,0.0027,0.27,0.00188,0.00146,0.00146,0.00146
 FaceCapZ,0.02,2,0.02,0.02,0.02,0.02
-EyeShapes,笑い-まばたき-ウィンク-ウィンク右-ぐるぐる-はぅ-なき-ビックリ-おこ-じとめ-なごみ-とろめ-とろめ2-ウィンク2-ウィンク右2-おまけ2,,,,,
-MouthShapes,あ-い-う-え-お,,,,,
-OtherShapes,!-しただし-ぴきっ-おまけ1,,,,,
-IgnoreShapes,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th,,,,,
+EyeShapes,笑い-まばたき-ウィンク-ウィンク右-ぐるぐる-はぅ-なき-ビックリ-おこ-じとめ-なごみ-とろめ-とろめ2-ウィンク2-ウィンク右2-おまけ2,笑い-まばたき-ウィンク-ウィンク右-ぐるぐる-はぅ-なき-ビックリ-おこ-じとめ-なごみ-とろめ-とろめ2-ウィンク2-ウィンク右2-おまけ2,まばたき-笑い-ウィンク-ウィンク右-笑顔-ぐるぐる-おこ-おこ2-じとめ-はぅ-ビックリ-なごみ-とろん-なき-ウィンク2-ウィンク右2,目開き-笑い-まばたき-なごみ-はぅ-おこ-おこ（目開き）-ぐるぐる-ビックリ-ビックリ（目開き）-じとめ-なき-ウィンク2-ウィンク右2-ウィンク-ウィンク右,まばたき-笑い-ウィンク-ウィンク右-じとめ-ビックリ-なき-おこ-ねこめ-ぐるぐる-なごみ-はぅ-ウィンク2-ウィンク右2,笑い-まばたき-ウィンク-ウィンク右-ビックリ-じとめ-おこ-ぐるぐる-なごみ-はぅ-なき
+MouthShapes,あ-い-う-え-お,あ-い-う-え-お,あ-い-う-え-お-にか,あ-い-う-え-お,あ-い-う-え-お,あ-い-う-え-お
+OtherShapes,!-しただし-ぴきっ-おまけ1,!-しただし-ぴきっ-おまけ1-たれみみ（おまけ）,ぴきっ-しただし-てれっ,てれっ-しただし,てれっ-しただし,てれっ-しただし
+IgnoreShapes,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th-表情用「あ」,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th-表情用「あ」,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th,vrc.v_aa-vrc.v_ch-vrc.v_dd-vrc.v_e-vrc.v_ff-vrc.v_ih-vrc.v_kk-vrc.v_nn-vrc.v_oh-vrc.v_ou-vrc.v_pp-vrc.v_rr-vrc.v_sil-vrc.v_ss-vrc.v_th-尻尾笑い-尻尾まばたき-尻尾ぐるぐる-尻尾てれ-尻尾なき-尻尾ビックリ-尻尾口開き

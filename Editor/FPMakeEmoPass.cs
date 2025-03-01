@@ -67,8 +67,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private static string mouth = $@"{pName}/Mouth";
         private static string mouthRx = $@"{pName}/MouthRx";
         private static string other = $@"{pName}/Other";
-        private static string reset = $@"{pName}/Reset";
         private static string eyeselecting = $@"{pName}/EyeSelecting";
+        private static string isChanged = $@"{pName}/IsChanged";
 
         public FPMakeEmoMain(VRCAvatarDescriptor desc)
         {
@@ -150,31 +150,55 @@ namespace com.github.pandrabox.flatsplus.editor
             });
             bb.Attach(_prj.RootObject);
             var bb2 = new BlendTreeBuilder("MakeEmoForDisp");
-            bb2.Param("1").Add1D(eyeselecting, () =>
+            bb2.RootDBT(() =>
             {
-                bb2.Param(0).Add1D(enable, () =>
+                bb2.Param("IsLocal").AddD(() =>
                 {
-                    bb2.Param(0).AddAAP(_gridUI.IsEnable, 0);
-                    bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 0);
+                    //GUIの表示制御(ONOFF,MODE)
+                    bb2.Param("1").Add1D(eyeselecting, () =>
+                    {
+                        bb2.Param(0).Add1D(enable, () =>
+                        {
+                            bb2.Param(0).AddAAP(_gridUI.IsEnable, 0);
+                            bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 0);
+                        });
+                        bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 1);
+                    });
+                    bb2.Param("1").AddD(() =>
+                    {
+                        bb2.Param("1").FDiffChecker(_gridUI.n, isChanged, max: _gridUI.xMax * _gridUI.yMax);
+                        bb2.Param("1").FDiffChecker(mouth, isChanged, max: _faces.Mouths.Count + 1);
+                        bb2.Param("1").FDiffChecker(eyeLevel, isChanged);
+                        foreach (var o in _faces.Others)
+                        {
+                            bb2.Param("1").FDiffChecker($"{other}/{o.Name}", isChanged);
+                        }
+                    });
                 });
-                bb2.Param(1).AddAAP(_gridUI.IsEnable, 1, _gridUI.IsMode0, 1);
             });
             bb2.Attach(_FPMakeEmo.gameObject);
-            var ab = new AnimatorBuilder(pName);
-            ab.AddLayer().AddState("Clear")
+            var ab = new AnimatorBuilder(pName).AddLayer();
+            ab.AddState("Enablation").SetParameterDriver(enable, 1)
+                .TransToCurrent(ab.InitialState)
+                    .AddCondition(AnimatorConditionMode.Greater, .5f, isChanged)
+                    .AddCondition(AnimatorConditionMode.Greater, 50, _prj.FrameCount)
+                .TransFromCurrent(ab.InitialState).MoveInstant();
+            var enablateState = ab.CurrentState;
+            ab.AddState("Clear")
                 .SetParameterDriver(enable, 0)
                 .SetParameterDriver(eyeLevel, 1)
                 .SetParameterDriver(mouth, 0)
                 .SetParameterDriver(_gridUI.Inputx, 0)
-                .SetParameterDriver(_gridUI.Inputy, 0)
-                .SetParameterDriver(_gridUI.Currentx, 0)
-                .SetParameterDriver(_gridUI.Currenty, 0);
+                .SetParameterDriver(_gridUI.Inputy, 0);
             foreach (var o in _faces.Others)
             {
                 ab.SetParameterDriver($"{other}/{o.Name}", 0);
             }
-            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.If, 1, reset, true);
+            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.If, 1, _gridUI.Reset)
+                .TransFromCurrent(ab.InitialState).MoveInstant();
             ab.Attach(_prj.PrjRootObj);
+
+            _prj.SetFrameCounter();
         }
 
         // メニューの作成
@@ -201,7 +225,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 mb.AddToggle($"{other}/{o.Name}",localOnly:false).SetIco(o.Tex);
             }
             mb.ExitFolder();
-            mb.AddButton(reset).SetMessage("表情設定をクリア");
+            mb.AddButton(_gridUI.Reset).SetMessage("表情設定をクリア");
         }
     }
 }
