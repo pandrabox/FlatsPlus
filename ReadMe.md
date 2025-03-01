@@ -70,12 +70,12 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - anim/shapekeyとは別の抽象化された名称による設定
   - 変更時間の設定
   
+## MakeEmo 
+- 任意の表情を作ってロック
 # 未実装
 
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
-## MakeEmo 
-- 任意の表情を作ってロック
 ## HopePoyo
 - ほっぺたをぽよぽよに
   - 触ると揺れる
