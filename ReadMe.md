@@ -72,6 +72,13 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   
 ## MakeEmo 
 - 任意の表情を作ってロック
+
+## Sleep
+- 3点睡眠
+## PoseClipper
+- そのまま再配布
+
+
 # 未実装
 
 ## Manager
@@ -93,10 +100,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - MMD時表情が動く
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
-## Sleep
-- 3点睡眠
-## PoseClipper
-- そのまま再配布
 ## SOM2.0
 - そのまま再配布
 ## DressSW
