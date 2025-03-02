@@ -100,8 +100,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - MMD時表情が動く
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
-## SOM2.0
-- そのまま再配布
 ## DressSW
 - そのまま再配布
 
