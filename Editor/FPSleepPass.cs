@@ -53,13 +53,13 @@ namespace com.github.pandrabox.flatsplus.editor
         private FPSleep _tgt;
         FlatsProject _prj;
         private static string __prefix = "FlatsPlus/Sleep";
-        private static string __tempolaryPose = $@"{__prefix}/TempolaryPose";
+        //private static string __tempolaryPose = $@"{__prefix}/TempolaryPose";
         private static string __trackingControl = $@"{__prefix}/TrackingControl";
         private static string __locomotionControl = $@"{__prefix}/LocomotionControl";
         private static string __sw = $@"{__prefix}/SW";
         private static string __height = $@"{__prefix}/Height";
         private static string __heightIsDiff = $@"{__prefix}/HeightIsDiff";
-        private static string __eyeMatch = $@"{__prefix}/EyeMatch";
+        //private static string __eyeMatch = $@"{__prefix}/EyeMatch";
         private static string __moveLock = $@"{__prefix}/MoveLock";
         private static string __poseLockAnim = $@"{__prefix}/PoseLockAnim";
         private static string __callPoseClipper = $@"CW/PC/Set/All";
@@ -86,16 +86,16 @@ namespace com.github.pandrabox.flatsplus.editor
             bb.Attach(_prj.PrjRootObj);
 
             var ab = new AnimatorBuilder(__prefix);
-            {
-                ab.AddLayer(__tempolaryPose);
-                ab.AddState("OFF").SetTemporaryPoseSpace(false);
-                var offState = ab.CurrentState;
-                ab.TransToCurrent(ab.InitialState)
-                    .AddCondition(AnimatorConditionMode.Greater, .5f, __sw, true);
-                ab.AddState("ON").SetTemporaryPoseSpace(true);
-                ab.TransFromCurrent(offState).AddCondition(AnimatorConditionMode.Greater, .5f, __heightIsDiff);
-                ab.TransToCurrent(offState).AddCondition(AnimatorConditionMode.Greater, .5f, __eyeMatch, true);
-            }
+            //{
+            //    ab.AddLayer(__tempolaryPose);
+            //    ab.AddState("OFF").SetTemporaryPoseSpace(false);
+            //    var offState = ab.CurrentState;
+            //    ab.TransToCurrent(ab.InitialState)
+            //        .AddCondition(AnimatorConditionMode.Greater, .5f, __sw, true);
+            //    ab.AddState("ON").SetTemporaryPoseSpace(true);
+            //    ab.TransFromCurrent(offState).AddCondition(AnimatorConditionMode.Greater, .5f, __heightIsDiff);
+            //    ab.TransToCurrent(offState).AddCondition(AnimatorConditionMode.Greater, .5f, __eyeMatch, true);
+            //}
             {
                 ab.AddLayer(__trackingControl);
                 ab.SetTrackingControl(true);
@@ -122,12 +122,12 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             var mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder("Sleep").SetMessage("睡眠");
-            mb.AddToggle(__sw, localOnly: false);
-            mb.AddToggle(__eyeMatch);
-            mb.AddToggle(__moveLock);
-            mb.AddRadial(__height,defaultVal:.5f, localOnly: false);
-            mb.AddToggle(__poseLockAnim, 1, ParameterSyncType.Bool, "PoseLock:Anim");
-            mb.AddToggle(__callPoseClipper, 1, ParameterSyncType.Bool, "PoseLock:Current");
+            mb.AddToggle(__sw, localOnly: false).SetMessage("睡眠モード ON");
+            //mb.AddToggle(__eyeMatch);
+            mb.AddToggle(__moveLock).SetMessage("移動ロック ON");
+            mb.AddRadial(__height,defaultVal:.5f, localOnly: false).SetMessage("睡眠高さ");
+            mb.AddToggle(__poseLockAnim, 1, ParameterSyncType.Bool, "Lock:Anim").SetMessage("アニメーションで全身をロック");
+            mb.AddToggle(__callPoseClipper, 1, ParameterSyncType.Bool, "Lock:Current").SetMessage("現在の姿勢で全身をロック");
         }
     }
 }
