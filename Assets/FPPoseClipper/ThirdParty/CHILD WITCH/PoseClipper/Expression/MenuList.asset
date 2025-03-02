@@ -1,0 +1,85 @@
+﻿%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: MenuList
+  m_EditorClassIdentifier: 
+  controls:
+  - name: Reset
+    icon: {fileID: 2800000, guid: fe16ee265ecd5c944b6d665ad0aa0056, type: 3}
+    type: 101
+    parameter:
+      name: CW/PC/Reset
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: WorldFixed
+    icon: {fileID: 2800000, guid: f1b0e2dadaa0d064ea0caa2fa3ed7950, type: 3}
+    type: 102
+    parameter:
+      name: CW/PC/WorldFixed
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: AllClip
+    icon: {fileID: 2800000, guid: 90bfffc0f4d9e7945a6f3d68dd9c2734, type: 3}
+    type: 102
+    parameter:
+      name: CW/PC/Set/All
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: PartsClip
+    icon: {fileID: 2800000, guid: 3acd277a72df4614686fb84683d34b03, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 35159e6967c67b34aa37e81c7c510c1a, type: 2}
+    subParameters: []
+    labels: []
+  - name: Detail(Body)
+    icon: {fileID: 2800000, guid: 2f971a82ab96f9c469ad683d8d7def44, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: b00fa1841e2c17247958d8472ed84e97, type: 2}
+    subParameters: []
+    labels: []
+  - name: Detail(Arms)
+    icon: {fileID: 2800000, guid: b907f337df9380f479539e7df4855626, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 0b2fb84bc7a08e549a8deb8d183a83c7, type: 2}
+    subParameters: []
+    labels: []
+  - name: Detail(Legs)
+    icon: {fileID: 2800000, guid: ba4ff3d3efeac67419e0b991b90f505d, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 7daf9ee940c789a418d1eaad94cbc9a1, type: 2}
+    subParameters: []
+    labels: []
