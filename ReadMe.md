@@ -101,8 +101,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - 表情に合わせて耳を動かす
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
-## DressSW
-- そのまま再配布
 
 # 依存
 - liltoon
