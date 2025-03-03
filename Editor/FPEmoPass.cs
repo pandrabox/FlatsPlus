@@ -66,6 +66,7 @@ namespace com.github.pandrabox.flatsplus.editor
             RemoveExistEmo();
             CreateEmoClips();
             CreateAndAttachEmoController();
+            ApplyConstraints();
         }
 
         // 既存のレイヤにEmoへの遷移がある場合、遷移先をDummyClipに変更
@@ -178,10 +179,18 @@ namespace com.github.pandrabox.flatsplus.editor
                 .AddCondition(AnimatorConditionMode.Greater, 0.5f, "FlatsPlus/Emo/Disable");
             ab.Attach(_prj.RootObject, true);
 
-            ///Debug
-            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder("Emo").AddToggle("FlatsPlus/Emo/Disable", 1,ParameterSyncType.Bool, localOnly: false);
         }
 
+        private void ApplyConstraints()
+        {
+            var ac = new AnimationClipsBuilder();
+            // Dance対応
+            var bb = new BlendTreeBuilder("FlatsPlus/EmoConstraints");
+            bb.RootDBT(() => {
+                bb.Param("1").FAssignmentBy1D(_prj.IsDance, 0, 1, "FlatsPlus/Emo/Disable", 0, 1);
+            });
+            bb.Attach(_prj.RootObject);
+        }
     }
 
 }
