@@ -20,6 +20,7 @@ namespace com.github.pandrabox.flatsplus.editor
 #endif
             Sequence seq;
             seq = InPhase(BuildPhase.Transforming).BeforePlugin("com.github.pandrabox.pandravase");
+            seq.Run(FPHoppePass.Instance);
             seq.Run(FlatsPlusIcoPass.Instance);
             seq.Run(FlatsPlusMeshSettingPass.Instance);
             seq.Run(FlatsPlusLightPass.Instance);
