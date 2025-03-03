@@ -101,6 +101,9 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - 表情に合わせて耳を動かす
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
+## 距離クリッピングキャンセラーを自動で設定するやつ
+## WDONで統一するやつ
+
 
 # 依存
 - liltoon
