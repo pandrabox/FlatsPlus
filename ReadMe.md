@@ -78,6 +78,9 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 ## PoseClipper
 - そのまま再配布
 
+## DanceController
+- DanceController時表情が動く
+- ついでにFxのアバターマスクを削除
 
 # 未実装
 
@@ -96,8 +99,6 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - アニメ調/マテリアル式の設定
 ## EarEmo
 - 表情に合わせて耳を動かす
-## MMD
-- MMD時表情が動く
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
 ## DressSW
