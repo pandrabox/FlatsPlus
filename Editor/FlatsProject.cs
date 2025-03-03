@@ -68,13 +68,14 @@ namespace com.github.pandrabox.flatsplus.editor
         public float FaceCapX => GetDBFloat("FaceCapX");
         public float FaceCapY => GetDBFloat("FaceCapY");
         public float FaceCapZ => GetDBFloat("FaceCapZ");
-        public string[] IgnoreShapes => GetDBString("IgnoreShapes")?.Split(',');
+        //public string[] IgnoreShapes => GetDBString("IgnoreShapes")?.Split('-');
         public float Hoppe2X => GetDBFloat("Hoppe2X");
         public float Hoppe2Y => GetDBFloat("Hoppe2Y");
         public float Hoppe2Z => GetDBFloat("Hoppe2Z");
+        public string[] DisHoppeShapes => GetDBString("DisHoppeShapes")?.Split('-');
 
 
-        public string HeadSendor => "FlatsPlus/HeadSensor";
+        public string HeadSensor => "FlatsPlus/HeadSensor";
         public string CheekSensor => "FlatsPlus/CheekSensor";
 
         public Dictionary<string, FaceType> GeneralShapes {

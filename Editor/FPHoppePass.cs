@@ -93,7 +93,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var bb = new BlendTreeBuilder(__blush);
             bb.RootDBT(() =>
             {
-                bb.Param("1").Add1D(_prj.HeadSendor, () =>
+                bb.Param("1").Add1D(_prj.HeadSensor, () =>
                 {
                     bb.Param(0).AddMotion(ac.OffAnim(__hoppePath));
                     bb.Param(0.0001f).AddMotion(ac.OnAnim(__hoppePath));
@@ -136,7 +136,11 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     string LR = n == 0 ? "L" : "R";
                     AC.Clip($"{LR}0").IsVector3((x) => x.Bind($"cheek_{LR}", typeof(Transform), "m_LocalScale.@a").Const2F(AvatarCheeks[n].localScale));
-                    AC.Clip($"{LR}1").IsVector3((x) => x.Bind($"cheek_{LR}", typeof(Transform), "m_LocalScale.@a").Const2F(new Vector3(4.062213f, 4.869611f, 2.235f)*.5f));
+                    AC.Clip($"{LR}1").IsVector3((x) => x.Bind($"cheek_{LR}", typeof(Transform), "m_LocalScale.@a").Const2F(new Vector3(4.062213f, 4.869611f, 2.235f)));
+
+
+                    AC.Clip($"{LR}R0").Bind($"cheek_{LR}", typeof(RotationConstraint), "m_Weight").Const2F(0);
+                    AC.Clip($"{LR}R1").Bind($"cheek_{LR}", typeof(RotationConstraint), "m_Weight").Const2F(1);
                 }
 
                 Enable = true;
@@ -197,9 +201,15 @@ namespace com.github.pandrabox.flatsplus.editor
                         bb.Param(0).AddMotion(_cheekInfo.AC.Outp($"{LR}0"));
                         bb.Param(1).AddMotion(_cheekInfo.AC.Outp($"{LR}1"));
                     });
+                    bb.Param("1").Add1D("FlatsPlus/Emo/IsDisHoppe", () =>
+                    {
+                        bb.Param(0).AddMotion(_cheekInfo.AC.Outp($"{LR}R1"));
+                        bb.Param(1).AddMotion(_cheekInfo.AC.Outp($"{LR}R0"));
+                    });
                 }
             });
             bb.Attach(_cheekInfo.AvatarHead.gameObject);
+
         }
     }
 }

@@ -55,6 +55,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private FPEmo _FPEmo;
         private FlatsProject _prj;
         private AnimationClipsBuilder clips;
+        private Dictionary<string, bool> _disHoppeInfo;
+        private string[] _disHoppeShapes;
         private string emoDataFolder = "Packages/com.github.pandrabox.flatsplus/Assets/Emo/res/";
         private string emoDataFile => $@"{emoDataFolder}{_prj.CurrentAvatarName}.csv";
 
@@ -63,6 +65,8 @@ namespace com.github.pandrabox.flatsplus.editor
             _FPEmo = desc.GetComponentInChildren<FPEmo>();
             if (_FPEmo == null) return;
             _prj = new FlatsProject(desc);
+            _disHoppeShapes = _prj.DisHoppeShapes;
+            _disHoppeInfo = new Dictionary<string, bool>();
             RemoveExistEmo();
             CreateEmoClips();
             CreateAndAttachEmoController();
@@ -107,6 +111,8 @@ namespace com.github.pandrabox.flatsplus.editor
             for (int i = 0; i < 64; i++)
             {
                 bool isBlank = true;
+                bool isDisHoppe = false;
+                string clipName= $@"emo{i}";
                 //LowLevelDebugPrint($@"{i + 1}:line:{lines[i + 1]}");
                 int?[] shapeVals = lines[i + 1].Split(',').Select(x =>
                 {
@@ -118,16 +124,21 @@ namespace com.github.pandrabox.flatsplus.editor
                 }).ToArray();
                 for (int n = 2; n < shapeVals.Length; n++) //0,1はGesture情報
                 {
-                    int? shapeVal = shapeVals[n];
-                    if (!shapeVal.HasValue) continue;
+                    if (!shapeVals[n].HasValue) continue;
+                    int shapeVal = (int)shapeVals[n];
                     string shapeName = "blendShape." + shapeNames[n];
-                    clips.Clip($@"emo{i}").Bind("Body", typeof(SkinnedMeshRenderer), shapeName).Const2F((int)shapeVal);
+                    clips.Clip(clipName).Bind("Body", typeof(SkinnedMeshRenderer), shapeName).Const2F(shapeVal);
+                    if(shapeVal > 5 && _disHoppeShapes.Contains(shapeNames[n]))
+                    {
+                        isDisHoppe = true;
+                    }
                     isBlank = false;
                     //LowLevelDebugPrint($@"{i}:{shapeName}:{shapeVal}");
                 }
+                _disHoppeInfo.Add(clipName, isDisHoppe);
                 if (isBlank)
                 {
-                    clips.Clip($@"emo{i}").Dummy();
+                    clips.Clip(clipName).Dummy();
                 }
                 //OutpAsset(clips.Outp($@"emo{i}"));
             }
@@ -136,6 +147,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateAndAttachEmoController()
         {
             var ab = new AnimatorBuilder("FlatsPlus/Emo");
+            ab.AddAnimatorParameter("FlatsPlus/Emo/IsDisHoppe");
             List<AnimatorState> states = new List<AnimatorState>();
             ab.AddLayer();
             for (int left = 0; left < GESTURENUM; left++)
@@ -143,33 +155,19 @@ namespace com.github.pandrabox.flatsplus.editor
                 for (int right = 0; right < GESTURENUM; right++)
                 {
                     int index = left * GESTURENUM + right;
+                    string clipName = $@"emo{index}";
+                    AnimationClip currentClip = clips.Outp(clipName);
                     int offset = 200;
                     Vector3 pos = new Vector3(left * 250, right * 100 + offset, 0);
-                    ab.AddState($@"emo{index}", clips.Outp($@"emo{index}"), position: pos);
+                    ab.AddState(clipName, currentClip, position: pos);
                     states.Add(ab.CurrentState);
+                    ab.SetParameterDriver("FlatsPlus/Emo/IsDisHoppe", _disHoppeInfo[clipName] ? 1 : 0);
                 }
             }
             for (int nTo = 0; nTo < GESTURENUM * GESTURENUM; nTo++)
             {
                 int left = nTo / GESTURENUM;
                 int right = nTo % GESTURENUM;
-                ////完全定義
-                //for (int nFrom = 0; nFrom < GESTURENUM * GESTURENUM; nFrom++)
-                //{
-                //    if (nTo == nFrom) continue;
-                //    ab.SetTransition(states[nFrom], states[nTo], transitionDuration: _FPEmo.TransitionTime)
-                //        .AddCondition(AnimatorConditionMode.Equals, left, "GestureLeft")
-                //        .AddCondition(AnimatorConditionMode.Equals, right, "GestureRight")
-                //        .AddCondition(AnimatorConditionMode.IfNot,1, "FlatsPlus/Emo/Disable");
-                //}
-                //ab.SetTransition(ab.InitialState, states[nTo])
-                //    .AddCondition(AnimatorConditionMode.Equals, left, "GestureLeft")
-                //    .AddCondition(AnimatorConditionMode.Equals, right, "GestureRight")
-                //    .AddCondition(AnimatorConditionMode.IfNot, 1, "FlatsPlus/Emo/Disable");
-                //ab.SetTransition(states[nTo], ab.InitialState)
-                //    .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Emo/Disable");
-
-                //Any
                 ab.ChangeCurrentState(states[nTo]).TransFromAny(transitionDuration: _FPEmo.TransitionTime)
                     .AddCondition(AnimatorConditionMode.Equals, left, "GestureLeft")
                     .AddCondition(AnimatorConditionMode.Equals, right, "GestureRight")
