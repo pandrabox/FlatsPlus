@@ -88,7 +88,7 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - 触ると揺れる
   - 引っ張ると膨らむ
   - その状態で固定
-  - 一部の表情時に自動で無効化　※まだ
+  - 一部の表情時に自動で無効化
 ## NadePo
 - 触るとほっぺたを赤くする
   - 撫でられ範囲の設定
@@ -101,6 +101,9 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - 表情に合わせて耳を動かす
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
+## 距離クリッピングキャンセラーを自動で設定するやつ
+## WDONで統一するやつ
+
 
 # 依存
 - liltoon
