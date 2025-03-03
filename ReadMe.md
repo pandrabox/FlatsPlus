@@ -82,31 +82,27 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 - DanceController時表情が動く
 - ついでにFxのアバターマスクを削除
 
-# 未実装
 
-## Manager
-- 各機能のざっくりしたONOFFおよび全Inspectorの表示
 ## HopePoyo
 - ほっぺたをぽよぽよに
   - 触ると揺れる
   - 引っ張ると膨らむ
   - その状態で固定
-  - 一部の表情時に自動で無効化
+  - 一部の表情時に自動で無効化　※まだ
 ## NadePo
 - 触るとほっぺたを赤くする
   - 撫でられ範囲の設定
-  - 表示オブジェクトの設定
-  - アニメ調/マテリアル式の設定
+  
+# 未実装
+
+## Manager
+- 各機能のざっくりしたONOFFおよび全Inspectorの表示
 ## EarEmo
 - 表情に合わせて耳を動かす
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
 ## DressSW
 - そのまま再配布
-
-# 使用リソース
-- Camera
-  - 各種メニュー表示等に使用
 
 # 依存
 - liltoon
