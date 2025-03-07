@@ -1,0 +1,50 @@
+05:54:58,,FlatPlus Start Works
+05:54:58,,flatver.1.01(Clone) (VRC.SDK3.Avatars.Components.VRCAvatarDescriptor)を取得しました 
+05:54:58,,FlatsProject Initialized By flat
+05:54:58,,FlatsPlus (com.github.pandrabox.flatsplus.runtime.FlatsPlus)を取得しました 
+05:54:58,,Carry (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/Carry/Carry.prefab
+05:54:58,,Tail (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/Tail/Tail.prefab
+05:54:58,FPTailWork,Flats Plus Work Started
+05:54:58,FPTailWork,com.github.pandrabox.flatsplus.editor.FlatsProjectを取得しました 
+05:54:58,FPTailWork,flatver.1.01(Clone) (VRC.SDK3.Avatars.Components.VRCAvatarDescriptor)を取得しました 
+05:54:58,FPTailWork,Tail (com.github.pandrabox.flatsplus.runtime.FPTail)を取得しました 
+05:54:58,FPTailWork,Tail Root (UnityEngine.GameObject)を取得しました 
+05:54:58,FPTailWork,GroundCollider (VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider)を取得しました 
+05:54:58,FPTailWork,保存パス: Assets/Pan/Temp/FlatsPlusTail_41e50413-752c-43a4-8583-ee1c14b61963.asset
+05:54:58,FPTailWork,ビルドしましたAssets/Pan/Temp/FlatsPlusTail_41e50413-752c-43a4-8583-ee1c14b61963.asset
+05:54:59,FPTailWork,アニメータパラメータPan/One(Float, 1)を追加します
+05:54:59,FPTailWork,アニメータパラメータ__ModularAvatarInternal/One(Float, 1)を追加します
+05:54:59,FPTailWork,アニメータパラメータPan/Dummy(Float, 0)を追加します
+05:54:59,FPTailWork,保存パス: Assets/Pan/Temp/FlatsPlusTailSwing_191478a4-89be-4446-b5c1-16e87a26ce65.asset
+05:54:59,FPTailWork,アニメータパラメータFlatsPlus/Tail/Swing(Bool, 0)を追加します
+05:54:59,FPTailWork,ファイルを更新しましたAssets/Pan/Temp/FlatsPlusTail_41e50413-752c-43a4-8583-ee1c14b61963.asset
+05:54:59,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Folder/FlatsPlus(Bool,0,True)を定義しました
+05:54:59,FPTailWork,MenuBuildeはメニューFlatsPlusを生成しました
+05:54:59,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Folder/しっぽ(Bool,0,True)を定義しました
+05:54:59,FPTailWork,MenuBuildeはメニューしっぽを生成しました
+05:54:59,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Radial/FlatsPlus/Tail/Gravity(Bool,0,True)を定義しました
+05:54:59,FPTailWork,MenuBuildeはメニュー重さを生成しました
+05:54:59,FPTailWork,MenuBuilderはパラメータFlatsPlus/Tail/Gravity(Float,0.5,True)を定義しました
+05:54:59,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Radial/FlatsPlus/Tail/Size(Bool,0,True)を定義しました
+05:54:59,FPTailWork,MenuBuildeはメニュー大きさを生成しました
+05:54:59,FPTailWork,MenuBuilderはパラメータFlatsPlus/Tail/Size(Float,0.5,True)を定義しました
+05:54:59,FPTailWork,MenuBuildeはメニュー揺らすを生成しました
+05:54:59,FPTailWork,MenuBuilderはパラメータFlatsPlus/Tail/Swing(Bool,1,False)を定義しました
+05:54:59,FPTailWork,Complete work successfully in 1564 ms
+05:54:59,,FlatPlus Complete Works
+05:54:59,,アニメータパラメータPan/One(Float, 1)を追加します
+05:54:59,,アニメータパラメータ__ModularAvatarInternal/One(Float, 1)を追加します
+05:54:59,,アニメータパラメータPan/Dummy(Float, 0)を追加します
+05:54:59,,保存パス: Assets/Pan/Temp/Encoder_6e627214-e343-4659-a99f-10b2fc07431d.asset
+05:55:00,,アニメータパラメータIsLocal(Float, 0)を追加します
+05:55:00,,アニメータパラメータFlatsPlus/Tail/SizeRx(Float, 0)を追加します
+05:55:00,,アニメータパラメータFlatsPlus/Tail/Size(Float, 0)を追加します
+05:55:00,,アニメータパラメータFlatsPlus/Tail/Size/b0(Float, 0)を追加します
+05:55:00,,アニメータパラメータFlatsPlus/Tail/Size/b1(Float, 0)を追加します
+05:55:00,,アニメータパラメータFlatsPlus/Tail/Size/b2(Float, 0)を追加します
+05:55:00,,アニメータパラメータFlatsPlus/Tail/Size/b3(Float, 0)を追加します
+05:55:00,,保存パス: Assets/Pan/Temp/Decoder_10c8aa77-3cba-471a-8ab9-4c186ef4f9d1.asset
+05:55:00,,ビルドしましたAssets/Pan/Temp/Decoder_10c8aa77-3cba-471a-8ab9-4c186ef4f9d1.asset
+05:55:02,,ファイルを更新しましたAssets/Pan/Temp/Decoder_10c8aa77-3cba-471a-8ab9-4c186ef4f9d1.asset
+05:55:02,,保存パス: Assets/Pan/Temp/FlatsPlusTail_41e50413-752c-43a4-8583-ee1c14b61963_a30f85dd-7ed1-464b-8f08-c96fc5d1f247.asset
+05:55:02,,保存パス: Assets/Pan/Temp/Decoder_10c8aa77-3cba-471a-8ab9-4c186ef4f9d1_441e6428-440f-4f13-9870-757dc72b576b.asset

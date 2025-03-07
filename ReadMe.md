@@ -95,14 +95,22 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   
 # 未実装
 
+
+## 距離クリッピングキャンセラーを自動で設定するやつ
+## WDONで統一するやつ
+
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
+- 状態保存
+
+## Localize
+- 言語対応　ja, en, ko, zh-CN, zh-TW
+## OnBuildWorker
+- ClippingCancelerONとWDONの呼び出し
 ## EarEmo
 - 表情に合わせて耳を動かす
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
-## 距離クリッピングキャンセラーを自動で設定するやつ
-## WDONで統一するやつ
 
 
 # 依存

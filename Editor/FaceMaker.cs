@@ -17,8 +17,6 @@ using static com.github.pandrabox.flatsplus.editor.Global;
 using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using System.Text.RegularExpressions;
 using com.github.pandrabox.pandravase.editor;
-using UnityEditorInternal;
-using System.Security.Cryptography;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -47,49 +45,50 @@ namespace com.github.pandrabox.flatsplus.editor
         public List<Texture2D> MouthTextures => new List<Texture2D>() { VoidIco }.Concat(Mouths.Select(x => x.Tex)).ToList();
     }
 
-    public class FaceMaker
-    {
 #if PANDRADBG
-        public class FaceMakerDebug
+    public class FaceMakerDebug
+    {
+        [MenuItem("PanDbg/FaceMaker/all")]
+        public static void FaceMaker_Debug()
         {
-            [MenuItem("PanDbg/FaceMaker/all")]
-            public static void FaceMaker_Debug()
+            SetDebugMode(true);
+            var fp = new FlatsProject(TopAvatar);
+            var FM = new FaceMaker(fp);
+            foreach (var face in FM.Faces.All)
             {
-                SetDebugMode(true);
-                var FM = new FaceMaker(TopAvatar);
-                foreach(var face in FM.Faces.All)
-                {
-                    OutpAsset(face.Tex);
-                    OutpAsset(face.OnClip);
-                    OutpAsset(face.OffClip);
-                }
-            }
-            [MenuItem("PanDbg/FaceMaker/unit")]
-            public static void FaceMaker_DebugUnit()
-            {
-                SetDebugMode(true);
-                var FM = new FaceMaker(TopAvatar,unitMode:true);
-                foreach (var face in FM.Faces.All)
-                {
-                    if (face.Tex == null) continue;
-                    OutpAsset(face.Tex);
-                    OutpAsset(face.OnClip);
-                    OutpAsset(face.OffClip);
-                }
+                OutpAsset(face.Tex);
+                OutpAsset(face.OnClip);
+                OutpAsset(face.OffClip);
             }
         }
+        [MenuItem("PanDbg/FaceMaker/unit")]
+        public static void FaceMaker_DebugUnit()
+        {
+            SetDebugMode(true);
+            var fp = new FlatsProject(TopAvatar);
+            var FM = new FaceMaker(fp,unitMode:true);
+            foreach (var face in FM.Faces.All)
+            {
+                if (face.Tex == null) continue;
+                OutpAsset(face.Tex);
+                OutpAsset(face.OnClip);
+                OutpAsset(face.OffClip);
+            }
+        }
+    }
 #endif
-        private FlatsProject _prj;
+
+    public class FaceMaker : FlatsWorkBase
+    {
         public Faces Faces;
         public int TexSize;
         private bool _unitMode;
-        public FaceMaker(VRCAvatarDescriptor desc, int texSize=512, bool unitMode=false) => main(new FlatsProject(desc), texSize, unitMode);
-        public FaceMaker(FlatsProject prj, int texSize = 512, bool unitMode = false) => main(prj, texSize, unitMode);
-        private void main(FlatsProject prj, int texSize = 512, bool unitMode = false)
+        public FaceMaker(FlatsProject prj, int texSize = 512, bool unitMode = false) : base(prj, texSize, unitMode) { }
+
+        protected override void OnConstruct()
         {
-            _unitMode = unitMode;
-            TexSize = texSize;
-            _prj = prj;
+            _unitMode = (bool)_args[1];
+            TexSize = (int)_args[0];
             Faces = new Faces();
             GetNames();
             CreateClip();

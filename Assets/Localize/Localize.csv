@@ -1,0 +1,92 @@
+﻿Key,ja,en,ko,zh-CN,zh-TW
+Menu/Explore,探索,Explore,탐색,探索,探索
+Menu/Explore/Pin,ピン,Pin,핀,针,針
+Menu/Explore/Pin/Enable,どこからでも見えるピンを有効化,Enable pin visible from anywhere,어디서나 보이는 핀 활성화,启用从任何地方可见的针,啟用從任何地方可見的針
+Menu/Explore/Pin/Disable,ピンを無効化,Disable pin,핀 비활성화,禁用针,禁用針
+Menu/Explore/Path,軌跡,Path,경로,路径,路徑
+Menu/Explore/Path/Enable,軌跡描画 有効化,Enable path drawing,경로 그리기 활성화,启用路径绘制,啟用路徑繪製
+Menu/Explore/Path/Disable,軌跡 無効化,Disable path drawing,경로 그리기 비활성화,禁用路径绘制,禁用路徑繪製
+Menu/Explore/Color,色,Color,색,颜色,顏色
+Menu/Explore/Color/Detail,ピン・軌跡 色変更,Change pin and path color,핀 및 경로 색상 변경,更改针和路径颜色,更改針和路徑顏色
+
+Menu/Light,ライト,Light,라이트,灯光,燈光
+Menu/Light/Spot,前方,Spot,앞쪽,前方,前方
+Menu/Light/Area,周囲,Area,주변,周围,周圍
+Menu/Light/Intensity,明るさ,Intensity,밝기,亮度,亮度
+Menu/Light/Global,グローバル,Global,글로벌,全局,全局
+Menu/Light/Spot/Detail,自分の前方を照らす,Illuminate the area in front of you,앞쪽을 비추다,照亮你前方的区域,照亮你前方的區域
+Menu/Light/Area/Detail,自分の周囲を照らす,Illuminate the area around you,주변을 비추다,照亮你周围的区域,照亮你周圍的區域
+Menu/Light/Global/Detail,全員に見える（OFFの場合自分のみ）,Visible to everyone (only you if OFF),모두에게 보임 (OFF인 경우 자신만),对所有人可见（关闭时仅对自己可见）,對所有人可見（關閉時僅對自己可見）
+
+Menu/MakeEmo,表情固定,Make Emo,표정 고정,表情固定,表情固定
+Menu/MakeEmo/Enable,有効,Enable,활성화,启用,啟用
+Menu/MakeEmo/Eye,目,Eye,눈,眼睛,眼睛
+Menu/MakeEmo/Eye/Message,Stickで選択 Triggerで確定,Select with stick, confirm with trigger,스틱으로 선택, 트리거로 확인,用摇杆选择，用扳机确认,用搖桿選擇，用扳機確認
+Menu/MakeEmo/EyeLevel,目の強度,Eye Level,눈의 강도,眼睛强度,眼睛強度
+Menu/MakeEmo/Mouth,口,Mouth,입,嘴巴,嘴巴
+Menu/MakeEmo/Mouth/None,None,None,없음,无,無
+Menu/MakeEmo/Other,その他,Other,기타,其他,其他
+Menu/MakeEmo/Other/Message,その他の設定(重複可),Other settings (can overlap),기타 설정 (중복 가능),其他设置（可重叠）,其他設置（可重疊）
+Menu/MakeEmo/Reset,リセット,Reset,리셋,重置,重置
+Menu/MakeEmo/Clear,表情設定をクリア,Clear facial settings,표정 설정 지우기,清除表情设置,清除表情設置
+
+Menu/Pen,ペン,Pen,펜,笔,筆
+Menu/Pen/Message,ペンで描画します。右手Fistで描画・削除,Draw with the pen. Draw/erase with right hand fist,펜으로 그립니다. 오른손 주먹으로 그리기/지우기,用笔绘画。用右手拳头绘画/擦除,用筆繪畫。用右手拳頭繪畫/擦除
+Menu/Pen/Write,描画,Write,그리기,绘画,繪畫
+Menu/Pen/Write/Message,右手Fistで描画,Draw with right hand fist,오른손 주먹으로 그리기,用右手拳头绘画,用右手拳頭繪畫
+Menu/Pen/Erace,削除,Erase,지우기,擦除,擦除
+Menu/Pen/Erace/Message,右手Fistで描画を削除,Erase drawing with right hand fist,오른손 주먹으로 그리기 지우기,用右手拳头擦除绘画,用右手拳頭擦除繪畫
+Menu/Pen/Clear,クリア,Clear,지우기,清除,清除
+Menu/Pen/Clear/Message,描画を削除しました,Drawing has been cleared,그리기가 지워졌습니다,绘画已被清除,繪畫已被清除
+Menu/Pen/Color,色,Color,색,颜色,顏色
+Menu/Pen/Color/Message,色を変更,Change color,색상 변경,更改颜色,更改顏色
+
+Menu/Sleep,睡眠,Sleep,수면,睡眠,睡眠
+Menu/Sleep/Message,このメニューはアバターの移動を制限します。動くためには機能を解除してください,This menu restricts avatar movement. Disable the feature to move.,이 메뉴는 아바타의 이동을 제한합니다. 이동하려면 기능을 비활성화하세요.,此菜单限制头像移动。禁用该功能以移动。,此菜單限制頭像移動。禁用該功能以移動。
+Menu/Sleep/Enable,有効,Enable,활성화,启用,啟用
+Menu/Sleep/MoveLock,移動ロック,Move Lock,이동 잠금,移动锁,移動鎖
+Menu/Sleep/MoveLock/Message,移動をロック。動くためには解除してください,Movement locked. Disable to move.,이동 잠금. 이동하려면 비활성화하세요.,移动已锁定。禁用以移动。,移動已鎖定。禁用以移動。
+Menu/Sleep/Height,高さ,Height,높이,高度,高度
+Menu/Sleep/LockAnim,Lock:モーション,Lock:Motion,Lock:모션,Lock:动作,Lock:動作
+Menu/Sleep/LockAnim/Message,モーションデータでアバターを完全に固定。動くためには解除してください,Lock avatar completely with motion data. Disable to move.,모션 데이터로 아바타를 완전히 고정합니다. 이동하려면 비활성화하세요.,用动作数据完全锁定头像。禁用以移动。,用動作數據完全鎖定頭像。禁用以移動。
+Menu/Sleep/LockPose,Lock:今の姿勢,Lock:Pose,Lock:자세,Lock:姿势,Lock:姿勢
+Menu/Sleep/LockPose/Message,今の姿勢で全身をロック。動くためには解除してください,Lock entire body in current pose. Disable to move.,현재 자세로 전신을 잠급니다. 이동하려면 비활성화하세요.,用当前姿势锁定整个身体。禁用以移动。,用當前姿勢鎖定整個身體。禁用以移動。
+
+Menu/Tail,しっぽ,Tail,꼬리,尾巴,尾巴
+Menu/Tail/Gravity,重さ,Weight,무게,重量,重量
+Menu/Tail/Size,大きさ,Size,크기,大小,大小
+Menu/Tail/Swing,揺らす,Swing,흔들기,摇摆,搖擺
+
+Func/Carry/Name,他者移動,Carry,다른 사람 이동,移动他人,移動他人
+Func/DanceController/Name,ダンス対応,Dance Controller,댄스 컨트롤러,舞蹈控制器,舞蹈控制器
+Func/Emo/Name,表情制御,Emo Control,표정 제어,表情控制,表情控制
+Func/Explore/Name,探索,Explore,탐색,探索,探索
+Func/Hoppe/Name,ほっぺ,Cheeks,볼,脸颊,臉頰
+Func/Ico/Name,アイコン,Icon,아이콘,图标,圖標
+Func/MakeEmo/Name,表情固定,Fix Expression,표정 고정,固定表情,固定表情
+Func/MeshSetting/Name,メッシュ設定,Mesh Setting,메시 설정,网格设置,網格設置
+Func/Move/Name,自身移動,Move,자신 이동,自身移动,自身移動
+Func/Onaka/Name,おなか,Stomach,배,肚子,肚子
+Func/Pen/Name,ペン,Pen,펜,笔,筆
+Func/PoseClipper/Name,Pose Clipper,Pose Clipper,포즈 클리퍼,姿势固定,姿勢固定
+Func/Sleep/Name,睡眠,Sleep,수면,睡眠,睡眠
+Func/Tail/Name,しっぽ,Tail,꼬리,尾巴,尾巴
+Func/Link/Name,リンク,Link,링크,链接,連結
+Func/Sync/Name,同期,Sync,동기화,同步,同步
+
+Func/Carry/Detail,ワープポータルの召喚、だっこ、おんぶなど。依存：Link Sync,Summon warp portal carry piggyback etc. Dependencies: Link Sync,워프 포탈 소환 업기 업히기 등. 의존: Link Sync,召唤传送门 抱 背等。依赖：Link Sync,召喚傳送門 抱 背等。依賴：Link Sync
+Func/DanceController/Detail,ダンスワールドで表情が動く。依存：Emo,Expressions move in the dance world. Dependencies: Emo,댄스 월드에서 표정이 움직입니다. 의존: Emo,舞蹈世界中的表情移动。依赖：Emo,舞蹈世界中的表情移動。依賴：Emo
+Func/Emo/Detail,他ツール連携用,For integration with other tools,다른 도구와의 통합용,用于与其他工具集成,用於與其他工具集成
+Func/Explore/Detail,どこからでも見えるピン、ライト、軌跡表示。,Visible pins lights and trails from anywhere,어디서나 보이는 핀 라이트 궤적 표시,从任何地方都能看到的针 灯 和轨迹,從任何地方都能看到的針 燈 和軌跡
+Func/Hoppe/Detail,触れるようにし、頬紅を表示する。依存：Emo,Make touchable and display blush Dependencies: Emo,터치할 수 있게 하고 볼에 홍조를 표시합니다. 의존: Emo,使可触摸并显示脸红。依赖：Emo,使可觸摸並顯示臉紅。依賴：Emo
+Func/Ico/Detail,アイコンを表示。依存：Link,Display icons Dependencies: Link,아이콘을 표시합니다. 의존: Link,显示图标。依赖：Link,顯示圖標。依賴：Link
+Func/MakeEmo/Detail,目・口・その他をそれぞれ調整し、固定する。依存：Emo,Adjust and fix eyes mouth etc. Dependencies: Emo,눈 입 등을 조정하고 고정합니다. 의존: Emo,调整和固定眼睛 嘴巴等。依赖：Emo,調整和固定眼睛 嘴巴等。依賴：Emo
+Func/MeshSetting/Detail,明るさなどを自動で調整する。,Automatically adjust brightness etc.,밝기 등을 자동으로 조정합니다.,自动调整亮度等.,自動調整亮度等.
+Func/Move/Detail,浮遊・高速移動・持続移動,Floating fast movement sustained movement,부유 고속 이동 지속 이동,漂浮 快速移动 持续移动,漂浮 快速移動 持續移動
+Func/Onaka/Detail,やわらかくなり、触ることができる。,Becomes soft and touchable,부드러워지고 터치할 수 있습니다.,变得柔软且可触摸,變得柔軟且可觸摸
+Func/Pen/Detail,どこでも描ける,Can draw anywhere,어디서나 그릴 수 있습니다.,可以在任何地方绘画,可以在任何地方繪畫
+Func/PoseClipper/Detail,アバターを現在の姿勢のまま固定する,Fix avatar in current pose,아바타를 현재 포즈로 고정합니다.,将头像固定在当前姿势,將頭像固定在當前姿勢
+Func/Sleep/Detail,3点トラッキング・デスクトップで横になる。依存：PoseClipper,Lay down with 3-point tracking desktop etc. Dependencies: PoseClipper,3점 트래킹 데스크탑 등에서 눕습니다. 의존: PoseClipper,进行三点跟踪 在桌面上躺下等。依赖：PoseClipper,進行三點跟蹤 在桌面上躺下等。依賴：PoseClipper
+Func/Tail/Detail,大きさ変更、ゆらす。,Change size and sway,크기 변경 흔들기,改变大小和摇摆,改變大小和搖擺
+Func/Link/Detail,他ツール連携用,For integration with other tools,다른 도구와의 통합용,用于与其他工具集成,用於與其他工具集成
+Func/Sync/Detail,他ツール連携用,For integration with other tools,다른 도구와의 통합용,用于与其他工具集成,用於與其他工具集成

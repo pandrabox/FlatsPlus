@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#region
+using UnityEditor;
 using nadena.dev.modular_avatar.core;
 using UnityEngine;
 using UnityEditor.Animations;
@@ -18,17 +19,18 @@ using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using System.Text.RegularExpressions;
 using com.github.pandrabox.pandravase.editor;
 using System.Globalization;
-
+#endregion
 
 namespace com.github.pandrabox.flatsplus.editor
 {
     /// <summary>
-    /// PandraProjectにFlats用DB機能を追加したクラス
+    /// Flatsに特化したPandraProject
     /// </summary>
     public class FlatsProject : PandraProject
     {
 
 #if PANDRADBG
+        #region
         //public static class FlatsPlusFlatsProjectDebug
         //{
         //    [MenuItem("PanDbg/FlatsProjectDebug")]
@@ -45,7 +47,16 @@ namespace com.github.pandrabox.flatsplus.editor
         //        }
         //    }
         //}
+        #endregion
 #endif
+        public FlatsProject(VRCAvatarDescriptor desc, bool ImmediateInitialize = false)
+        {
+            Init(desc, "FlatsPlus", ProjectTypes.VPM);
+            if (ImmediateInitialize)
+            {
+                Initialization();
+            }
+        }
 
         public string CurrentAvatarName => GetAvatarName(CurrentAvatarType);
         public string TailName => GetDBString("TailName");
@@ -68,15 +79,27 @@ namespace com.github.pandrabox.flatsplus.editor
         public float FaceCapX => GetDBFloat("FaceCapX");
         public float FaceCapY => GetDBFloat("FaceCapY");
         public float FaceCapZ => GetDBFloat("FaceCapZ");
-        //public string[] IgnoreShapes => GetDBString("IgnoreShapes")?.Split('-');
         public float Hoppe2X => GetDBFloat("Hoppe2X");
         public float Hoppe2Y => GetDBFloat("Hoppe2Y");
         public float Hoppe2Z => GetDBFloat("Hoppe2Z");
         public string[] DisHoppeShapes => GetDBString("DisHoppeShapes")?.Split('-');
+        public float TotalBoundsCenterX => GetDBFloat("TotalBoundsCenterX");
+        public float TotalBoundsCenterY => GetDBFloat("TotalBoundsCenterY");
+        public float TotalBoundsCenterZ => GetDBFloat("TotalBoundsCenterZ");
+        public float TotalBoundsExtentX => GetDBFloat("TotalBoundsExtentX");
+        public float TotalBoundsExtentY => GetDBFloat("TotalBoundsExtentY");
+        public float TotalBoundsExtentZ => GetDBFloat("TotalBoundsExtentZ");
+
+        public Vector3 TotalBoundsCenter => new Vector3(TotalBoundsCenterX, TotalBoundsCenterY, TotalBoundsCenterZ);
+        public Vector3 TotalBoundsExtent => new Vector3(TotalBoundsExtentX, TotalBoundsExtentY, TotalBoundsExtentZ);
 
 
         public string HeadSensor => "FlatsPlus/HeadSensor";
         public string CheekSensor => "FlatsPlus/CheekSensor";
+
+        public string FPRoot => "Packages/com.github.pandrabox.flatsplus/";
+        public string FPAseets => $@"{FPRoot}Assets/";
+        public string FPFlatsCSV => $@"{FPAseets}FlatsDB/db.csv";
 
         public Dictionary<string, FaceType> GeneralShapes {
             get
@@ -103,18 +126,16 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 if (!initialized)
                 {
-                    initialized = true;
                     Initialization();
                 }
                 return _currentAvatarType;
             }
         }
 
-
-
         private const int ATTRIBUTEINDEX = 26;
         private const int FLOORINDEX = 7;
-        private const string CSVPATH = "Packages/com.github.pandrabox.flatsplus/Assets/FlatsDB/db.csv";
+
+
         private Dictionary<string, Dictionary<string, string>> data;
         private Dictionary<string, Dictionary<string, string>> Data
         {
@@ -122,53 +143,57 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 if (!initialized)
                 {
-                    initialized = true;
                     Initialization();
                 }
                 return data;
             }
         }
-        public FlatsProject(VRCAvatarDescriptor desc)
-        {
-            Init(desc, "FlatsPlus", ProjectTypes.VPM);
-        }
 
 
         private void Initialization()
         {
-            data = new Dictionary<string, Dictionary<string, string>>();
-            if (!File.Exists(CSVPATH))
+            try
             {
-                LowLevelExeption($@"CSV:{CSVPATH}が見つかりませんでした");
-                return;
-            }
-            string tmpPath = Path.Combine(TmpFolder, $"flatDB{Guid.NewGuid()}.csv");
-            CreateDir(TmpFolder);
-            File.Copy(CSVPATH, tmpPath, true);
-
-            string[] lines = File.ReadAllLines(tmpPath);
-            if (lines.Length < 2) return;
-
-            string[] headers = lines[0].Split(',');
-
-            for (int i = 1; i < lines.Length; i++)
-            {
-                string[] values = lines[i].Split(',');
-                if (values.Length < 2) continue;
-
-                string rowKey = values[0];
-
-                if (!data.ContainsKey(rowKey)) data[rowKey] = new Dictionary<string, string>();
-
-                for (int j = 1; j < values.Length; j++)
+                initialized = true;
+                data = new Dictionary<string, Dictionary<string, string>>();
+                if (!File.Exists(FPFlatsCSV))
                 {
-                    if (!string.IsNullOrWhiteSpace(values[j]))
+                    LowLevelExeption($@"CSV:{FPFlatsCSV}が見つかりませんでした");
+                    return;
+                }
+                string tmpPath = Path.Combine(TmpFolder, $"flatDB{Guid.NewGuid()}.csv");
+                CreateDir(TmpFolder);
+                File.Copy(FPFlatsCSV, tmpPath, true);
+
+                string[] lines = File.ReadAllLines(tmpPath);
+                if (lines.Length < 2) return;
+
+                string[] headers = lines[0].Split(',');
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string[] values = lines[i].Split(',');
+                    if (values.Length < 2) continue;
+
+                    string rowKey = values[0];
+
+                    if (!data.ContainsKey(rowKey)) data[rowKey] = new Dictionary<string, string>();
+
+                    for (int j = 1; j < values.Length; j++)
                     {
-                        data[rowKey][headers[j]] = values[j];
+                        if (!string.IsNullOrWhiteSpace(values[j]))
+                        {
+                            data[rowKey][headers[j]] = values[j];
+                        }
                     }
                 }
+                SetCurrentAvatar();
+                LowLevelDebugPrint($@"FlatsProject Initialized By {CurrentAvatarName}");
             }
-            SetCurrentAvatar();
+            catch
+            {
+                initialized = false;
+            }            
         }
 
 
@@ -263,7 +288,7 @@ namespace com.github.pandrabox.flatsplus.editor
         }
 
 
-        //メソッドチェーンのオーバーライド
+        [Obsolete]
         public new FlatsProject SetSuffixMode(bool mode)
         {
             base.SetSuffixMode(mode);  // 基底クラスのSetSuffixModeを呼び出す
