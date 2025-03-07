@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1965731672781287272}
   - component: {fileID: 1965731672781287269}
-  - component: {fileID: 1965731672781287274}
+  - component: {fileID: 1176061049965430258}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -124,7 +124,7 @@ MonoBehaviour:
     saved: 0
     hasExplicitDefaultValue: 0
     m_overrideAnimatorDefaults: 0
---- !u!114 &1965731672781287274
+--- !u!114 &1176061049965430258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1965731672781287273}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 425524c6503123748bdc2ff3a3d7f256, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bc8335e21fb5c04783bd8f7e0b55fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IntensityPerfectSync: 0
@@ -5370,7 +5370,7 @@ Transform:
   m_GameObject: {fileID: 1965731673896114770}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2048193, y: 1.2048193, z: 1.2048193}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1965731674124398793}
   - {fileID: 1965731672894198905}

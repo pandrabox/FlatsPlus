@@ -43,7 +43,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         protected override void GetTgt()
         {
-            _tgt = _desc.GetComponentInChildren<T>().NullCheck();
+            _tgt = _desc.GetComponentInChildren<T>().NullCheck("_tgt");
         }
     }
 
@@ -61,17 +61,15 @@ namespace com.github.pandrabox.flatsplus.editor
                 _args = args;
                 LowLevelDebugPrint($"Flats Plus Work Started");
                 stopwatch = Stopwatch.StartNew();
-                _prj = prj.NullCheck();
-                _desc = prj.Descriptor.NullCheck();
+                _prj = prj.NullCheck("_prj");
+                _desc = prj.Descriptor.NullCheck("_desc");
                 GetTgt();
                 OnConstruct();
                 LowLevelDebugPrint($"Complete work successfully in {stopwatch?.ElapsedMilliseconds ?? 0} ms", true, LogType.Log);
             }
             catch (Exception ex)
             {
-                string stackTrace = ex.StackTrace.Replace(" at ", "\n   at ");
-                LowLevelDebugPrint($"Failed work due to an error: {ex.Message} in {stopwatch?.ElapsedMilliseconds ?? 0} ms at {ex.StackTrace}　Exception Details: {ex.ToString()}", true, LogType.Error);
-               
+                AppearError(ex);
             }
             finally
             {

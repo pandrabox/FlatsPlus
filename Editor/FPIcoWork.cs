@@ -81,13 +81,13 @@ namespace com.github.pandrabox.flatsplus.editor
         /// <returns></returns>
         private bool GetStructure()
         {
-            Transform Offset = _tgt.transform.Find("Obj/Head/Offset").NullCheck();
-            _callPlane = Offset.GetComponentsInChildren<GameObject>(true).FirstOrDefault(child => child.name == "CallPlate").NullCheck();
-            var menuItems = _tgt.transform.GetComponentsInChildren<ModularAvatarMenuItem>().NullCheck();
+            Transform Offset = _tgt.transform.Find("Obj/Head/Offset").NullCheck("Offset");
+            _callPlane = Offset.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == "CallPlate").gameObject.NullCheck("_callPlane");
+            var menuItems = _tgt.transform.GetComponentsInChildren<ModularAvatarMenuItem>().NullCheck("menuItems");
             var icoMenuItems = menuItems.Where(x => x.Control.parameter.name == "FlatsPlus/Ico/IcoType").ToList();
             for (int i = 0; i < MENUMAX; i++)
             {
-                var item = icoMenuItems.FirstOrDefault(x => x.Control.value == i + 1).NullCheck();
+                var item = icoMenuItems.FirstOrDefault(x => x.Control.value == i + 1).NullCheck("menuIco" + i);
                 _menuItems[i] = item;
             }
             LowLevelDebugPrint("Structureの取得に成功しました");

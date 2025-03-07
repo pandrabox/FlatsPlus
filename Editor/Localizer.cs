@@ -11,7 +11,7 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public static string Language;
         private static Dictionary<string, string> localizationDictionary = new Dictionary<string, string>();
-        private const string dataPath = "Packages/com.github.pandrabox.flatsplus/Assets/Localize/Localize.csv";
+        private const string dataPath = "Packages/com.github.pandrabox.flatsplus/Editor/Localize/Localize.csv";
 
         private static Dictionary<SystemLanguage, string> languageMap = new Dictionary<SystemLanguage, string>()
             {
@@ -73,15 +73,7 @@ namespace com.github.pandrabox.flatsplus.editor
             LoadText();
             if (localizationDictionary.TryGetValue(name, out string res))
             {
-                if (res.Length > 1)
-                {
-                    return res;
-                }
-                else
-                {
-                    LowLevelExeption($@"Localization value is too short: {name} -> {res}");
-                    return name;
-                }
+                return res;
             }
             else
             {

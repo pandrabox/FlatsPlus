@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using static com.github.pandrabox.flatsplus.editor.Global;
+using static com.github.pandrabox.flatsplus.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -69,8 +70,7 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             catch (Exception ex)
             {
-                string stackTrace = ex.StackTrace.Replace(" at ", "\n   at ");
-                LowLevelDebugPrint($"Failed work due to an error: {ex.Message}\n{stackTrace}\nException Details: {ex.ToString()}", true, LogType.Error);
+                AppearError(ex);
             }
             finally
             {
@@ -86,6 +86,10 @@ namespace com.github.pandrabox.flatsplus.editor
             try
             {
                 if (!runCondition) return;
+
+                currentStep++;
+                EditorUtility.DisplayProgressBar(L("FlatsPlus_Progress"), $"{path}", (float)currentStep / totalSteps);
+
                 if (!path.EndsWith(".prefab")) path = $"{path}/{path}.prefab";
                 path = $@"{FlatsPlusAssetsPath}/{path}";
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path).NullCheck(path);
@@ -98,16 +102,23 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     go.name = go.name.Replace("(Clone)", "").Trim();
                 }
-                if (typeof(T) != typeof(FlatsWorkBase)) Activator.CreateInstance(typeof(T), _p);
 
-                // プログレスバーの更新
-                currentStep++;
-                EditorUtility.DisplayProgressBar("FlatPlus Progress", $"{path}", (float)currentStep / totalSteps);
+                if (typeof(T) == typeof(FlatsWorkBase))
+                {
+                    //何もしない
+                }
+                else if (typeof(T) == typeof(FPOnakaWork))
+                {
+                    Activator.CreateInstance(typeof(T), _p, false);
+                }
+                else
+                {
+                    Activator.CreateInstance(typeof(T), _p);
+                }
             }
             catch (Exception ex)
             {
-                string stackTrace = ex.StackTrace.Replace(" at ", "\n   at ");
-                LowLevelDebugPrint($"Failed work due to an error: {ex.Message}\n{stackTrace}\nException Details: {ex.ToString()}", true, LogType.Error);
+                AppearError(ex);
             }
         }
     }
