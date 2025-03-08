@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &750278441998416866
+--- !u!1 &4112289042224456872
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 750278441998416877}
+  - component: {fileID: 4112289042224456873}
+  - component: {fileID: 4112289042224456870}
   m_Layer: 0
   m_Name: FlatsPlus
   m_TagString: Untagged
@@ -16,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &750278441998416877
+--- !u!4 &4112289042224456873
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750278441998416866}
+  m_GameObject: {fileID: 4112289042224456872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -30,3 +31,68 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4112289042224456870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4112289042224456872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662801ca1f5b5fe42b6bbd15a96a7d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Func_Carry: 1
+  Func_DanceController: 1
+  Func_Emo: 1
+  Func_Explore: 1
+  Func_Hoppe: 1
+  Func_Ico: 1
+  Func_Light: 1
+  Func_MakeEmo: 1
+  Func_MeshSetting: 1
+  Func_Move: 1
+  Func_Onaka: 1
+  Func_Pen: 1
+  Func_Sleep: 1
+  Func_Tail: 1
+  Func_Link: 1
+  Func_Sync: 1
+  Func_WriteDefaultOn: 1
+  Func_ClippingCanceler: 1
+  Language: ja
+  Emo_TransitionTime: 0.5
+  Ico_Textures:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  Ico_VerView: 0
+  Light_IntensityPerfectSync: 0
+  MakeEmo_MenuSize: 0.35
+  MakeEmo_LockSize: 0.08
+  MakeEmo_MenuOpacity: 0.85
+  MakeEmo_SelectColor: {r: 0, g: 210, b: 255, a: 200}
+  MakeEmo_BackGroundColor: {r: 0, g: 0, b: 0, a: 150}
+  MakeEmo_Margin: 13
+  MakeEmo_ScrollSpeed: 0.03
+  MakeEmo_DeadZone: 0.3
+  Onaka_Pull: 0.5
+  Onaka_Spring: 0.8
+  Onaka_Gravity: 0.2
+  Onaka_GravityFallOff: 1
+  Onaka_Immobile: 0.8
+  Onaka_LimitAngle: 20
+  Onaka_RadiusTuning: 1
+  Tail_SwingPeriod: 1.5
+  Tail_SwingAngle: 60
+  Tail_SizeMax: 1
+  Tail_SizeMin: 0.01
+  Tail_SizePerfectSync: 0
+  Tail_DefaultSize: 0.5
+  Tail_GravityRange: 0.3
+  Tail_GravityPerfectSync: 0
+  Tail_DefaultGravity: 0.5

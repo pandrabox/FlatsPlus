@@ -103,11 +103,43 @@ FlatsPlus_Progress,FlatsPlus 作業中,FlatsPlus in progress,FlatsPlus 작업 �
 Editor/AllOff,全てOff,All Off,모두 Off,全部关闭,全部關閉
 Editor/AllOn,全てOn,All On,모두 On,全部开启,全部開啟
 
-LogAnalyze/Title,前回の実行結果,Last Execution Result,이전 실행 결과,上次执行结果,上次執行結果
-LogAnalyze/ExecutionTime,実行時刻,Execution Time,실행 시간,执行时间,執行時間
+LogAnalyze/Title,前回のビルド結果,Last build result,이전 빌드 결과,上次构建结果,上次構建結果
+LogAnalyze/ExecutionTime,ビルド時刻,Execution time,빌드 시각,执行时间,執行時間
 LogAnalyze/FunctionFailure,いくつかの機能導入に失敗しました。ログ情報をPandraまでご連絡ください,Some functions failed to install. Please contact Pandra with the log information.,몇 가지 기능 설치에 실패했습니다. 로그 정보를 Pandra에 연락하세요.,一些功能安装失败。请联系Pandra并提供日志信息。,一些功能安裝失敗。請聯繫Pandra並提供日誌信息。
 LogAnalyze/UnknownError,不明なエラーが発生しました。ログ情報をPandraまでご連絡ください,An unknown error occurred. Please contact Pandra with the log information.,알 수 없는 오류가 발생했습니다. 로그 정보를 Pandra에 연락하세요.,发生未知错误。请联系Pandra并提供日志信息。,發生未知錯誤。請聯繫Pandra並提供日誌信息。
 LogAnalyze/AllFine,すべて正常に動作しました！,Everything worked fine!,모든 것이 잘 작동했습니다!,一切正常运行！,一切正常運行！
 LogAnalyze/CopyLog,報告用のログ情報をコピー,Copy log information for reporting,보고용 로그 정보 복사,复制报告用的日志信息,複製報告用的日誌信息
 LogAnalyze/CopyCompleteTitle,コピー完了,Copy Complete,복사 완료,复制完成,複製完成
 LogAnalyze/CopyCompleteMessage,ログ情報をクリップボードにコピーしました！\n\rPandraまで連絡をお願いします。\n\r主な受付先：\n\r - Booth \n\r - 問い合わせフォーム \n\r - X\n\r\n\r※ログ情報にはユーザ名などの個人情報が含まれている場合があります。事前に確認してから送信してください。,Log information has been copied to the clipboard!\n\rPlease contact Pandra.\n\rMain contact points:\n\r - Booth \n\r - Inquiry form \n\r - X\n\r\n\r*Log information may contain personal information such as user names. Please check before sending.,로그 정보가 클립보드에 복사되었습니다!\n\rPandra에 연락하세요.\n\r주요 연락처:\n\r - Booth \n\r - 문의 양식 \n\r - X\n\r\n\r*로그 정보에는 사용자 이름과 같은 개인 정보가 포함될 수 있습니다. 보내기 전에 확인하세요.,日志信息已复制到剪贴板！\n\r请联系Pandra。\n\r主要联系点：\n\r - Booth \n\r - 查询表单 \n\r - X\n\r\n\r*日志信息可能包含用户名等个人信息。发送前请检查。,日誌信息已複製到剪貼板！\n\r請聯繫Pandra。\n\r主要聯繫點：\n\r - Booth \n\r - 查詢表單 \n\r - X\n\r\n\r*日誌信息可能包含用戶名等個人信息。發送前請檢查。
+
+
+Menu/Carry,他者移動,Carry,다른 사람 이동,移动他人,移動他人
+Menu/Carry/CallGate,ゲート召喚,Call Gate,게이트 소환,召唤传送门,召喚傳送門
+Menu/Carry/CallGate/Message,灰色のゲート(他者用ワープポータル)を召喚する。自分は使えない。,Summon a gray gate (warp portal for others). You can't use it.,회색 게이트(다른 사람용 워프 포탈)을 소환합니다. 자신은 사용할 수 없습니다.,召唤灰色传送门(他人用传送门)。自己无法使用。,召喚灰色傳送門(他人用傳送門)。自己無法使用。
+Menu/Carry/GateActive,ゲート有効,Activate Gate,게이트 활성화,激活传送门,激活傳送門
+Menu/Carry/GateActive/Message,灰色のゲート(他者用)を有効化しました。,Activated the gray gate (for others).,회색 게이트(다른 사람용)를 활성화했습니다.,激活灰色传送门(他人用)。,激活灰色傳送門(他人用)。
+Menu/Carry/CallTakeMe,ゲート申請,Call Take Me,게이트 신청,召唤我,召喚我
+Menu/Carry/CallTakeMe/Message,青のゲート(自分専用)の生成を申請する。近くにFlatsがいなければ効果がない。,Apply for the creation of a blue gate (for your own use). It has no effect if there is no Flats nearby.,파란 게이트(자신 전용) 생성을 신청합니다. 주변에 Flats가 없으면 효과가 없습니다.,申请生成蓝色传送门(自己专用)。如果附近没有Flats，则无效。,申請生成藍色傳送門(自己專用)。如果附近沒有Flats，則無效。
+Menu/Carry/AutoTakeMe,自動申請,Auto Take Me,자동 신청,自动召唤我,自動召喚我
+Menu/Carry/AutoTakeMe/Message,灰のゲート展開時に自動で青のゲートを申請する,Apply for a blue gate automatically when the gray gate is deployed,회색 게이트 전개시 자동으로 파란 게이트를 신청합니다,灰色传送门展开时自动申请蓝色传送门,灰色傳送門展開時自動申請藍色傳送門
+Menu/Carry/Hug,抱っこ,Hug,안기,抱,抱
+Menu/Carry/Hug/Message,手で相手を持てる。,You can hold the other person with your hands.,손으로 상대를 안을 수 있습니다.,用手抱住对方。,用手抱住對方。
+Menu/Carry/Carry,おんぶ,Carry,업기,背,背
+Menu/Carry/Carry/Message,背中に他者が乗れる。,Others can ride on your back.,다른 사람이 등에 탈 수 있습니다.,其他人可以骑在你的背上。,其他人可以騎在你的背上。
+Menu/Carry/Distance,距離調整,Distance,거리 조정,调整距离,調整距離
+Menu/Carry/Distance/Message,距離を調整する。だっこ・おんぶ共用。,Adjust the distance. Shared with hug and carry.,거리를 조정합니다. 안기 업기와 공용입니다.,调整距离。与拥抱和背部共用。,調整距離。與擁抱和背部共用。
+Menu/Carry/Rotation,角度調整,Rotation,각도 조정,调整角度,調整角度
+Menu/Carry/Rotation/Message,角度を調整する。全ての「他者移動」共用。,Adjust the angle. Shared with all "Carry".,각도를 조정합니다. 모든 "다른 사람 이동"과 공용입니다.,调整角度。与所有“移动他人”共用。,調整角度。與所有“移動他人”共用。
+
+Menu/Move,自身移動,Move,자신 이동,移动自己,移動自己
+Menu/Move/FlyDash,飛行 & 高速移動,Fly & Dash,비행 & 고속 이동,飞行 & 快速移动,飛行 & 快速移動
+Menu/Move/DashSpeed,移動速度,Move Speed,이동 속도,移动速度,移動速度
+Menu/Move/Continue,ホバリング,Hovering,호버링,悬浮,懸浮
+Menu/Move/ContinueDirection,ホバリング上下,Hovering Up and Down,호버링 상하,悬浮上下,懸浮上下
+
+Menu/Ico,アイコン,Ico,아이콘,图标,圖標
+Menu/Ico/Resonance,共鳴,Resonance,공명,共鸣,共鳴
+Menu/Ico/Resonance/Detail,周囲のFlatsにも共鳴アイコンを表示します。,Display resonance icons for surrounding Flats.,주변의 Flats에도 공명 아이콘을 표시합니다.,显示周围Flats的共鸣图标。,顯示周圍Flats的共鳴圖標。
+Menu/Ico/VerView,バージョン表示,Version View,버전 보기,版本视图,版本視圖
+Menu/Ico/VerView/Detail,周囲のFlatsのFlatsPlusのバージョンを表示します。,Display the version of FlatsPlus for surrounding Flats.,주변의 FlatsPlus의 버전을 표시합니다.,显示周围Flats的FlatsPlus版本。,顯示周圍Flats的FlatsPlus版本。
+

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+
+using System;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using nadena.dev.modular_avatar.core;
@@ -290,6 +292,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void LogAnalyzeResult()
         {
+            if (_lastBuild == DateTime.MinValue) return;
             Title(L("LogAnalyze/Title"));
             EditorGUILayout.LabelField(L("LogAnalyze/ExecutionTime"), _lastBuild.ToString());
             bool allFine = true;
@@ -330,3 +333,4 @@ namespace com.github.pandrabox.flatsplus.editor
         }
     }
 }
+#endif

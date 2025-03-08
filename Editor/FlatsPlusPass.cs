@@ -54,7 +54,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
                 Localizer.SetLanguage(fp.Language);
 
-                CreateInstantiate(fp.Func_Carry, "Carry");
+                CreateWork<FPCarryWork>(fp.Func_Carry, "Carry");
                 CreateInstantiate(fp.Func_DanceController, "DanceController");
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo");
                 CreateWork<FPExploreWork>(fp.Func_Explore, "Explore");
@@ -66,7 +66,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo");
                 CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting");
                 CreateInstantiate(true, "MessageUI");
-                CreateInstantiate(fp.Func_Move, "Move");
+                CreateWork<FPMoveWork>(fp.Func_Move, "Move");
                 CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka");
                 CreateWork<FPPenWork>(fp.Func_Pen, "Pen");
                 CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep");

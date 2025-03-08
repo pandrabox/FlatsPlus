@@ -10,6 +10,7 @@ using nadena.dev.ndmf.util;
 using nadena.dev.ndmf;
 using com.github.pandrabox.pandravase.runtime;
 using static com.github.pandrabox.pandravase.editor.Util;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 using System.Linq;
 using VRC.SDK3.Avatars.Components;
 using com.github.pandrabox.flatsplus.runtime;
@@ -37,22 +38,13 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public FPIcoWork(FlatsProject fp) : base(fp) { }
 
-        private const int ICONUM = 7;
-        private const int MENUMAX = 8; // iconum+1(VerView)
         GameObject _callPlane;
-        GameObject _verViewObj => _menuItems[MENUMAX-1].gameObject;
-        ModularAvatarMenuItem[] _menuItems = new ModularAvatarMenuItem[MENUMAX];
 
         sealed protected override void OnConstruct()
         {
             GetStructure();
-            for (int i = 0; i < ICONUM; i++)
-            {
-                LowLevelDebugPrint($@"アイコンの置換を行います{i}");
-                _menuItems[i].Control.icon = ResizeTexture(_tgt.textures[i], 256);
-            }
             ReplacePackTexture();
-            if (!_tgt.VerView) GameObject.DestroyImmediate(_verViewObj);
+            CreateMenu();
         }
 
         private void ReplacePackTexture()
@@ -74,6 +66,31 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             }
         }
+        private void CreateMenu()
+        {
+            MenuBuilder mb = new MenuBuilder(_prj);
+            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Ico"));
+            string name;
+            for (int i = 1; i < 9; i++)
+            {
+                if (i < 7)
+                {
+                    name = (i).ToString();
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetIco(_tgt.textures[i-1]);
+                }
+                else if (i == 7)
+                {
+                    name = L("Menu/Ico/Resonance");
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/Resonance/Detail").SetIco(_tgt.textures[i-1]);
+                }
+                else if (_tgt.VerView && i == 8)
+                {
+                    name = L("Menu/Ico/VerView");
+                    Texture2D vvico= AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i8.png");
+                    mb.AddButton("FlatsPlus/Icon/VerView", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/VerView/Detail").SetIco(vvico);
+                }
+            }
+        }
 
         /// <summary>
         /// プレハブの構造確認・取得
@@ -83,14 +100,6 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             Transform Offset = _tgt.transform.Find("Obj/Head/Offset").NullCheck("Offset");
             _callPlane = Offset.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == "CallPlate").gameObject.NullCheck("_callPlane");
-            var menuItems = _tgt.transform.GetComponentsInChildren<ModularAvatarMenuItem>().NullCheck("menuItems");
-            var icoMenuItems = menuItems.Where(x => x.Control.parameter.name == "FlatsPlus/Ico/IcoType").ToList();
-            for (int i = 0; i < MENUMAX; i++)
-            {
-                var item = icoMenuItems.FirstOrDefault(x => x.Control.value == i + 1).NullCheck("menuIco" + i);
-                _menuItems[i] = item;
-            }
-            LowLevelDebugPrint("Structureの取得に成功しました");
             return true;
         }
     }
