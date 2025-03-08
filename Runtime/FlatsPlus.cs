@@ -287,7 +287,6 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            _lastBuild = DateTime.Now;
         }
 
         private void LogAnalyzeResult()

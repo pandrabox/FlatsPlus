@@ -59,14 +59,10 @@ namespace com.github.pandrabox.flatsplus.editor
         }
         private void CreateBlush()
         {
-            Transform hoppe2 = _tgt.transform.Find("Hoppe2");
-            Transform blushArmature = hoppe2.transform.Find("Armature");
-            Transform blushHead = blushArmature.transform.Find("Head");
-            if (hoppe2 == null || blushArmature ==null || blushHead == null)
-            {
-                LowLevelExeption("Blush not found");
-                return;
-            }
+            Transform hoppe2 = _tgt.transform.Find("Hoppe2").NullCheck("Hoppe2ObjRoot");
+            Transform blushArmature = hoppe2.transform.Find("Armature").NullCheck("BlushArmature");
+            Transform blushHead = blushArmature.transform.Find("Head").NullCheck("BlushHead");
+            
             hoppe2.transform.localScale=new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
             var mama =blushHead.gameObject.AddComponent<ModularAvatarMergeArmature>();
             mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
