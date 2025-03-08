@@ -147,6 +147,7 @@ namespace com.github.pandrabox.flatsplus.editor
                         bb.Param(1.4f).AddMotion(ac.Outp("Write"));
                         bb.Param(1.5f).AddMotion(ac.Outp("OFF"));
                     });
+                    bb.Param(EXPLORENO-.1f).AddMotion(ac.Outp("OFF"));
                     bb.Param(EXPLORENO).AddMotion(ac.Outp("Write"));
                 });
                 bb.NName("Color").Param("1").Add1D("FlatsPlus/Pen/ComRx", () =>

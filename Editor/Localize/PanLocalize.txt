@@ -8,6 +8,8 @@ Menu/Explore/Path/Enable,軌跡描画 有効化,Enable path drawing,경로 그�
 Menu/Explore/Path/Disable,軌跡 無効化,Disable path drawing,경로 그리기 비활성화,禁用路径绘制,禁用路徑繪製
 Menu/Explore/Color,色,Color,색,颜色,顏色
 Menu/Explore/Color/Detail,ピン・軌跡 色変更,Change pin and path color,핀 및 경로 색상 변경,更改针和路径颜色,更改針和路徑顏色
+Menu/Explore/Path/Clear/Detail,軌跡を削除しました,Path has been cleared,경로가 삭제되었습니다,路径已被清除,路徑已被清除
+Menu/Explore/Path/Clear,軌跡削除,Path Clear,경로 삭제,清除路径,清除路徑
 
 Menu/Light,ライト,Light,라이트,灯光,燈光
 Menu/Light/Spot,前方,Spot,앞쪽,前方,前方

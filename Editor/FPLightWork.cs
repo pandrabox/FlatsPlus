@@ -80,7 +80,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 .AddToggle("FlatsPlus/Light/LightMode", 1, ParameterSyncType.Int, L("Menu/Light/Spot")).SetMessage(L("Menu/Light/Spot/Detail"))
                 .AddToggle("FlatsPlus/Light/LightMode", 2, ParameterSyncType.Int, L("Menu/Light/Area")).SetMessage(L("Menu/Light/Area/Detail"))
                 .AddRadial("FlatsPlus/Light/Intensity", L("Menu/Light/Intensity"), .5f)
-                .AddToggle(mSync.SyncParameter, 1, ParameterSyncType.Bool, L("Menu/Light/Global")).SetMessage("Menu/Light/Global/Detail");
+                .AddToggle(mSync.SyncParameter, 1, ParameterSyncType.Bool, L("Menu/Light/Global")).SetMessage(L("Menu/Light/Global/Detail"));
         }
     }
 }

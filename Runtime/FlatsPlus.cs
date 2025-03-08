@@ -71,6 +71,7 @@ namespace com.github.pandrabox.flatsplus.runtime
         public float Tail_GravityRange = .3f; //0～1
         public bool Tail_GravityPerfectSync = false;
         public float Tail_DefaultGravity = .5f; //0～1
+        public bool Func_PoseClipper = true;
     }
 }
 
@@ -86,7 +87,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private SerializedProperty 
             funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync
-            , language, writedefaulton, clippingCanceler;
+            , language, writedefaulton, clippingCanceler, funcPoseClipper;
 
         public override void OnInnerInspectorGUI()
         {
@@ -108,6 +109,7 @@ namespace com.github.pandrabox.flatsplus.editor
             DrawPropertyField(funcLink, "Func/Link");
             DrawPropertyField(funcSync, "Func/Sync");
             DrawPropertyField(writedefaulton, "Func/WriteDefaultOn");
+            DrawPropertyField(funcPoseClipper, "Func/PoseClipper");
             DrawAllChangeField();
             DrawClippingCanceler();
             LogAnalyzeResult();
@@ -180,6 +182,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 funcLink.boolValue = false;
                 funcSync.boolValue = false;
                 writedefaulton.boolValue = false;
+                funcPoseClipper.boolValue = false;
             }
             if (GUILayout.Button(L("Editor/AllOn")))
             {
@@ -200,6 +203,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 funcLink.boolValue = true;
                 funcSync.boolValue = true;
                 writedefaulton.boolValue = true;
+                funcPoseClipper.boolValue = true;
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -225,6 +229,7 @@ namespace com.github.pandrabox.flatsplus.editor
             language = serializedObject.FindProperty("Language");
             writedefaulton = serializedObject.FindProperty("Func_WriteDefaultOn");
             clippingCanceler = serializedObject.FindProperty("Func_ClippingCanceler");
+            funcPoseClipper = serializedObject.FindProperty("Func_PoseClipper");
         }
 
         protected override void OnInnerEnable()

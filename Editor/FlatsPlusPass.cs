@@ -36,7 +36,7 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         VRCAvatarDescriptor _desc;
         FlatsProject _p;
-        private int totalSteps = 15;
+        private int totalSteps = 16; // 15から16に変更
         private int currentStep = 0;
 
         public FlatsPlusMain(VRCAvatarDescriptor desc)
@@ -69,6 +69,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPMoveWork>(fp.Func_Move, "Move");
                 CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka");
                 CreateWork<FPPenWork>(fp.Func_Pen, "Pen");
+                CreateInstantiate(fp.Func_PoseClipper, "FPPoseClipper");
                 CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep");
                 CreateInstantiate(fp.Func_Sync, "Sync");
                 CreateWork<FPTailWork>(fp.Func_Tail, "Tail");

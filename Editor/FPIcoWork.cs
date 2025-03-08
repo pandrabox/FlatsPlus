@@ -81,13 +81,13 @@ namespace com.github.pandrabox.flatsplus.editor
                 else if (i == 7)
                 {
                     name = L("Menu/Ico/Resonance");
-                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/Resonance/Detail").SetIco(_tgt.textures[i-1]);
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/Resonance/Detail".LL()).SetIco(_tgt.textures[i-1]);
                 }
                 else if (_tgt.VerView && i == 8)
                 {
                     name = L("Menu/Ico/VerView");
                     Texture2D vvico= AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i8.png");
-                    mb.AddButton("FlatsPlus/Icon/VerView", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/VerView/Detail").SetIco(vvico);
+                    mb.AddButton("FlatsPlus/Icon/VerView", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/VerView/Detail".LL()).SetIco(vvico);
                 }
             }
         }
