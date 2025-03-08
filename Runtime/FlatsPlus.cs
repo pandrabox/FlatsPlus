@@ -290,14 +290,14 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void LogAnalyzeResult()
         {
-            Title("前回の実行結果");
-            EditorGUILayout.LabelField("実行時刻", _lastBuild.ToString());
+            Title(L("LogAnalyze/Title"));
+            EditorGUILayout.LabelField(L("LogAnalyze/ExecutionTime"), _lastBuild.ToString());
             bool allFine = true;
             if (_errorWorks.Count > 0)
             {
                 allFine = false;
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("いくつかの機能導入に失敗しました。ログ情報をPandraまでご連絡ください");
+                sb.AppendLine(L("LogAnalyze/FunctionFailure"));
                 foreach (var error in _errorWorks)
                 {
                     sb.AppendLine($@" - {error}");
@@ -308,7 +308,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 allFine = false;
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("不明なエラーが発生しました。ログ情報をPandraまでご連絡ください");
+                sb.AppendLine(L("LogAnalyze/UnknownError"));
                 foreach (var error in _errorUnknowns)
                 {
                     sb.AppendLine(error);
@@ -317,14 +317,14 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             if (allFine)
             {
-                EditorGUILayout.HelpBox("すべて正常に動作しました！", MessageType.Info);
+                EditorGUILayout.HelpBox(L("LogAnalyze/AllFine"), MessageType.Info);
             }
             else
             {
-                if (GUILayout.Button("報告用のログ情報をコピー"))
+                if (GUILayout.Button(L("LogAnalyze/CopyLog")))
                 {
                     EditorGUIUtility.systemCopyBuffer = _logContent;
-                    EditorUtility.DisplayDialog("コピー完了", "ログ情報をクリップボードにコピーしました！\n\rPandraまで連絡をお願いします。\n\r主な受付先：\n\r - Booth \n\r - 問い合わせフォーム \n\r - X\n\r\n\r※ログ情報にはユーザ名などの個人情報が含まれている場合があります。事前に確認してから送信してください。", "OK");
+                    EditorUtility.DisplayDialog(L("LogAnalyze/CopyCompleteTitle"), L("LogAnalyze/CopyCompleteMessage"), "OK");
                 }
             }
         }
