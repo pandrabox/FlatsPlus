@@ -54,6 +54,7 @@ namespace com.github.pandrabox.flatsplus.editor
         
         sealed protected override void OnConstruct()
         {
+            //throw new NotImplementedException();
             GetObjects();
             ObjectSetting();
             _bb = new BlendTreeBuilder("FlatsPlus/Tail");

@@ -10,6 +10,11 @@ using static com.github.pandrabox.pandravase.editor.Util;
 using static com.github.pandrabox.pandravase.editor.Localizer;
 using System.Collections.Generic;
 using System.Linq;
+using static com.github.pandrabox.pandravase.editor.PandraEditor;
+using PlasticPipe.PlasticProtocol.Messages;
+using com.github.pandrabox.flatsplus.runtime;
+using System.IO;
+using System.Text;
 
 namespace com.github.pandrabox.flatsplus.runtime
 {
@@ -32,10 +37,9 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool Func_Link = true;
         public bool Func_Sync = true;
         public bool Func_WriteDefaultOn = true;
-        public bool Func_ClippingCanceler = true; 
+        public bool Func_ClippingCanceler = true;
 
         public string Language = null;
-        public DateTime LastBuild = DateTime.MinValue;
 
         public float Emo_TransitionTime = 0.5f;
         public Texture2D[] Ico_Textures = new Texture2D[6];
@@ -66,7 +70,10 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool Tail_GravityPerfectSync = false;
         public float Tail_DefaultGravity = .5f; //0～1
     }
+}
 
+namespace com.github.pandrabox.flatsplus.editor
+{
 
     [CustomEditor(typeof(FlatsPlus))]
     public class FlatsPlusEditor : PandraEditor
@@ -75,7 +82,9 @@ namespace com.github.pandrabox.flatsplus.runtime
 
         private const int _titleSize = 110;
 
-        private SerializedProperty funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync, language, writedefaulton, clippingCanceler;
+        private SerializedProperty 
+            funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync
+            , language, writedefaulton, clippingCanceler;
 
         public override void OnInnerInspectorGUI()
         {
@@ -99,6 +108,7 @@ namespace com.github.pandrabox.flatsplus.runtime
             DrawPropertyField(writedefaulton, "Func/WriteDefaultOn");
             DrawAllChangeField();
             DrawClippingCanceler();
+            LogAnalyzeResult();
         }
 
         private static readonly Dictionary<string, string> languageDisplayNames = new Dictionary<string, string>
@@ -231,10 +241,92 @@ namespace com.github.pandrabox.flatsplus.runtime
         }
 
 
+        private DateTime _lastBuild;
+        private List<string> _errorWorks;
+        private List<string> _errorUnknowns;
+        const string _logPath = "Packages/com.github.pandrabox.flatsplus/Log/log.txt";
+        private string _logContent;
 
         private void LogAnalyze()
         {
+            _lastBuild = DateTime.MinValue;
+            _errorWorks = new List<string>();
+            _errorUnknowns = new List<string>();
+            if (!File.Exists(_logPath)) return;
+            _logContent = File.ReadAllText(_logPath);
+            if(_logContent.Length == 0) return;
+            string[] lines = _logContent.Split('\n');
+            foreach (var line in lines)
+            {
+                if (line.Contains("@@BuildStartDateTime@@"))
+                {
+                    var parts = line.Split(',');
+                    if (parts.Length >= 4 && DateTime.TryParse(parts[3], out DateTime buildDateTime))
+                    {
+                        _lastBuild = buildDateTime;
+                    }
+                }
+                if (line.Contains("@@ERROR@@"))
+                {
+                    var parts = line.Split(',');
+                    bool workError = false;
+                    if (parts.Length >= 2)
+                    {
+                        var workName = parts[1];
+                        if(workName.Length > 0)
+                        {
+                            _errorWorks.Add(workName);
+                            workError = true;
+                        }
+                    }
+                    if(!workError)
+                    {
+                        _errorUnknowns.Add(line);
+                    }
+                }
+            }
+            _lastBuild = DateTime.Now;
+        }
 
+        private void LogAnalyzeResult()
+        {
+            Title("前回の実行結果");
+            EditorGUILayout.LabelField("実行時刻", _lastBuild.ToString());
+            bool allFine = true;
+            if (_errorWorks.Count > 0)
+            {
+                allFine = false;
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("いくつかの機能導入に失敗しました。ログ情報をPandraまでご連絡ください");
+                foreach (var error in _errorWorks)
+                {
+                    sb.AppendLine($@" - {error}");
+                }
+                EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
+            }
+            if (_errorUnknowns.Count > 0)
+            {
+                allFine = false;
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("不明なエラーが発生しました。ログ情報をPandraまでご連絡ください");
+                foreach (var error in _errorUnknowns)
+                {
+                    sb.AppendLine(error);
+                }
+                EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
+            }
+            if (allFine)
+            {
+                EditorGUILayout.HelpBox("すべて正常に動作しました！", MessageType.Info);
+            }
+            else
+            {
+                if (GUILayout.Button("報告用のログ情報をコピー"))
+                {
+                    EditorGUIUtility.systemCopyBuffer = _logContent;
+                    EditorUtility.DisplayDialog("コピー完了", "ログ情報をクリップボードにコピーしました！\n\rPandraまで連絡をお願いします。\n\r主な受付先：\n\r - Booth \n\r - 問い合わせフォーム \n\r - X\n\r\n\r※ログ情報にはユーザ名などの個人情報が含まれている場合があります。事前に確認してから送信してください。", "OK");
+                }
+            }
         }
     }
 }

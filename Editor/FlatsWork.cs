@@ -65,7 +65,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 _desc = prj.Descriptor.NullCheck("_desc");
                 GetTgt();
                 OnConstruct();
-                LowLevelDebugPrint($"Complete work successfully in {stopwatch?.ElapsedMilliseconds ?? 0} ms", true, LogType.Log);
+                LowLevelDebugPrint($"@@SUCCESS@@ Complete work successfully in {stopwatch?.ElapsedMilliseconds ?? 0} ms", true, LogType.Log);
             }
             catch (Exception ex)
             {
