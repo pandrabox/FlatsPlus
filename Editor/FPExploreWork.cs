@@ -21,7 +21,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 using VRC.Dynamics;
 using System.Globalization;
 using UnityEngine.Animations;
-using static com.github.pandrabox.flatsplus.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 
 
 namespace com.github.pandrabox.flatsplus.editor

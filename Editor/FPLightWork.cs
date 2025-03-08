@@ -17,7 +17,7 @@ using static com.github.pandrabox.flatsplus.editor.Global;
 using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using System.Text.RegularExpressions;
 using com.github.pandrabox.pandravase.editor;
-using static com.github.pandrabox.flatsplus.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 
 
 

@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Animations;
-using static com.github.pandrabox.flatsplus.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
 
 

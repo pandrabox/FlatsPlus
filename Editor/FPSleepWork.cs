@@ -4,7 +4,7 @@ using nadena.dev.modular_avatar.core;
 using UnityEditor;
 using UnityEditor.Animations;
 using static com.github.pandrabox.pandravase.editor.Util;
-using static com.github.pandrabox.flatsplus.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 
 
 

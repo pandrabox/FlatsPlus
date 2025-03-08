@@ -63,6 +63,7 @@ Func/Emo/Name,表情制御,Emo Control,표정 제어,表情控制,表情控制
 Func/Explore/Name,探索,Explore,탐색,探索,探索
 Func/Hoppe/Name,ほっぺ,Cheeks,볼,脸颊,臉頰
 Func/Ico/Name,アイコン,Icon,아이콘,图标,圖標
+Func/Light/Name,ライト,Light,라이트,灯光,燈光
 Func/MakeEmo/Name,表情固定,Fix Expression,표정 고정,固定表情,固定表情
 Func/MeshSetting/Name,メッシュ設定,Mesh Setting,메시 설정,网格设置,網格設置
 Func/Move/Name,自身移動,Move,자신 이동,自身移动,自身移動
@@ -73,22 +74,31 @@ Func/Sleep/Name,睡眠,Sleep,수면,睡眠,睡眠
 Func/Tail/Name,しっぽ,Tail,꼬리,尾巴,尾巴
 Func/Link/Name,リンク,Link,링크,链接,連結
 Func/Sync/Name,同期,Sync,동기화,同步,同步
+Func/WriteDefaultOn/Name,WDON,WDON,WDON,WDON,WDON
+Func/ClippingCanceler/Name,クリッピングキャンセラー,Clipping Canceler,클리핑 캔슬러,裁剪取消器,裁剪取消器
 
-Func/Carry/Detail,ワープポータルの召喚、だっこ、おんぶなど。依存：Link Sync,Summon warp portal carry piggyback etc. Dependencies: Link Sync,워프 포탈 소환 업기 업히기 등. 의존: Link Sync,召唤传送门 抱 背等。依赖：Link Sync,召喚傳送門 抱 背等。依賴：Link Sync
-Func/DanceController/Detail,ダンスワールドで表情が動く。依存：Emo,Expressions move in the dance world. Dependencies: Emo,댄스 월드에서 표정이 움직입니다. 의존: Emo,舞蹈世界中的表情移动。依赖：Emo,舞蹈世界中的表情移動。依賴：Emo
-Func/Emo/Detail,他ツール連携用,For integration with other tools,다른 도구와의 통합용,用于与其他工具集成,用於與其他工具集成
+Func/Carry/Detail,ワープポータルの召喚、だっこ、おんぶなど。,Summon warp portal carry piggyback etc.,워프 포탈 소환 업기 업히기 등.,召唤传送门 抱 背等。,召喚傳送門 抱 背等.
+Func/DanceController/Detail,ダンスワールドで表情が動く。,Expressions move in the dance world.,댄스 월드에서 표정이 움직입니다.,舞蹈世界中的表情移动。,舞蹈世界中的表情移動.
+Func/Emo/Detail,表情をFlatsPlusで制御(他ギミックから使用),Control expressions with FlatsPlus (used by other gimmicks),FlatsPlus로 표정 제어(다른 기믹에서 사용),用FlatsPlus控制表情(由其他小工具使用),用FlatsPlus控制表情(由其他小工具使用)
 Func/Explore/Detail,どこからでも見えるピン、ライト、軌跡表示。,Visible pins lights and trails from anywhere,어디서나 보이는 핀 라이트 궤적 표시,从任何地方都能看到的针 灯 和轨迹,從任何地方都能看到的針 燈 和軌跡
-Func/Hoppe/Detail,触れるようにし、頬紅を表示する。依存：Emo,Make touchable and display blush Dependencies: Emo,터치할 수 있게 하고 볼에 홍조를 표시합니다. 의존: Emo,使可触摸并显示脸红。依赖：Emo,使可觸摸並顯示臉紅。依賴：Emo
-Func/Ico/Detail,アイコンを表示。依存：Link,Display icons Dependencies: Link,아이콘을 표시합니다. 의존: Link,显示图标。依赖：Link,顯示圖標。依賴：Link
-Func/MakeEmo/Detail,目・口・その他をそれぞれ調整し、固定する。依存：Emo,Adjust and fix eyes mouth etc. Dependencies: Emo,눈 입 등을 조정하고 고정합니다. 의존: Emo,调整和固定眼睛 嘴巴等。依赖：Emo,調整和固定眼睛 嘴巴等。依賴：Emo
+Func/Hoppe/Detail,触れるようにし、頬紅を表示する。,Make touchable and display blush,터치할 수 있게 하고 볼에 홍조를 표시합니다.,使可触摸并显示脸红。,使可觸摸並顯示臉紅.
+Func/Ico/Detail,アイコンを表示。,Display icons,아이콘을 표시합니다.,显示图标。,顯示圖標.
+Func/Light/Detail,明るさ・照射タイプ・グローバル表示,Adjust brightness irradiation type global display,밝기 조정 조사 유형 글로벌 표시,调整亮度 照射类型 全局显示,調整亮度 照射類型 全局顯示
+Func/MakeEmo/Detail,目・口・その他をそれぞれ調整し、固定する。,Adjust and fix eyes mouth etc.,눈 입 등을 조정하고 고정합니다.,调整和固定眼睛 嘴巴等。,調整和固定眼睛 嘴巴等.
 Func/MeshSetting/Detail,明るさなどを自動で調整する。,Automatically adjust brightness etc.,밝기 등을 자동으로 조정합니다.,自动调整亮度等.,自動調整亮度等.
 Func/Move/Detail,浮遊・高速移動・持続移動,Floating fast movement sustained movement,부유 고속 이동 지속 이동,漂浮 快速移动 持续移动,漂浮 快速移動 持續移動
 Func/Onaka/Detail,やわらかくなり、触ることができる。,Becomes soft and touchable,부드러워지고 터치할 수 있습니다.,变得柔软且可触摸,變得柔軟且可觸摸
 Func/Pen/Detail,どこでも描ける,Can draw anywhere,어디서나 그릴 수 있습니다.,可以在任何地方绘画,可以在任何地方繪畫
 Func/PoseClipper/Detail,アバターを現在の姿勢のまま固定する,Fix avatar in current pose,아바타를 현재 포즈로 고정합니다.,将头像固定在当前姿势,將頭像固定在當前姿勢
-Func/Sleep/Detail,3点トラッキング・デスクトップで横になる。依存：PoseClipper,Lay down with 3-point tracking desktop etc. Dependencies: PoseClipper,3점 트래킹 데스크탑 등에서 눕습니다. 의존: PoseClipper,进行三点跟踪 在桌面上躺下等。依赖：PoseClipper,進行三點跟蹤 在桌面上躺下等。依賴：PoseClipper
+Func/Sleep/Detail,3点トラッキング・デスクトップで横になる。,Lay down with 3-point tracking desktop etc.,3점 트래킹 데스크탑 등에서 눕습니다.,进行三点跟踪 在桌面上躺下等.,進行三點跟蹤 在桌面上躺下等.
 Func/Tail/Detail,大きさ変更、ゆらす。,Change size and sway,크기 변경 흔들기,改变大小和摇摆,改變大小和搖擺
-Func/Link/Detail,他ツール連携用,For integration with other tools,다른 도구와의 통합용,用于与其他工具集成,用於與其他工具集成
-Func/Sync/Detail,他ツール連携用,For integration with other tools,다른 도구와의 통합용,用于与其他工具集成,用於與其他工具集成
+Func/Link/Detail,他のFlatsPlusユーザの変数を伝送(他ギミックから使用),Transmit variables of other FlatsPlus users (used by other gimmicks),다른 FlatsPlus 사용자의 변수를 전송(다른 기믹에서 사용),传输其他FlatsPlus用户的变量(由其他小工具使用),傳輸其他FlatsPlus用戶的變量(由其他小工具使用)
+Func/Sync/Detail,遠くにいるプレイヤーにアバター状態を伝送(他ギミックから使用),Transmit avatar state to players far away (used by other gimmicks),멀리 있는 플레이어에게 아바타 상태를 전송(다른 기믹에서 사용),将头像状态传输给远处的玩家(由其他小工具使用),將頭像狀態傳輸給遠處的玩家(由其他小工具使用)
+Func/WriteDefaultOn/Detail,ダンスが通常制御で動くようにアバター全体を調整,Adjust the entire avatar so that the dance moves normally.,댄스가 일반 제어로 움직이도록 전체 아바타를 조정,调整整个头像以使舞蹈正常移动,調整整個頭像以使舞蹈正常移動
+Func/ClippingCanceler/Detail,距離が近くてもアバターが消えない,The avatar does not disappear even when the distance is close.,거리가 가까워도 아바타가 사라지지 않습니다,即使距离很近，头像也不会消失,即使距離很近，頭像也不會消失
+
 
 FlatsPlus_Progress,FlatsPlus 作業中,FlatsPlus in progress,FlatsPlus 작업 중,FlatsPlus 进行中,FlatsPlus 進行中
+
+Editor/AllOff,全てOff,All Off,모두 Off,全部关闭,全部關閉
+Editor/AllOn,全てOn,All On,모두 On,全部开启,全部開啟

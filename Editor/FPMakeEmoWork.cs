@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using static com.github.pandrabox.flatsplus.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.TextureUtil;
 using static com.github.pandrabox.pandravase.editor.Util;
 

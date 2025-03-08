@@ -1,132 +1,317 @@
-07:52:18,,FlatPlus Start Works
-07:52:18,,flatver.1.01 (1)(Clone) (VRC.SDK3.Avatars.Components.VRCAvatarDescriptor)を取得しました 
-07:52:18,,FlatsProject Initialized By flat
-07:52:18,,FlatsPlus (com.github.pandrabox.flatsplus.runtime.FlatsPlus)を取得しました 
-07:52:18,,Sync (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/Sync/Sync.prefab
-07:52:18,,Link (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/Link/Link.prefab
-07:52:18,,Sleep (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/Sleep/Sleep.prefab
-07:52:18,FPSleepWork,Flats Plus Work Started
-07:52:18,FPSleepWork,com.github.pandrabox.flatsplus.editor.FlatsProjectを取得しました _prj
-07:52:18,FPSleepWork,flatver.1.01 (1)(Clone) (VRC.SDK3.Avatars.Components.VRCAvatarDescriptor)を取得しました _desc
-07:52:18,FPSleepWork,Sleep (com.github.pandrabox.flatsplus.runtime.FPSleep)を取得しました _tgt
-07:52:18,FPSleepWork,保存パス: Assets/Pan/Temp/FlatsPlusSleep_e8298fee-fc83-465f-8ed5-5e06d99cd338.asset
-07:52:18,FPSleepWork,ビルドしましたAssets/Pan/Temp/FlatsPlusSleep_e8298fee-fc83-465f-8ed5-5e06d99cd338.asset
-07:52:20,FPSleepWork,ファイルを更新しましたAssets/Pan/Temp/FlatsPlusSleep_e8298fee-fc83-465f-8ed5-5e06d99cd338.asset
-07:52:20,FPSleepWork,アニメータパラメータPan/One(Float, 1)を追加します
-07:52:20,FPSleepWork,アニメータパラメータ__ModularAvatarInternal/One(Float, 1)を追加します
-07:52:20,FPSleepWork,アニメータパラメータPan/Dummy(Float, 0)を追加します
-07:52:20,FPSleepWork,保存パス: Assets/Pan/Temp/FlatsPlusSleep_370734b8-1bfb-4bf6-b0aa-f78c1f71ec9a.asset
-07:52:20,FPSleepWork,アニメータパラメータFlatsPlus/Sleep/SW(Float, 0)を追加します
-07:52:20,FPSleepWork,アニメータパラメータFlatsPlus/Sleep/PoseLockAnim(Float, 0)を追加します
-07:52:20,FPSleepWork,アニメータパラメータFlatsPlus/Sleep/MoveLock(Float, 0)を追加します
-07:52:21,FPSleepWork,MenuBuilderはパラメータVase/MessageUI/Folder/FlatsPlus(Bool,0,True)を定義しました
-07:52:21,FPSleepWork,MenuBuildeはメニューFlatsPlusを生成しました
-07:52:21,FPSleepWork,MenuBuilderはパラメータVase/MessageUI/Folder/睡眠(Bool,0,True)を定義しました
-07:52:21,FPSleepWork,MenuBuildeはメニュー睡眠を生成しました
-07:52:21,FPSleepWork,MenuBuildeはメニュー有効を生成しました
-07:52:21,FPSleepWork,MenuBuilderはパラメータFlatsPlus/Sleep/SW(Bool,0,False)を定義しました
-07:52:21,FPSleepWork,MenuBuildeはメニュー移動ロックを生成しました
-07:52:21,FPSleepWork,MenuBuilderはパラメータFlatsPlus/Sleep/MoveLock(Bool,0,True)を定義しました
-07:52:21,FPSleepWork,MenuBuilderはパラメータVase/MessageUI/Radial/FlatsPlus/Sleep/Height(Bool,0,False)を定義しました
-07:52:21,FPSleepWork,MenuBuildeはメニュー高さを生成しました
-07:52:21,FPSleepWork,MenuBuilderはパラメータFlatsPlus/Sleep/Height(Float,0.5,False)を定義しました
-07:52:21,FPSleepWork,MenuBuildeはメニューLock:モーションを生成しました
-07:52:21,FPSleepWork,MenuBuilderはパラメータFlatsPlus/Sleep/PoseLockAnim(Bool,0,True)を定義しました
-07:52:21,FPSleepWork,MenuBuildeはメニューLock:今の姿勢を生成しました
-07:52:21,FPSleepWork,MenuBuilderはパラメータCW/PC/Set/All(Bool,0,True)を定義しました
-07:52:21,FPSleepWork,Complete work successfully in 2399 ms
-07:52:21,,Sync (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/Sync/Sync.prefab
-07:52:21,,Tail (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/Tail/Tail.prefab
-07:52:21,FPTailWork,Flats Plus Work Started
-07:52:21,FPTailWork,com.github.pandrabox.flatsplus.editor.FlatsProjectを取得しました _prj
-07:52:21,FPTailWork,flatver.1.01 (1)(Clone) (VRC.SDK3.Avatars.Components.VRCAvatarDescriptor)を取得しました _desc
-07:52:21,FPTailWork,Tail (com.github.pandrabox.flatsplus.runtime.FPTail)を取得しました _tgt
-07:52:21,FPTailWork,Tail Root (UnityEngine.GameObject)を取得しました 
-07:52:21,FPTailWork,GroundCollider (VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider)を取得しました 
-07:52:21,FPTailWork,保存パス: Assets/Pan/Temp/FlatsPlusTail_8b0454b6-d5bf-4647-9a09-21e3299f7428.asset
-07:52:21,FPTailWork,ビルドしましたAssets/Pan/Temp/FlatsPlusTail_8b0454b6-d5bf-4647-9a09-21e3299f7428.asset
-07:52:21,FPTailWork,アニメータパラメータPan/One(Float, 1)を追加します
-07:52:21,FPTailWork,アニメータパラメータ__ModularAvatarInternal/One(Float, 1)を追加します
-07:52:21,FPTailWork,アニメータパラメータPan/Dummy(Float, 0)を追加します
-07:52:21,FPTailWork,保存パス: Assets/Pan/Temp/FlatsPlusTailSwing_6442b9e6-92af-48a5-a2ae-309301c5d78b.asset
-07:52:22,FPTailWork,アニメータパラメータFlatsPlus/Tail/Swing(Bool, 0)を追加します
-07:52:22,FPTailWork,ファイルを更新しましたAssets/Pan/Temp/FlatsPlusTail_8b0454b6-d5bf-4647-9a09-21e3299f7428.asset
-07:52:22,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Folder/FlatsPlus(Bool,0,True)を定義しました
-07:52:22,FPTailWork,MenuBuildeはメニューFlatsPlusを生成しました
-07:52:22,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Folder/しっぽ(Bool,0,True)を定義しました
-07:52:22,FPTailWork,MenuBuildeはメニューしっぽを生成しました
-07:52:22,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Radial/FlatsPlus/Tail/Gravity(Bool,0,True)を定義しました
-07:52:22,FPTailWork,MenuBuildeはメニュー重さを生成しました
-07:52:22,FPTailWork,MenuBuilderはパラメータFlatsPlus/Tail/Gravity(Float,0.5,True)を定義しました
-07:52:22,FPTailWork,MenuBuilderはパラメータVase/MessageUI/Radial/FlatsPlus/Tail/Size(Bool,0,True)を定義しました
-07:52:22,FPTailWork,MenuBuildeはメニュー大きさを生成しました
-07:52:22,FPTailWork,MenuBuilderはパラメータFlatsPlus/Tail/Size(Float,0.5,True)を定義しました
-07:52:22,FPTailWork,MenuBuildeはメニュー揺らすを生成しました
-07:52:22,FPTailWork,MenuBuilderはパラメータFlatsPlus/Tail/Swing(Bool,1,False)を定義しました
-07:52:22,FPTailWork,Complete work successfully in 1756 ms
-07:52:22,,FlatPlus Complete Works
-07:52:22,,アニメータパラメータPan/One(Float, 1)を追加します
-07:52:22,,アニメータパラメータ__ModularAvatarInternal/One(Float, 1)を追加します
-07:52:22,,アニメータパラメータPan/Dummy(Float, 0)を追加します
-07:52:22,,保存パス: Assets/Pan/Temp/Encoder_0a5c48b1-2beb-4ca4-bab4-c8556f51edcc.asset
-07:52:23,,アニメータパラメータIsLocal(Float, 0)を追加します
-07:52:23,,アニメータパラメータFlatsPlus/Tail/SizeRx(Float, 0)を追加します
-07:52:23,,アニメータパラメータFlatsPlus/Tail/Size(Float, 0)を追加します
-07:52:23,,アニメータパラメータFlatsPlus/Tail/Size/b0(Float, 0)を追加します
-07:52:23,,アニメータパラメータFlatsPlus/Tail/Size/b1(Float, 0)を追加します
-07:52:23,,アニメータパラメータFlatsPlus/Tail/Size/b2(Float, 0)を追加します
-07:52:23,,アニメータパラメータFlatsPlus/Tail/Size/b3(Float, 0)を追加します
-07:52:23,,保存パス: Assets/Pan/Temp/Decoder_12c2880a-0900-4e05-be3c-c427ce04a045.asset
-07:52:23,,ビルドしましたAssets/Pan/Temp/Decoder_12c2880a-0900-4e05-be3c-c427ce04a045.asset
-07:52:26,,ファイルを更新しましたAssets/Pan/Temp/Decoder_12c2880a-0900-4e05-be3c-c427ce04a045.asset
-07:52:26,,MessageUI メッセージを画像化しています: このメニューはアバターの移動を制限します。動くためには機能を解除してください
-07:52:26,,DrawText:                               このメニューはアバターの移動を制限します。動くためには機能を解除してください                               
-07:52:26,,Trimming texture: 2048x2048 -> 2048x256
-07:52:26,,MessageUI メッセージを画像化しています: 移動をロック。動くためには解除してください
-07:52:26,,DrawText:                                       移動をロック。動くためには解除してください                                        
-07:52:26,,Trimming texture: 2048x2048 -> 2048x256
-07:52:26,,MessageUI メッセージを画像化しています: モーションデータでアバターを完全に固定。動くためには解除してください
-07:52:26,,DrawText:                                 モーションデータでアバターを完全に固定。動くためには解除してください                                 
-07:52:26,,Trimming texture: 2048x2048 -> 2048x256
-07:52:26,,MessageUI メッセージを画像化しています: 今の姿勢で全身をロック。動くためには解除してください
-07:52:26,,DrawText:                                     今の姿勢で全身をロック。動くためには解除してください                                     
-07:52:26,,Trimming texture: 2048x2048 -> 2048x256
-07:52:26,,MessageUI メッセージを画像化しています: ガイドメッセージが有効化されました
-07:52:26,,DrawText:                                         ガイドメッセージが有効化されました                                          
-07:52:26,,Trimming texture: 2048x2048 -> 2048x256
-07:52:26,,MessageUI メッセージを画像化しています: ガイドサイズの調整
-07:52:26,,DrawText:                                             ガイドサイズの調整                                              
-07:52:26,,Trimming texture: 2048x2048 -> 2048x256
-07:52:27,,保存パス: Assets/Pan/Temp/Untitled_47d1e287-39ac-4d17-be6c-ffce10c4056a.png
-07:52:27,,Texture saved at: Assets/Pan/Temp/Untitled_47d1e287-39ac-4d17-be6c-ffce10c4056a.png
-07:52:27,,アニメータパラメータPan/One(Float, 1)を追加します
-07:52:27,,アニメータパラメータ__ModularAvatarInternal/One(Float, 1)を追加します
-07:52:27,,アニメータパラメータPan/Dummy(Float, 0)を追加します
-07:52:27,,保存パス: Assets/Pan/Temp/MessageUI_9e6c3774-ab52-4873-923f-c0a7b053b621.asset
-07:52:28,,アニメータパラメータIsLocal(Float, 0)を追加します
-07:52:28,,アニメータパラメータVase/MessageUI/SW(Float, 0)を追加します
-07:52:28,,アニメータパラメータVase/MessageUI/Folder/睡眠Equals1IsUsed(Bool, 1)を追加します
-07:52:28,,アニメータパラメータVase/MessageUI/Folder/睡眠(Float, 0)を追加します
-07:52:28,,アニメータパラメータFlatsPlus/Sleep/MoveLockEquals1IsUsed(Bool, 1)を追加します
-07:52:28,,アニメータパラメータFlatsPlus/Sleep/MoveLock(Float, 0)を追加します
-07:52:28,,アニメータパラメータFlatsPlus/Sleep/PoseLockAnimEquals1IsUsed(Bool, 1)を追加します
-07:52:28,,アニメータパラメータFlatsPlus/Sleep/PoseLockAnim(Float, 0)を追加します
-07:52:28,,アニメータパラメータCW/PC/Set/AllEquals1IsUsed(Bool, 1)を追加します
-07:52:28,,アニメータパラメータCW/PC/Set/All(Float, 0)を追加します
-07:52:28,,アニメータパラメータVase/MessageUI/SWGreater0.5IsUsed(Bool, 1)を追加します
-07:52:28,,アニメータパラメータVase/MessageUI/Radial/Vase/MessageUI/SizeIf0IsUsed(Bool, 1)を追加します
-07:52:28,,アニメータパラメータVase/MessageUI/Radial/Vase/MessageUI/Size(Float, 0)を追加します
-07:52:29,,保存パス: Assets/Pan/Temp/size_8739e886-e8a7-4c89-bc83-cd2bbae9205d.asset
-07:52:29,,ビルドしましたAssets/Pan/Temp/size_8739e886-e8a7-4c89-bc83-cd2bbae9205d.asset
-07:52:29,,ファイルを更新しましたAssets/Pan/Temp/size_8739e886-e8a7-4c89-bc83-cd2bbae9205d.asset
-07:52:29,,MenuBuilderはパラメータVase/MessageUI/Folder/GUIDE(Bool,0,True)を定義しました
-07:52:29,,MenuBuildeはメニューGUIDEを生成しました
-07:52:29,,MenuBuildeはメニューSWを生成しました
-07:52:29,,MenuBuilderはパラメータVase/MessageUI/SW(Bool,1,True)を定義しました
-07:52:29,,MenuBuilderはパラメータVase/MessageUI/Radial/Vase/MessageUI/Size(Bool,0,True)を定義しました
-07:52:29,,MenuBuildeはメニューSizeを生成しました
-07:52:29,,MenuBuilderはパラメータVase/MessageUI/Size(Float,0.4,True)を定義しました
-07:52:29,,保存パス: Assets/Pan/Temp/FlatsPlusTail_8b0454b6-d5bf-4647-9a09-21e3299f7428_45839970-22d4-4795-aabf-cd871f2afb4d.asset
-07:52:30,,保存パス: Assets/Pan/Temp/FlatsPlusSleep_e8298fee-fc83-465f-8ed5-5e06d99cd338_0ce6d966-66f5-4721-9f7c-ea73313e6668.asset
-07:52:30,,保存パス: Assets/Pan/Temp/Decoder_12c2880a-0900-4e05-be3c-c427ce04a045_6cfb25d8-524b-47ad-b2c2-9d94475633b5.asset
-07:52:30,,保存パス: Assets/Pan/Temp/size_8739e886-e8a7-4c89-bc83-cd2bbae9205d_255b0b79-83b6-4e03-bf68-42de3e044a59.asset
+14:21:00,,FlatPlus Start Works
+14:21:00,,@@BuildStartDateTime@@,2025/03/08 14:21:00
+14:21:00,,@@PackageInfo@@,Burst,1.4.11
+14:21:00,,@@PackageInfo@@,Version Control,1.10.2
+14:21:00,,@@PackageInfo@@,Custom NUnit,1.0.6
+14:21:00,,@@PackageInfo@@,JetBrains Rider Editor,3.0.28
+14:21:00,,@@PackageInfo@@,Visual Studio Editor,2.0.22
+14:21:00,,@@PackageInfo@@,Visual Studio Code Editor,1.2.5
+14:21:00,,@@PackageInfo@@,Mathematics,1.2.5
+14:21:00,,@@PackageInfo@@,AI,1.0.0
+14:21:00,,@@PackageInfo@@,Android JNI,1.0.0
+14:21:00,,@@PackageInfo@@,Animation,1.0.0
+14:21:00,,@@PackageInfo@@,Asset Bundle,1.0.0
+14:21:00,,@@PackageInfo@@,Audio,1.0.0
+14:21:00,,@@PackageInfo@@,Cloth,1.0.0
+14:21:00,,@@PackageInfo@@,Director,1.0.0
+14:21:00,,@@PackageInfo@@,Image Conversion,1.0.0
+14:21:00,,@@PackageInfo@@,IMGUI,1.0.0
+14:21:00,,@@PackageInfo@@,JSONSerialize,1.0.0
+14:21:00,,@@PackageInfo@@,Particle System,1.0.0
+14:21:00,,@@PackageInfo@@,Physics 2D,1.0.0
+14:21:00,,@@PackageInfo@@,Physics,1.0.0
+14:21:00,,@@PackageInfo@@,Screen Capture,1.0.0
+14:21:00,,@@PackageInfo@@,Subsystems,1.0.0
+14:21:00,,@@PackageInfo@@,Terrain,1.0.0
+14:21:00,,@@PackageInfo@@,Terrain Physics,1.0.0
+14:21:00,,@@PackageInfo@@,Tilemap,1.0.0
+14:21:00,,@@PackageInfo@@,UI,1.0.0
+14:21:00,,@@PackageInfo@@,UIElements,1.0.0
+14:21:00,,@@PackageInfo@@,Umbra,1.0.0
+14:21:00,,@@PackageInfo@@,Unity Analytics,1.0.0
+14:21:00,,@@PackageInfo@@,Unity Web Request,1.0.0
+14:21:00,,@@PackageInfo@@,Unity Web Request Asset Bundle,1.0.0
+14:21:00,,@@PackageInfo@@,Unity Web Request Audio,1.0.0
+14:21:00,,@@PackageInfo@@,Unity Web Request Texture,1.0.0
+14:21:00,,@@PackageInfo@@,Unity Web Request WWW,1.0.0
+14:21:00,,@@PackageInfo@@,Vehicles,1.0.0
+14:21:00,,@@PackageInfo@@,Video,1.0.0
+14:21:00,,@@PackageInfo@@,VR,1.0.0
+14:21:00,,@@PackageInfo@@,Wind,1.0.0
+14:21:00,,@@PackageInfo@@,XR,1.0.0
+14:21:00,,@@PackageInfo@@,Newtonsoft Json,3.0.2
+14:21:00,,@@PackageInfo@@,Test Framework,1.1.29
+14:21:00,,@@PackageInfo@@,TextMeshPro,2.1.6
+14:21:00,,@@PackageInfo@@,Timeline,1.2.18
+14:21:00,,@@PackageInfo@@,Unity UI,1.0.0
+14:21:00,,@@PackageInfo@@,Oculus Android,2.38.6
+14:21:00,,@@PackageInfo@@,Oculus Desktop,2.38.4
+14:21:00,,@@PackageInfo@@,OpenVR Desktop,2.0.5
+14:21:00,,@@PackageInfo@@,DressSW,0.0.3
+14:21:00,,@@PackageInfo@@,EmotePrefab,1.4.4
+14:21:00,,@@PackageInfo@@,FlatsPlus,0.11.3
+14:21:00,,@@PackageInfo@@,PandraVase,2.7.2
+14:21:00,,@@PackageInfo@@,VRChat SDK - Avatars,3.4.2
+14:21:00,,@@PackageInfo@@,VRChat SDK - Base,3.4.2
+14:21:00,,@@PackageInfo@@,UniTask,2.3.1
+14:21:00,,@@PackageInfo@@,lilToon,1.8.5
+14:21:00,,@@PackageInfo@@,Av3Emulator,3.4.8
+14:21:00,,@@PackageInfo@@,Modular Avatar,1.9.16
+14:21:00,,@@PackageInfo@@,Non-Destructive Modular Framework,1.4.1
+14:21:00,,@@PackageInfo@@,CopyAssetsWithDependency,1.0.0
+14:21:00,,flatVer2(Clone) (VRC.SDK3.Avatars.Components.VRCAvatarDescriptor)を取得しました 
+14:21:00,,FlatsProject Initialized By flat2
+14:21:00,,FlatsPlus (com.github.pandrabox.flatsplus.runtime.FlatsPlus)を取得しました 
+14:21:00,,Project path: C:\UnityP\vpm\Project\FlatsPlus
+14:21:00,,Found localization files:
+14:21:00,,Packages\com.github.pandrabox.flatsplus\Editor\Localize\PanLocalize.csv
+14:21:00,,MessageUI (UnityEngine.GameObject)を取得しました Packages/com.github.pandrabox.flatsplus/Assets/MessageUI/MessageUI.prefab
+14:21:00,,FlatPlus Complete Works
+14:21:00,,PanProgressBar.Show,Instantiate
+14:21:00,,PanProgressBar.Show,WriteDefaultOn
+14:21:00,,PanProgressBar.Show,PlayableRemover
+14:21:00,,PanProgressBar.Show,UniquefyObject
+14:21:00,,PanProgressBar.Show,ReplacePlayable
+14:21:00,,PanProgressBar.Show,ActiveOverride
+14:21:00,,PanProgressBar.Show,ParamView2
+14:21:00,,PanProgressBar.Show,MoveToRoot
+14:21:00,,PanProgressBar.Show,DanceController
+14:21:00,,PanProgressBar.Show,GridUI
+14:21:00,,PanProgressBar.Show,nBitSync
+14:21:00,,PanProgressBar.Show,MessageUI
+14:21:00,,PanProgressBar.Show,MergeMASubMenu
+14:21:00,,PanProgressBar.Show,FrameCounter
+14:21:00,,PanProgressBar.Show,PanMergeBlendTree
+14:25:52,,Localization key not found: AllOff
+14:25:52,,Localization key not found: AllOn
+14:25:53,,Localization key not found: AllOff
+14:25:53,,Localization key not found: AllOn
+14:25:54,,Localization key not found: AllOff
+14:25:56,,Localization key not found: AllOn
+14:25:57,,Localization key not found: AllOff
+14:25:58,,Localization key not found: AllOn
+14:25:58,,Localization key not found: AllOff
+14:25:58,,Localization key not found: AllOn
+14:25:58,,Localization key not found: AllOff
+14:25:58,,Localization key not found: AllOn
+14:26:44,,Localization key not found: AllOff
+14:26:45,,Localization key not found: AllOn
+14:26:45,,Localization key not found: AllOff
+14:26:45,,Localization key not found: AllOn
+14:26:45,,Localization key not found: AllOff
+14:26:45,,Localization key not found: AllOn
+14:26:45,,Localization key not found: AllOff
+14:26:45,,Localization key not found: AllOn
+14:26:45,,Localization key not found: AllOff
+14:26:45,,Localization key not found: AllOn
+14:26:45,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:46,,Localization key not found: AllOff
+14:26:46,,Localization key not found: AllOn
+14:26:49,,Localization key not found: AllOff
+14:26:50,,Localization key not found: AllOn
+14:26:51,,Localization key not found: AllOff
+14:26:51,,Localization key not found: AllOn
+14:26:51,,Localization key not found: AllOff
+14:26:52,,Localization key not found: AllOn
+14:26:52,,Localization key not found: AllOff
+14:26:52,,Localization key not found: AllOn
+14:26:53,,Localization key not found: AllOff
+14:26:53,,Localization key not found: AllOn
+14:26:53,,Localization key not found: AllOff
+14:26:53,,Localization key not found: AllOn
+14:26:53,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:54,,Localization key not found: AllOn
+14:26:54,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:55,,Localization key not found: AllOff
+14:26:55,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:56,,Localization key not found: AllOn
+14:26:56,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:57,,Localization key not found: AllOff
+14:26:57,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:58,,Localization key not found: AllOn
+14:26:58,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:26:59,,Localization key not found: AllOff
+14:26:59,,Localization key not found: AllOn
+14:27:57,,Localization key not found: AllOff
+14:28:03,,Localization key not found: AllOff
+14:28:03,,Localization key not found: AllOn
+14:28:04,,Localization key not found: AllOff
+14:28:05,,Localization key not found: AllOn
+14:28:05,,Localization key not found: AllOff
+14:28:06,,Localization key not found: AllOn
+14:28:06,,Localization key not found: AllOff
+14:28:07,,Localization key not found: AllOn

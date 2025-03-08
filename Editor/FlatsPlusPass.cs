@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using static com.github.pandrabox.flatsplus.editor.Global;
-using static com.github.pandrabox.flatsplus.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -46,9 +46,13 @@ namespace com.github.pandrabox.flatsplus.editor
                 PanLog.Clear(LogFilePath);
                 PanLog.SetLogPath(LogFilePath);
                 LowLevelDebugPrint("FlatPlus Start Works");
+                LowLevelDebugPrint($@"@@BuildStartDateTime@@,{DateTime.Now}");
+                AppearPackageInfo();
                 _desc = desc.NullCheck();
                 _p = new FlatsProject(_desc, true);
                 FlatsPlus fp = _desc.GetComponentInChildren<FlatsPlus>().NullCheck();
+
+                Localizer.SetLanguage(fp.Language);
 
                 CreateInstantiate(fp.Func_Carry, "Carry");
                 CreateInstantiate(fp.Func_DanceController, "DanceController");
@@ -61,12 +65,14 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateInstantiate(fp.Func_Link, "Link");
                 CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo");
                 CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting");
+                CreateInstantiate(true, "MessageUI");
                 CreateInstantiate(fp.Func_Move, "Move");
                 CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka");
                 CreateWork<FPPenWork>(fp.Func_Pen, "Pen");
                 CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep");
                 CreateInstantiate(fp.Func_Sync, "Sync");
                 CreateWork<FPTailWork>(fp.Func_Tail, "Tail");
+                CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn");
             }
             catch (Exception ex)
             {
@@ -94,7 +100,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 path = $@"{FlatsPlusAssetsPath}/{path}";
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path).NullCheck(path);
                 GameObject go = GameObject.Instantiate(prefab);
-                go.transform.SetParent(_desc.transform);
+                go.transform.SetParent(_p.PrjRootObj.transform);
                 go.transform.localPosition = Vector3.zero;
                 go.transform.localRotation = Quaternion.identity;
                 go.transform.localScale = Vector3.one;
