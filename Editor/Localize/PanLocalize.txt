@@ -145,3 +145,4 @@ Menu/Ico/Resonance/Detail,周囲のFlatsにも共鳴アイコンを表示しま�
 Menu/Ico/VerView,バージョン表示,Version View,버전 보기,版本视图,版本視圖
 Menu/Ico/VerView/Detail,周囲のFlatsのFlatsPlusのバージョンを表示します。,Display the version of FlatsPlus for surrounding Flats.,주변의 FlatsPlus의 버전을 표시합니다.,显示周围Flats的FlatsPlus版本。,顯示周圍Flats的FlatsPlus版本。
 
+Editor/CloseProgressBar,プログレスバーを閉じる(バグで残った時用),Close the progress bar (for when it remains due to a bug),프로그레스 바를 닫습니다(버그로 남아있을 때),关闭进度条(因为错误而保留),關閉進度條(因為錯誤而保留)

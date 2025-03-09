@@ -10,6 +10,7 @@ using com.github.pandrabox.pandravase.editor;
 using UnityEditor;
 using static com.github.pandrabox.pandravase.editor.Util;
 using static com.github.pandrabox.pandravase.editor.Localizer;
+
 using System.Collections.Generic;
 using System.Linq;
 using static com.github.pandrabox.pandravase.editor.PandraEditor;
@@ -326,12 +327,20 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 EditorGUILayout.HelpBox(L("LogAnalyze/AllFine"), MessageType.Info);
             }
-            else
+            const bool ISPREVIEWVERSION = true;
+            if (!allFine || ISPREVIEWVERSION)
             {
-                if (GUILayout.Button(L("LogAnalyze/CopyLog")))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUIUtility.systemCopyBuffer = _logContent;
-                    EditorUtility.DisplayDialog(L("LogAnalyze/CopyCompleteTitle"), L("LogAnalyze/CopyCompleteMessage"), "OK");
+                    if (GUILayout.Button(L("LogAnalyze/CopyLog")))
+                    {
+                        EditorGUIUtility.systemCopyBuffer = _logContent;
+                        EditorUtility.DisplayDialog(L("LogAnalyze/CopyCompleteTitle"), L("LogAnalyze/CopyCompleteMessage"), "OK");
+                    }
+                    if (GUILayout.Button(L("Editor/CloseProgressBar")))
+                    {
+                        PanProgressBar.Hide();
+                    }
                 }
             }
         }

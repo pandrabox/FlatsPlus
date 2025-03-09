@@ -27,6 +27,9 @@ namespace com.github.pandrabox.flatsplus.editor
         public const string LogFilePath = "Packages/com.github.pandrabox.flatsplus/Log/log.txt";
         public static StreamWriter FPStreamWriter;
 
+
+
+
         public enum FaceType
         {
             Mouth,
