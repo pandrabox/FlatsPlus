@@ -1,4 +1,5 @@
 ﻿#region
+using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using static com.github.pandrabox.flatsplus.editor.Global;
 using static com.github.pandrabox.pandravase.editor.Util;
-using com.github.pandrabox.flatsplus.runtime;
 #endregion
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -44,11 +44,11 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             Init(desc, "FlatsPlus", ProjectTypes.VPM);
             Config = desc.GetComponentInChildren<FlatsPlus>();
-            if(Config == null)
+            if (Config == null)
             {
                 if (PDEBUGMODE)
                 {
-                    Config=new FlatsPlus();
+                    Config = new FlatsPlus();
                 }
                 else
                 {

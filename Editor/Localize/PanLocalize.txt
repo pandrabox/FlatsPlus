@@ -102,8 +102,8 @@ Func/ClippingCanceler/Detail,距離が近くてもアバターが消えない,Th
 
 FlatsPlus_Progress,FlatsPlus 作業中,FlatsPlus in progress,FlatsPlus 작업 중,FlatsPlus 进行中,FlatsPlus 進行中
 
-Editor/AllOff,全てOff,All Off,모두 Off,全部关闭,全部關閉
-Editor/AllOn,全てOn,All On,모두 On,全部开启,全部開啟
+Editor/AllOff,まとめてOff,All Off,모두 Off,全部关闭,全部關閉
+Editor/AllOn,まとめてOn,All On,모두 On,全部打开,全部打開
 
 LogAnalyze/Title,前回のビルド結果,Last build result,이전 빌드 결과,上次构建结果,上次構建結果
 LogAnalyze/ExecutionTime,ビルド時刻,Execution time,빌드 시각,执行时间,執行時間
@@ -159,9 +159,13 @@ D_Hoppe_StretchLimit/Name,伸ばす制限,Stretch Limit,늘리기 제한,拉伸�
 D_Hoppe_StretchLimit/Detail,ほっぺたを伸ばす制限値,Limit value for stretching the cheeks,볼을 늘리는 제한 값,拉伸脸颊的限制值,拉伸脸颊的限制值
 D_Hoppe_Blush/Name,頬紅,Blush,볼터치,腮红,腮红
 D_Hoppe_Blush/Detail,頬紅を表示する,Display blush,볼터치를 표시,显示腮红,显示腮红
+D_Hoppe_Blush_Sensitivity/Name,頬紅感知距離,Blush Sensitivity,볼터치 감지 거리,腮红灵敏度,腮红灵敏度
+D_Hoppe_Blush_Sensitivity/Detail,手を近づけたときに頬紅が感知する距離,Distance at which the blush is sensed when the hand is brought close,손을 가까이 가져갔을 때 볼터치가 감지되는 거리,手靠近时感应腮红的距离,手靠近時感應腮紅的距離
 D_Hoppe_BlushType/Name,頬紅タイプ,Blush Type,볼터치 유형,腮红类型,腮红类型
 D_Hoppe_BlushType/Detail,頬紅のタイプを選択,Select the type of blush,볼터치 유형 선택,选择腮红类型,选择腮红类型
 D_Hoppe_BlushControlType/Name,頬紅制御タイプ,Blush Control Type,볼터치 제어 유형,腮红控制类型,腮红控制类型
 D_Hoppe_BlushControlType/Detail,頬紅の制御タイプを選択,Select the type of blush control,볼터치 제어 유형 선택,选择腮红控制类型,选择腮红控制类型
 D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
 D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單
+D_Hoppe_Blush_DisableByGesture/Name,ジェスチャー無効,Disable Blush by Gesture,제스처로 인해 붉어짐 비활성화,通过手势禁用脸红,通过手势禁用脸红
+D_Hoppe_Blush_DisableByGesture/Detail,ジェスチャーによる頬紅制御を無効化,Disable blush by gesture,제스처로 인해 붉어짐을 비활성화,通过手势禁用脸红,通过手势禁用脸红

@@ -1,25 +1,21 @@
 ﻿#if UNITY_EDITOR
 
 /* GitHubCopilotへのための連絡 
-いつもありがとうございます。
-
-#「D_***を反映して」と依頼した場合の内容について
+#「D_***を反映して」と依頼した場合、次の手順を厳密に守って下さい
 - 次を実行してください。
 - FlatsPlusより該当の変数を取得します
-- FlatsPlusEditorで次を行います
-    - SerializedPropertyへの追加
-    - DefineSerialへの追加
+- FlatsPlusEditorで次を行い、全文のコードを表示します（途中経過の報告は不要です）
+    - private SerializedProperty　へ変数を追加する
+    - protected override void DefineSerialへ記述を追加する
 　　- DrawDetailの適切な場所への追加（ここのshowDetailは全てOFF）
-- チャットで次を返します
-    - DrawDetailに値を追加したことに伴い、PanLocalize.txtに追加すべきテキスト
-        - サンプル
-            Key,ja,en,ko,zh-CN,zh-TW
-            D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
-            D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
+- 「DrawDetailに値を追加したことに伴い、PanLocalize.txtに追加すべきテキスト」をチャットに返します
+    - サンプル
+        Key,ja,en,ko,zh-CN,zh-TW
+        D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
+        D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
 */
 
 
-using Codice.Client.BaseCommands;
 using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
@@ -61,10 +57,12 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool D_Hoppe_AllowStretch = true;
         public float D_Hoppe_StretchLimit = 1f;//0～2
         public bool D_Hoppe_Blush = true;
+        public float D_Hoppe_Blush_Sensitivity = 1f;//0～1
         public Hoppe_BlushType D_Hoppe_BlushType;
         public Hoppe_BlushControlType D_Hoppe_BlushControlType;
         public enum Hoppe_BlushType { Original, FlatsPlus, Both };
         public enum Hoppe_BlushControlType { Auto, OtherOnly, WithoutDance, On, Off }
+        public bool D_Hoppe_Blush_DisableByGesture = true;
         public bool D_Hoppe_ShowExpressionMenu = false;
 
         public float Emo_TransitionTime = 0.5f;
@@ -111,8 +109,8 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private SerializedProperty
             funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync,
-            language, writedefaulton, clippingCanceler, funcPoseClipper, 
-            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushType, dHoppeBlushControlType, dHoppeShowExpressionMenu;
+            language, writedefaulton, clippingCanceler, funcPoseClipper,
+            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushSensitivity, dHoppeBlushType, dHoppeBlushControlType, dHoppeBlushDisableByGesture, dHoppeShowExpressionMenu;
 
         protected override void DefineSerial()
         {
@@ -140,14 +138,15 @@ namespace com.github.pandrabox.flatsplus.editor
             dHoppeAllowStretch = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_AllowStretch));
             dHoppeStretchLimit = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_StretchLimit));
             dHoppeBlush = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_Blush));
+            dHoppeBlushSensitivity = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_Blush_Sensitivity));
             dHoppeBlushType = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_BlushType));
             dHoppeBlushControlType = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_BlushControlType));
+            dHoppeBlushDisableByGesture = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_Blush_DisableByGesture)); // 追加
             dHoppeShowExpressionMenu = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_ShowExpressionMenu));
         }
 
         private void OverView()
         {
-
             DrawLanguageSelect(language);
             DrawBoolField(funcCarry, "Func/Carry");
             DrawBoolField(funcDanceController, "Func/DanceController");
@@ -167,8 +166,8 @@ namespace com.github.pandrabox.flatsplus.editor
             DrawBoolField(funcSync, "Func/Sync");
             DrawBoolField(writedefaulton, "Func/WriteDefaultOn");
             DrawBoolField(funcPoseClipper, "Func/PoseClipper");
-            DrawAllChangeField();
             DrawClippingCanceler();
+            DrawAllChangeField();
             DrawDetail();
             LogAnalyzeResult();
         }
@@ -221,7 +220,6 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.EndHorizontal();
         }
 
-
         #region OnOverride
         protected override void OnInnerEnable()
         {
@@ -247,7 +245,7 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             EditorGUILayout.EndHorizontal();
         }
-        private void DrawFloatField(SerializedProperty property, string key, float? min=null, float? max=null)
+        private void DrawFloatField(SerializedProperty property, string key, float? min = null, float? max = null)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(L($"{key}/Name"), GUILayout.Width(_titleSize + 20));
@@ -278,8 +276,10 @@ namespace com.github.pandrabox.flatsplus.editor
                     DrawBoolField(dHoppeAllowStretch, "D_Hoppe_AllowStretch");
                     DrawFloatField(dHoppeStretchLimit, "D_Hoppe_StretchLimit", 0, 2);
                     DrawBoolField(dHoppeBlush, "D_Hoppe_Blush");
+                    DrawFloatField(dHoppeBlushSensitivity, "D_Hoppe_Blush_Sensitivity", 0, 1);
                     DrawEnumField(dHoppeBlushType, "D_Hoppe_BlushType");
                     DrawEnumField(dHoppeBlushControlType, "D_Hoppe_BlushControlType");
+                    DrawBoolField(dHoppeBlushDisableByGesture, "D_Hoppe_Blush_DisableByGesture");
                     DrawBoolField(dHoppeShowExpressionMenu, "D_Hoppe_ShowExpressionMenu");
                 }
                 if (GUILayout.Button("Editor/CloseDetail".LL()))
@@ -362,8 +362,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private void LogAnalyzeResult()
         {
             if (_lastBuild == DateTime.MinValue) return;
-            Title(L("LogAnalyze/Title"));
-            EditorGUILayout.LabelField(L("LogAnalyze/ExecutionTime"), _lastBuild.ToString());
+            Title(L("LogAnalyze/Title") + $@" ({_lastBuild.ToString()})");
+            //EditorGUILayout.LabelField(L("LogAnalyze/ExecutionTime"), _lastBuild.ToString());
             bool allFine = true;
             if (_errorWorks.Count > 0)
             {
@@ -413,13 +413,13 @@ namespace com.github.pandrabox.flatsplus.editor
         #region Language
 
         private static readonly Dictionary<string, string> languageDisplayNames = new Dictionary<string, string>
-                    {
-                        { "en", "English" },
-                        { "ja", "日本語" },
-                        { "ko", "한국어" },
-                        { "zh-CN", "简体中文" },
-                        { "zh-TW", "繁體中文" }
-                    };
+                        {
+                            { "en", "English" },
+                            { "ja", "日本語" },
+                            { "ko", "한국어" },
+                            { "zh-CN", "简体中文" },
+                            { "zh-TW", "繁體中文" }
+                        };
         private static readonly string[] languageCodes = { "en", "ja", "ko", "zh-CN", "zh-TW" };
         private void DrawLanguageSelect(SerializedProperty property)
         {
