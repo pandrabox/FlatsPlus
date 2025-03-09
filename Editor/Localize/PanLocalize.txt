@@ -146,3 +146,22 @@ Menu/Ico/VerView,バージョン表示,Version View,버전 보기,版本视图,�
 Menu/Ico/VerView/Detail,周囲のFlatsのFlatsPlusのバージョンを表示します。,Display the version of FlatsPlus for surrounding Flats.,주변의 FlatsPlus의 버전을 표시합니다.,显示周围Flats的FlatsPlus版本。,顯示周圍Flats的FlatsPlus版本。
 
 Editor/CloseProgressBar,プログレスバーを閉じる(バグで残った時用),Close the progress bar (for when it remains due to a bug),프로그레스 바를 닫습니다(버그로 남아있을 때),关闭进度条(因为错误而保留),關閉進度條(因為錯誤而保留)
+Editor/Detail,詳細,Detail,상세,详细,詳細
+Editor/Detail2,詳細設定,Detail setting,상세 설정,详细设置,詳細設置
+Editor/CloseDetail,詳細設定を閉じる,Close detail setting,상세 설정을 닫습니다,关闭详细设置,關閉詳細設置
+
+Key,ja,en,ko,zh-CN,zh-TW
+D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
+D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
+D_Hoppe_AllowStretch/Name,伸ばす許可,Allow Stretch,늘리기 허용,允许拉伸,允许拉伸
+D_Hoppe_AllowStretch/Detail,ほっぺたを伸ばすことを許可する,Allow stretching the cheeks,볼을 늘릴 수 있게 허용,允许拉伸脸颊,允许拉伸脸颊
+D_Hoppe_StretchLimit/Name,伸ばす制限,Stretch Limit,늘리기 제한,拉伸限制,拉伸限制
+D_Hoppe_StretchLimit/Detail,ほっぺたを伸ばす制限値,Limit value for stretching the cheeks,볼을 늘리는 제한 값,拉伸脸颊的限制值,拉伸脸颊的限制值
+D_Hoppe_Blush/Name,頬紅,Blush,볼터치,腮红,腮红
+D_Hoppe_Blush/Detail,頬紅を表示する,Display blush,볼터치를 표시,显示腮红,显示腮红
+D_Hoppe_BlushType/Name,頬紅タイプ,Blush Type,볼터치 유형,腮红类型,腮红类型
+D_Hoppe_BlushType/Detail,頬紅のタイプを選択,Select the type of blush,볼터치 유형 선택,选择腮红类型,选择腮红类型
+D_Hoppe_BlushControlType/Name,頬紅制御タイプ,Blush Control Type,볼터치 제어 유형,腮红控制类型,腮红控制类型
+D_Hoppe_BlushControlType/Detail,頬紅の制御タイプを選択,Select the type of blush control,볼터치 제어 유형 선택,选择腮红控制类型,选择腮红控制类型
+D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
+D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單

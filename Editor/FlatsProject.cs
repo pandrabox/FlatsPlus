@@ -9,6 +9,7 @@ using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using static com.github.pandrabox.flatsplus.editor.Global;
 using static com.github.pandrabox.pandravase.editor.Util;
+using com.github.pandrabox.flatsplus.runtime;
 #endregion
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -42,12 +43,24 @@ namespace com.github.pandrabox.flatsplus.editor
         public FlatsProject(VRCAvatarDescriptor desc, bool ImmediateInitialize = false)
         {
             Init(desc, "FlatsPlus", ProjectTypes.VPM);
+            Config = desc.GetComponentInChildren<FlatsPlus>();
+            if(Config == null)
+            {
+                if (PDEBUGMODE)
+                {
+                    Config=new FlatsPlus();
+                }
+                else
+                {
+                    LowLevelDebugPrint("FlatsPlusプレハブが見つかりませんでした。アバター内にFlatsPlusプレハブがない場合、FlatsPlusは動作しません。");
+                }
+            }
             if (ImmediateInitialize)
             {
                 Initialization();
             }
         }
-
+        public FlatsPlus Config = null;
         public string CurrentAvatarName => GetAvatarName(CurrentAvatarType);
         public string TailName => GetDBString("TailName");
         public float TailScaleLimit0 => GetDBFloat("TailScaleLimit0");
@@ -79,6 +92,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public float TotalBoundsExtentX => GetDBFloat("TotalBoundsExtentX");
         public float TotalBoundsExtentY => GetDBFloat("TotalBoundsExtentY");
         public float TotalBoundsExtentZ => GetDBFloat("TotalBoundsExtentZ");
+
 
         public Vector3 TotalBoundsCenter => new Vector3(TotalBoundsCenterX, TotalBoundsCenterY, TotalBoundsCenterZ);
         public Vector3 TotalBoundsExtent => new Vector3(TotalBoundsExtentX, TotalBoundsExtentY, TotalBoundsExtentZ);

@@ -1,10 +1,12 @@
 ﻿using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
+using com.github.pandrabox.flatsplus.runtime;
 using System;
 using System.Diagnostics;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using static com.github.pandrabox.pandravase.editor.Util;
+
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -37,6 +39,7 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         protected VRCAvatarDescriptor _desc;
         protected FlatsProject _prj;
+        protected FlatsPlus _config;
         protected object[] _args;
         public FlatsWorkBase(FlatsProject prj, params object[] args)
         {
@@ -48,6 +51,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 LowLevelDebugPrint($"Flats Plus Work Started");
                 stopwatch = Stopwatch.StartNew();
                 _prj = prj.NullCheck("_prj");
+                _config = prj.Config.NullCheck("_config");
                 _desc = prj.Descriptor.NullCheck("_desc");
                 GetTgt();
                 OnConstruct();
