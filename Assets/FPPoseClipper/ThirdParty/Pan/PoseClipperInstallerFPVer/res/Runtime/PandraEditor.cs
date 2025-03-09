@@ -1,6 +1,6 @@
 ﻿#if UNITY_EDITOR
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 using static pan.assets.fpposeclipperinstaller.runtime.Util;
 
 namespace pan.assets.fpposeclipperinstaller.runtime

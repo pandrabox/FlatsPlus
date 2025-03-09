@@ -2,7 +2,6 @@
 using com.github.pandrabox.pandravase.editor;
 using nadena.dev.ndmf;
 using System;
-using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;

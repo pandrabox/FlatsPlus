@@ -1,23 +1,13 @@
-﻿using UnityEditor;
-using nadena.dev.modular_avatar.core;
-using UnityEngine;
-using UnityEditor.Animations;
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using nadena.dev.ndmf.util;
-using nadena.dev.ndmf;
-using com.github.pandrabox.pandravase.runtime;
-using static com.github.pandrabox.pandravase.editor.Util;
-using static com.github.pandrabox.pandravase.editor.Localizer;
-using System.Linq;
-using VRC.SDK3.Avatars.Components;
-using com.github.pandrabox.flatsplus.runtime;
-using static com.github.pandrabox.flatsplus.editor.Global;
-using static com.github.pandrabox.pandravase.editor.TextureUtil;
-using System.Text.RegularExpressions;
+﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using nadena.dev.modular_avatar.core;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using static com.github.pandrabox.pandravase.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.TextureUtil;
+using static com.github.pandrabox.pandravase.editor.Util;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -76,17 +66,17 @@ namespace com.github.pandrabox.flatsplus.editor
                 if (i < 7)
                 {
                     name = (i).ToString();
-                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetIco(_tgt.textures[i-1]);
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetIco(_tgt.textures[i - 1]);
                 }
                 else if (i == 7)
                 {
                     name = L("Menu/Ico/Resonance");
-                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/Resonance/Detail".LL()).SetIco(_tgt.textures[i-1]);
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/Resonance/Detail".LL()).SetIco(_tgt.textures[i - 1]);
                 }
                 else if (_tgt.VerView && i == 8)
                 {
                     name = L("Menu/Ico/VerView");
-                    Texture2D vvico= AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i8.png");
+                    Texture2D vvico = AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i8.png");
                     mb.AddButton("FlatsPlus/Icon/VerView", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/VerView/Detail".LL()).SetIco(vvico);
                 }
             }

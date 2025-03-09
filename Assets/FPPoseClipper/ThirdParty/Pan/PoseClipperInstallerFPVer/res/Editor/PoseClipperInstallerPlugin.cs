@@ -1,15 +1,12 @@
 ﻿using nadena.dev.ndmf;
 using pan.assets.fpposeclipperinstaller.editor;
 using pan.assets.fpposeclipperinstaller.runtime;
-using static pan.assets.fpposeclipperinstaller.runtime.Util;
-using static pan.assets.fpposeclipperinstaller.runtime.Global;
-using UnityEngine;
-using VRC.SDK3.Avatars.Components;
 using UnityEditor;
-using System.Linq;
+using UnityEngine;
 using UnityEngine.Animations;
-using System.Collections.Generic;
-using System;
+using VRC.SDK3.Avatars.Components;
+using static pan.assets.fpposeclipperinstaller.runtime.Global;
+using static pan.assets.fpposeclipperinstaller.runtime.Util;
 
 [assembly: ExportsPlugin(typeof(FPPoseClipperInstallerPlugin))]
 
@@ -19,7 +16,8 @@ namespace pan.assets.fpposeclipperinstaller.editor
     public class PanDebug
     {
         [MenuItem("PanDbg/FPPoseClipperInstallerPlugin")]
-        public static void DbgFPPoseClipperInstallerPlugin() {
+        public static void DbgFPPoseClipperInstallerPlugin()
+        {
             SetDebugMode(true);
             new FPPoseClipperInstallerMain(TopAvatar);
         }

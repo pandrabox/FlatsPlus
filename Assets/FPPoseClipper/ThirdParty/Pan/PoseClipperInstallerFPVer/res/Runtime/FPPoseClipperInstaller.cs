@@ -2,9 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 using VRC.SDKBase;
-using static pan.assets.fpposeclipperinstaller.runtime.Util;
 using static pan.assets.fpposeclipperinstaller.runtime.Global;
-using System.Linq;
+using static pan.assets.fpposeclipperinstaller.runtime.Util;
 
 namespace pan.assets.fpposeclipperinstaller.runtime
 {

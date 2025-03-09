@@ -1,13 +1,13 @@
 #if UNITY_EDITOR
+using nadena.dev.ndmf;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Runtime.CompilerServices;
 using System.IO;
-using VRC.SDK3.Avatars.Components;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
-using nadena.dev.ndmf;
+using UnityEngine;
+using VRC.SDK3.Avatars.Components;
 
 namespace pan.assets.fpposeclipperinstaller.runtime
 {
@@ -46,7 +46,7 @@ namespace pan.assets.fpposeclipperinstaller.runtime
             else if (level == LogType.Error) Debug.LogError(msg);
             else if (level == LogType.Exception) throw new Exception(msg);
             else Debug.LogWarning(msg);
-            
+
         }
 
         /// <summary>

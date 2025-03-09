@@ -79,7 +79,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private const int _titleSize = 110;
 
-        private SerializedProperty 
+        private SerializedProperty
             funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync
             , language, writedefaulton, clippingCanceler, funcPoseClipper;
 
@@ -255,7 +255,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _errorUnknowns = new List<string>();
             if (!File.Exists(_logPath)) return;
             _logContent = File.ReadAllText(_logPath);
-            if(_logContent.Length == 0) return;
+            if (_logContent.Length == 0) return;
             string[] lines = _logContent.Split('\n');
             foreach (var line in lines)
             {
@@ -274,13 +274,13 @@ namespace com.github.pandrabox.flatsplus.editor
                     if (parts.Length >= 2)
                     {
                         var workName = parts[1];
-                        if(workName.Length > 0)
+                        if (workName.Length > 0)
                         {
                             _errorWorks.Add(workName);
                             workError = true;
                         }
                     }
-                    if(!workError)
+                    if (!workError)
                     {
                         _errorUnknowns.Add(line);
                     }

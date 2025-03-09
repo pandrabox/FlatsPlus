@@ -1,28 +1,11 @@
-﻿using UnityEditor;
-using nadena.dev.modular_avatar.core;
-using UnityEngine;
-using UnityEditor.Animations;
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using nadena.dev.ndmf.util;
-using nadena.dev.ndmf;
-using com.github.pandrabox.pandravase.runtime;
-using static com.github.pandrabox.pandravase.editor.Util;
-using System.Linq;
-using VRC.SDK3.Avatars.Components;
-using com.github.pandrabox.flatsplus.runtime;
-using static com.github.pandrabox.flatsplus.editor.Global;
-using static com.github.pandrabox.pandravase.editor.TextureUtil;
-using System.Text.RegularExpressions;
+﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
-using VRC.SDK3.Dynamics.PhysBone.Components;
-using VRC.Dynamics;
-using System.Globalization;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.Animations;
-using static com.github.pandrabox.flatsplus.editor.FPTailWork;
-using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.BC;
+using VRC.Dynamics;
+using VRC.SDK3.Dynamics.PhysBone.Components;
+using static com.github.pandrabox.pandravase.editor.Util;
 
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -60,7 +43,8 @@ namespace com.github.pandrabox.flatsplus.editor
         public Transform _touchArea;
         private bool _dbCreateMode;
 
-        public FPOnakaWork(FlatsProject fp, bool dbCreateMode = false) : base(fp) {
+        public FPOnakaWork(FlatsProject fp, bool dbCreateMode = false) : base(fp)
+        {
             _dbCreateMode = dbCreateMode;
         }
 
@@ -100,7 +84,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 sphere.GetComponent<Renderer>().material = AssetDatabase.LoadAssetAtPath<Material>("Packages/com.github.pandrabox.flatsplus/Assets/Onaka/res/DevMat.mat");
                 PositionConstraint positionConstraint = sphere.AddComponent<PositionConstraint>();
                 positionConstraint.constraintActive = false;
-                ConstraintSource source = new ConstraintSource{sourceTransform = _touchArea, weight = 1f};
+                ConstraintSource source = new ConstraintSource { sourceTransform = _touchArea, weight = 1f };
                 positionConstraint.AddSource(source);
                 positionConstraint.translationAtRest = Vector3.zero;
                 positionConstraint.locked = true;
@@ -119,10 +103,10 @@ namespace com.github.pandrabox.flatsplus.editor
             pb.limitType = VRCPhysBoneBase.LimitType.Angle;
             pb.maxAngleX = _tgt.LimitAngle;
             pb.radius = _prj.OnakaRadius * _tgt.RadiusTuning;
-            pb.radiusCurve = new AnimationCurve(new Keyframe(_prj.OnakaCurveTop-.1f, 0), new Keyframe(_prj.OnakaCurveTop, 1), new Keyframe(_prj.OnakaCurveTop + .1f, 0));
+            pb.radiusCurve = new AnimationCurve(new Keyframe(_prj.OnakaCurveTop - .1f, 0), new Keyframe(_prj.OnakaCurveTop, 1), new Keyframe(_prj.OnakaCurveTop + .1f, 0));
             pb.allowGrabbing = VRCPhysBoneBase.AdvancedBool.False;
             pb.allowPosing = VRCPhysBoneBase.AdvancedBool.False;
-            pb.immobileType=VRCPhysBoneBase.ImmobileType.World;
+            pb.immobileType = VRCPhysBoneBase.ImmobileType.World;
         }
     }
 }

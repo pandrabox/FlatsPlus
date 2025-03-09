@@ -1,26 +1,18 @@
-﻿using UnityEditor;
-using nadena.dev.modular_avatar.core;
-using UnityEngine;
-using UnityEditor.Animations;
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using nadena.dev.ndmf.util;
-using nadena.dev.ndmf;
-using com.github.pandrabox.pandravase.runtime;
-using static com.github.pandrabox.pandravase.editor.Util;
-using System.Linq;
-using VRC.SDK3.Avatars.Components;
-using com.github.pandrabox.flatsplus.runtime;
-using static com.github.pandrabox.flatsplus.editor.Global;
-using static com.github.pandrabox.pandravase.editor.TextureUtil;
-using System.Text.RegularExpressions;
+﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
-using VRC.SDK3.Dynamics.PhysBone.Components;
-using VRC.Dynamics;
+using com.github.pandrabox.pandravase.runtime;
+using nadena.dev.modular_avatar.core;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.Animations;
+using UnityEngine;
+using VRC.Dynamics;
+using VRC.SDK3.Dynamics.PhysBone.Components;
+using static com.github.pandrabox.flatsplus.editor.Global;
 using static com.github.pandrabox.pandravase.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Util;
 
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -51,14 +43,15 @@ namespace com.github.pandrabox.flatsplus.editor
         public VRCPhysBoneColliderBase _groundCollider;
 
         public FPTailWork(FlatsProject fp) : base(fp) { }
-        
+
         sealed protected override void OnConstruct()
         {
             //throw new NotImplementedException();
             GetObjects();
             ObjectSetting();
             _bb = new BlendTreeBuilder("FlatsPlus/Tail");
-            _bb.RootDBT(() => {
+            _bb.RootDBT(() =>
+            {
                 //Gravity();
                 CreateSize();
             });
@@ -116,7 +109,8 @@ namespace com.github.pandrabox.flatsplus.editor
             var ac = new AnimationClipsBuilder();
             ac.Clip("Gravity-1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(-_tgt.GravityRange);
             ac.Clip("Gravity1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(_tgt.GravityRange);
-            _bb.Param("1").Add1D("FlatsPlus/Tail/GravityRx", () => {
+            _bb.Param("1").Add1D("FlatsPlus/Tail/GravityRx", () =>
+            {
                 _bb.Param(0).AddMotion(ac.Outp("Gravity-1"));
                 _bb.Param(1).AddMotion(ac.Outp("Gravity1"));
             });
@@ -129,7 +123,7 @@ namespace com.github.pandrabox.flatsplus.editor
             AnimatorBuilder ab = new AnimatorBuilder("FlatsPlus/Tail/PBReload");
             ab.AddLayer().AddState("Reload", ac.Outp("PBReload"));
             ab.TransFromCurrent(ab.InitialState).MoveInstant();
-            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater,.5f, "FlatsPlus/Tail/GravityRxIsDiff");
+            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater, .5f, "FlatsPlus/Tail/GravityRxIsDiff");
             //ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.IfNot, 1, "IsAnimatorEnabled");
             ab.Attach(_tail);
 
@@ -150,19 +144,23 @@ namespace com.github.pandrabox.flatsplus.editor
 
             AnimationClipsBuilder ac = new AnimationClipsBuilder();
             float smallVal = _tgt.SizeMin;
-            ac.Clip("Small").IsVector3((x) => {
+            ac.Clip("Small").IsVector3((x) =>
+            {
                 x.Bind("", typeof(Transform), $"m_LocalScale.@a").Const2F(smallVal);
                 x.Bind(tail1?.name, typeof(Transform), $"m_LocalScale.@a").Const2F(tail1NormalSize);
             });
-            ac.Clip("Normal").IsVector3((x) => {
+            ac.Clip("Normal").IsVector3((x) =>
+            {
                 x.Bind("", typeof(Transform), $"m_LocalScale.@a").Const2F(tail0NormalSize);
                 x.Bind(tail1?.name, typeof(Transform), $"m_LocalScale.@a").Const2F(tail1NormalSize);
             });
-            ac.Clip("Big").IsVector3((x) => {
+            ac.Clip("Big").IsVector3((x) =>
+            {
                 x.Bind("", typeof(Transform), $"m_LocalScale.@a").Const2F(tail0Big);
                 x.Bind(tail1?.name, typeof(Transform), $"m_LocalScale.@a").Const2F(tail1Big);
             });
-            _bb.NName("TailSize").Param("1").Add1D("FlatsPlus/Tail/SizeRx", () => {
+            _bb.NName("TailSize").Param("1").Add1D("FlatsPlus/Tail/SizeRx", () =>
+            {
                 _bb.Param(0).AddMotion(ac.Outp("Small"));
                 _bb.Param(0.5f).AddMotion(ac.Outp("Normal"));
                 _bb.Param(1).AddMotion(ac.Outp("Big"));
@@ -181,7 +179,8 @@ namespace com.github.pandrabox.flatsplus.editor
             sPos[0] = CalcQuaternionRotationY(_tail, swingAngle);
             sPos[1] = CalcQuaternionRotationY(_tail, -swingAngle);
             sPos[2] = CalcQuaternionRotationY(_tail, 0);
-            ac.Clip($@"Swing").SetLoop(true).IsQuaternion((x) => { 
+            ac.Clip($@"Swing").SetLoop(true).IsQuaternion((x) =>
+            {
                 x.Bind("", typeof(Transform), $"m_LocalRotation.@a")
                 .Smooth(
                     swingPeriod * 0, sPos[0]
@@ -190,14 +189,15 @@ namespace com.github.pandrabox.flatsplus.editor
                 )
                 .SetAllFlat();
             });
-            ac.Clip($@"Stop").IsQuaternion((x) => { 
+            ac.Clip($@"Stop").IsQuaternion((x) =>
+            {
                 x.Bind("", typeof(Transform), $"m_LocalRotation.@a").Const2F(sPos[2]);
             });
 
             var ab = new AnimatorBuilder("FlatsPlus/Tail/Swing").AddLayer();
             ab.SetMotion(ac.Outp("Stop"));
             ab.AddState("on", ac.Outp("Swing"))
-                .TransToCurrent(ab.InitialState, transitionDuration:1.5f)
+                .TransToCurrent(ab.InitialState, transitionDuration: 1.5f)
                 .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Tail/Swing", true);
             ab.Attach(_tail, true);
 

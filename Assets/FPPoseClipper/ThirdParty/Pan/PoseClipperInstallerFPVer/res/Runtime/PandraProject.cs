@@ -1,12 +1,12 @@
 ﻿#if UNITY_EDITOR
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.IO;
-using static pan.assets.fpposeclipperinstaller.runtime.Util;
-using System.Runtime.CompilerServices;
-using VRC.SDK3.Avatars.Components;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using UnityEditor;
+using UnityEngine;
+using VRC.SDK3.Avatars.Components;
+using static pan.assets.fpposeclipperinstaller.runtime.Util;
 
 namespace pan.assets.fpposeclipperinstaller.runtime
 {
@@ -34,7 +34,7 @@ namespace pan.assets.fpposeclipperinstaller.runtime
         public string Suffix => $@"Pan/{ProjectName}/";
         public string PrjRootObjName => $@"{ProjectName}_PrjRootObj";
         public VRCAvatarDescriptor.CustomAnimLayer[] BaseAnimationLayers => Descriptor.baseAnimationLayers;
-        public int PlayableIndex (VRCAvatarDescriptor.AnimLayerType type) => Array.IndexOf(BaseAnimationLayers, BaseAnimationLayers.FirstOrDefault(l => l.type == type));
+        public int PlayableIndex(VRCAvatarDescriptor.AnimLayerType type) => Array.IndexOf(BaseAnimationLayers, BaseAnimationLayers.FirstOrDefault(l => l.type == type));
         public GameObject PrjRootObj => runtime.Util.GetOrCreateObject(RootTransform, PrjRootObjName);
 
         /// <summary>

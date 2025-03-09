@@ -1,17 +1,11 @@
 ﻿#if UNITY_EDITOR
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Runtime.CompilerServices;
-using System.IO;
-using VRC.SDK3.Avatars.Components;
-using System.Linq;
-using UnityEditor;
-using nadena.dev.ndmf;
-using static pan.assets.fpposeclipperinstaller.runtime.Util;
-using static pan.assets.fpposeclipperinstaller.runtime.Global;
-using UnityEngine.Animations;
 using nadena.dev.modular_avatar.core;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Animations;
+using VRC.SDK3.Avatars.Components;
+using static pan.assets.fpposeclipperinstaller.runtime.Global;
 
 namespace pan.assets.fpposeclipperinstaller.runtime
 {
@@ -67,9 +61,9 @@ namespace pan.assets.fpposeclipperinstaller.runtime
             if (Prj == null) AddError("Prjが取得できませんでした。未知の動作です。");
 
             Animator = Prj?.RootObject?.GetComponent<Animator>();
-            if(Animator == null) AddError("Animatorの取得に失敗しました。");
-            if(!Animator.isHuman) AddError("AnimatorがHumanoidではありません_Type1 本システムはHumanoidアバターのみに使用できます。");
-            
+            if (Animator == null) AddError("Animatorの取得に失敗しました。");
+            if (!Animator.isHuman) AddError("AnimatorがHumanoidではありません_Type1 本システムはHumanoidアバターのみに使用できます。");
+
             var PoseClipperTransform = Prj?.RootTransform?.GetComponentsInChildren<Transform>(true)?.FirstOrDefault(t => t.name == "PoseClipper" && t.GetComponent<ModularAvatarMergeAnimator>() != null);
             if (PoseClipperTransform == null) AddError("PoseClipperの取得に失敗しました。「PoseClipper」という名称のままアバターの下に入っていることを確認して下さい。");
 
@@ -79,7 +73,7 @@ namespace pan.assets.fpposeclipperinstaller.runtime
             PoseClipperScaleTransform = PoseClipperTransform?.Find("Scale");
             if (PoseClipperScaleTransform == null) AddError("PoseClipperScaleObjectの取得に失敗しました。");
 
-            
+
             // Humanoidの取得
             foreach (var kvp in ClipperToHumanoid)
             {
@@ -125,7 +119,7 @@ namespace pan.assets.fpposeclipperinstaller.runtime
         private void AddError(string msg)
         {
             ErrMsg = $"{ErrMsg}\n{msg}";
-            AnyError = true ;
+            AnyError = true;
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace pan.assets.fpposeclipperinstaller.runtime
+﻿namespace pan.assets.fpposeclipperinstaller.runtime
 {
     public static class Global
     {

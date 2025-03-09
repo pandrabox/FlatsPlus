@@ -1,23 +1,10 @@
-﻿using UnityEditor;
-using nadena.dev.modular_avatar.core;
-using UnityEngine;
-using UnityEditor.Animations;
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using nadena.dev.ndmf.util;
-using nadena.dev.ndmf;
-using com.github.pandrabox.pandravase.runtime;
-using static com.github.pandrabox.pandravase.editor.Util;
-using System.Linq;
-using VRC.SDK3.Avatars.Components;
-using com.github.pandrabox.flatsplus.runtime;
-using static com.github.pandrabox.flatsplus.editor.Global;
-using static com.github.pandrabox.pandravase.editor.TextureUtil;
-using System.Text.RegularExpressions;
+﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
+using nadena.dev.modular_avatar.core;
+using UnityEditor;
 using static com.github.pandrabox.pandravase.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Util;
 
 
 
@@ -54,7 +41,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateControl()
         {
             var bb = new BlendTreeBuilder(__prefix);
-            bb.RootDBT(() => {
+            bb.RootDBT(() =>
+            {
                 bb.Param("1").Add1D(__LightModeRx, () =>
                 {
                     bb.Param(0).AddMotion($@"{_animFolder}/Off.anim");
