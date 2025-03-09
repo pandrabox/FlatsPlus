@@ -1,5 +1,25 @@
 ﻿#if UNITY_EDITOR
 
+/* GitHubCopilotへのための連絡 
+いつもありがとうございます。
+
+#「D_***を反映して」と依頼した場合の内容について
+- 次を実行してください。
+- FlatsPlusより該当の変数を取得します
+- FlatsPlusEditorで次を行います
+    - SerializedPropertyへの追加
+    - DefineSerialへの追加
+　　- DrawDetailの適切な場所への追加（ここのshowDetailは全てOFF）
+- チャットで次を返します
+    - DrawDetailに値を追加したことに伴い、PanLocalize.txtに追加すべきテキスト
+        - サンプル
+            Key,ja,en,ko,zh-CN,zh-TW
+            D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
+            D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
+*/
+
+
+using Codice.Client.BaseCommands;
 using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
@@ -35,7 +55,17 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool Func_WriteDefaultOn = true;
         public bool Func_ClippingCanceler = true;
 
+
         public string Language = null;
+        public bool D_Hoppe_AllowTouch = true;
+        public bool D_Hoppe_AllowStretch = true;
+        public float D_Hoppe_StretchLimit = 1f;//0～2
+        public bool D_Hoppe_Blush = true;
+        public Hoppe_BlushType D_Hoppe_BlushType;
+        public Hoppe_BlushControlType D_Hoppe_BlushControlType;
+        public enum Hoppe_BlushType { Original, FlatsPlus, Both };
+        public enum Hoppe_BlushControlType { Auto, OtherOnly, WithoutDance, On, Off }
+        public bool D_Hoppe_ShowExpressionMenu = false;
 
         public float Emo_TransitionTime = 0.5f;
         public Texture2D[] Ico_Textures = new Texture2D[6];
@@ -80,78 +110,67 @@ namespace com.github.pandrabox.flatsplus.editor
         private const int _titleSize = 110;
 
         private SerializedProperty
-            funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync
-            , language, writedefaulton, clippingCanceler, funcPoseClipper;
+            funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync,
+            language, writedefaulton, clippingCanceler, funcPoseClipper, 
+            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushType, dHoppeBlushControlType, dHoppeShowExpressionMenu;
 
-        public override void OnInnerInspectorGUI()
+        protected override void DefineSerial()
         {
+            funcCarry = serializedObject.FindProperty(nameof(FlatsPlus.Func_Carry));
+            funcDanceController = serializedObject.FindProperty(nameof(FlatsPlus.Func_DanceController));
+            funcEmo = serializedObject.FindProperty(nameof(FlatsPlus.Func_Emo));
+            funcExplore = serializedObject.FindProperty(nameof(FlatsPlus.Func_Explore));
+            funcHoppe = serializedObject.FindProperty(nameof(FlatsPlus.Func_Hoppe));
+            funcIco = serializedObject.FindProperty(nameof(FlatsPlus.Func_Ico));
+            funcLight = serializedObject.FindProperty(nameof(FlatsPlus.Func_Light));
+            funcMakeEmo = serializedObject.FindProperty(nameof(FlatsPlus.Func_MakeEmo));
+            funcMeshSetting = serializedObject.FindProperty(nameof(FlatsPlus.Func_MeshSetting));
+            funcMove = serializedObject.FindProperty(nameof(FlatsPlus.Func_Move));
+            funcOnaka = serializedObject.FindProperty(nameof(FlatsPlus.Func_Onaka));
+            funcPen = serializedObject.FindProperty(nameof(FlatsPlus.Func_Pen));
+            funcSleep = serializedObject.FindProperty(nameof(FlatsPlus.Func_Sleep));
+            funcTail = serializedObject.FindProperty(nameof(FlatsPlus.Func_Tail));
+            funcLink = serializedObject.FindProperty(nameof(FlatsPlus.Func_Link));
+            funcSync = serializedObject.FindProperty(nameof(FlatsPlus.Func_Sync));
+            language = serializedObject.FindProperty(nameof(FlatsPlus.Language));
+            writedefaulton = serializedObject.FindProperty(nameof(FlatsPlus.Func_WriteDefaultOn));
+            clippingCanceler = serializedObject.FindProperty(nameof(FlatsPlus.Func_ClippingCanceler));
+            funcPoseClipper = serializedObject.FindProperty(nameof(FlatsPlus.Func_PoseClipper));
+            dHoppeAllowTouch = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_AllowTouch));
+            dHoppeAllowStretch = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_AllowStretch));
+            dHoppeStretchLimit = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_StretchLimit));
+            dHoppeBlush = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_Blush));
+            dHoppeBlushType = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_BlushType));
+            dHoppeBlushControlType = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_BlushControlType));
+            dHoppeShowExpressionMenu = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_ShowExpressionMenu));
+        }
+
+        private void OverView()
+        {
+
             DrawLanguageSelect(language);
-            DrawPropertyField(funcCarry, "Func/Carry");
-            DrawPropertyField(funcDanceController, "Func/DanceController");
-            DrawPropertyField(funcEmo, "Func/Emo");
-            DrawPropertyField(funcExplore, "Func/Explore");
-            DrawPropertyField(funcHoppe, "Func/Hoppe");
-            DrawPropertyField(funcIco, "Func/Ico");
-            DrawPropertyField(funcLight, "Func/Light");
-            DrawPropertyField(funcMakeEmo, "Func/MakeEmo");
-            DrawPropertyField(funcMeshSetting, "Func/MeshSetting");
-            DrawPropertyField(funcMove, "Func/Move");
-            DrawPropertyField(funcOnaka, "Func/Onaka");
-            DrawPropertyField(funcPen, "Func/Pen");
-            DrawPropertyField(funcSleep, "Func/Sleep");
-            DrawPropertyField(funcTail, "Func/Tail");
-            DrawPropertyField(funcLink, "Func/Link");
-            DrawPropertyField(funcSync, "Func/Sync");
-            DrawPropertyField(writedefaulton, "Func/WriteDefaultOn");
-            DrawPropertyField(funcPoseClipper, "Func/PoseClipper");
+            DrawBoolField(funcCarry, "Func/Carry");
+            DrawBoolField(funcDanceController, "Func/DanceController");
+            DrawBoolField(funcEmo, "Func/Emo");
+            DrawBoolField(funcExplore, "Func/Explore");
+            DrawBoolField(funcHoppe, "Func/Hoppe", true);
+            DrawBoolField(funcIco, "Func/Ico");
+            DrawBoolField(funcLight, "Func/Light");
+            DrawBoolField(funcMakeEmo, "Func/MakeEmo");
+            DrawBoolField(funcMeshSetting, "Func/MeshSetting");
+            DrawBoolField(funcMove, "Func/Move");
+            DrawBoolField(funcOnaka, "Func/Onaka");
+            DrawBoolField(funcPen, "Func/Pen");
+            DrawBoolField(funcSleep, "Func/Sleep");
+            DrawBoolField(funcTail, "Func/Tail");
+            DrawBoolField(funcLink, "Func/Link");
+            DrawBoolField(funcSync, "Func/Sync");
+            DrawBoolField(writedefaulton, "Func/WriteDefaultOn");
+            DrawBoolField(funcPoseClipper, "Func/PoseClipper");
             DrawAllChangeField();
             DrawClippingCanceler();
+            DrawDetail();
             LogAnalyzeResult();
-        }
-
-        private static readonly Dictionary<string, string> languageDisplayNames = new Dictionary<string, string>
-                    {
-                        { "en", "English" },
-                        { "ja", "日本語" },
-                        { "ko", "한국어" },
-                        { "zh-CN", "简体中文" },
-                        { "zh-TW", "繁體中文" }
-                    };
-        private static readonly string[] languageCodes = { "en", "ja", "ko", "zh-CN", "zh-TW" };
-        private void DrawLanguageSelect(SerializedProperty property)
-        {
-            int selectedIndex = Array.IndexOf(languageCodes, property.stringValue);
-            if (selectedIndex == -1)
-            {
-                property.stringValue = GetDefaultLanguage();
-                selectedIndex = Array.IndexOf(languageCodes, property.stringValue);
-                if (selectedIndex == -1)
-                {
-                    selectedIndex = 0;
-                }
-            }
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Language", GUILayout.Width(20 + _titleSize));
-
-            EditorGUI.BeginChangeCheck();
-            selectedIndex = EditorGUILayout.Popup(selectedIndex, languageCodes.Select(code => languageDisplayNames[code]).ToArray());
-            property.stringValue = languageCodes[selectedIndex];
-            if (EditorGUI.EndChangeCheck())
-            {
-                serializedObject.ApplyModifiedProperties();
-                Localizer.SetLanguage(property.stringValue);
-            }
-            EditorGUILayout.EndHorizontal();
-        }
-
-        private void DrawPropertyField(SerializedProperty property, string key)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(property, GUIContent.none, GUILayout.Width(20));
-            EditorGUILayout.LabelField(L($"{key}/Name"), GUILayout.Width(_titleSize));
-            EditorGUILayout.LabelField(L($"{key}/Detail"));
-            EditorGUILayout.EndHorizontal();
         }
 
         private void DrawAllChangeField()
@@ -202,46 +221,98 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.EndHorizontal();
         }
 
-        protected override void DefineSerial()
-        {
-            funcCarry = serializedObject.FindProperty("Func_Carry");
-            funcDanceController = serializedObject.FindProperty("Func_DanceController");
-            funcEmo = serializedObject.FindProperty("Func_Emo");
-            funcExplore = serializedObject.FindProperty("Func_Explore");
-            funcHoppe = serializedObject.FindProperty("Func_Hoppe");
-            funcIco = serializedObject.FindProperty("Func_Ico");
-            funcLight = serializedObject.FindProperty("Func_Light");
-            funcMakeEmo = serializedObject.FindProperty("Func_MakeEmo");
-            funcMeshSetting = serializedObject.FindProperty("Func_MeshSetting");
-            funcMove = serializedObject.FindProperty("Func_Move");
-            funcOnaka = serializedObject.FindProperty("Func_Onaka");
-            funcPen = serializedObject.FindProperty("Func_Pen");
-            funcSleep = serializedObject.FindProperty("Func_Sleep");
-            funcTail = serializedObject.FindProperty("Func_Tail");
-            funcLink = serializedObject.FindProperty("Func_Link");
-            funcSync = serializedObject.FindProperty("Func_Sync");
-            language = serializedObject.FindProperty("Language");
-            writedefaulton = serializedObject.FindProperty("Func_WriteDefaultOn");
-            clippingCanceler = serializedObject.FindProperty("Func_ClippingCanceler");
-            funcPoseClipper = serializedObject.FindProperty("Func_PoseClipper");
-        }
 
+        #region OnOverride
         protected override void OnInnerEnable()
         {
             LogAnalyze();
+        }
+        public override void OnInnerInspectorGUI()
+        {
+            OverView();
+        }
+        #endregion
+
+        #region DrawHogehoge
+        private void DrawBoolField(SerializedProperty property, string key, bool showDetails = false)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(property, GUIContent.none, GUILayout.Width(20));
+            EditorGUILayout.LabelField(L($"{key}/Name"), GUILayout.Width(_titleSize));
+            EditorGUILayout.LabelField(L($"{key}/Detail"));
+            if (showDetails && GUILayout.Button("Editor/Detail".LL(), GUILayout.Width(50)))
+            {
+                _detailKey = key;
+                _showDetail = true;
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        private void DrawFloatField(SerializedProperty property, string key, float? min=null, float? max=null)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(L($"{key}/Name"), GUILayout.Width(_titleSize + 20));
+            property.floatValue = EditorGUILayout.Slider(property.floatValue, min ?? 0, max ?? 1);
+            EditorGUILayout.EndHorizontal();
+        }
+        private void DrawEnumField(SerializedProperty property, string key)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(L($"{key}/Name"), GUILayout.Width(_titleSize + 20));
+            property.enumValueIndex = EditorGUILayout.Popup(property.enumValueIndex, property.enumDisplayNames);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private string _detailKey = "";
+        private bool _showDetail = false;
+        private void DrawDetail()
+        {
+            if (!_showDetail) return;
+            bool isDrawn = false;
+            try
+            {
+                ShowDetailTitle();
+                if (_detailKey == "Func/Hoppe")
+                {
+                    isDrawn = true;
+                    DrawBoolField(dHoppeAllowTouch, "D_Hoppe_AllowTouch");
+                    DrawBoolField(dHoppeAllowStretch, "D_Hoppe_AllowStretch");
+                    DrawFloatField(dHoppeStretchLimit, "D_Hoppe_StretchLimit", 0, 2);
+                    DrawBoolField(dHoppeBlush, "D_Hoppe_Blush");
+                    DrawEnumField(dHoppeBlushType, "D_Hoppe_BlushType");
+                    DrawEnumField(dHoppeBlushControlType, "D_Hoppe_BlushControlType");
+                    DrawBoolField(dHoppeShowExpressionMenu, "D_Hoppe_ShowExpressionMenu");
+                }
+                if (GUILayout.Button("Editor/CloseDetail".LL()))
+                {
+                    _showDetail = false;
+                }
+            }
+            finally
+            {
+                if (!isDrawn) _showDetail = false;
+            }
+        }
+        private void ShowDetailTitle()
+        {
+            var before = L("Editor/Detail2");
+            var after = L($"{_detailKey}/Name");
+            var title = $@"{before} : {after}";
+            Title(title);
         }
 
         private void DrawClippingCanceler()
         {
             EditorGUI.BeginChangeCheck();
-            DrawPropertyField(clippingCanceler, "Func/ClippingCanceler");
+            DrawBoolField(clippingCanceler, "Func/ClippingCanceler");
             if (EditorGUI.EndChangeCheck())
             {
                 new SetClippingCanceler(clippingCanceler.boolValue);
             }
         }
 
+        #endregion
 
+        #region LogAnalyze
         private DateTime _lastBuild;
         private List<string> _errorWorks;
         private List<string> _errorUnknowns;
@@ -337,6 +408,46 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             }
         }
+        #endregion
+
+        #region Language
+
+        private static readonly Dictionary<string, string> languageDisplayNames = new Dictionary<string, string>
+                    {
+                        { "en", "English" },
+                        { "ja", "日本語" },
+                        { "ko", "한국어" },
+                        { "zh-CN", "简体中文" },
+                        { "zh-TW", "繁體中文" }
+                    };
+        private static readonly string[] languageCodes = { "en", "ja", "ko", "zh-CN", "zh-TW" };
+        private void DrawLanguageSelect(SerializedProperty property)
+        {
+            int selectedIndex = Array.IndexOf(languageCodes, property.stringValue);
+            if (selectedIndex == -1)
+            {
+                property.stringValue = GetDefaultLanguage();
+                selectedIndex = Array.IndexOf(languageCodes, property.stringValue);
+                if (selectedIndex == -1)
+                {
+                    selectedIndex = 0;
+                }
+            }
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Language", GUILayout.Width(20 + _titleSize));
+
+            EditorGUI.BeginChangeCheck();
+            selectedIndex = EditorGUILayout.Popup(selectedIndex, languageCodes.Select(code => languageDisplayNames[code]).ToArray());
+            property.stringValue = languageCodes[selectedIndex];
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                Localizer.SetLanguage(property.stringValue);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        #endregion
     }
 }
 #endif
