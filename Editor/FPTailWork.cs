@@ -39,8 +39,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private BlendTreeBuilder _bb;
         public GameObject _tail;
         public VRCPhysBone _tailPB;
-        public List<VRCPhysBoneColliderBase> _tailColliders;
-        public VRCPhysBoneColliderBase _groundCollider;
+        //public List<VRCPhysBoneColliderBase> _tailColliders;
+        //public VRCPhysBoneColliderBase _groundCollider;
 
         public FPTailWork(FlatsProject fp) : base(fp) { }
 
@@ -65,9 +65,9 @@ namespace com.github.pandrabox.flatsplus.editor
             _tail = _prj.HumanoidGameObject(HumanBodyBones.Hips)?.GetComponentsInChildren<Transform>()?.FirstOrDefault(x => x.name == _prj.TailName)?.gameObject.NullCheck();
             _tailPB = _tail.GetComponent<VRCPhysBone>();
             if (_tailPB == null) _tailPB = _tail.AddComponent<VRCPhysBone>();
-            _groundCollider = _tgt.GetComponentsInChildren<VRCPhysBoneCollider>().FirstOrDefault(x => x.name == "GroundCollider").NullCheck();
-            _tailColliders = _tailPB.colliders;
-            if (_tailColliders == null) _tailColliders = new List<VRCPhysBoneColliderBase>();
+            //_groundCollider = _tgt.GetComponentsInChildren<VRCPhysBoneCollider>().FirstOrDefault(x => x.name == "GroundCollider").NullCheck();
+            //_tailColliders = _tailPB.colliders;
+            //if (_tailColliders == null) _tailColliders = new List<VRCPhysBoneColliderBase>();
         }
 
         private void ObjectSetting()
@@ -97,11 +97,11 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
                 else
                 {
-                    LowLevelDebugPrint($"ColliderSet: 数値変換エラー - time: {curveInfos[i]}, value: {curveInfos[i + 1]}, mode: {curveInfos[i + 2]}", level: LogType.Exception);
+                    LowLevelDebugPrint($"ObjectSetting: 辞書情報のcurveInfosに問題があります - time: {curveInfos[i]}, value: {curveInfos[i + 1]}, mode: {curveInfos[i + 2]}", level: LogType.Exception);
                 }
             }
 
-            _tailColliders.Add(_groundCollider);
+            //_tailColliders.Add(_groundCollider);
         }
 
         private void Gravity()
