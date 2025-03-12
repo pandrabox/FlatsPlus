@@ -36,6 +36,9 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateMenu()
         {
             LowLevelDebugPrint("CreateMenu");
+            _prj.AddParameter("FlatsPlus/Carry/GateActive", ParameterSyncType.Bool);
+            _prj.AddParameter("FlatsPlus/Carry/CallTakeMe", ParameterSyncType.Bool);
+            _prj.AddParameter("FlatsPlus/Carry/AutoTakeMe", ParameterSyncType.Bool);
             MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Carry"));
             mb.AddRadial("FlatsPlus/Carry/Distance", L("Menu/Carry/CallGate"), mainParameterName: "FlatsPlus/Carry/Adjusting", localOnly: false).SetMessage(L("Menu/Carry/CallGate/Message"));

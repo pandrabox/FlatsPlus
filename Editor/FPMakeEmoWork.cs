@@ -209,7 +209,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 mb.AddToggle($"{other}/{o.Name}", localOnly: false).SetIco(o.Tex);
             }
             mb.ExitFolder();
-            mb.AddButton(_ui.Reset, menuName: L("Menu/MakeEmo/Reset")).SetMessage(L("Menu/MakeEmo/Clear"));
+            mb.AddButton(_ui.Reset, L("Menu/MakeEmo/Reset")).SetMessage(L("Menu/MakeEmo/Clear"));
         }
     }
 }

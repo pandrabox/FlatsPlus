@@ -147,7 +147,7 @@ Menu/Ico/VerView/Detail,周囲のFlatsのFlatsPlusのバージョンを表示し
 
 Editor/CloseProgressBar,プログレスバーを閉じる(バグで残った時用),Close the progress bar (for when it remains due to a bug),프로그레스 바를 닫습니다(버그로 남아있을 때),关闭进度条(因为错误而保留),關閉進度條(因為錯誤而保留)
 Editor/Detail,詳細,Detail,상세,详细,詳細
-Editor/Detail2,詳細設定,Detail setting,상세 설정,详细设置,詳細設置
+Editor/Detail2,詳細設定(未実装です。見た目だけのプレビュー版),Detail setting (not implemented. preview version for appearance only),상세 설정(미구현입니다. 외관만의 프리뷰 버전),详细设置(未实现. 仅用于外观的预览版本),詳細設置(未實現. 僅用於外觀的預覽版本)
 Editor/CloseDetail,詳細設定を閉じる,Close detail setting,상세 설정을 닫습니다,关闭详细设置,關閉詳細設置
 
 Key,ja,en,ko,zh-CN,zh-TW

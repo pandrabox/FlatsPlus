@@ -1,7 +1,19 @@
 ﻿#if UNITY_EDITOR
 
+using com.github.pandrabox.flatsplus.runtime;
+using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEditor;
+using UnityEngine;
+using static com.github.pandrabox.pandravase.editor.Localizer;
+
 /* GitHubCopilotへのための連絡 
-#「D_***を反映して」と依頼した場合、次の手順を厳密に守って下さい
+「D_***を反映して」と依頼した場合、次の手順を厳密に守って下さい
 - 次を実行してください。
 - FlatsPlusより該当の変数を取得します
 - FlatsPlusEditorで次を行い、全文のコードを表示します（途中経過の報告は不要です）
@@ -14,19 +26,6 @@
         D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
         D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
 */
-
-
-using com.github.pandrabox.flatsplus.runtime;
-using com.github.pandrabox.pandravase.editor;
-using com.github.pandrabox.pandravase.runtime;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using UnityEditor;
-using UnityEngine;
-using static com.github.pandrabox.pandravase.editor.Localizer;
 
 namespace com.github.pandrabox.flatsplus.runtime
 {
