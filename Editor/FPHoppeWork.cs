@@ -158,6 +158,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 _ac.Clip($"{LR}R0").Bind($"cheek_{LR}", typeof(RotationConstraint), "m_Weight").Const2F(0);
                 _ac.Clip($"{LR}R1").Bind($"cheek_{LR}", typeof(RotationConstraint), "m_Weight").Const2F(1);
             }
+            _head.position = _avatarHead.position;
         }
         private void CreateCheekSensor()
         {
