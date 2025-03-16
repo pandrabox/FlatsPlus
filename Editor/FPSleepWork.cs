@@ -64,11 +64,11 @@ namespace com.github.pandrabox.flatsplus.editor
                 ab.AddLayer(__trackingControl);
                 ab.SetTrackingControl(true);
 
-                ab.AddState("Body").SetTrackingControl(false, true, true, true);
+                ab.AddState("Body").SetTrackingControl(true, hip: false, leftFoot: false, rightFoot: false);
                 var offState = ab.CurrentState;
                 ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater, .5f, __sw, true);
 
-                ab.AddState("ALLAnim").SetTrackingControl(false);
+                ab.AddState("ALLAnim").SetTrackingControl(true, false, false, false, false, false, false);
                 ab.TransToCurrent(offState).AddCondition(AnimatorConditionMode.Greater, .5f, __poseLockAnim, true);
                 ab.TransFromCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Less, .5f, __sw);
             }
