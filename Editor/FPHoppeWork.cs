@@ -48,8 +48,6 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             GetStructure();
             CreateBlush();
-
-
             CreateCheekSensor();
             CreateCheekControl();
             DefineParameters();
@@ -57,92 +55,6 @@ namespace com.github.pandrabox.flatsplus.editor
         }
 
 
-        private void DefineParameters()
-        {
-            void unitDefine(FlatsPlus.Hoppe_BlushControlType type, float autoVal)
-            {
-                if (type == _config.D_Hoppe_BlushControlType)
-                {
-                    _prj.AddParameter(__blushControlType, ParameterSyncType.Float, true, autoVal);
-                }
-            }
-            unitDefine(FlatsPlus.Hoppe_BlushControlType.Auto, 1);
-            unitDefine(FlatsPlus.Hoppe_BlushControlType.OtherOnly, 2);
-            unitDefine(FlatsPlus.Hoppe_BlushControlType.WithoutDance, 3);
-            unitDefine(FlatsPlus.Hoppe_BlushControlType.On, 4);
-            unitDefine(FlatsPlus.Hoppe_BlushControlType.Off, 5);
-        }
-        private void CreateExpressionMenu()
-        {
-            if (!_config.D_Hoppe_ShowExpressionMenu) return;
-            var mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Hoppe"))
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Auto"), 1)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/OtherOnly"), 2)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/WithoutDance"), 3)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/On"), 4)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Off"), 5);
-        }
-
-        private void CreateBlush()
-        {
-            if (!_config.D_Hoppe_Blush) return;
-            Transform hoppe2 = _tgt.transform.Find("Hoppe2").NullCheck("Hoppe2ObjRoot");
-            Transform blushArmature = hoppe2.transform.Find("Armature").NullCheck("BlushArmature");
-            Transform blushHead = blushArmature.transform.Find("Head").NullCheck("BlushHead");
-
-            //モデルのサイズを適切にしてMerge
-            hoppe2.transform.localScale = new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
-            var mama = blushHead.gameObject.AddComponent<ModularAvatarMergeArmature>();
-            mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
-
-            //Controlの生成
-            var ac = new AnimationClipsBuilder();
-            var bb = new BlendTreeBuilder(__blush);
-            float th = 1f - _config.D_Hoppe_Blush_Sensitivity;
-            bb.RootDBT(() =>
-            {
-                bb.NName("BlshControl").Param("IsLocal").Add1D(__blushControlType, () =>
-                {
-                    bb.NName("Off").Param(0).AddAAP(__blushOn, 0);
-                    bb.NName("Auto").Param(1).Add1D(_prj.HeadSensor, () =>
-                    {
-                        bb.Param(th).AddAAP(__blushOn, 0);
-                        bb.Param(th + DELTA).AddAAP(__blushOn, 1);
-                    });
-                    bb.NName("OtherOnly").Param(2).Add1D(_prj.HeadSensor, () => //Autoと同じ。Contactの設定が違うだけ
-                    {
-                        bb.Param(th).AddAAP(__blushOn, 0);
-                        bb.Param(th + DELTA).AddAAP(__blushOn, 1);
-                    });
-                    bb.NName("WithoutDance").Param(3).Add1D(_prj.IsDance, () =>
-                    {
-                        bb.Param(0).Add1D(_prj.HeadSensor, () =>
-                        {
-                            bb.Param(th).AddAAP(__blushOn, 0);
-                            bb.Param(th + DELTA).AddAAP(__blushOn, 1);
-                        });
-                        bb.Param(1).AddAAP(__blushOn, 0);
-                    });
-                    bb.NName("On").Param(4).AddAAP(__blushOn, 1);
-                    bb.NName("Off").Param(5).AddAAP(__blushOn, 0);
-                });
-                bb.NName("ContactSetting").Param("IsLocal").Add1D(__blushControlType, () =>
-                {
-                    bb.Param(1).AddMotion(ac.OffAnim(__hoppePath)); //TODO: allowselfの設定アニメを追加
-                    bb.Param(2).AddMotion(ac.OnAnim(__hoppePath));
-                    bb.Param(3).AddMotion(ac.OnAnim(__hoppePath));
-                });
-                //実動作
-                bb.NName("BlushObj").Param("1").Add1D(__blushOnRx, () =>
-                {
-                    bb.Param(0).AddMotion(ac.OffAnim(__hoppePath));
-                    bb.Param(1).AddMotion(ac.OnAnim(__hoppePath));
-                });
-            });
-            bb.Attach(_tgt.gameObject);
-            _prj.VirtualSync(__blushOn, 1, pandravase.runtime.PVnBitSync.nBitSyncMode.IntMode);
-        }
         private void GetStructure()
         {
             _head = _tgt.transform.Find("Head").NullCheck();
@@ -160,6 +72,85 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             _head.position = _avatarHead.position;
         }
+        /// <summary>
+        /// 頬染めオブジェクトの導入
+        //済 public bool D_Hoppe_Blush = true;
+        //済 public float D_Hoppe_Blush_Sensitivity = 1f;//0～1
+        //public Hoppe_BlushType D_Hoppe_BlushType;
+        //public Hoppe_BlushControlType D_Hoppe_BlushControlType;
+        //public enum Hoppe_BlushType { Original, FlatsPlus, Both };
+        //public enum Hoppe_BlushControlType { Auto, OtherOnly, WithoutDance, On, Off }
+        //__blushControlType0:Auto,1:OtherOnly,2:WithoutDance,3:On,4:Off
+        //public bool D_Hoppe_Blush_DisableByGesture = true;
+        /// </summary>
+        private void CreateBlush()
+        {
+            if (!_config.D_Hoppe_Blush) return;
+            Transform hoppe2 = _tgt.transform.Find("Hoppe2").NullCheck("Hoppe2ObjRoot");
+            Transform blushArmature = hoppe2.transform.Find("Armature").NullCheck("BlushArmature");
+            Transform blushHead = blushArmature.transform.Find("Head").NullCheck("BlushHead");
+
+            //モデルのサイズを適切にしてMerge
+            hoppe2.transform.localScale = new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
+            var mama = blushHead.gameObject.AddComponent<ModularAvatarMergeArmature>();
+            mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
+
+            //Controlの生成
+            var ac = new AnimationClipsBuilder();
+            var bb = new BlendTreeBuilder(__blush);
+            float threshold = 1f - _config.D_Hoppe_Blush_Sensitivity;
+            bb.RootDBT(() =>
+            {
+                bb.NName("BlshControl").Param("IsLocal").Add1D(__blushControlType, () =>
+                {
+                    bb.NName("Off").Param(0).AddAAP(__blushOn, 0);
+                    bb.NName("Auto").Param(1).Add1D(_prj.HeadSensor, () =>
+                    {
+                        bb.Param(threshold).AddAAP(__blushOn, 0);
+                        bb.Param(threshold + DELTA).AddAAP(__blushOn, 1);
+                    });
+                    bb.NName("OtherOnly").Param(2).Add1D(_prj.HeadSensor, () => //Autoと同じ。Contactの設定が違うだけ
+                    {
+                        bb.Param(threshold).AddAAP(__blushOn, 0);
+                        bb.Param(threshold + DELTA).AddAAP(__blushOn, 1);
+                    });
+                    bb.NName("WithoutDance").Param(3).Add1D(_prj.IsDance, () =>
+                    {
+                        bb.Param(0).Add1D(_prj.HeadSensor, () =>
+                        {
+                            bb.Param(threshold).AddAAP(__blushOn, 0);
+                            bb.Param(threshold + DELTA).AddAAP(__blushOn, 1);
+                        });
+                        bb.Param(1).AddAAP(__blushOn, 0);
+                    });
+                    bb.NName("On").Param(4).AddAAP(__blushOn, 1);
+                    bb.NName("Off").Param(5).AddAAP(__blushOn, 0);
+                });
+                bb.NName("ContactSetting").Param("IsLocal").Add1D(__blushControlType, () =>
+                {
+                    //__blushControlType
+                    //0:Auto→コンタクトON, AllowSelf,AllowOther,
+                    //1:OtherOnly→コンタクトON, AllowOther,
+                    //2:WithoutDance→コンタクトはダンスのみ, AllowSelf,AllowOther,
+                    //3:On→コンタクトなし
+                    //4:Off→コンタクトなし
+                    bb.Param(1).AddMotion(ac.OffAnim(__hoppePath)); //TODO: allowselfの設定アニメを追加
+                    bb.Param(2).AddMotion(ac.OnAnim(__hoppePath));
+                    bb.Param(3).AddMotion(ac.OnAnim(__hoppePath));
+                });
+                //実動作
+                bb.NName("BlushObj").Param("1").Add1D(__blushOnRx, () =>
+                {
+                    bb.Param(0).AddMotion(ac.OffAnim(__hoppePath));
+                    bb.Param(1).AddMotion(ac.OnAnim(__hoppePath));
+                });
+            });
+            bb.Attach(_tgt.gameObject);
+            _prj.VirtualSync(__blushOn, 1, pandravase.runtime.PVnBitSync.nBitSyncMode.IntMode);
+        }
+        /// <summary>
+        /// 頬を掴む判定の導入
+        /// </summary>
         private void CreateCheekSensor()
         {
             if (!_config.D_Hoppe_AllowTouch) return;
@@ -199,8 +190,9 @@ namespace com.github.pandrabox.flatsplus.editor
                 rotationConstraint.constraintActive = true;
             }
         }
-
-
+        /// <summary>
+        /// 頬をつかむ制御
+        /// </summary>
         private void CreateCheekControl()
         {
             if (!_config.D_Hoppe_AllowTouch) return;
@@ -226,5 +218,32 @@ namespace com.github.pandrabox.flatsplus.editor
             bb.Attach(_avatarHead.gameObject);
 
         }
+        private void DefineParameters()
+        {
+            void unitDefine(FlatsPlus.Hoppe_BlushControlType type, float autoVal)
+            {
+                if (type == _config.D_Hoppe_BlushControlType)
+                {
+                    _prj.AddParameter(__blushControlType, ParameterSyncType.Float, true, autoVal);
+                }
+            }
+            unitDefine(FlatsPlus.Hoppe_BlushControlType.Auto, 1);
+            unitDefine(FlatsPlus.Hoppe_BlushControlType.OtherOnly, 2);
+            unitDefine(FlatsPlus.Hoppe_BlushControlType.WithoutDance, 3);
+            unitDefine(FlatsPlus.Hoppe_BlushControlType.On, 4);
+            unitDefine(FlatsPlus.Hoppe_BlushControlType.Off, 5);
+        }
+        private void CreateExpressionMenu()
+        {
+            if (!_config.D_Hoppe_ShowExpressionMenu) return;
+            var mb = new MenuBuilder(_prj);
+            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Hoppe"))
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Auto"), 1)
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/OtherOnly"), 2)
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/WithoutDance"), 3)
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/On"), 4)
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Off"), 5);
+        }
+
     }
 }

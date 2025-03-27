@@ -10,25 +10,10 @@ using static com.github.pandrabox.pandravase.editor.Util;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
-#if FLATSPLUS_SampleOnly
-    public class SampleWork : FlatsWork<FPEmo>
-    {
-        public SampleWork(FlatsProject prj) : base(prj) { }
-
-        protected override void OnWork()
-        {
-            base.OnWork();
-            LowLevelDebugPrint($"SampleWork Start");
-        }
-    }
-#endif
-
     public abstract class FlatsWork<T> : FlatsWorkBase where T : PandraComponent
     {
         public FlatsWork(FlatsProject prj, params object[] args) : base(prj, args) { }
-
         protected T _tgt;
-
         protected override void GetTgt()
         {
             _tgt = _desc.GetComponentInChildren<T>().NullCheck("_tgt");
@@ -39,6 +24,9 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         protected VRCAvatarDescriptor _desc;
         protected FlatsProject _prj;
+        /// <summary>
+        /// FlatsPlusオブジェクトにおける設定値
+        /// </summary>
         protected FlatsPlus _config;
         protected object[] _args;
         public FlatsWorkBase(FlatsProject prj, params object[] args)
