@@ -57,7 +57,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateInstantiate(fp.Func_DanceController, "DanceController");
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo");
                 CreateWork<FPExploreWork>(fp.Func_Explore, "Explore");
-                CreateWork<FPHoppeWork>(fp.Func_Hoppe, "Hoppe");
+                CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe");
+                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, "Hoppe");
                 CreateWork<FPIcoWork>(fp.Func_Ico, "Ico");
                 CreateInstantiate(fp.Func_Sync, "Sync");
                 CreateWork<FPLightWork>(fp.Func_Light, "Light");
@@ -96,19 +97,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 currentStep++;
                 EditorUtility.DisplayProgressBar(L("FlatsPlus_Progress"), $"{path}", (float)currentStep / totalSteps);
 
-                if (!path.EndsWith(".prefab")) path = $"{path}/{path}.prefab";
-                path = $@"{FlatsPlusAssetsPath}/{path}";
-                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path).NullCheck(path);
-                GameObject go = GameObject.Instantiate(prefab);
-                go.transform.SetParent(_p.PrjRootObj.transform);
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localRotation = Quaternion.identity;
-                go.transform.localScale = Vector3.one;
-                if (go.name.EndsWith("(Clone)"))
-                {
-                    go.name = go.name.Replace("(Clone)", "").Trim();
-                }
-
+                PrefabInstantiate(path);
                 if (typeof(T) == typeof(FlatsWorkBase))
                 {
                     //何もしない
@@ -120,6 +109,32 @@ namespace com.github.pandrabox.flatsplus.editor
                 else
                 {
                     Activator.CreateInstance(typeof(T), _p);
+                }
+            }
+            catch (Exception ex)
+            {
+                AppearError(ex);
+            }
+        }
+        private void PrefabInstantiate(string path)
+        {
+            if (path == null)
+            {
+                LowLevelDebugPrint("pathがnullのためインスタンシングをスキップします");
+            }
+            try
+            {
+                if (!path.EndsWith(".prefab")) path = $"{path}/{path}.prefab";
+                path = $@"{FlatsPlusAssetsPath}/{path}";
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path).NullCheck(path);
+                GameObject go = GameObject.Instantiate(prefab);
+                go.transform.SetParent(_p.PrjRootObj.transform);
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localRotation = Quaternion.identity;
+                go.transform.localScale = Vector3.one;
+                if (go.name.EndsWith("(Clone)"))
+                {
+                    go.name = go.name.Replace("(Clone)", "").Trim();
                 }
             }
             catch (Exception ex)
