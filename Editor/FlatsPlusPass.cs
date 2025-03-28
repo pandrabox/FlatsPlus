@@ -58,7 +58,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo");
                 CreateWork<FPExploreWork>(fp.Func_Explore, "Explore");
                 CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe");
-                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, "Hoppe");
+                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null);
                 CreateWork<FPIcoWork>(fp.Func_Ico, "Ico");
                 CreateInstantiate(fp.Func_Sync, "Sync");
                 CreateWork<FPLightWork>(fp.Func_Light, "Light");
@@ -121,6 +121,7 @@ namespace com.github.pandrabox.flatsplus.editor
             if (path == null)
             {
                 LowLevelDebugPrint("pathがnullのためインスタンシングをスキップします");
+                return;
             }
             try
             {
