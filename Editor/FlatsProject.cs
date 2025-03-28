@@ -98,7 +98,6 @@ namespace com.github.pandrabox.flatsplus.editor
         public Vector3 TotalBoundsExtent => new Vector3(TotalBoundsExtentX, TotalBoundsExtentY, TotalBoundsExtentZ);
 
 
-        public string HeadSensor => "FlatsPlus/HeadSensor";
         public string CheekSensor => "FlatsPlus/CheekSensor";
 
         public string FPRoot => "Packages/com.github.pandrabox.flatsplus/";

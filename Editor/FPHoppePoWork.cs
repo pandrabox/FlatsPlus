@@ -34,9 +34,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private static string __blushOn = $@"{__blush}/On";
         private static string __blushOnRx = $@"{__blush}/OnRx";
         private static string __hoppePath = "Hoppe2/hoppe";
+        private static string __hoppeContact = $@"FlatsPlus/Hoppe/Blush/Contact";
         private Transform _hoppe2;
         private Transform _blushArmature;
         private Transform _blushHead;
+        
 
         public FPHoppePoWork(FlatsProject fp) : base(fp) { }
 
@@ -82,19 +84,19 @@ namespace com.github.pandrabox.flatsplus.editor
                 bb.NName("BlshControl").Param("IsLocal").Add1D(__blushControlType, () =>
                 {
                     bb.NName("Off").Param(0).AddAAP(__blushOn, 0);
-                    bb.NName("Auto").Param(1).Add1D(_prj.HeadSensor, () =>
+                    bb.NName("Auto").Param(1).Add1D(__hoppeContact, () =>
                     {
                         bb.Param(threshold).AddAAP(__blushOn, 0);
                         bb.Param(threshold + DELTA).AddAAP(__blushOn, 1);
                     });
-                    bb.NName("OtherOnly").Param(2).Add1D(_prj.HeadSensor, () => //Autoと同じ。Contactの設定が違うだけ
+                    bb.NName("OtherOnly").Param(2).Add1D(__hoppeContact, () => //Autoと同じ。Contactの設定が違うだけ
                     {
                         bb.Param(threshold).AddAAP(__blushOn, 0);
                         bb.Param(threshold + DELTA).AddAAP(__blushOn, 1);
                     });
                     bb.NName("WithoutDance").Param(3).Add1D(_prj.IsDance, () =>
                     {
-                        bb.Param(0).Add1D(_prj.HeadSensor, () =>
+                        bb.Param(0).Add1D(__hoppeContact, () =>
                         {
                             bb.Param(threshold).AddAAP(__blushOn, 0);
                             bb.Param(threshold + DELTA).AddAAP(__blushOn, 1);
