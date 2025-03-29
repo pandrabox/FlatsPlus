@@ -1,13 +1,21 @@
-﻿using com.github.pandrabox.flatsplus.runtime;
+﻿using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.BC;
+using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
 using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
+using VRC.SDK3.Dynamics.Contact.Components;
 using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
 
 
+//0:Auto→コンタクトON, AllowSelf,AllowOther,
+//1:OtherOnly→コンタクトON, AllowOther,
+//2:WithoutDance→コンタクトはダンスのみ, AllowSelf,AllowOther,
+//3:On→コンタクトなし
+//4:Off→コンタクトなし
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -41,6 +49,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private Transform _blushArmature;
         private Transform _blushHead;
         AnimationClipsBuilder _ac;
+        private VRCContactReceiver _blushContact;
+        private static float _defaultContactSize = 0.35f;
 
 
         public FPHoppePoWork(FlatsProject fp) : base(fp) { }
@@ -49,6 +59,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             if (!_config.D_Hoppe_Blush) return;
             GetStructure();
+            SetContactSize();
             CreateAnim();
             CreateBlush();
             DefineParameters();
@@ -59,21 +70,23 @@ namespace com.github.pandrabox.flatsplus.editor
             _hoppe2 = _tgt.transform.Find("Hoppe2").NullCheck("Hoppe2ObjRoot");
             _blushArmature = _hoppe2.transform.Find("Armature").NullCheck("BlushArmature");
             _blushHead = _blushArmature.transform.Find("Head").NullCheck("BlushHead");
+            Transform blushContactTransform = _blushHead.FindEx("BlushContact").NullCheck("BlushContactTransform");
+            _blushContact = blushContactTransform.GetComponent<VRCContactReceiver>().NullCheck("BlushContact");
+        }
+
+        private void SetContactSize()
+        {
+            _blushContact.radius = _defaultContactSize * _config.D_Hoppe_Blush_Sensitivity;
         }
 
         private void CreateAnim()
         {
             _ac = new AnimationClipsBuilder();
-            //0:Auto→コンタクトON, AllowSelf,AllowOther,
-            //1:OtherOnly→コンタクトON, AllowOther,
-            //2:WithoutDance→コンタクトはダンスのみ, AllowSelf,AllowOther,
-            //3:On→コンタクトなし
-            //4:Off→コンタクトなし
             void createContaceMode(string name, bool allowSelf, bool allowOther)
             {
                 _ac.Clip(name)
-                    .Bind(__contactPath, typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver), "allowSelf").Const2F(allowSelf ? 1 : 0)
-                    .Bind(__contactPath, typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver), "allowOthers").Const2F(allowOther ? 1 : 0);
+                    .Bind(__contactPath, typeof(VRCContactReceiver), "allowSelf").Const2F(allowSelf ? 1 : 0)
+                    .Bind(__contactPath, typeof(VRCContactReceiver), "allowOthers").Const2F(allowOther ? 1 : 0);
             }
             createContaceMode("CM0_Auto",  true, true);
             createContaceMode("CM1_OtherOnly",  false, true);
@@ -82,17 +95,6 @@ namespace com.github.pandrabox.flatsplus.editor
             createContaceMode("CM4_Off", false, false);
         }
 
-        /// <summary>
-        /// 頬染めオブジェクトの導入
-        //済 public bool D_Hoppe_Blush = true;
-        //済 public float D_Hoppe_Blush_Sensitivity = 1f;//0～1
-        //public Hoppe_BlushType D_Hoppe_BlushType;
-        //public Hoppe_BlushControlType D_Hoppe_BlushControlType;
-        //public enum Hoppe_BlushType { Original, FlatsPlus, Both };
-        //public enum Hoppe_BlushControlType { Auto, OtherOnly, WithoutDance, On, Off }
-        //__blushControlType0:Auto,1:OtherOnly,2:WithoutDance,3:On,4:Off
-        //public bool D_Hoppe_Blush_DisableByGesture = true;
-        /// </summary>
         private void CreateBlush()
         {
             //モデルのサイズを適切にしてMerge
@@ -102,17 +104,10 @@ namespace com.github.pandrabox.flatsplus.editor
 
             //Controlの生成
             var bb = new BlendTreeBuilder(__blush);
-            float threshold = 1f - _config.D_Hoppe_Blush_Sensitivity;
             bb.RootDBT(() =>
             {
                 bb.NName("ContactSwitch").Param("IsLocal").Add1D(__blushControlType, () =>
                 {
-                    //__blushControlType
-                    //0:Auto→コンタクトON, AllowSelf,AllowOther,
-                    //1:OtherOnly→コンタクトON, AllowOther,
-                    //2:WithoutDance→コンタクトはダンスのみ, AllowSelf,AllowOther,
-                    //3:On→コンタクトなし
-                    //4:Off→コンタクトなし
                     bb.Param(1).AddMotion(_ac.OnAnim(__contactPath));
                     bb.Param(2).Add1D(_prj.IsDance, () =>
                     {
@@ -133,8 +128,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     bb.NName("Auto,OtherOnly,WithoutDnace").Param(2).Add1D(__hoppeContact, () =>
                     {
-                        bb.Param(threshold).AddAAP(__blushOn, 0);
-                        bb.Param(threshold + DELTA).AddAAP(__blushOn, 1);
+                        bb.Param(0).AddAAP(__blushOn, 0);
+                        bb.Param(1).AddAAP(__blushOn, 1);
                     });
                     bb.NName("On").Param(3).AddAAP(__blushOn, 1);
                     bb.NName("Off").Param(4).AddAAP(__blushOn, 0);
@@ -165,13 +160,10 @@ namespace com.github.pandrabox.flatsplus.editor
         }
         private void CreateExpressionMenu()
         {
-            if (_config.D_Hoppe_ShowExpressionMenu)
+            Log.I.StartMethod("メニューの作成を開始します");
+            if (!_config.D_Hoppe_ShowExpressionMenu)
             {
-                LowLevelDebugPrint("メニューの作成を開始します");
-            }
-            else
-            {
-                LowLevelDebugPrint("メニューを作成しません");
+                Log.I.EndMethod("オプションにより不要が指定されたためメニューの作成をスキップします");
                 return;
             }
             var mb = new MenuBuilder(_prj);
@@ -181,6 +173,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/WithoutDance"), 2)
                 .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/On"), 3)
                 .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Off"), 4);
+            Log.I.EndMethod("メニューの作成が完了しました");
         }
     }
 }

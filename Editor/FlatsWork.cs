@@ -31,29 +31,28 @@ namespace com.github.pandrabox.flatsplus.editor
         protected object[] _args;
         public FlatsWorkBase(FlatsProject prj, params object[] args)
         {
+            Log.I.StartMethod();
             Stopwatch stopwatch = null;
             try
             {
-                PanLog.CurrentClassName = GetType().Name;
                 _args = args;
-                LowLevelDebugPrint($"Flats Plus Work Started");
                 stopwatch = Stopwatch.StartNew();
                 _prj = prj.NullCheck("_prj");
                 _config = prj.Config.NullCheck("_config");
                 _desc = prj.Descriptor.NullCheck("_desc");
                 GetTgt();
                 OnConstruct();
-                LowLevelDebugPrint($"@@SUCCESS@@ Complete work successfully in {stopwatch?.ElapsedMilliseconds ?? 0} ms", true, LogType.Log);
+                Log.I.Info($"@@SUCCESS@@ Complete work successfully in {stopwatch?.ElapsedMilliseconds ?? 0} ms");
             }
             catch (Exception ex)
             {
-                AppearError(ex);
+                Log.I.Exception(ex);
             }
             finally
             {
-                PanLog.CurrentClassName = "";
                 if (stopwatch != null && stopwatch.IsRunning) stopwatch.Stop();
             }
+            Log.I.EndMethod();
         }
         protected virtual void GetTgt() { }
         protected abstract void OnConstruct();

@@ -1,5 +1,6 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.ndmf;
 using System;
 using UnityEditor;
@@ -42,8 +43,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             try
             {
-                PanLog.Clear(LogFilePath);
-                PanLog.SetLogPath(LogFilePath);
+                Log.I.Initialize(LogFilePath, true, true);
                 LowLevelDebugPrint("FlatPlus Start Works");
                 LowLevelDebugPrint($@"@@BuildStartDateTime@@,{DateTime.Now}");
                 AppearPackageInfo();
