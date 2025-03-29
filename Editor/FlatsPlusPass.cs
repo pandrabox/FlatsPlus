@@ -44,6 +44,7 @@ namespace com.github.pandrabox.flatsplus.editor
             try
             {
                 Log.I.Initialize(LogFilePath, true, true);
+                Log.I.Info("@@FlatsPlusBuildStart@@");
                 AppearPackageInfo();
                 _desc = desc.NullCheck();
                 _p = new FlatsProject(_desc, true);

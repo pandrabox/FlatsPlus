@@ -147,7 +147,7 @@ Menu/Ico/VerView/Detail,周囲のFlatsのFlatsPlusのバージョンを表示し
 
 Editor/CloseProgressBar,プログレスバーを閉じる(バグで残った時用),Close the progress bar (for when it remains due to a bug),프로그레스 바를 닫습니다(버그로 남아있을 때),关闭进度条(因为错误而保留),關閉進度條(因為錯誤而保留)
 Editor/Detail,詳細,Detail,상세,详细,詳細
-Editor/Detail2,詳細設定(未実装です。見た目だけのプレビュー版),Detail setting (not implemented. preview version for appearance only),상세 설정(미구현입니다. 외관만의 프리뷰 버전),详细设置(未实现. 仅用于外观的预览版本),詳細設置(未實現. 僅用於外觀的預覽版本)
+Editor/Detail2,詳細設定,Detail setting,상세 설정,详细设置,詳細設置
 Editor/CloseDetail,詳細設定を閉じる,Close detail setting,상세 설정을 닫습니다,关闭详细设置,關閉詳細設置
 
 Key,ja,en,ko,zh-CN,zh-TW
@@ -167,3 +167,14 @@ D_Hoppe_BlushControlType/Name,頬紅制御タイプ,Blush Control Type,볼터치
 D_Hoppe_BlushControlType/Detail,頬紅の制御タイプを選択,Select the type of blush control,볼터치 제어 유형 선택,选择腮红控制类型,选择腮红控制类型
 D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
 D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單
+
+LogAnalyze/PleaseCallMe,ツールの不具合が検出されました。PandraBoxまでログ情報の報告をお願いいたします。,A tool malfunction has been detected. Please report the log information to PandraBox.,도구 오류가 감지되었습니다. PandraBox에 로그 정보를 보고해 주세요.,检测到工具故障。请将日志信息报告给PandraBox.,檢測到工具故障。請將日誌信息報告給PandraBox.
+LogAnalyze/Warning,ワーニング(導入できたが、表示異常等が起きる),Warning (installed but display abnormalities etc. occur),경고(설치되었지만 표시 이상 등이 발생),警告（已安装但出现显示异常等）,警告（已安裝但出現顯示異常等）
+LogAnalyze/Error,エラー(高い確率で導入失敗),Error (high probability of installation failure),오류(설치 실패 확률이 높음),错误（安装失败的可能性很高）,錯誤（安裝失敗的可能性很高）
+Menu/Hoppe,ほっぺ,Cheeks,볼,脸颊,臉頰
+Menu/Hoppe/Cheek/TouchAble,触れる,Touchable,만질 수 있음,可触摸,可觸摸
+Menu/Hoppe/Blush/Control/Auto,誰でも,Anyone,누구나,任何人,任何人
+Menu/Hoppe/Blush/Control/OtherOnly,他者だけ,Others Only,다른 사람만,仅限他人,僅限他人
+Menu/Hoppe/Blush/Control/WithoutDance,ダンス以外,Except Dance,댄스 제외,舞蹈除外,舞蹈除外
+Menu/Hoppe/Blush/Control/On,常時ON,Always ON,항상 켜짐,始终开启,始終開啟
+Menu/Hoppe/Blush/Control/Off,常時OFF,Always OFF,항상 꺼짐,始终关闭,始終關閉

@@ -31,7 +31,8 @@ namespace com.github.pandrabox.flatsplus.editor
         protected object[] _args;
         public FlatsWorkBase(FlatsProject prj, params object[] args)
         {
-            Log.I.StartMethod();
+            Log.I.SetKeyWord(GetType().Name);
+            Log.I.StartMethod($@"@@START@@{GetType().Name}を開始します。");
             Stopwatch stopwatch = null;
             try
             {
@@ -42,7 +43,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 _desc = prj.Descriptor.NullCheck("_desc");
                 GetTgt();
                 OnConstruct();
-                Log.I.Info($"@@SUCCESS@@ Complete work successfully in {stopwatch?.ElapsedMilliseconds ?? 0} ms");
+                Log.I.EndMethod($"@@SUCCESS@@ Complete work successfully in {stopwatch?.ElapsedMilliseconds ?? 0} ms");
             }
             catch (Exception ex)
             {
@@ -53,6 +54,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 if (stopwatch != null && stopwatch.IsRunning) stopwatch.Stop();
             }
             Log.I.EndMethod();
+            Log.I.ReleaseKeyWord();
         }
         protected virtual void GetTgt() { }
         protected abstract void OnConstruct();

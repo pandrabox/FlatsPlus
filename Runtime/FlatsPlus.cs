@@ -322,10 +322,10 @@ namespace com.github.pandrabox.flatsplus.editor
             string[] lines = _logContent.Split('\n');
             foreach (var line in lines)
             {
-                if (line.Contains("@@BuildStartDateTime@@"))
+                if (line.Contains("@@FlatsPlusBuildStart@@"))
                 {
                     var parts = line.Split(',');
-                    if (parts.Length >= 4 && DateTime.TryParse(parts[3], out DateTime buildDateTime))
+                    if (parts.Length >= 1 && DateTime.TryParse(parts[0], out DateTime buildDateTime))
                     {
                         _lastBuild = buildDateTime;
                     }
@@ -356,32 +356,24 @@ namespace com.github.pandrabox.flatsplus.editor
             if (_lastBuild == DateTime.MinValue) return;
             Title(L("LogAnalyze/Title") + $@" ({_lastBuild.ToString()})");
             //EditorGUILayout.LabelField(L("LogAnalyze/ExecutionTime"), _lastBuild.ToString());
-            bool allFine = true;
-            if (_errorWorks.Count > 0)
+            Dictionary<string, (int Warnings, int Errors, int Exceptions)> res = Log.AnalyzeLog(_logPath);
+            bool allFine = false;
+            if (res != null && res.Count == 0)
             {
-                allFine = false;
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine(L("LogAnalyze/FunctionFailure"));
-                foreach (var error in _errorWorks)
-                {
-                    sb.AppendLine($@" - {error}");
-                }
-                EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
-            }
-            if (_errorUnknowns.Count > 0)
-            {
-                allFine = false;
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine(L("LogAnalyze/UnknownError"));
-                foreach (var error in _errorUnknowns)
-                {
-                    sb.AppendLine(error);
-                }
-                EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
-            }
-            if (allFine)
-            {
+                allFine=true;
                 EditorGUILayout.HelpBox(L("LogAnalyze/AllFine"), MessageType.Info);
+            }
+            foreach (var item in res)
+            {
+                if (item.Value.Warnings > 0 || item.Value.Errors > 0 || item.Value.Exceptions > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine(L("LogAnalyze/PleaseCallMe"));
+                    sb.AppendLine($@"{item.Key}");
+                    if (item.Value.Warnings>0) sb.AppendLine($@" - {L("LogAnalyze/Warning")}:{item.Value.Warnings}");
+                    if (item.Value.Errors > 0　|| item.Value.Exceptions > 0) sb.AppendLine($@" - {L("LogAnalyze/Error")}:{item.Value.Errors + item.Value.Exceptions}");
+                    EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
+                }
             }
             const bool ISPREVIEWVERSION = true;
             if (!allFine || ISPREVIEWVERSION)
