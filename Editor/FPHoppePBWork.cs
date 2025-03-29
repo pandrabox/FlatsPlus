@@ -162,10 +162,12 @@ namespace com.github.pandrabox.flatsplus.editor
         }
         private void CreateExpressionMenu()
         {
+            
             Log.I.StartMethod("メニューの作成を開始します");
             if (!_config.D_Hoppe_ShowExpressionMenu)
             {
                 Log.I.EndMethod("オプションにより不要が指定されたためメニューの作成をスキップします");
+                _prj.AddParameter(__touchAble, ParameterSyncType.Bool, true, 1);
                 return;
             }
             var mb = new MenuBuilder(_prj);
