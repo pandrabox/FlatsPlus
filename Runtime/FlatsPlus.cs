@@ -258,7 +258,6 @@ namespace com.github.pandrabox.flatsplus.editor
             property.enumValueIndex = EditorGUILayout.Popup(property.enumValueIndex, property.enumDisplayNames);
             EditorGUILayout.EndHorizontal();
         }
-
         private string _detailKey = "";
         private bool _showDetail = false;
         private void DrawDetail()
@@ -275,7 +274,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     DrawBoolField(dHoppeAllowStretch, "D_Hoppe_AllowStretch");
                     DrawFloatField(dHoppeStretchLimit, "D_Hoppe_StretchLimit", 0, 2);
                     DrawBoolField(dHoppeBlush, "D_Hoppe_Blush");
-                    DrawFloatField(dHoppeBlushSensitivity, "D_Hoppe_Blush_Sensitivity", 0, 1);
+                    DrawFloatField(dHoppeBlushSensitivity, "D_Hoppe_Blush_Sensitivity", 0, 3);
                     DrawEnumField(dHoppeBlushType, "D_Hoppe_BlushType");
                     DrawEnumField(dHoppeBlushControlType, "D_Hoppe_BlushControlType");
                     DrawBoolField(dHoppeBlushDisableByGesture, "D_Hoppe_Blush_DisableByGesture");
@@ -298,7 +297,6 @@ namespace com.github.pandrabox.flatsplus.editor
             var title = $@"{before} : {after}";
             Title(title);
         }
-
         private void DrawClippingCanceler()
         {
             EditorGUI.BeginChangeCheck();
@@ -308,7 +306,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 new SetClippingCanceler(clippingCanceler.boolValue);
             }
         }
-
         #endregion
 
         #region LogAnalyze

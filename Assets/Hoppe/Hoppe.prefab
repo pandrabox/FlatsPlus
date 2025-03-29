@@ -472,8 +472,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8702237445077326358}
-  - component: {fileID: 8702237445077326356}
   - component: {fileID: 8702237445077326357}
+  - component: {fileID: 6329837885598324159}
   m_Layer: 0
   m_Name: BlushContact
   m_TagString: Untagged
@@ -495,18 +495,6 @@ Transform:
   m_Father: {fileID: 6724021230688491750}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8702237445077326356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8702237445077326359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33dac8cfeaeb4c399ddd90597f849f70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8702237445077326357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -533,6 +521,18 @@ MonoBehaviour:
   receiverType: 0
   parameter: FlatsPlus/Hoppe/Blush/Contact
   minVelocity: 0.05
+--- !u!114 &6329837885598324159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8702237445077326359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dac8cfeaeb4c399ddd90597f849f70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8839768147374560872
 GameObject:
   m_ObjectHideFlags: 0

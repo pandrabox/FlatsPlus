@@ -44,8 +44,6 @@ namespace com.github.pandrabox.flatsplus.editor
             try
             {
                 Log.I.Initialize(LogFilePath, true, true);
-                LowLevelDebugPrint("FlatPlus Start Works");
-                LowLevelDebugPrint($@"@@BuildStartDateTime@@,{DateTime.Now}");
                 AppearPackageInfo();
                 _desc = desc.NullCheck();
                 _p = new FlatsProject(_desc, true);
@@ -77,12 +75,12 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             catch (Exception ex)
             {
-                AppearError(ex);
+                Log.I.Exception(ex);
             }
             finally
             {
                 EditorUtility.ClearProgressBar();
-                LowLevelDebugPrint("FlatPlus Complete Works");
+                Log.I.Info("FlatPlus Complete Works");
             }
         }
 
@@ -113,14 +111,14 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             catch (Exception ex)
             {
-                AppearError(ex);
+                Log.I.Exception(ex);
             }
         }
         private void PrefabInstantiate(string path)
         {
             if (path == null)
             {
-                LowLevelDebugPrint("pathがnullのためインスタンシングをスキップします");
+                Log.I.Info("pathがnullのためインスタンシングをスキップします");
                 return;
             }
             try
@@ -140,7 +138,7 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             catch (Exception ex)
             {
-                AppearError(ex);
+                Log.I.Exception(ex);
             }
         }
     }

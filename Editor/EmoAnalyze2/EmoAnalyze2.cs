@@ -1,4 +1,5 @@
-﻿using System;
+﻿using com.github.pandrabox.pandravase.runtime;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace com.github.pandrabox.flatsplus.editor
             SetDebugMode(true);
             foreach (var a in AllAvatar)
             {
-                LowLevelDebugPrint($"EmoAnalyze2: {a.name}");
+                Log.I.Info($"EmoAnalyze2: {a.name}");
                 new EmoAnalyze2(a);
             }
         }
@@ -120,11 +121,11 @@ namespace com.github.pandrabox.flatsplus.editor
                 else if (cn.Length == 2)
                 {
                     thresholds[n] = (int)((cn[0].threshold + cn[1].threshold) / 2);
-                    LowLevelDebugPrint("実験的な処理です");
+                    Log.I.Info("実験的な処理です");
                 }
                 else
                 {
-                    LowLevelExeption($@"Error: {transition.destinationState.name}{parameter}は複雑すぎて解決できません");
+                    Log.I.Error($@"Error: {transition.destinationState.name}{parameter}は複雑すぎて解決できません");
                 }
             }
             return (thresholds[1], thresholds[0]);
@@ -155,7 +156,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             if (gestureRight == null && gestureLeft == null) return;
             EditorCurveBinding[] bodyBindings = AnimationUtility.GetCurveBindings(clip);
-            //LowLevelDebugPrint($"************************Analyzing clip: {clip.name}");
+            Log.I.Info($"************************Analyzing clip: {clip.name}");
             foreach (var binding in bodyBindings)
             {
                 string propertyName = binding.propertyName.Replace("blendShape.", "");
@@ -188,7 +189,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             }
             string shapeName = BlendShapeKeys[shapeIndex];
-            //LowLevelDebugPrint($@"Right:{gestureRight} Left:{gestureLeft} Shape:{shapeIndex} ({shapeName}) Val:{shapeVal}");
+            Log.I.Info($@"Right:{gestureRight} Left:{gestureLeft} Shape:{shapeIndex} ({shapeName}) Val:{shapeVal}");
         }
     }
 }

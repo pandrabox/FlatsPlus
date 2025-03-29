@@ -1,5 +1,6 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
 using UnityEditor;
 using UnityEngine;
@@ -84,7 +85,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 boneRoot.transform.SetParent(_avatarCheeks[n]);
                 boneRoot.transform.localEulerAngles = Vector3.zero;
                 boneRoot.transform.localPosition = Vector3.zero;
-                LowLevelDebugPrint($"CheekSensor_{LR} {boneRoot.transform.position}");
+                Log.I.Info($"CheekSensor_{LR} {boneRoot.transform.position}");
                 GameObject boneEnd = new GameObject($"CheekSensorEnd_{LR}");
                 boneRoot.transform.SetParent(cheekSensor.transform, true);
                 boneRoot.transform.localScale = Vector3.one;

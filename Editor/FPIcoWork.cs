@@ -1,6 +1,8 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -50,9 +52,9 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     _callPlane.GetComponent<Renderer>().material.mainTexture = packTexture;
                 }
-                catch
+                catch(Exception ex)
                 {
-                    LowLevelDebugPrint("Textureの置換に失敗しました(設定先mainTextureの取得に失敗しました)", false);
+                    Log.I.Exception(ex, "Textureの置換に失敗しました(設定先mainTextureの取得に失敗しました)");
                 }
             }
         }

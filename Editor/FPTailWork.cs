@@ -95,7 +95,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
                 else
                 {
-                    LowLevelDebugPrint($"ObjectSetting: 辞書情報のcurveInfosに問題があります - time: {curveInfos[i]}, value: {curveInfos[i + 1]}, mode: {curveInfos[i + 2]}", level: LogType.Exception);
+                    Log.I.Error($"ObjectSetting: 辞書情報のcurveInfosに問題があります - time: {curveInfos[i]}, value: {curveInfos[i + 1]}, mode: {curveInfos[i + 2]}");
                 }
             }
 

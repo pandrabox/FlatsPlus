@@ -70,7 +70,9 @@ namespace com.github.pandrabox.flatsplus.editor
             _hoppe2 = _tgt.transform.Find("Hoppe2").NullCheck("Hoppe2ObjRoot");
             _blushArmature = _hoppe2.transform.Find("Armature").NullCheck("BlushArmature");
             _blushHead = _blushArmature.transform.Find("Head").NullCheck("BlushHead");
-            Transform blushContactTransform = _blushHead.FindEx("BlushContact").NullCheck("BlushContactTransform");
+
+            Transform firstHead = _tgt.FindEx("Head").NullCheck("FirstHead");
+            Transform blushContactTransform = firstHead.FindEx("BlushContact").NullCheck("BlushContactTransform");
             _blushContact = blushContactTransform.GetComponent<VRCContactReceiver>().NullCheck("BlushContact");
         }
 
@@ -141,7 +143,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 });
             });
             bb.Attach(_tgt.gameObject);
-            _prj.VirtualSync(__blushOn, 1, pandravase.runtime.PVnBitSync.nBitSyncMode.IntMode);
+            _prj.VirtualSync(__blushOn, 1, PVnBitSync.nBitSyncMode.IntMode);
         }
         private void DefineParameters()
         {

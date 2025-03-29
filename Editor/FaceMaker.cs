@@ -1,4 +1,5 @@
 ﻿using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -89,7 +90,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var bodyMesh = _prj.RootTransform.GetComponentsInChildren<SkinnedMeshRenderer>(true).FirstOrDefault(mesh => mesh.name == "Body");
             if (bodyMesh == null)
             {
-                LowLevelExeption("BodyMeshが見つかりませんでした。");
+                Log.I.Error("BodyMeshが見つかりませんでした。");
             }
             for (int i = 0; i < bodyMesh.sharedMesh.blendShapeCount; i++)
             {
@@ -100,7 +101,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 if (type == FaceType.Ignore) continue;
                 Faces.Add(new Face { Name = name, Type = type, BlendShapeCount = i });
             }
-            LowLevelDebugPrint($"FaceMaker Namesの解析完了: {Faces.Count}");
+            Log.I.Info($"FaceMaker Namesの解析完了: {Faces.Count}");
         }
         private void CreateClip()
         {
@@ -137,7 +138,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 var skinnedMeshRenderer = cTgt.transform.Find("Body").GetComponent<SkinnedMeshRenderer>();
                 if (skinnedMeshRenderer == null)
                 {
-                    LowLevelExeption("BodyMeshが見つかりませんでした。");
+                    Log.I.Error("BodyMeshが見つかりませんでした。");
                     return;
                 }
                 Faces.VoidIco = c.ManualRun(cTgt, size, head, offset);
@@ -152,7 +153,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     skinnedMeshRenderer.SetBlendShapeWeight(face.BlendShapeCount, 0);
                     if (_unitMode) break;
                     //OutpAsset(t);
-                    //LowLevelDebugPrint($"FaceMaker CreateTex: {face.BlendShapeCount}{face.Name}");
+                    //Log.I.Info($"FaceMaker CreateTex: {face.BlendShapeCount}{face.Name}");
                 }
             }
         }
@@ -161,7 +162,7 @@ namespace com.github.pandrabox.flatsplus.editor
         // 顔を撮影し、本来削除されるカメラ・Cloneを残します
         public void NonDisposeRun_ForDevelopOnly()
         {
-            LowLevelExeption("開発専用コマンドです。");
+            Log.I.Warning("開発専用コマンドです。");
             var tgt = _prj.RootObject;
             var head = _prj.HumanoidGameObject(HumanBodyBones.Head);
             var offset = new Vector3(_prj.FaceCapX, _prj.FaceCapY, _prj.FaceCapZ);

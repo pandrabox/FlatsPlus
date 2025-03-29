@@ -1,6 +1,7 @@
 ﻿#region
 using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,7 +35,7 @@ namespace com.github.pandrabox.flatsplus.editor
         //            var fdb = new FlatsProject(p);
         //            var body = p.RootTransform.GetComponentsInChildren<SkinnedMeshRenderer>().FirstOrDefault(x => x.name == "Body");
         //            var AttributePoint = body.sharedMesh.vertices[26];
-        //            LowLevelDebugPrint($@"x::{AttributePoint.x},  name:{p.RootObject.name}");
+        //            Log.I.Info($@"x::{AttributePoint.x},  name:{p.RootObject.name}");
         //        }
         //    }
         //}
@@ -52,7 +53,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
                 else
                 {
-                    LowLevelDebugPrint("FlatsPlusプレハブが見つかりませんでした。アバター内にFlatsPlusプレハブがない場合、FlatsPlusは動作しません。");
+                    Log.I.Info("FlatsPlusプレハブが見つかりませんでした。アバター内にFlatsPlusプレハブがない場合、FlatsPlusは動作しません。");
                 }
             }
             if (ImmediateInitialize)
@@ -162,7 +163,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 data = new Dictionary<string, Dictionary<string, string>>();
                 if (!File.Exists(FPFlatsCSV))
                 {
-                    LowLevelExeption($@"CSV:{FPFlatsCSV}が見つかりませんでした");
+                    Log.I.Error($@"CSV:{FPFlatsCSV}が見つかりませんでした");
                     return;
                 }
                 string tmpPath = Path.Combine(TmpFolder, $"flatDB{Guid.NewGuid()}.csv");
@@ -192,7 +193,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
                 SetCurrentAvatar();
-                LowLevelDebugPrint($@"FlatsProject Initialized By {CurrentAvatarName}");
+                Log.I.Info($@"FlatsProject Initialized By {CurrentAvatarName}");
             }
             catch
             {
@@ -226,7 +227,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            LowLevelDebugPrint("AttributePointによる判定に失敗しました");
+            Log.I.Info("AttributePointによる判定に失敗しました");
 
             var tmpAvatarName = Animator?.avatar?.name;
             if (tmpAvatarName != null)
@@ -242,7 +243,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            LowLevelDebugPrint("AnimatorAvatarNameによる判定に失敗しました");
+            Log.I.Info("AnimatorAvatarNameによる判定に失敗しました");
 
             tmpAvatarName = RootObject?.name;
             if (tmpAvatarName != null)
@@ -258,7 +259,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            LowLevelExeption("アバターの判定に失敗しました");
+            Log.I.Warning("アバターの判定に失敗しました");
         }
 
         /// <summary>
@@ -271,7 +272,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 string valueStr = rawValue?.ToString();
                 if (valueStr == null)
                 {
-                    LowLevelExeption($@"DBの取得に失敗しました (値がnull): {avatarType},{key}");
+                    Log.I.Error($@"DBの取得に失敗しました (値がnull): {avatarType},{key}");
                     return (default(T), false);
                 }
 
@@ -282,12 +283,12 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
                 catch (Exception ex)
                 {
-                    LowLevelExeption($@"DBの取得に失敗しました (型変換エラー): {avatarType},{key}, 値: {valueStr} - {ex.Message}");
+                    Log.I.Exception(ex, $@"DBの取得に失敗しました (型変換エラー): {avatarType},{key}, 値: {valueStr}");
                     return (default(T), false);
                 }
             }
 
-            LowLevelExeption($@"DBの取得に失敗しました (データ見つからず): {avatarType},{key}");
+            Log.I.Error($@"DBの取得に失敗しました (データ見つからず): {avatarType},{key}");
             return (default(T), false);
         }
 

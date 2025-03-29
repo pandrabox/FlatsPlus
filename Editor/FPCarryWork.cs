@@ -1,5 +1,6 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
 using UnityEditor;
 using static com.github.pandrabox.pandravase.editor.Localizer;
@@ -35,7 +36,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void CreateMenu()
         {
-            LowLevelDebugPrint("CreateMenu");
+            Log.I.StartMethod("メニューの作成を開始します");
             _prj.AddParameter("FlatsPlus/Carry/GateActive", ParameterSyncType.Bool);
             _prj.AddParameter("FlatsPlus/Carry/CallTakeMe", ParameterSyncType.Bool);
             _prj.AddParameter("FlatsPlus/Carry/AutoTakeMe", ParameterSyncType.Bool);
@@ -49,6 +50,7 @@ namespace com.github.pandrabox.flatsplus.editor
             mb.AddToggle("FlatsPlus/Carry/HugOrCarry", 2, ParameterSyncType.Int, L("Menu/Carry/Carry")).SetMessage(L("Menu/Carry/Carry/Message"));
             mb.AddRadial("FlatsPlus/Carry/Distance", L("Menu/Carry/Distance"), localOnly: false).SetMessage(L("Menu/Carry/Distance/Message"));
             mb.AddRadial("FlatsPlus/Carry/Rotation", L("Menu/Carry/Rotation"), localOnly: false).SetMessage(L("Menu/Carry/Rotation/Message"));
+            Log.I.EndMethod("メニューの作成が完了しました");
         }
     }
 }

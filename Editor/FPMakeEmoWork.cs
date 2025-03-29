@@ -61,7 +61,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _ui = _tgt.GetComponentInChildren<PVGridUI>();
             if (_ui == null)
             {
-                LowLevelExeption("GridUIÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
+                Log.I.Error("GridUIÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
             }
         }
 
@@ -86,7 +86,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _ui.xMax = x;
             _ui.yMax = y;
             _ui.ItemCount = eyeCount;
-            LowLevelDebugPrint($"EyeCount:{eyeCount}, x:{x}, y:{y}");
+            Log.I.Info($"EyeCount:{eyeCount}, x:{x}, y:{y}");
             _ui.MainTex = PackTexture(eyeTextures, x, x * TILESIZE, y * TILESIZE, _tgt.BackGroundColor, true, _tgt.Margin);
         }
 

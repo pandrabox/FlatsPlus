@@ -1,6 +1,7 @@
 ﻿#region
 using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -79,7 +80,7 @@ namespace com.github.pandrabox.flatsplus.editor
             string[] lines = dataText.Split('\n');
             if (lines.Length < 66)
             {
-                LowLevelExeption("表情データに異常があります");
+                Log.I.Error("表情データに異常があります");
                 return;
             }
             clips = new AnimationClipsBuilder();
@@ -89,7 +90,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 bool isBlank = true;
                 bool isDisHoppe = false;
                 string clipName = $@"emo{i}";
-                //LowLevelDebugPrint($@"{i + 1}:line:{lines[i + 1]}");
+                //Log.I.Info($@"{i + 1}:line:{lines[i + 1]}");
                 int?[] shapeVals = lines[i + 1].Split(',').Select(x =>
                 {
                     if (int.TryParse(x, out int result))
@@ -109,7 +110,7 @@ namespace com.github.pandrabox.flatsplus.editor
                         isDisHoppe = true;
                     }
                     isBlank = false;
-                    //LowLevelDebugPrint($@"{i}:{shapeName}:{shapeVal}");
+                    //Log.I.Info($@"{i}:{shapeName}:{shapeVal}");
                 }
                 _disHoppeInfo.Add(clipName, isDisHoppe);
                 if (isBlank)
