@@ -17,7 +17,6 @@ namespace com.github.pandrabox.flatsplus.editor
 #if PANDRADBG
             SetDebugMode(true);
 #endif
-            PanLog.SetLogPath(Global.LogFilePath);
             Sequence seq;
             seq = InPhase(BuildPhase.Transforming).BeforePlugin("com.github.pandrabox.pandravase");
             seq.Run(FlatsPlusPass.Instance);

@@ -37,9 +37,9 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Move"));
-            mb.AddToggle("FlatsPlus/Move/Mode", 1, ParameterSyncType.Int, L("Menu/Move/FlyDash"));
+            mb.AddToggle("FlatsPlus/Move/Mode", L("Menu/Move/FlyDash"), 1, ParameterSyncType.Int);
             mb.AddRadial("FlatsPlus/Move/DashSpeed", L("Menu/Move/DashSpeed"));
-            mb.AddToggle("FlatsPlus/Move/Mode", 2, ParameterSyncType.Int, L("Menu/Move/Continue"));
+            mb.AddToggle("FlatsPlus/Move/Mode", L("Menu/Move/Continue"), 2, ParameterSyncType.Int);
             mb.AddRadial("FlatsPlus/Move/ContinueDirection", L("Menu/Move/ContinueDirection"), .55f);
         }
     }

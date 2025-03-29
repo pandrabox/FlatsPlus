@@ -89,8 +89,8 @@ namespace com.github.pandrabox.flatsplus.editor
             mb.AddToggle(__sw, menuName: L("Menu/Sleep/Enable"), localOnly: false);
             mb.AddToggle(__moveLock, L("Menu/Sleep/MoveLock")).SetMessage(L("Menu/Sleep/MoveLock/Message"), duration: 1);
             mb.AddRadial(__height, menuName: L("Menu/Sleep/Height"), defaultVal: .5f, localOnly: false);
-            mb.AddToggle(__poseLockAnim, 1, ParameterSyncType.Bool, L("Menu/Sleep/LockAnim")).SetMessage(L("Menu/Sleep/LockAnim/Message"), duration: 1);
-            mb.AddToggle(__callPoseClipper, 1, ParameterSyncType.Bool, L("Menu/Sleep/LockPose")).SetMessage(L("Menu/Sleep/LockPose/Message"), duration: 1);
+            mb.AddToggle(__poseLockAnim, L("Menu/Sleep/LockAnim"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockAnim/Message"), duration: 1);
+            mb.AddToggle(__callPoseClipper, L("Menu/Sleep/LockPose"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockPose/Message"), duration: 1);
         }
     }
 }

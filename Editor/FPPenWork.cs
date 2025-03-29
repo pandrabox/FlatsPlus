@@ -199,8 +199,8 @@ namespace com.github.pandrabox.flatsplus.editor
 
             new MenuBuilder(_prj).AddFolder("FlatsPlus", true)
                 .AddFolder(L("Menu/Pen")).SetMessage(L("Menu/Pen/Message"), duration: 1)
-                .AddToggle("FlatsPlus/Pen/Mode", 3, ParameterSyncType.Int, L("Menu/Pen/Write")).SetMessage(L("Menu/Pen/Write/Message"), duration: 1)
-                .AddToggle("FlatsPlus/Pen/Mode", 1, ParameterSyncType.Int, L("Menu/Pen/Erace")).SetMessage(L("Menu/Pen/Erace/Message"), duration: 1)
+                .AddToggle("FlatsPlus/Pen/Mode", L("Menu/Pen/Write"), 3, ParameterSyncType.Int).SetMessage(L("Menu/Pen/Write/Message"), duration: 1)
+                .AddToggle("FlatsPlus/Pen/Mode", L("Menu/Pen/Erace"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Pen/Erace/Message"), duration: 1)
                 .AddButton("FlatsPlus/Pen/Clear", 1, ParameterSyncType.Bool, L("Menu/Pen/Clear")).SetMessage(L("Menu/Pen/Clear/Message"))
                 .AddRadial("FlatsPlus/Pen/Color", L("Menu/Pen/Color")).SetMessage(L("Menu/Pen/Color/Message"), duration: 1);
 

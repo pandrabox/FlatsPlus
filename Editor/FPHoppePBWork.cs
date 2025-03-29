@@ -39,6 +39,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public Transform _avatarHead;
         public Transform[] _avatarCheeks;
         public AnimationClipsBuilder _ac;
+        private const string __touchAble = "FlatsPlus/Hoppe/Touchable";
 
         public FPHoppePBWork(FlatsProject fp) : base(fp) { }
 
@@ -47,6 +48,7 @@ namespace com.github.pandrabox.flatsplus.editor
             GetStructure();
             CreateCheekSensor();
             CreateCheekControl();
+            CreateExpressionMenu();
         }
 
 
@@ -131,10 +133,46 @@ namespace com.github.pandrabox.flatsplus.editor
                         bb.Param(1).AddMotion(_ac.Outp($"{LR}R0"));
                     });
                 }
+                bb.Param("1").Add1D(__touchAble, () =>
+                {
+                    bb.Param(0).AddMotion(ac.Outp("PBOff"));
+                    bb.Param(1).AddMotion(ac.Outp("PBOn"));
+                });
             });
             bb.Attach(_avatarHead.gameObject);
 
-        }
+            ac.Clip("PBOn")
+                .Bind("Head/CheekSensor/CheekSensor_R", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(1)
+                .Bind("Head/CheekSensor/CheekSensor_L", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(1);
+            ac.Clip("PBOff")
+                .Bind("Head/CheekSensor/CheekSensor_R", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(0)
+                .Bind("Head/CheekSensor/CheekSensor_L", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(0);
+            var bb2 = new BlendTreeBuilder("CheekControlPBSW");
+            bb2.RootDBT(() =>
+            {
+                bb2.Param("1").Add1D(__touchAble, () =>
+                {
+                    bb2.Param(0).AddMotion(ac.Outp("PBOff"));
+                    bb2.Param(1).AddMotion(ac.Outp("PBOn"));
+                });
+            });
+            bb2.Attach(_tgt.gameObject);
 
+
+        }
+        private void CreateExpressionMenu()
+        {
+            Log.I.StartMethod("メニューの作成を開始します");
+            if (!_config.D_Hoppe_ShowExpressionMenu)
+            {
+                Log.I.EndMethod("オプションにより不要が指定されたためメニューの作成をスキップします");
+                return;
+            }
+            var mb = new MenuBuilder(_prj);
+            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Hoppe"), true)
+                .AddToggle(__touchAble, L("Menu/Hoppe/Cheek/TouchAble"), 1, ParameterSyncType.Bool, 1, false);
+            Log.I.EndMethod("メニューの作成が完了しました");
+        }
     }
+
 }

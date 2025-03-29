@@ -65,10 +65,10 @@ namespace com.github.pandrabox.flatsplus.editor
             var mSync = _prj.VirtualSync("FlatsPlus/Light/LightMode", 2, PVnBitSync.nBitSyncMode.IntMode, toggleSync: true);
             _prj.VirtualSync("FlatsPlus/Light/Intensity", 4, PVnBitSync.nBitSyncMode.FloatMode, _tgt.IntensityPerfectSync);
             new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Light"))
-                .AddToggle("FlatsPlus/Light/LightMode", 1, ParameterSyncType.Int, L("Menu/Light/Spot")).SetMessage(L("Menu/Light/Spot/Detail"))
-                .AddToggle("FlatsPlus/Light/LightMode", 2, ParameterSyncType.Int, L("Menu/Light/Area")).SetMessage(L("Menu/Light/Area/Detail"))
+                .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Spot"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Light/Spot/Detail"))
+                .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Area"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Light/Area/Detail"))
                 .AddRadial("FlatsPlus/Light/Intensity", L("Menu/Light/Intensity"), .5f)
-                .AddToggle(mSync.SyncParameter, 1, ParameterSyncType.Bool, L("Menu/Light/Global")).SetMessage(L("Menu/Light/Global/Detail"));
+                .AddToggle(mSync.SyncParameter, L("Menu/Light/Global"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Light/Global/Detail"));
         }
     }
 }

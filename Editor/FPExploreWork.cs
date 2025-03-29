@@ -60,8 +60,8 @@ namespace com.github.pandrabox.flatsplus.editor
             bb.Attach(_tgt.gameObject);
 
             new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Explore"))
-                .AddToggle("FlatsPlus/Explore/SW", 1, ParameterSyncType.Bool, L("Menu/Explore/Pin"), 0, false).SetMessage(L("Menu/Explore/Pin/Enable"), L("Menu/Explore/Pin/Disable"))
-                .AddToggle("FlatsPlus/Pen/ExploreOverride", 1, ParameterSyncType.Bool, L("Menu/Explore/Path"), 0, false).SetMessage(L("Menu/Explore/Path/Enable"), L("Menu/Explore/Path/Disable"))
+                .AddToggle("FlatsPlus/Explore/SW", L("Menu/Explore/Pin"), 1, ParameterSyncType.Bool, 0, false).SetMessage(L("Menu/Explore/Pin/Enable"), L("Menu/Explore/Pin/Disable"))
+                .AddToggle("FlatsPlus/Pen/ExploreOverride", L("Menu/Explore/Path"), 1, ParameterSyncType.Bool, 0, false).SetMessage(L("Menu/Explore/Path/Enable"), L("Menu/Explore/Path/Disable"))
                 .AddButton("FlatsPlus/Pen/Clear", 1, ParameterSyncType.Bool, L("Menu/Explore/Path/Clear")).SetMessage(L("Menu/Explore/Path/Clear/Detail"))
                 .AddRadial("FlatsPlus/Explore/Color", L("Menu/Explore/Color")).SetMessage(L("Menu/Explore/Color/Detail"));
 

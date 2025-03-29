@@ -57,11 +57,9 @@ namespace com.github.pandrabox.flatsplus.runtime
         public float D_Hoppe_StretchLimit = 1f;//0～2
         public bool D_Hoppe_Blush = true;
         public float D_Hoppe_Blush_Sensitivity = 1f;//0～1
-        public Hoppe_BlushType D_Hoppe_BlushType;
-        public Hoppe_BlushControlType D_Hoppe_BlushControlType;
-        public enum Hoppe_BlushType { Original, FlatsPlus, Both };
+        public bool D_Hoppe_UseOriginalBlush = true;
+        public Hoppe_BlushControlType D_Hoppe_BlushControlType = Hoppe_BlushControlType.WithoutDance;
         public enum Hoppe_BlushControlType { Auto, OtherOnly, WithoutDance, On, Off }
-        public bool D_Hoppe_Blush_DisableByGesture = true;
         public bool D_Hoppe_ShowExpressionMenu = false;
 
         public float Emo_TransitionTime = 0.5f;
@@ -109,7 +107,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private SerializedProperty
             funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync,
             language, writedefaulton, clippingCanceler, funcPoseClipper,
-            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushSensitivity, dHoppeBlushType, dHoppeBlushControlType, dHoppeBlushDisableByGesture, dHoppeShowExpressionMenu;
+            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushSensitivity, dUseOriginalBlush, dHoppeBlushControlType, dHoppeShowExpressionMenu;
 
         protected override void DefineSerial()
         {
@@ -138,9 +136,8 @@ namespace com.github.pandrabox.flatsplus.editor
             dHoppeStretchLimit = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_StretchLimit));
             dHoppeBlush = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_Blush));
             dHoppeBlushSensitivity = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_Blush_Sensitivity));
-            dHoppeBlushType = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_BlushType));
+            dUseOriginalBlush = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_UseOriginalBlush));
             dHoppeBlushControlType = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_BlushControlType));
-            dHoppeBlushDisableByGesture = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_Blush_DisableByGesture)); // 追加
             dHoppeShowExpressionMenu = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_ShowExpressionMenu));
         }
 
@@ -275,9 +272,8 @@ namespace com.github.pandrabox.flatsplus.editor
                     DrawFloatField(dHoppeStretchLimit, "D_Hoppe_StretchLimit", 0, 2);
                     DrawBoolField(dHoppeBlush, "D_Hoppe_Blush");
                     DrawFloatField(dHoppeBlushSensitivity, "D_Hoppe_Blush_Sensitivity", 0, 3);
-                    DrawEnumField(dHoppeBlushType, "D_Hoppe_BlushType");
+                    DrawBoolField(dUseOriginalBlush, "D_Hoppe_UseOriginalBlush");
                     DrawEnumField(dHoppeBlushControlType, "D_Hoppe_BlushControlType");
-                    DrawBoolField(dHoppeBlushDisableByGesture, "D_Hoppe_Blush_DisableByGesture");
                     DrawBoolField(dHoppeShowExpressionMenu, "D_Hoppe_ShowExpressionMenu");
                 }
                 if (GUILayout.Button("Editor/CloseDetail".LL()))

@@ -68,12 +68,12 @@ namespace com.github.pandrabox.flatsplus.editor
                 if (i < 7)
                 {
                     name = (i).ToString();
-                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetIco(_tgt.textures[i - 1]);
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", name, i, ParameterSyncType.Int).SetIco(_tgt.textures[i - 1]);
                 }
                 else if (i == 7)
                 {
                     name = L("Menu/Ico/Resonance");
-                    mb.AddToggle($"FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/Resonance/Detail".LL()).SetIco(_tgt.textures[i - 1]);
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", name, i, ParameterSyncType.Int).SetMessage("Menu/Ico/Resonance/Detail".LL()).SetIco(_tgt.textures[i - 1]);
                 }
                 else if (_tgt.VerView && i == 8)
                 {

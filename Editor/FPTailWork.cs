@@ -208,7 +208,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 .AddFolder(L("Menu/Tail"), true)
                 //.AddRadial("FlatsPlus/Tail/Gravity", L("Menu/Tail/Gravity"), _tgt.DefaultGravity)
                 .AddRadial("FlatsPlus/Tail/Size", L("Menu/Tail/Size"), _tgt.DefaultSize)
-                .AddToggle("FlatsPlus/Tail/Swing", 1, ParameterSyncType.Bool, L("Menu/Tail/Swing"), 1, false);
+                .AddToggle("FlatsPlus/Tail/Swing", L("Menu/Tail/Swing"), 1, ParameterSyncType.Bool, 1, false);
         }
 
     }

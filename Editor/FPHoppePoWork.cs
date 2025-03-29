@@ -1,9 +1,7 @@
-﻿using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.BC;
-using com.github.pandrabox.flatsplus.runtime;
+﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
-using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Dynamics.Contact.Components;
@@ -51,6 +49,7 @@ namespace com.github.pandrabox.flatsplus.editor
         AnimationClipsBuilder _ac;
         private VRCContactReceiver _blushContact;
         private static float _defaultContactSize = 0.35f;
+        private bool _useOriginalBlush => _prj.OriginalBlushName != "NULL" && _config.D_Hoppe_UseOriginalBlush;
 
 
         public FPHoppePoWork(FlatsProject fp) : base(fp) { }
@@ -90,11 +89,17 @@ namespace com.github.pandrabox.flatsplus.editor
                     .Bind(__contactPath, typeof(VRCContactReceiver), "allowSelf").Const2F(allowSelf ? 1 : 0)
                     .Bind(__contactPath, typeof(VRCContactReceiver), "allowOthers").Const2F(allowOther ? 1 : 0);
             }
-            createContaceMode("CM0_Auto",  true, true);
-            createContaceMode("CM1_OtherOnly",  false, true);
-            createContaceMode("CM2_WithoutDance",  true, true);
+            createContaceMode("CM0_Auto", true, true);
+            createContaceMode("CM1_OtherOnly", false, true);
+            createContaceMode("CM2_WithoutDance", true, true);
             createContaceMode("CM3_On", false, false);
             createContaceMode("CM4_Off", false, false);
+
+            if (_useOriginalBlush)
+            {
+                _ac.Clip("BlushOn").Bind("Body", typeof(SkinnedMeshRenderer), "blendShape.てれっ").Const2F(100);
+                _ac.Clip("BlushOff").Bind("Body", typeof(SkinnedMeshRenderer), "blendShape.てれっ").Const2F(0);
+            }
         }
 
         private void CreateBlush()
@@ -105,6 +110,7 @@ namespace com.github.pandrabox.flatsplus.editor
             mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
 
             //Controlの生成
+
             var bb = new BlendTreeBuilder(__blush);
             bb.RootDBT(() =>
             {
@@ -128,21 +134,45 @@ namespace com.github.pandrabox.flatsplus.editor
                 });
                 bb.NName("CalcBlushState").Param("IsLocal").Add1D(__blushControlType, () =>
                 {
+                    //auto系なら通常出る場合+コンタクト反応時にON
                     bb.NName("Auto,OtherOnly,WithoutDnace").Param(2).Add1D(__hoppeContact, () =>
                     {
-                        bb.Param(0).AddAAP(__blushOn, 0);
+                        bb.Param(0).Add1D(_prj.IsEmoBlush, () =>
+                        {
+                            bb.Param(0).AddAAP(__blushOn, 0);
+                            bb.Param(1).AddAAP(__blushOn, 1);
+                        });
                         bb.Param(1).AddAAP(__blushOn, 1);
                     });
+                    //ONならON
                     bb.NName("On").Param(3).AddAAP(__blushOn, 1);
+                    //OFFらOFF
                     bb.NName("Off").Param(4).AddAAP(__blushOn, 0);
                 });
-                bb.NName("BlushObj").Param("1").Add1D(__blushOnRx, () =>
+                if (!_useOriginalBlush) //FP版Blushの制御
                 {
-                    bb.Param(0).AddMotion(_ac.OffAnim(__hoppePath));
-                    bb.Param(1).AddMotion(_ac.OnAnim(__hoppePath));
-                });
+                    bb.NName("BlushObj").Param("1").Add1D(__blushOnRx, () =>
+                    {
+                        bb.Param(0).AddMotion(_ac.OffAnim(__hoppePath));
+                        bb.Param(1).AddMotion(_ac.OnAnim(__hoppePath));
+                    });
+                }
             });
             bb.Attach(_tgt.gameObject);
+
+            if (_useOriginalBlush)
+            {
+                var bb2 = new BlendTreeBuilder("BlushAbsolute");
+                bb2.RootDBT(() =>
+                {
+                    bb2.Param("1").Add1D(__blushOnRx, () =>
+                    {
+                        bb2.Param(0).AddMotion(_ac.Outp("BlushOff"));
+                        bb2.Param(1).AddMotion(_ac.Outp("BlushOn"));
+                    });
+                });
+                bb2.Attach(_prj, true);
+            }
             _prj.VirtualSync(__blushOn, 1, PVnBitSync.nBitSyncMode.IntMode);
         }
         private void DefineParameters()
@@ -169,7 +199,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 return;
             }
             var mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Hoppe"))
+            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Hoppe"), true)
                 .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Auto"), 0)
                 .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/OtherOnly"), 1)
                 .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/WithoutDance"), 2)

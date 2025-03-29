@@ -35,6 +35,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private AnimationClipsBuilder clips;
         private Dictionary<string, bool> _disHoppeInfo;
         private string[] _disHoppeShapes;
+        private Dictionary<string, bool> _blushInfo;
+        private string _blushShape => _prj.OriginalBlushName;
         private string emoDataFolder = "Packages/com.github.pandrabox.flatsplus/Assets/Emo/res/";
         private string emoDataFile => $@"{emoDataFolder}{_prj.CurrentAvatarName}.csv";
 
@@ -44,6 +46,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             _disHoppeShapes = _prj.DisHoppeShapes;
             _disHoppeInfo = new Dictionary<string, bool>();
+            _blushInfo = new Dictionary<string, bool>();
             RemoveExistEmo();
             CreateEmoClips();
             CreateAndAttachEmoController();
@@ -89,6 +92,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 bool isBlank = true;
                 bool isDisHoppe = false;
+                bool isBlush = false;
                 string clipName = $@"emo{i}";
                 //Log.I.Info($@"{i + 1}:line:{lines[i + 1]}");
                 int?[] shapeVals = lines[i + 1].Split(',').Select(x =>
@@ -101,18 +105,28 @@ namespace com.github.pandrabox.flatsplus.editor
                 }).ToArray();
                 for (int n = 2; n < shapeVals.Length; n++) //0,1はGesture情報
                 {
+                    bool addThis = true;
                     if (!shapeVals[n].HasValue) continue;
                     int shapeVal = (int)shapeVals[n];
                     string shapeName = "blendShape." + shapeNames[n];
-                    clips.Clip(clipName).Bind("Body", typeof(SkinnedMeshRenderer), shapeName).Const2F(shapeVal);
                     if (shapeVal > 5 && _disHoppeShapes.Contains(shapeNames[n]))
                     {
                         isDisHoppe = true;
                     }
-                    isBlank = false;
+                    if(shapeNames[n] == _blushShape)
+                    {
+                        isBlush = true;
+                        if(_config.D_Hoppe_Blush) addThis = false; //頬を自動制御する場合はGestureによる制御を無効化
+                    }
+                    if (addThis)
+                    {
+                        clips.Clip(clipName).Bind("Body", typeof(SkinnedMeshRenderer), shapeName).Const2F(shapeVal);
+                        isBlank = false;
+                    }
                     //Log.I.Info($@"{i}:{shapeName}:{shapeVal}");
                 }
                 _disHoppeInfo.Add(clipName, isDisHoppe);
+                _blushInfo.Add(clipName, isBlush);
                 if (isBlank)
                 {
                     clips.Clip(clipName).Dummy();
@@ -125,6 +139,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             var ab = new AnimatorBuilder("FlatsPlus/Emo");
             ab.AddAnimatorParameter("FlatsPlus/Emo/IsDisHoppe");
+            ab.AddAnimatorParameter(_prj.IsEmoBlush);
             List<AnimatorState> states = new List<AnimatorState>();
             ab.AddLayer();
             for (int left = 0; left < GESTURENUM; left++)
@@ -139,6 +154,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     ab.AddState(clipName, currentClip, position: pos);
                     states.Add(ab.CurrentState);
                     ab.SetParameterDriver("FlatsPlus/Emo/IsDisHoppe", _disHoppeInfo[clipName] ? 1 : 0);
+                    ab.SetParameterDriver(_prj.IsEmoBlush, _blushInfo[clipName] ? 1 : 0);
                 }
             }
             for (int nTo = 0; nTo < GESTURENUM * GESTURENUM; nTo++)

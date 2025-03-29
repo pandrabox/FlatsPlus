@@ -190,16 +190,16 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/MakeEmo"))
-                .AddToggle(enable, 1, ParameterSyncType.Bool, L("Menu/MakeEmo/Enable"), 0, false)
+                .AddToggle(enable, L("Menu/MakeEmo/Enable"), 1, ParameterSyncType.Bool, 0, false)
                 .Add2Axis(_ui.Inputx, _ui.Inputy, eyeselecting, L("Menu/MakeEmo/Eye"), 0, 0, true).SetMessage(L("Menu/MakeEmo/Eye/Message"))
                 .AddRadial(eyeLevel, L("Menu/MakeEmo/EyeLevel"), 1, false);
             mb.AddFolder(L("Menu/MakeEmo/Mouth"));
             var mouths = _faces.Mouths;
-            mb.AddToggle(mouth, 0, ParameterSyncType.Int, L("Menu/MakeEmo/Mouth/None")).SetIco(_faces.VoidIco);
+            mb.AddToggle(mouth, L("Menu/MakeEmo/Mouth/None"), 0, ParameterSyncType.Int).SetIco(_faces.VoidIco);
             for (int i = 0; i < mouths.Count; i++)
             {
                 var name = mouths[i].Name;
-                mb.AddToggle(mouth, i + 1, ParameterSyncType.Int, name).SetIco(mouths[i].Tex);
+                mb.AddToggle(mouth, name, i + 1, ParameterSyncType.Int).SetIco(mouths[i].Tex);
             }
             _prj.VirtualSync(mouth, TransmissionBit(mouths.Count), PVnBitSync.nBitSyncMode.IntMode);
             mb.ExitFolder();

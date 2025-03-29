@@ -158,14 +158,12 @@ D_Hoppe_AllowStretch/Detail,ほっぺたを伸ばすことを許可する,Allow 
 D_Hoppe_StretchLimit/Name,伸ばす制限,Stretch Limit,늘리기 제한,拉伸限制,拉伸限制
 D_Hoppe_StretchLimit/Detail,ほっぺたを伸ばす制限値,Limit value for stretching the cheeks,볼을 늘리는 제한 값,拉伸脸颊的限制值,拉伸脸颊的限制值
 D_Hoppe_Blush/Name,頬紅,Blush,볼터치,腮红,腮红
-D_Hoppe_Blush/Detail,頬紅を表示する,Display blush,볼터치를 표시,显示腮红,显示腮红
+D_Hoppe_Blush/Detail,頬紅を自動制御する,Automatically control the blush,볼터치를 자동으로 제어합니다,自动控制腮红,自动控制腮红
 D_Hoppe_Blush_Sensitivity/Name,頬紅感知距離,Blush Sensitivity,볼터치 감지 거리,腮红灵敏度,腮红灵敏度
 D_Hoppe_Blush_Sensitivity/Detail,手を近づけたときに頬紅が感知する距離,Distance at which the blush is sensed when the hand is brought close,손을 가까이 가져갔을 때 볼터치가 감지되는 거리,手靠近时感应腮红的距离,手靠近時感應腮紅的距離
-D_Hoppe_BlushType/Name,頬紅タイプ,Blush Type,볼터치 유형,腮红类型,腮红类型
-D_Hoppe_BlushType/Detail,頬紅のタイプを選択,Select the type of blush,볼터치 유형 선택,选择腮红类型,选择腮红类型
+D_Hoppe_UseOriginalBlush/Name,元の頬紅を使用,Use Original Blush,원래의 볼터치 사용,使用原始腮红,使用原始腮紅
+D_Hoppe_UseOriginalBlush/Detail,アバターオリジナルの頬紅を使用する,Use the original blush of the avatar,아바타의 원래 볼터치를 사용합니다,使用头像的原始腮红,使用頭像的原始腮紅
 D_Hoppe_BlushControlType/Name,頬紅制御タイプ,Blush Control Type,볼터치 제어 유형,腮红控制类型,腮红控制类型
 D_Hoppe_BlushControlType/Detail,頬紅の制御タイプを選択,Select the type of blush control,볼터치 제어 유형 선택,选择腮红控制类型,选择腮红控制类型
 D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
 D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單
-D_Hoppe_Blush_DisableByGesture/Name,ジェスチャー無効,Disable Blush by Gesture,제스처로 인해 붉어짐 비활성화,通过手势禁用脸红,通过手势禁用脸红
-D_Hoppe_Blush_DisableByGesture/Detail,ジェスチャーによる頬紅制御を無効化,Disable blush by gesture,제스처로 인해 붉어짐을 비활성화,通过手势禁用脸红,通过手势禁用脸红
