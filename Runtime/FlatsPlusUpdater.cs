@@ -1,12 +1,10 @@
-﻿using System;
+﻿using com.github.pandrabox.pandravase.runtime;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using com.github.pandrabox.pandravase.runtime;
-using System.Net.Http.Headers;
-using Codice.Utils;
 using static com.github.pandrabox.pandravase.editor.Localizer;
 
 namespace com.github.pandrabox.flatsplus.runtime
@@ -37,7 +35,8 @@ namespace com.github.pandrabox.flatsplus.runtime
 
         private FlatsPlusUpdater()
         {
-            EditorApplication.delayCall += () => {
+            EditorApplication.delayCall += () =>
+            {
                 LoadSettingsAndInitialize();
                 CheckForUpdates();
             };

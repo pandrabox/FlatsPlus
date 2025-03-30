@@ -3,9 +3,7 @@ using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using System;
 using System.Diagnostics;
-using UnityEngine;
 using VRC.SDK3.Avatars.Components;
-using static com.github.pandrabox.pandravase.editor.Util;
 
 
 namespace com.github.pandrabox.flatsplus.editor

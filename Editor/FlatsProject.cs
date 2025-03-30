@@ -102,7 +102,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public Vector3 TotalBoundsCenter => new Vector3(TotalBoundsCenterX, TotalBoundsCenterY, TotalBoundsCenterZ);
         public Vector3 TotalBoundsExtent => new Vector3(TotalBoundsExtentX, TotalBoundsExtentY, TotalBoundsExtentZ);
 
-        public string IsEmoBlush => "FlatsPlus/Emo/IsEmoBlush";   
+        public string IsEmoBlush => "FlatsPlus/Emo/IsEmoBlush";
 
         public string CheekSensor => "FlatsPlus/CheekSensor";
 

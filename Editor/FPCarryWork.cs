@@ -33,7 +33,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private AnimationClipsBuilder _ac;
         private string __suffix => "FlatsPlus/Carry";
         private string __Carry => $@"{__suffix}/Carry";
-        private string __APD => $@"{__suffix}/APD"; 
+        private string __APD => $@"{__suffix}/APD";
         private string __Distance => $@"{__suffix}/Distance";
         private string __DistanceRx => $@"{__suffix}/DistanceRx";
         private string __Adjusting => $@"{__suffix}/Adjusting";
@@ -147,7 +147,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var bb = new BlendTreeBuilder(__Carry);
             bb.RootDBT(() =>
             {
-                bb.NName("距離調整").Param("1").FMultiplicationBy1D(_ac.Outp("Dist1"), __DistanceRx, 0, 1,.1f,_config.D_Carry_GateMaxRange);
+                bb.NName("距離調整").Param("1").FMultiplicationBy1D(_ac.Outp("Dist1"), __DistanceRx, 0, 1, .1f, _config.D_Carry_GateMaxRange);
                 bb.NName("角度調整").Param("1").Add1D(__RotationRx, () =>
                 {
                     bb.Param(0).AddMotion(_ac.Outp("Rot1").Multiplication(-1f));
@@ -188,7 +188,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 });
                 bb.NName("モード計算_ゲスト").Param("1").Add1D(__isTakeMe, () =>
                 {
-                    bb.Param(0).FAssignmentBy1D(__ModeRx,0,8, __ModeActual);
+                    bb.Param(0).FAssignmentBy1D(__ModeRx, 0, 8, __ModeActual);
                     bb.Param(1).Add1D(__Mode1Counter, () =>
                     {
                         bb.Param(0).AddAAP(__ModeActual, 2);//カウントダウン後は2FixTakeMe
@@ -199,7 +199,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 bb.NName("実動作").Param("1").Add1D(__ModeActual, () =>
                 {
                     for (int i = 0; i < __Modes.Length; i++)
-                        bb.Param(i).AddMotion(_ac.Outp(__Modes[i]));                    
+                        bb.Param(i).AddMotion(_ac.Outp(__Modes[i]));
                 });
                 bb.NName("リング色").Param("1").Add1D(__ModeActual, () =>
                 {
@@ -237,10 +237,10 @@ namespace com.github.pandrabox.flatsplus.editor
                 .SetParameterDriver(_prj.LinkTx, 2)
                 .TransToCurrent(ab.InitialState)
                     .AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 1, __CallTakeMe)
-                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.Less, _takeMeComm-.5f, _prj.LinkTx)
+                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.Less, _takeMeComm - .5f, _prj.LinkTx)
                 .TransToCurrent(ab.InitialState)
                     .AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 1, __CallTakeMe)
-                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.Greater, _takeMeComm+.5f, _prj.LinkTx)
+                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.Greater, _takeMeComm + .5f, _prj.LinkTx)
                 .TransFromCurrent(ab.InitialState).MoveInstant();
             ab.AddState("IsNotTakeMe")
                 .SetParameterDriver(_prj.LinkTx, 0)
@@ -263,7 +263,7 @@ namespace com.github.pandrabox.flatsplus.editor
             mb.AddToggle(__HugOrCarry, L("Menu/Carry/Hug"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Hug/Message"));
             mb.AddToggle(__HugOrCarry, L("Menu/Carry/Carry"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Carry/Message"));
             mb.AddRadial(__Distance, L("Menu/Carry/Distance")).SetMessage(L("Menu/Carry/Distance/Message"));
-            mb.AddRadial(__Rotation, L("Menu/Carry/Rotation"),.5f).SetMessage(L("Menu/Carry/Rotation/Message"));
+            mb.AddRadial(__Rotation, L("Menu/Carry/Rotation"), .5f).SetMessage(L("Menu/Carry/Rotation/Message"));
             Log.I.EndMethod("メニューの作成が完了しました");
         }
     }

@@ -373,7 +373,7 @@ namespace com.github.pandrabox.flatsplus.editor
             bool allFine = false;
             if (res != null && res.Count == 0)
             {
-                allFine=true;
+                allFine = true;
                 EditorGUILayout.HelpBox(L("LogAnalyze/AllFine"), MessageType.Info);
             }
             foreach (var item in res)
@@ -383,8 +383,8 @@ namespace com.github.pandrabox.flatsplus.editor
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine(L("LogAnalyze/PleaseCallMe"));
                     sb.AppendLine($@"{item.Key}");
-                    if (item.Value.Warnings>0) sb.AppendLine($@" - {L("LogAnalyze/Warning")}:{item.Value.Warnings}");
-                    if (item.Value.Errors > 0　|| item.Value.Exceptions > 0) sb.AppendLine($@" - {L("LogAnalyze/Error")}:{item.Value.Errors + item.Value.Exceptions}");
+                    if (item.Value.Warnings > 0) sb.AppendLine($@" - {L("LogAnalyze/Warning")}:{item.Value.Warnings}");
+                    if (item.Value.Errors > 0 || item.Value.Exceptions > 0) sb.AppendLine($@" - {L("LogAnalyze/Error")}:{item.Value.Errors + item.Value.Exceptions}");
                     EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
                 }
             }

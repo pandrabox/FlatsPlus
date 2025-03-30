@@ -49,13 +49,13 @@ namespace com.github.pandrabox.flatsplus.runtime
 
         public static void SaveSettings(ApiRequestSettings settings)
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (settings != null)
             {
                 UnityEditor.EditorUtility.SetDirty(settings);
                 UnityEditor.AssetDatabase.SaveAssets();
             }
-            #endif
+#endif
         }
     }
 }

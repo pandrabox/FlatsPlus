@@ -113,10 +113,10 @@ namespace com.github.pandrabox.flatsplus.editor
                     {
                         isDisHoppe = true;
                     }
-                    if(shapeNames[n] == _blushShape)
+                    if (shapeNames[n] == _blushShape)
                     {
                         isBlush = true;
-                        if(_config.D_Hoppe_Blush) addThis = false; //頬を自動制御する場合はGestureによる制御を無効化
+                        if (_config.D_Hoppe_Blush) addThis = false; //頬を自動制御する場合はGestureによる制御を無効化
                     }
                     if (addThis)
                     {

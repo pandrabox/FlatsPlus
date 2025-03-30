@@ -52,7 +52,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     _callPlane.GetComponent<Renderer>().material.mainTexture = packTexture;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.I.Exception(ex, "Textureの置換に失敗しました(設定先mainTextureの取得に失敗しました)");
                 }
