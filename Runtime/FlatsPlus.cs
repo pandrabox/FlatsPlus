@@ -150,6 +150,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void OverView()
         {
+            FlatsPlusUpdater.I.DrawUpdateInfo();
             DrawLanguageSelect(language);
             DrawBoolField(funcCarry, "Func/Carry", true);
             DrawBoolField(funcDanceController, "Func/DanceController");
@@ -315,6 +316,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 new SetClippingCanceler(clippingCanceler.boolValue);
             }
         }
+
         #endregion
 
         #region LogAnalyze
@@ -323,7 +325,6 @@ namespace com.github.pandrabox.flatsplus.editor
         private List<string> _errorUnknowns;
         const string _logPath = "Packages/com.github.pandrabox.flatsplus/Log/log.txt";
         private string _logContent;
-
         private void LogAnalyze()
         {
             _lastBuild = DateTime.MinValue;
@@ -363,7 +364,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             }
         }
-
         private void LogAnalyzeResult()
         {
             if (_lastBuild == DateTime.MinValue) return;
