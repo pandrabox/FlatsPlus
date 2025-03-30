@@ -220,7 +220,7 @@ namespace com.github.pandrabox.flatsplus.runtime
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.HelpBox($"{L("Updater/CanUseNewVersion")} (Ver.{latestVersion})", MessageType.Warning);
-                if (GUILayout.Button($"{L("Updater/Update")}"))
+                if (GUILayout.Button($"{L("Updater/Update")}", GUILayout.Width(120), GUILayout.Height(EditorGUIUtility.singleLineHeight * 2)))
                 {
                     ImportUpdater();
                 }
