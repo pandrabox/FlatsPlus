@@ -58,7 +58,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.aab
-*.unitypackage
 *.app
 
 # Crashlytics generated file
@@ -80,6 +79,5 @@ Dev/
 Dev.meta
 /Editor/EmoAnalyze/result
 Log/log.txt
-Log/log.txt
 /Log
-/Assets/ApiRequestSettings.asset
+Assets/ApiRequestSettings.asset

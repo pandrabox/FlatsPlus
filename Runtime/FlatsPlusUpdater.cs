@@ -219,11 +219,13 @@ namespace com.github.pandrabox.flatsplus.runtime
 
             if (updateAvailable)
             {
+                EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.HelpBox($"{L("Updater/CanUseNewVersion")} (Ver.{latestVersion})", MessageType.Warning);
                 if (GUILayout.Button($"{L("Updater/Update")}"))
                 {
                     ImportUpdater();
                 }
+                EditorGUILayout.EndHorizontal();
             }
             else
             {
