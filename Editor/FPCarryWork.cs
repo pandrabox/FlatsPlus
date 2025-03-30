@@ -41,6 +41,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private string __RotationRx => $@"{__suffix}/RotationRx";
         private string __Mode => $@"{__suffix}/Mode";
         private string __ModeRx => $@"{__suffix}/ModeRx";
+        private string __ModeActual => $@"{__suffix}/ModeActual";
         private string __isTakeMe => $@"{__suffix}/IsTakeMe";
         private string __isLocal => "IsLocal";
         private string __HugOrCarry => $@"{__suffix}/HugOrCarry";
@@ -86,9 +87,9 @@ namespace com.github.pandrabox.flatsplus.editor
                     .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
                     .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.a");
             }
-            DefineRingMode("RM_Gray", 0.45283f, 0.45283f, 0.45283f);
-            DefineRingMode("RM_Blue", 0.57879f, 0.45882f, 0);
-            DefineRingMode("RM_Red", 1f, 0.5098f, 0.45882f);
+            DefineRingMode("RM_Gray", .4f, .4f, .4f);
+            DefineRingMode("RM_Blue", .5f, .5f, 1f);
+            DefineRingMode("RM_Red", 1f, .5f, .5f);
 
             /// <summary>
             /// Define the main control animation clip with various parameters.
@@ -154,56 +155,53 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param(1).AddMotion(_ac.Outp("Rot1"));
                 });
                 bb.NName("椅子有効化").Param("1").FMultiplicationBy1D(_ac.Outp("StationActive"), __isLocal, 0, 1, 1, 0);
-                bb.NName("TakeMe演算").Param(__isLocal).Add1D(_prj.LinkRx, () =>
+                bb.NName("TakeMe演算").Param("1").Add1D(_prj.LinkRx, () =>
                 {
-                    float t = 2; //Rxが2ならTakeMeは1
-                    bb.Param(t - .5f).AddAAP(__isTakeMe, 0);
-                    bb.Param(t - .4f).AddAAP(__isTakeMe, 1);
-                    bb.Param(t + .4f).AddAAP(__isTakeMe, 1);
-                    bb.Param(t + .5f).AddAAP(__isTakeMe, 0);
+                    bb.Param(_takeMeComm - .5f).AddAAP(__isTakeMe, 0);
+                    bb.Param(_takeMeComm - .4f).AddAAP(__isTakeMe, 1);
+                    bb.Param(_takeMeComm + .4f).AddAAP(__isTakeMe, 1);
+                    bb.Param(_takeMeComm + .5f).AddAAP(__isTakeMe, 0);
                 });
-                bb.NName("Mode1カウンタ").Param(__isLocal).AddD(() =>
+                bb.NName("Mode1カウンタ").Param("1").AddD(() =>
                 {
                     float resetVal = 10;
-                    void Reset(BlendTreeBuilder b, float th) => b.Param(th).AddAAP(__Mode1Counter, resetVal);
-                    void Hold(BlendTreeBuilder b, float th) => b.Param(th).FAssignmentBy1D(__Mode1Counter, -1, resetVal, __Mode1Counter);
-                    bb.NName("リセットホールド").Param("1").Add1D(__Mode, () => //Mode1,2はホールド、他はリセット
+                    bb.NName("リセットホールド").Param("1").Add1D(__isTakeMe, () =>
                     {
-                        Reset(bb, 0);
-                        Hold(bb, 1);
-                        Hold(bb, 2);
-                        Reset(bb, 3);
+                        bb.Param(0).AddAAP(__Mode1Counter, resetVal);//TakeMeでなければリセット
+                        bb.Param(1).FAssignmentBy1D(__Mode1Counter, -1, resetVal, __Mode1Counter); //TakeMeならホールド
                     });
                     bb.NName("デクリメント").Param("1").AddAAP(__Mode1Counter, -1);
                 });
-                bb.NName("モード計算").Param(__isLocal).Add1D(__isTakeMe, () =>
+                bb.NName("モード計算_ホスト").Param(__isLocal).Add1D(__HugOrCarry, () =>
                 {
-                    bb.Param(0).Add1D(__HugOrCarry, () =>
+                    bb.Param(0).Add1D(__GateActive, () =>
                     {
-                        bb.Param(0).Add1D(__GateActive, () =>
+                        bb.Param(0).AddAAP(__Mode, 0);//Off
+                        bb.Param(1).Add1D(__Adjusting, () =>
                         {
-                            bb.Param(0).AddAAP(__Mode, 0);//Off
-                            bb.Param(1).Add1D(__Adjusting, () =>
-                            {
-                                bb.Param(0).AddAAP(__Mode, 6);//Fix
-                                bb.Param(1).AddAAP(__Mode, 5);//Adjust
-                            });
+                            bb.Param(0).AddAAP(__Mode, 6);//Fix
+                            bb.Param(1).AddAAP(__Mode, 5);//Adjust
                         });
-                        bb.Param(1).AddAAP(__Mode, 3);//Hug
-                        bb.Param(2).AddAAP(__Mode, 4);//Carry
                     });
+                    bb.Param(1).AddAAP(__Mode, 3);//Hug
+                    bb.Param(2).AddAAP(__Mode, 4);//Carry
+                });
+                bb.NName("モード計算_ゲスト").Param("1").Add1D(__isTakeMe, () =>
+                {
+                    bb.Param(0).FAssignmentBy1D(__ModeRx,0,8, __ModeActual);
                     bb.Param(1).Add1D(__Mode1Counter, () =>
                     {
-                        bb.Param(0).AddAAP(__Mode, 2);//カウントダウン後は2FixTakeMe
-                        bb.Param(1).AddAAP(__Mode, 1);//カウント中は1TakeMe
+                        bb.Param(0).AddAAP(__ModeActual, 2);//カウントダウン後は2FixTakeMe
+                        bb.Param(1).AddAAP(__ModeActual, 1);//カウント中は1TakeMe
                     });
                 });
-                bb.NName("実動作").Param("1").Add1D(__ModeRx, () =>
+
+                bb.NName("実動作").Param("1").Add1D(__ModeActual, () =>
                 {
                     for (int i = 0; i < __Modes.Length; i++)
                         bb.Param(i).AddMotion(_ac.Outp(__Modes[i]));                    
                 });
-                bb.NName("リング色").Param("1").Add1D(__Mode, () =>
+                bb.NName("リング色").Param("1").Add1D(__ModeActual, () =>
                 {
                     bb.Param(3).AddMotion(_ac.Outp("RM_Blue")); //0はないので無視、1,2はTakeMeで青
                     bb.Param(4).Add1D(__isLocal, () => //通常ゲートは5,6
