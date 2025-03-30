@@ -1,4 +1,5 @@
-﻿using com.github.pandrabox.pandravase.runtime;
+﻿#if UNITY_EDITOR
+using com.github.pandrabox.pandravase.runtime;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -276,3 +277,4 @@ namespace com.github.pandrabox.flatsplus.runtime
         }
     }
 }
+#endif
