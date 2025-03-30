@@ -95,6 +95,9 @@ namespace com.github.pandrabox.flatsplus.editor
         public float TotalBoundsExtentZ => GetDBFloat("TotalBoundsExtentZ");
         public string OriginalBlushName => GetDBString("OriginalBlushName");
 
+        public string LinkRx => "FlatsPlus/Link/Rx";
+        public string LinkTx => "FlatsPlus/Link/Tx";
+
 
         public Vector3 TotalBoundsCenter => new Vector3(TotalBoundsCenterX, TotalBoundsCenterY, TotalBoundsCenterZ);
         public Vector3 TotalBoundsExtent => new Vector3(TotalBoundsExtentX, TotalBoundsExtentY, TotalBoundsExtentZ);

@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2221750117957946627}
   m_LocalRotation: {x: 0.0000012167803, y: 0.99999267, z: 0.0038296997, w: 0.00000008896476}
-  m_LocalPosition: {x: -1.1290033, y: 1.8293375, z: 0.017633438}
+  m_LocalPosition: {x: -0.31699884, y: 3.2079306, z: 0.01469326}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 2221750118635329853}
@@ -161,7 +161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2221750118022318647}
   m_LocalRotation: {x: 0.0038296997, y: -0.00000018294939, z: -0.0000011227958, w: 0.99999267}
-  m_LocalPosition: {x: -1.129005, y: 1.2545699, z: 0.24623784}
+  m_LocalPosition: {x: -0.31700024, y: 2.633163, z: 0.24329759}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2221750119000943898}
@@ -361,7 +361,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2221750118619369161}
   m_LocalRotation: {x: 0.0038296997, y: -0.00000018294939, z: -0.0000011227958, w: 0.99999267}
-  m_LocalPosition: {x: -1.1290061, y: 0.9177246, z: 3.4887526}
+  m_LocalPosition: {x: -0.31700104, y: 2.3192956, z: 0.4859007}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 2221750118635329853}
@@ -1095,8 +1095,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2221750119422687652}
-  - component: {fileID: 2221750119422687648}
-  - component: {fileID: 2221750119422687650}
   - component: {fileID: 5569554694899810409}
   m_Layer: 12
   m_Name: Carry
@@ -1120,139 +1118,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2221750119422687648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2221750119422687653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bb122659f724ebf85fe095ac02dc339, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 9100000, guid: 8daef2f77ffbb9e4e91d05966f138a66, type: 2}
-  layerType: 5
-  deleteAttachedAnimator: 0
-  pathMode: 0
-  matchAvatarWriteDefaults: 0
-  relativePathRoot:
-    referencePath: 
-  layerPriority: 0
---- !u!114 &2221750119422687650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2221750119422687653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71a96d4ea0c344f39e277d82035bf9bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parameters:
-  - nameOrPrefix: FlatsPlus/Carry/Distance
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 2
-    localOnly: 0
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/Rotation
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 2
-    localOnly: 0
-    defaultValue: 0.5
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/Adjusting
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 3
-    localOnly: 0
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/AutoTakeMe
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 3
-    localOnly: 1
-    defaultValue: 1
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/GateActive
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 3
-    localOnly: 0
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/Hug
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 3
-    localOnly: 0
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/Carry
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 3
-    localOnly: 0
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/FixTakeMe
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 3
-    localOnly: 1
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/CallTakeMe
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 3
-    localOnly: 0
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
-  - nameOrPrefix: FlatsPlus/Carry/HugOrCarry
-    remapTo: 
-    internalParameter: 0
-    isPrefix: 0
-    syncType: 1
-    localOnly: 1
-    defaultValue: 0
-    saved: 0
-    hasExplicitDefaultValue: 0
-    m_overrideAnimatorDefaults: 0
 --- !u!114 &5569554694899810409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1384,7 +1249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2221750119571996673}
   m_LocalRotation: {x: 0.5018468, y: -0.49779972, z: 0.4981436, w: 0.50219345}
-  m_LocalPosition: {x: -1.3662813, y: 0.87798405, z: -0.0035434929}
+  m_LocalPosition: {x: -0.6745467, y: 2.237072, z: -0.009152289}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 2221750118635329853}
@@ -1520,7 +1385,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2221750119659218379}
   m_LocalRotation: {x: 0.00007429734, y: -0.9949361, z: -0.100509666, w: 0.00006588717}
-  m_LocalPosition: {x: -1.1289823, y: 0.7708152, z: -0.2905555}
+  m_LocalPosition: {x: -0.31697676, y: 2.1418092, z: -0.2950469}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 2221750118635329853}
