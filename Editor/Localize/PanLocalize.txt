@@ -116,14 +116,14 @@ LogAnalyze/CopyCompleteMessage,ログ情報をクリップボードにコピー�
 
 
 Menu/Carry,他者移動,Carry,다른 사람 이동,移动他人,移動他人
-Menu/Carry/CallGate,ゲート召喚,Call Gate,게이트 소환,召唤传送门,召喚傳送門
+Menu/Carry/CallGate,灰ゲート召喚,Call Gray Gate,회색 게이트 소환,召唤灰色传送门,召喚灰色傳送門
 Menu/Carry/CallGate/Message,灰色のゲート(他者用ワープポータル)を召喚する。自分は使えない。,Summon a gray gate (warp portal for others). You can't use it.,회색 게이트(다른 사람용 워프 포탈)을 소환합니다. 자신은 사용할 수 없습니다.,召唤灰色传送门(他人用传送门)。自己无法使用。,召喚灰色傳送門(他人用傳送門)。自己無法使用。
-Menu/Carry/GateActive,ゲート有効,Activate Gate,게이트 활성화,激活传送门,激活傳送門
+Menu/Carry/GateActive,灰ゲート有効,Gray Gate Active,회색 게이트 활성화,激活灰色传送门,激活灰色傳送門
 Menu/Carry/GateActive/Message,灰色のゲート(他者用)を有効化しました。,Activated the gray gate (for others).,회색 게이트(다른 사람용)를 활성화했습니다.,激活灰色传送门(他人用)。,激活灰色傳送門(他人用)。
-Menu/Carry/CallTakeMe,ゲート申請,Call Take Me,게이트 신청,召唤我,召喚我
-Menu/Carry/CallTakeMe/Message,青のゲート(自分専用)の生成を申請する。近くにFlatsがいなければ効果がない。,Apply for the creation of a blue gate (for your own use). It has no effect if there is no Flats nearby.,파란 게이트(자신 전용) 생성을 신청합니다. 주변에 Flats가 없으면 효과가 없습니다.,申请生成蓝色传送门(自己专用)。如果附近没有Flats，则无效。,申請生成藍色傳送門(自己專用)。如果附近沒有Flats，則無效。
-Menu/Carry/AutoTakeMe,自動申請,Auto Take Me,자동 신청,自动召唤我,自動召喚我
-Menu/Carry/AutoTakeMe/Message,灰のゲート展開時に自動で青のゲートを申請する,Apply for a blue gate automatically when the gray gate is deployed,회색 게이트 전개시 자동으로 파란 게이트를 신청합니다,灰色传送门展开时自动申请蓝色传送门,灰色傳送門展開時自動申請藍色傳送門
+Menu/Carry/CallTakeMe,青ゲート召喚,Call Blue Gate,파란 게이트 소환,召唤蓝色传送门,召喚藍色傳送門
+Menu/Carry/CallTakeMe/Message,周囲のFlatsの頭上に青のゲート（自分専用）を召喚する。,Summon a blue gate (for yourself) above the heads of surrounding Flats.,주변 Flats의 머리 위에 파란 게이트(자신 전용)을 소환합니다.,在周围Flats的头顶召唤一个蓝色传送门(自己专用)。,在周圍Flats的頭頂召喚一個藍色傳送門(自己專用)。
+Menu/Carry/AllowBlueGate,青のゲート許可,Allow Blue Gate,파란 게이트 허용,允许蓝色传送门,允許藍色傳送門
+Menu/Carry/AllowBlueGate/Message,他者が自分に青のゲートを作成することを許可する。,Allow others to create a blue gate for you.,다른 사람이 자신에게 파란 게이트를 만들 수 있도록 허용합니다.,允许其他人为您创建蓝色传送门。,允許其他人為您創建藍色傳送門。
 Menu/Carry/Hug,抱っこ,Hug,안기,抱,抱
 Menu/Carry/Hug/Message,手で相手を持てる。,You can hold the other person with your hands.,손으로 상대를 안을 수 있습니다.,用手抱住对方。,用手抱住對方。
 Menu/Carry/Carry,おんぶ,Carry,업기,背,背
@@ -132,6 +132,11 @@ Menu/Carry/Distance,距離調整,Distance,거리 조정,调整距离,調整距�
 Menu/Carry/Distance/Message,距離を調整する。だっこ・おんぶ共用。,Adjust the distance. Shared with hug and carry.,거리를 조정합니다. 안기 업기와 공용입니다.,调整距离。与拥抱和背部共用。,調整距離。與擁抱和背部共用。
 Menu/Carry/Rotation,角度調整,Rotation,각도 조정,调整角度,調整角度
 Menu/Carry/Rotation/Message,角度を調整する。全ての「他者移動」共用。,Adjust the angle. Shared with all "Carry".,각도를 조정합니다. 모든 "다른 사람 이동"과 공용입니다.,调整角度。与所有“移动他人”共用。,調整角度。與所有“移動他人”共用。
+D_Carry_AllowBluGateDefault/Name,青ゲート許可,Allow Blue Gate Default,파란 게이트 허용,允许蓝色传送门默认,允许蓝色传送门默认
+D_Carry_AllowBluGateDefault/Detail,他者が自身に青ゲートを作成することを許可する。,Allow others to create a blue gate for yourself.,다른 사람이 자신에게 파란 게이트를 만들 수 있도록 허용합니다.,允许其他人为自己创建蓝色传送门。,允许其他人为自己创建蓝色传送门。
+D_Carry_GateMaxRange/Name,最大ゲート距離,Maximum Gate Distance,최대 게이트 거리,最大门距离,最大門距離
+D_Carry_GateMaxRange/Detail,ゲートを呼び出せる最大距離,Maximum distance at which gates can be called,게이트를 호출할 수 있는 최대 거리,可以呼叫门的最大距离,可以呼叫門的最大距離
+
 
 Menu/Move,自身移動,Move,자신 이동,移动自己,移動自己
 Menu/Move/FlyDash,飛行 & 高速移動,Fly & Dash,비행 & 고속 이동,飞行 & 快速移动,飛行 & 快速移動
@@ -178,3 +183,4 @@ Menu/Hoppe/Blush/Control/OtherOnly,他者だけ,Others Only,다른 사람만,仅
 Menu/Hoppe/Blush/Control/WithoutDance,ダンス以外,Except Dance,댄스 제외,舞蹈除外,舞蹈除外
 Menu/Hoppe/Blush/Control/On,常時ON,Always ON,항상 켜짐,始终开启,始終開啟
 Menu/Hoppe/Blush/Control/Off,常時OFF,Always OFF,항상 꺼짐,始终关闭,始終關閉
+

@@ -62,6 +62,9 @@ namespace com.github.pandrabox.flatsplus.runtime
         public enum Hoppe_BlushControlType { Auto, OtherOnly, WithoutDance, On, Off }
         public bool D_Hoppe_ShowExpressionMenu = false;
 
+        public bool D_Carry_AllowBlueGateDefault = true;
+        public float D_Carry_GateMaxRange = 1f;
+
         public float Emo_TransitionTime = 0.5f;
         public Texture2D[] Ico_Textures = new Texture2D[6];
         public bool Ico_VerView = false;
@@ -107,7 +110,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private SerializedProperty
             funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync,
             language, writedefaulton, clippingCanceler, funcPoseClipper,
-            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushSensitivity, dUseOriginalBlush, dHoppeBlushControlType, dHoppeShowExpressionMenu;
+            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushSensitivity, dUseOriginalBlush, dHoppeBlushControlType, dHoppeShowExpressionMenu,
+            dCarryAllowBluGateDefault, dCarryGateMaxRange;
 
         protected override void DefineSerial()
         {
@@ -139,12 +143,15 @@ namespace com.github.pandrabox.flatsplus.editor
             dUseOriginalBlush = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_UseOriginalBlush));
             dHoppeBlushControlType = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_BlushControlType));
             dHoppeShowExpressionMenu = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_ShowExpressionMenu));
+            dCarryAllowBluGateDefault = serializedObject.FindProperty(nameof(FlatsPlus.D_Carry_AllowBlueGateDefault));
+            dCarryGateMaxRange = serializedObject.FindProperty(nameof(FlatsPlus.D_Carry_GateMaxRange));
+
         }
 
         private void OverView()
         {
             DrawLanguageSelect(language);
-            DrawBoolField(funcCarry, "Func/Carry");
+            DrawBoolField(funcCarry, "Func/Carry", true);
             DrawBoolField(funcDanceController, "Func/DanceController");
             DrawBoolField(funcEmo, "Func/Emo");
             DrawBoolField(funcExplore, "Func/Explore");
@@ -275,6 +282,12 @@ namespace com.github.pandrabox.flatsplus.editor
                     DrawBoolField(dUseOriginalBlush, "D_Hoppe_UseOriginalBlush");
                     DrawEnumField(dHoppeBlushControlType, "D_Hoppe_BlushControlType");
                     DrawBoolField(dHoppeShowExpressionMenu, "D_Hoppe_ShowExpressionMenu");
+                }
+                else if (_detailKey == "Func/Carry")
+                {
+                    isDrawn = true;
+                    DrawBoolField(dCarryAllowBluGateDefault, "D_Carry_AllowBluGateDefault");
+                    DrawFloatField(dCarryGateMaxRange, "D_Carry_GateMaxRange", 0.1f, 5);
                 }
                 if (GUILayout.Button("Editor/CloseDetail".LL()))
                 {

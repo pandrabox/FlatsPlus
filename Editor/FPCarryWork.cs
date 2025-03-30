@@ -48,6 +48,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private string __Mode1Counter => $@"{__suffix}/Mode1Counter";
         private string __GateActive => $@"{__suffix}/GateActive";
         private string __CallTakeMe => $@"{__suffix}/CallTakeMe";
+        private string __AllowBlueGate => $@"{__suffix}/AllowBlueGate";
         private string[] __Modes => new string[] { "MC_Hide", "MC_TakeMe", "MC_FixTakeMe", "MC_Hug", "MC_Carry", "MC_Adjust", "MC_Fix" };
         private float _takeMeComm => 2f;
 
@@ -67,7 +68,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 .Bind("Obj/Neck/CarryPos0/CarryPos", typeof(Transform), "m_LocalPosition.z").Const2F(1)
                 .Bind("Obj/Head/ViewPoint/GateAdjustor", typeof(Transform), "m_LocalPosition.z").Const2F(50);
             _ac.Clip("Rot1")
-                .Bind("Obj/Head/ViewPoint/GateAdjustor", typeof(Transform), "localEulerAnglesRaw.y").Const2F(180)
                 .Bind("Obj/LeftHand/HugPos0/HugPos", typeof(Transform), "localEulerAnglesRaw.y").Const2F(180)
                 .Bind("Obj/Neck/CarryPos0/CarryPos", typeof(Transform), "localEulerAnglesRaw.y").Const2F(180);
             _ac.Clip("StationActive")
@@ -113,7 +113,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     .Bind("Obj/StationX/Station", typeof(GameObject), "m_IsActive").Const2F(stXActive ? 1 : 0)
                     .Bind("Obj/StationX/Ring", typeof(GameObject), "m_IsActive").Const2F(stXRingActive ? 1 : 0)
                     .Bind("Obj/StationX", typeof(ParentConstraint), "m_Enabled").Const2F(stXConstraintActive ? 1 : 0);
-                DefineParentConstraint(currentACB, "Obj/StationX/ExitPosX/Exit", 2, stHExitPos);
+                DefineParentConstraint(currentACB, "Obj/Head/StationH/Exit", 2, stHExitPos);
                 DefineParentConstraint(currentACB, "Obj/StationX", 2, stXRootPos);
                 DefineParentConstraint(currentACB, "Obj/StationX/Station", 3, stXSheetPos);
                 DefineParentConstraint(currentACB, "Obj/StationX/ExitPosX/Exit", 4, stXExitPos);
@@ -147,7 +147,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var bb = new BlendTreeBuilder(__Carry);
             bb.RootDBT(() =>
             {
-                bb.NName("距離調整").Param("1").FMultiplicationBy1D(_ac.Outp("Dist1"), __DistanceRx, 0, 1,.1f,1f);
+                bb.NName("距離調整").Param("1").FMultiplicationBy1D(_ac.Outp("Dist1"), __DistanceRx, 0, 1,.1f,_config.D_Carry_GateMaxRange);
                 bb.NName("角度調整").Param("1").Add1D(__RotationRx, () =>
                 {
                     bb.Param(0).AddMotion(_ac.Outp("Rot1").Multiplication(-1f));
@@ -155,7 +155,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param(1).AddMotion(_ac.Outp("Rot1"));
                 });
                 bb.NName("椅子有効化").Param("1").FMultiplicationBy1D(_ac.Outp("StationActive"), __isLocal, 0, 1, 1, 0);
-                bb.NName("TakeMe演算").Param("1").Add1D(_prj.LinkRx, () =>
+                bb.NName("TakeMe演算").Param(__AllowBlueGate).Add1D(_prj.LinkRx, () =>
                 {
                     bb.Param(_takeMeComm - .5f).AddAAP(__isTakeMe, 0);
                     bb.Param(_takeMeComm - .4f).AddAAP(__isTakeMe, 1);
@@ -223,6 +223,16 @@ namespace com.github.pandrabox.flatsplus.editor
                     .AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 1, __Adjusting)
                     .AddCondition(UnityEditor.Animations.AnimatorConditionMode.IfNot, 1, __GateActive)
                 .TransFromCurrent(ab.InitialState).MoveInstant();
+            ab.AddState("GateOff")
+                .SetParameterDriver(__GateActive, 0)
+                .SetParameterDriver(__Adjusting, 0)
+                .TransToCurrent(ab.InitialState)
+                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.Greater, .5f, __HugOrCarry)
+                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 1, __GateActive)
+                .TransToCurrent(ab.InitialState)
+                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.Greater, .5f, __HugOrCarry)
+                    .AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 1, __Adjusting)
+                .TransFromCurrent(ab.InitialState).MoveInstant();
             ab.AddState("IsCallTakeMe")
                 .SetParameterDriver(_prj.LinkTx, 2)
                 .TransToCurrent(ab.InitialState)
@@ -247,12 +257,13 @@ namespace com.github.pandrabox.flatsplus.editor
             MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Carry"));
             mb.AddRadial(__Distance, L("Menu/Carry/CallGate"), mainParameterName: __Adjusting).SetMessage(L("Menu/Carry/CallGate/Message"));
-            mb.AddToggle(__GateActive, menuName: L("Menu/Carry/GateActive"), localOnly: false).SetMessage(L("Menu/Carry/GateActive/Message"));
-            mb.AddToggle(__CallTakeMe, menuName: L("Menu/Carry/CallTakeMe"), localOnly: false).SetMessage(L("Menu/Carry/CallTakeMe/Message"));
+            mb.AddToggle(__GateActive, menuName: L("Menu/Carry/GateActive")).SetMessage(L("Menu/Carry/GateActive/Message"));
+            mb.AddToggle(__CallTakeMe, menuName: L("Menu/Carry/CallTakeMe")).SetMessage(L("Menu/Carry/CallTakeMe/Message"));
+            mb.AddToggle(__AllowBlueGate, L("Menu/Carry/AllowBlueGate"), 1, ParameterSyncType.Bool, (_config.D_Carry_AllowBlueGateDefault ? 1 : 0), false);
             mb.AddToggle(__HugOrCarry, L("Menu/Carry/Hug"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Hug/Message"));
             mb.AddToggle(__HugOrCarry, L("Menu/Carry/Carry"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Carry/Message"));
-            mb.AddRadial(__Distance, L("Menu/Carry/Distance"), localOnly: false).SetMessage(L("Menu/Carry/Distance/Message"));
-            mb.AddRadial(__Rotation, L("Menu/Carry/Rotation"), localOnly: false).SetMessage(L("Menu/Carry/Rotation/Message"));
+            mb.AddRadial(__Distance, L("Menu/Carry/Distance")).SetMessage(L("Menu/Carry/Distance/Message"));
+            mb.AddRadial(__Rotation, L("Menu/Carry/Rotation"),.5f).SetMessage(L("Menu/Carry/Rotation/Message"));
             Log.I.EndMethod("メニューの作成が完了しました");
         }
     }
