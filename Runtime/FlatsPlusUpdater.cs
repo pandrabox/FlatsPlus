@@ -7,6 +7,7 @@ using UnityEngine;
 using com.github.pandrabox.pandravase.runtime;
 using System.Net.Http.Headers;
 using Codice.Utils;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 
 namespace com.github.pandrabox.flatsplus.runtime
 {
@@ -207,19 +208,19 @@ namespace com.github.pandrabox.flatsplus.runtime
         {
             if (isChecking)
             {
-                EditorGUILayout.HelpBox("更新情報を取得中...", MessageType.Info);
+                EditorGUILayout.HelpBox(L("Updater/Checking"), MessageType.Info);
                 return;
             }
 
             if (apiSettings?.HasError == true && !string.IsNullOrEmpty(apiSettings.ErrorMessage))
             {
-                EditorGUILayout.HelpBox($"エラー: {apiSettings.ErrorMessage}", MessageType.Error);
+                EditorGUILayout.HelpBox($"{L("Updater/Error")}: {apiSettings.ErrorMessage}", MessageType.Error);
             }
 
             if (updateAvailable)
             {
-                EditorGUILayout.HelpBox($"FlatsPlusの新しいバージョン {latestVersion} が利用可能です。", MessageType.Warning);
-                if (GUILayout.Button("アップデート"))
+                EditorGUILayout.HelpBox($"{L("Updater/CanUseNewVersion")} (Ver.{latestVersion})", MessageType.Warning);
+                if (GUILayout.Button($"{L("Updater/Update")}"))
                 {
                     ImportUpdater();
                 }
@@ -227,11 +228,11 @@ namespace com.github.pandrabox.flatsplus.runtime
             else
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.HelpBox($@"お使いのFlatsPlusは最新です(Ver.{currentVersion})", MessageType.Info);
+                EditorGUILayout.HelpBox($@"{L("Updater/Newest")}(Ver.{currentVersion})", MessageType.Info);
 
 
                 EditorGUI.BeginDisabledGroup(!canReload);
-                if (GUILayout.Button($"再読込", GUILayout.Width(120), GUILayout.Height(EditorGUIUtility.singleLineHeight * 2)))
+                if (GUILayout.Button($"{L("Updater/Reload")}", GUILayout.Width(120), GUILayout.Height(EditorGUIUtility.singleLineHeight * 2)))
                 {
                     CheckForUpdates();
                 }

@@ -150,8 +150,8 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void OverView()
         {
-            FlatsPlusUpdater.I.DrawUpdateInfo();
             DrawLanguageSelect(language);
+            FlatsPlusUpdater.I.DrawUpdateInfo();
             DrawBoolField(funcCarry, "Func/Carry", true);
             DrawBoolField(funcDanceController, "Func/DanceController");
             DrawBoolField(funcEmo, "Func/Emo");
