@@ -229,7 +229,7 @@ namespace com.github.pandrabox.flatsplus.runtime
             else
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.HelpBox($@"{L("Updater/Newest")}(Ver.{currentVersion})", MessageType.Info);
+                EditorGUILayout.HelpBox($@"{L("Updater/Newest")} (Ver.{currentVersion})", MessageType.Info);
 
 
                 EditorGUI.BeginDisabledGroup(!canReload);
@@ -273,12 +273,6 @@ namespace com.github.pandrabox.flatsplus.runtime
         private class TagList
         {
             public Tag[] tags;
-        }
-
-        [Serializable]
-        private class PackageInfo
-        {
-            public string version;
         }
     }
 }
