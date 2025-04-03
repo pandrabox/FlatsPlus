@@ -155,7 +155,6 @@ Editor/Detail,詳細,Detail,상세,详细,詳細
 Editor/Detail2,詳細設定,Detail setting,상세 설정,详细设置,詳細設置
 Editor/CloseDetail,詳細設定を閉じる,Close detail setting,상세 설정을 닫습니다,关闭详细设置,關閉詳細設置
 
-Key,ja,en,ko,zh-CN,zh-TW
 D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
 D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
 D_Hoppe_AllowStretch/Name,伸ばす許可,Allow Stretch,늘리기 허용,允许拉伸,允许拉伸
@@ -173,7 +172,6 @@ D_Hoppe_BlushControlType/Detail,頬紅の制御タイプを選択,Select the typ
 D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
 D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單
 
-Key,ja,en,ko,zh-CN,zh-TW
 D_Onaka_Pull/Name,Pull,Pull,당기기,拉动,拉動
 D_Onaka_Pull/Detail,元の形に戻ろうとする力,Force to return to the original shape,원래 모양으로 돌아가려는 힘,试图恢复原来的形状的力量,試圖恢復原來的形狀的力量
 D_Onaka_Spring/Name,Spring,Spring,스프링,弹簧,彈簧
