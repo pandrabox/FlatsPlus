@@ -173,6 +173,23 @@ D_Hoppe_BlushControlType/Detail,頬紅の制御タイプを選択,Select the typ
 D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
 D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單
 
+Key,ja,en,ko,zh-CN,zh-TW
+D_Onaka_Pull/Name,Pull,Pull,당기기,拉动,拉動
+D_Onaka_Pull/Detail,元の形に戻ろうとする力,Force to return to the original shape,원래 모양으로 돌아가려는 힘,试图恢复原来的形状的力量,試圖恢復原來的形狀的力量
+D_Onaka_Spring/Name,Spring,Spring,스프링,弹簧,彈簧
+D_Onaka_Spring/Detail,元の形に戻ろうとするときの弾力,Elasticity when trying to return to the original shape,원래 모양으로 돌아가려 할 때의 탄력,试图恢复原来的形状时的弹性,試圖恢復原來的形狀時的彈性
+D_Onaka_Gravity/Name,Gravity,Gravity,중력,重力,重力
+D_Onaka_Gravity/Detail,重さ,Weight,무게,重量,重量
+D_Onaka_GravityFallOff/Name,Gravity FallOff,Gravity FallOff,중력 감쇠,重力衰减,重力衰減
+D_Onaka_GravityFallOff/Detail,止まっているときの重さ無視量,Amount of weight ignored when stopped,멈춰 있을 때의 무게 무시량,停止时忽略的重量,停止時忽略的重量
+D_Onaka_Immobile/Name,Immobile,Immobile,움직이지 않음,静止,靜止
+D_Onaka_Immobile/Detail,Immobile,動きにくさ,Immobile,움직이지 않음,静止,靜止
+D_Onaka_LimitAngle/Name,LimitAngle,Limit Angle,각도 제한,角度限制,角度限制
+D_Onaka_LimitAngle/Detail,LimitAngle,角度制限,Limit Angle,각도 제한,角度限制,角度限制
+D_Onaka_RadiusTuning/Name,半径調整,Radius Tuning,반경 조정,半径调整,半徑調整
+D_Onaka_RadiusTuning/Detail,触り判定のサイズ調整(1が標準),Adjust the size of the touch judgment (1 is standard),터치 판정의 크기 조정(1이 표준),调整触摸判断的大小(1为标准),調整觸摸判斷的大小(1為標準)
+
+
 LogAnalyze/PleaseCallMe,ツールの不具合が検出されました。PandraBoxまでログ情報の報告をお願いいたします。,A tool malfunction has been detected. Please report the log information to PandraBox.,도구 오류가 감지되었습니다. PandraBox에 로그 정보를 보고해 주세요.,检测到工具故障。请将日志信息报告给PandraBox.,檢測到工具故障。請將日誌信息報告給PandraBox.
 LogAnalyze/Warning,ワーニング(導入できたが、表示異常等が起きる),Warning (installed but display abnormalities etc. occur),경고(설치되었지만 표시 이상 등이 발생),警告（已安装但出现显示异常等）,警告（已安裝但出現顯示異常等）
 LogAnalyze/Error,エラー(高い確率で導入失敗),Error (high probability of installation failure),오류(설치 실패 확률이 높음),错误（安装失败的可能性很高）,錯誤（安裝失敗的可能性很高）

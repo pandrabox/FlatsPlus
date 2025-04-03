@@ -65,6 +65,14 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool D_Carry_AllowBlueGateDefault = true;
         public float D_Carry_GateMaxRange = 1f;
 
+        public float D_Onaka_Pull = 0.5f;
+        public float D_Onaka_Spring = 0.8f;
+        public float D_Onaka_Gravity = 0.2f;
+        public float D_Onaka_GravityFallOff = 1f;
+        public float D_Onaka_Immobile = 0.8f;
+        public float D_Onaka_LimitAngle = 20f;
+        public float D_Onaka_RadiusTuning = 1f;
+
         public float Emo_TransitionTime = 0.5f;
         public Texture2D[] Ico_Textures = new Texture2D[6];
         public bool Ico_VerView = false;
@@ -108,10 +116,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private const int _titleSize = 110;
 
         private SerializedProperty
-            funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync,
-            language, writedefaulton, clippingCanceler, funcPoseClipper,
-            dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushSensitivity, dUseOriginalBlush, dHoppeBlushControlType, dHoppeShowExpressionMenu,
-            dCarryAllowBluGateDefault, dCarryGateMaxRange;
+        funcCarry, funcDanceController, funcEmo, funcExplore, funcHoppe, funcIco, funcLight, funcMakeEmo, funcMeshSetting, funcMove, funcOnaka, funcPen, funcSleep, funcTail, funcLink, funcSync,
+        language, writedefaulton, clippingCanceler, funcPoseClipper,
+        dHoppeAllowTouch, dHoppeAllowStretch, dHoppeStretchLimit, dHoppeBlush, dHoppeBlushSensitivity, dUseOriginalBlush, dHoppeBlushControlType, dHoppeShowExpressionMenu,
+        dCarryAllowBluGateDefault, dCarryGateMaxRange,
+        dOnakaPull, dOnakaSpring, dOnakaGravity, dOnakaGravityFallOff, dOnakaImmobile, dOnakaLimitAngle, dOnakaRadiusTuning;
 
         protected override void DefineSerial()
         {
@@ -145,7 +154,13 @@ namespace com.github.pandrabox.flatsplus.editor
             dHoppeShowExpressionMenu = serializedObject.FindProperty(nameof(FlatsPlus.D_Hoppe_ShowExpressionMenu));
             dCarryAllowBluGateDefault = serializedObject.FindProperty(nameof(FlatsPlus.D_Carry_AllowBlueGateDefault));
             dCarryGateMaxRange = serializedObject.FindProperty(nameof(FlatsPlus.D_Carry_GateMaxRange));
-
+            dOnakaPull = serializedObject.FindProperty(nameof(FlatsPlus.D_Onaka_Pull));
+            dOnakaSpring = serializedObject.FindProperty(nameof(FlatsPlus.D_Onaka_Spring));
+            dOnakaGravity = serializedObject.FindProperty(nameof(FlatsPlus.D_Onaka_Gravity));
+            dOnakaGravityFallOff = serializedObject.FindProperty(nameof(FlatsPlus.D_Onaka_GravityFallOff));
+            dOnakaImmobile = serializedObject.FindProperty(nameof(FlatsPlus.D_Onaka_Immobile));
+            dOnakaLimitAngle = serializedObject.FindProperty(nameof(FlatsPlus.D_Onaka_LimitAngle));
+            dOnakaRadiusTuning = serializedObject.FindProperty(nameof(FlatsPlus.D_Onaka_RadiusTuning));
         }
 
         private void OverView()
@@ -162,7 +177,7 @@ namespace com.github.pandrabox.flatsplus.editor
             DrawBoolField(funcMakeEmo, "Func/MakeEmo");
             DrawBoolField(funcMeshSetting, "Func/MeshSetting");
             DrawBoolField(funcMove, "Func/Move");
-            DrawBoolField(funcOnaka, "Func/Onaka");
+            DrawBoolField(funcOnaka, "Func/Onaka", true);  // showDetailsをtrueに変更
             DrawBoolField(funcPen, "Func/Pen");
             DrawBoolField(funcSleep, "Func/Sleep");
             DrawBoolField(funcTail, "Func/Tail");
@@ -289,6 +304,17 @@ namespace com.github.pandrabox.flatsplus.editor
                     isDrawn = true;
                     DrawBoolField(dCarryAllowBluGateDefault, "D_Carry_AllowBluGateDefault");
                     DrawFloatField(dCarryGateMaxRange, "D_Carry_GateMaxRange", 0.1f, 5);
+                }
+                else if (_detailKey == "Func/Onaka")
+                {
+                    isDrawn = true;
+                    DrawFloatField(dOnakaPull, "D_Onaka_Pull", 0, 1);
+                    DrawFloatField(dOnakaSpring, "D_Onaka_Spring", 0, 1);
+                    DrawFloatField(dOnakaGravity, "D_Onaka_Gravity", 0, 1);
+                    DrawFloatField(dOnakaGravityFallOff, "D_Onaka_GravityFallOff", 0, 2);
+                    DrawFloatField(dOnakaImmobile, "D_Onaka_Immobile", 0, 1);
+                    DrawFloatField(dOnakaLimitAngle, "D_Onaka_LimitAngle", 0, 90);
+                    DrawFloatField(dOnakaRadiusTuning, "D_Onaka_RadiusTuning", 0.5f, 2);
                 }
                 if (GUILayout.Button("Editor/CloseDetail".LL()))
                 {

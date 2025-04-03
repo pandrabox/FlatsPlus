@@ -95,14 +95,14 @@ namespace com.github.pandrabox.flatsplus.editor
 
             _hips001.SetParent(_touchArea, true);
             var pb = _onakaBase.gameObject.AddComponent<VRCPhysBone>();
-            pb.pull = _tgt.Pull;
-            pb.spring = _tgt.Spring;
-            pb.gravity = _tgt.Gravity;
-            pb.gravityFalloff = _tgt.GravityFallOff;
-            pb.immobile = _tgt.Immobile;
+            pb.pull = _config.D_Onaka_Pull;
+            pb.spring = _config.D_Onaka_Spring;
+            pb.gravity = _config.D_Onaka_Gravity;
+            pb.gravityFalloff = _config.D_Onaka_GravityFallOff;
+            pb.immobile = _config.D_Onaka_Immobile;
             pb.limitType = VRCPhysBoneBase.LimitType.Angle;
-            pb.maxAngleX = _tgt.LimitAngle;
-            pb.radius = _prj.OnakaRadius * _tgt.RadiusTuning;
+            pb.maxAngleX = _config.D_Onaka_LimitAngle;
+            pb.radius = _prj.OnakaRadius * _config.D_Onaka_RadiusTuning;
             pb.radiusCurve = new AnimationCurve(new Keyframe(_prj.OnakaCurveTop - .1f, 0), new Keyframe(_prj.OnakaCurveTop, 1), new Keyframe(_prj.OnakaCurveTop + .1f, 0));
             pb.allowGrabbing = VRCPhysBoneBase.AdvancedBool.False;
             pb.allowPosing = VRCPhysBoneBase.AdvancedBool.False;
