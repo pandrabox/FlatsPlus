@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using static com.github.pandrabox.pandravase.editor.Localizer;
+using com.github.pandrabox.flatsplus.runtime;
 
-namespace com.github.pandrabox.flatsplus.runtime
+namespace com.github.pandrabox.flatsplus.editor
 {
-    public class FlatsPlusUpdater
+    public class ME_Updater
     {
-        private static FlatsPlusUpdater Instance = new FlatsPlusUpdater();
-        public static FlatsPlusUpdater I => Instance;
+        private static ME_Updater Instance = new ME_Updater();
+        public static ME_Updater I => Instance;
         private const string RepoUrl = "https://api.github.com/repos/pandrabox/FlatsPlus/tags";
         private const string PackageJsonPath = "Packages/com.github.pandrabox.flatsplus/package.json";
         private const string UpdaterPackagePath = "Packages/com.github.pandrabox.flatsplus/Assets/Updater/FlatsPlus.unitypackage";
@@ -34,7 +35,7 @@ namespace com.github.pandrabox.flatsplus.runtime
         public static string CurrentVersion => currentVersion;
         public static bool IsChecking => isChecking;
 
-        private FlatsPlusUpdater()
+        private ME_Updater()
         {
             EditorApplication.delayCall += () =>
             {
@@ -123,8 +124,8 @@ namespace com.github.pandrabox.flatsplus.runtime
             finally
             {
                 isChecking = false;
-                var flatsPlusEditors = Resources.FindObjectsOfTypeAll<editor.FlatsPlusEditor>();
-                foreach (var editor in flatsPlusEditors)
+                var MEEditors = Resources.FindObjectsOfTypeAll<ME_MainEditor>();
+                foreach (var editor in MEEditors)
                 {
                     editor.Repaint();
                 }

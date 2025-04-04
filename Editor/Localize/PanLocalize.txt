@@ -132,8 +132,8 @@ Menu/Carry/Distance,距離調整,Distance,거리 조정,调整距离,調整距�
 Menu/Carry/Distance/Message,距離を調整する。だっこ・おんぶ共用。,Adjust the distance. Shared with hug and carry.,거리를 조정합니다. 안기 업기와 공용입니다.,调整距离。与拥抱和背部共用。,調整距離。與擁抱和背部共用。
 Menu/Carry/Rotation,角度調整,Rotation,각도 조정,调整角度,調整角度
 Menu/Carry/Rotation/Message,角度を調整する。全ての「他者移動」共用。,Adjust the angle. Shared with all "Carry".,각도를 조정합니다. 모든 "다른 사람 이동"과 공용입니다.,调整角度。与所有“移动他人”共用。,調整角度。與所有“移動他人”共用。
-D_Carry_AllowBluGateDefault/Name,青ゲート許可,Allow Blue Gate Default,파란 게이트 허용,允许蓝色传送门默认,允许蓝色传送门默认
-D_Carry_AllowBluGateDefault/Detail,他者が自身に青ゲートを作成することを許可する。,Allow others to create a blue gate for yourself.,다른 사람이 자신에게 파란 게이트를 만들 수 있도록 허용합니다.,允许其他人为自己创建蓝色传送门。,允许其他人为自己创建蓝色传送门。
+D_Carry_AllowBlueGateDefault/Name,青ゲート許可,Allow Blue Gate Default,파란 게이트 허용,允许蓝色传送门默认,允许蓝色传送门默认
+D_Carry_AllowBlueGateDefault/Detail,他者が自身に青ゲートを作成することを許可する。,Allow others to create a blue gate for yourself.,다른 사람이 자신에게 파란 게이트를 만들 수 있도록 허용합니다.,允许其他人为自己创建蓝色传送门。,允许其他人为自己创建蓝色传送门。
 D_Carry_GateMaxRange/Name,最大ゲート距離,Maximum Gate Distance,최대 게이트 거리,最大门距离,最大門距離
 D_Carry_GateMaxRange/Detail,ゲートを呼び出せる最大距離,Maximum distance at which gates can be called,게이트를 호출할 수 있는 최대 거리,可以呼叫门的最大距离,可以呼叫門的最大距離
 
@@ -187,6 +187,8 @@ D_Onaka_LimitAngle/Detail,LimitAngle,角度制限,Limit Angle,각도 제한,角�
 D_Onaka_RadiusTuning/Name,半径調整,Radius Tuning,반경 조정,半径调整,半徑調整
 D_Onaka_RadiusTuning/Detail,触り判定のサイズ調整(1が標準),Adjust the size of the touch judgment (1 is standard),터치 판정의 크기 조정(1이 표준),调整触摸判断的大小(1为标准),調整觸摸判斷的大小(1為標準)
 
+Ico_VerView/Name,バージョン表示,Version View,버전 보기,版本视图,版本視圖
+Ico_VerView/Detail,周囲のFlatsのFlatsPlusのバージョンを表示する(他者サポート用),Display the version of FlatsPlus for surrounding Flats (for others support),주변의 FlatsPlus의 버전을 표시(다른 사람 지원용),显示周围Flats的FlatsPlus版本(供他人支持),顯示周圍Flats的FlatsPlus版本(供他人支持)
 
 LogAnalyze/PleaseCallMe,ツールの不具合が検出されました。PandraBoxまでログ情報の報告をお願いいたします。,A tool malfunction has been detected. Please report the log information to PandraBox.,도구 오류가 감지되었습니다. PandraBox에 로그 정보를 보고해 주세요.,检测到工具故障。请将日志信息报告给PandraBox.,檢測到工具故障。請將日誌信息報告給PandraBox.
 LogAnalyze/Warning,ワーニング(導入できたが、表示異常等が起きる),Warning (installed but display abnormalities etc. occur),경고(설치되었지만 표시 이상 등이 발생),警告（已安装但出现显示异常等）,警告（已安裝但出現顯示異常等）
