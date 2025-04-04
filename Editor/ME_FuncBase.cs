@@ -12,6 +12,10 @@ namespace com.github.pandrabox.flatsplus.editor
         // 管理対象の機能名（例: nameof(FP.Func_Hoppe)）
         public abstract string ManagementFunc { get; }
 
+        // まとめてONOFF機能の対象外
+        public virtual bool ExcludeFromBulkToggle => false;
+
+
         // 詳細設定があるかどうか（DrawDetailがオーバーライドされているかで自動判定）
         public virtual bool HasDetailSettings
         {
@@ -54,6 +58,10 @@ namespace com.github.pandrabox.flatsplus.editor
             ME_FuncManager.Instance.SetDetailModule(DisplayKeyPart, this);
         }
 
+        //DrawBoolFieldのチェック変更時に呼ばれる
+        public virtual void OnChange(bool state) { }
+
+
         // UI描画用のヘルパーメソッド - 基本機能表示用
         protected void DrawBoolField(string propName, bool showDetails = false)
         {
@@ -61,7 +69,27 @@ namespace com.github.pandrabox.flatsplus.editor
             string keyBase = $"Func/{propName.Replace("Func_", "")}";
 
             EditorGUILayout.BeginHorizontal();
+
+            // 変更前の状態を記録
+            bool previousState = property.boolValue;
+
+            // プロパティフィールドを描画
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(property, GUIContent.none, GUILayout.Width(20));
+
+            // 値が変更された場合
+            if (EditorGUI.EndChangeCheck())
+            {
+                // 変更を適用
+                ME_FuncManager.Instance.ApplyModifiedProperties();
+
+                // 現在の機能のON/OFF状態が変わっていた場合、OnChangeを呼び出す
+                if (propName == ManagementFunc && previousState != property.boolValue)
+                {
+                    OnChange(property.boolValue);
+                }
+            }
+
             EditorGUILayout.LabelField(L($"{keyBase}/Name"), GUILayout.Width(110));
             EditorGUILayout.LabelField(L($"{keyBase}/Detail"));
 
@@ -73,17 +101,6 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.EndHorizontal();
         }
 
-        // UI描画用のヘルパーメソッド - 設定項目用
-        protected void DrawBoolField(string propName)
-        {
-            SerializedProperty property = SP(propName);
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(property, GUIContent.none, GUILayout.Width(20));
-            EditorGUILayout.LabelField(L($"{propName}/Name"), GUILayout.Width(110));
-            EditorGUILayout.LabelField(L($"{propName}/Detail"));
-            EditorGUILayout.EndHorizontal();
-        }
 
         protected void DrawFloatField(string propName, float? min = null, float? max = null)
         {

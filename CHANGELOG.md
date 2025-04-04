@@ -91,3 +91,10 @@ Code maintenance was performed. No functional changes were made.
 코드 유지보수를 수행했습니다. 기능 변경은 없습니다.  
 进行了代码维护。没有功能上的更改。  
 進行了代碼維護。沒有功能上的更改。  
+
+FlatsPlus v0.13.5
+Fixed an issue where the ClippingCanceler was not functioning correctly.
+ClippingCancelerが正しく動作しない不具合を修正しました。
+ClippingCanceler가 올바르게 작동하지 않는 문제를 수정했습니다.
+修复了ClippingCanceler无法正常工作的bug。
+修復了ClippingCanceler無法正常工作的bug。

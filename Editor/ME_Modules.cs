@@ -1,5 +1,8 @@
 ﻿#if UNITY_EDITOR
 
+using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
+using System.Diagnostics;
 using FP = com.github.pandrabox.flatsplus.runtime.FlatsPlus;
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -144,9 +147,12 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncClippingCanceler : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_ClippingCanceler);
+        public override bool ExcludeFromBulkToggle => true;
+        public override void OnChange(bool state)
+        {
+            new SetClippingCanceler(state);
+        }
     }
-
-
 }
 
 #endif

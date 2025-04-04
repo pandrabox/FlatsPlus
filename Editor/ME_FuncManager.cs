@@ -117,6 +117,10 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             foreach (var module in _functionModules)
             {
+                // まとめてON/OFF機能の対象外に設定されているモジュールはスキップ
+                if (module.ExcludeFromBulkToggle)
+                    continue;
+
                 var property = GetProperty(module.ManagementFunc);
                 if (property != null)
                 {
