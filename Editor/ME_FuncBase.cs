@@ -1,16 +1,8 @@
-﻿using com.github.pandrabox.flatsplus.runtime;
-using com.github.pandrabox.pandravase.editor;
-using com.github.pandrabox.pandravase.runtime;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using com.github.pandrabox.pandravase.editor;
 using System.Reflection;
-using System.Text;
 using UnityEditor;
 using UnityEngine;
 using static com.github.pandrabox.pandravase.editor.Localizer;
-using FP = com.github.pandrabox.flatsplus.runtime.FlatsPlus;
 
 namespace com.github.pandrabox.flatsplus.editor
 {

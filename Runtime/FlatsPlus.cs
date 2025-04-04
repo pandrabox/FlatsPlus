@@ -1,16 +1,7 @@
 ﻿#if UNITY_EDITOR
 
-using com.github.pandrabox.flatsplus.runtime;
-using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using UnityEditor;
 using UnityEngine;
-using static com.github.pandrabox.pandravase.editor.Localizer;
 
 
 namespace com.github.pandrabox.flatsplus.runtime

@@ -1,4 +1,4 @@
-using com.github.pandrabox.pandravase.editor;
+ï»¿using com.github.pandrabox.pandravase.editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using static com.github.pandrabox.pandravase.editor.Localizer;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
-    // Œ¾Œêİ’è‚ğ’S“–‚·‚éƒNƒ‰ƒX
+    // è¨€èªè¨­å®šã‚’æ‹…å½“ã™ã‚‹ã‚¯ãƒ©ã‚¹
     public class ME_LanguageManager
     {
 
@@ -18,14 +18,14 @@ namespace com.github.pandrabox.flatsplus.editor
         private SerializedProperty _languageProperty;
         private const int _titleSize = 110;
 
-        // Œ¾Œê•\¦–¼‚ÆŒ¾ŒêƒR[ƒh‚Ìƒ}ƒbƒsƒ“ƒO
+        // è¨€èªè¡¨ç¤ºåã¨è¨€èªã‚³ãƒ¼ãƒ‰ã®ãƒãƒƒãƒ”ãƒ³ã‚°
         private readonly Dictionary<string, string> _languageDisplayNames = new Dictionary<string, string>
         {
             { "en", "English" },
-            { "ja", "“ú–{Œê" },
-            { "ko", "???" },
-            { "zh-CN", "?‘Ì’†•¶" },
-            { "zh-TW", "”Éé“’†•¶" }
+            { "ja", "æ—¥æœ¬èª" },
+            { "ko", "í•œêµ­ì–´" },
+            { "zh-CN", "ç®€ä½“ä¸­æ–‡" },
+            { "zh-TW", "ç¹é«”ä¸­æ–‡" }
         };
         private readonly string[] _languageCodes = { "en", "ja", "ko", "zh-CN", "zh-TW" };
 
@@ -34,28 +34,28 @@ namespace com.github.pandrabox.flatsplus.editor
         public void Initialize(SerializedProperty languageProperty)
         {
             _languageProperty = languageProperty;
-            
-            // ‰ŠúŒ¾Œêİ’è
+
+            // åˆæœŸè¨€èªè¨­å®š
             SetInitialLanguage();
         }
 
-        // ‰ŠúŒ¾Œêİ’è
+        // åˆæœŸè¨€èªè¨­å®š
         private void SetInitialLanguage()
         {
             if (_languageProperty == null) return;
 
-            // Šù’è‚ÌŒ¾Œê‚ğİ’è
+            // æ—¢å®šã®è¨€èªã‚’è¨­å®š
             if (string.IsNullOrEmpty(_languageProperty.stringValue) ||
                 !_languageCodes.Contains(_languageProperty.stringValue))
             {
                 _languageProperty.stringValue = GetDefaultLanguage();
             }
 
-            // ƒ[ƒJƒ‰ƒCƒYƒVƒXƒeƒ€‚ÉŒ¾Œê‚ğİ’è
+            // ãƒ­ãƒ¼ã‚«ãƒ©ã‚¤ã‚ºã‚·ã‚¹ãƒ†ãƒ ã«è¨€èªã‚’è¨­å®š
             Localizer.SetLanguage(_languageProperty.stringValue);
         }
 
-        // Œ¾Œê‘I‘ğUI‚Ì•`‰æ
+        // è¨€èªé¸æŠUIã®æç”»
         public void DrawLanguageSelector(SerializedObject serializedObject)
         {
             if (_languageProperty == null) return;

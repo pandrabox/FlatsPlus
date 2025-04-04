@@ -39,10 +39,10 @@ namespace com.github.pandrabox.flatsplus.editor
             _errorWorks = new List<string>();
             _errorUnknowns = new List<string>();
             if (!File.Exists(_logPath)) return;
-            
+
             _logContent = File.ReadAllText(_logPath);
             if (_logContent.Length == 0) return;
-            
+
             string[] lines = _logContent.Split('\n');
             foreach (var line in lines)
             {
@@ -102,7 +102,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
                 }
             }
-            
+
             const bool ISPREVIEWVERSION = true;
             if (!allFine || ISPREVIEWVERSION)
             {
