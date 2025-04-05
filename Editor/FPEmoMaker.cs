@@ -40,7 +40,7 @@ namespace com.github.pandrabox.flatsplus.editor
             if (currentTime - lastUpdateTime > UPDATE_INTERVAL)
             {
                 lastUpdateTime = currentTime;
-                EmoMakerCommon.I.CheckAndProcessUpdates();
+                FPEMTmb.I.CheckAndProcess(); // サムネイルの更新をチェック
             }
         }
 
@@ -68,13 +68,14 @@ namespace com.github.pandrabox.flatsplus.editor
         }
     }
 
+
     /// <summary>
     /// アバターの複製を作成・管理するクラス
     /// </summary>
     public class FPWorkObject : IDisposable
     {
         public GameObject WorkObject { get; private set; }
-        public string WorkObjectName => "FlatsPlusEmoMakerRoot";
+        public const string WorkObjectName = "FlatsPlusEmoMakerRoot";
         private SkinnedMeshRenderer _bodyRenderer;
         private bool _disposed = false;
         private VRCAvatarDescriptor _originalDesc;
@@ -155,20 +156,26 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public SkinnedMeshRenderer BodyRenderer => _bodyRenderer;
 
-        public void Dispose()
+        public static void Reset()
         {
-            if (_disposed) return;
-
             var wo = GameObject.Find(WorkObjectName);
             if (wo != null)
             {
                 GameObject.DestroyImmediate(wo);
             }
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+
+            Reset();
             WorkObject = null;
             _bodyRenderer = null;
 
             _disposed = true;
         }
+
     }
 
     /// <summary>
@@ -281,7 +288,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public List<FPMKShape> MShapes;
         public FPWorkObject WorkObj { get; private set; }
         public FPCapture Capture { get; private set; }
-        public FPMKEmo[,] Emos = new FPMKEmo[1, 2]; // 1行2列の表情配列
+        public FPMKEmo[] Emos = new FPMKEmo[5];
         public int ActiveEmoIndex = 0; // アクティブな表情のインデックス
 
         public int TextureSize = 180;
@@ -295,55 +302,57 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public void Initialize()
         {
-            // WorkObjにVRCAvatarDescriptorの検索処理を委譲
+            Reset();
             OriginalDesc = WorkObj.Initialize();
             if (OriginalDesc == null) return;
-
-            // WorkObjectが初期化されたら、Captureも初期化
             Capture.Initialize(WorkObj.WorkObject, TextureSize);
-
-            // WorkObjからシェイプ情報を取得
             MShapes = WorkObj.GetShapes();
-
-            // 表情を初期化
             InitializeEmos();
+        }
+
+        // リセット機能の追加
+        public void Reset()
+        {
+            // 画像の削除
+            FPEMTmb.I.Clear();
+
+            // ゲームオブジェクトの削除
+            FPWorkObject.Reset();
+            WorkObj?.Dispose();
+
+            // カメラのリセット
+            Capture?.Dispose();
+
+            // 表情データのリセット
+            for (int i = 0; i < Emos.Length; i++)
+            {
+                Emos[i] = null;
+            }
+
+            // 基本データのリセット
+            OriginalDesc = null;
+            MShapes = null;
+            ActiveEmoIndex = 0;
         }
 
         private void InitializeEmos()
         {
-            for (int i = 0; i < Emos.GetLength(1); i++)
+            for (int i = 0; i < Emos.Length; i++)
             {
-                if (Emos[0, i] == null)
-                {
-                    // FPMKEmoのコンストラクタで全て初期化
-                    Emos[0, i] = new FPMKEmo(MShapes, TextureSize);
-                }
+                Emos[i] = new FPMKEmo(MShapes, TextureSize);
             }
+            //Emos[0].ReserveTmb();//対症療法で表情1を直す場合
         }
 
-        // 更新が必要な表情のUpdateを実行
-        public void CheckAndProcessUpdates()
-        {
-            for (int i = 0; i < Emos.GetLength(1); i++)
-            {
-                var emo = Emos[0, i];
-                if (emo != null && emo.NeedUpdate && !Capture.IsCapturing)
-                {
-                    emo.ExecuteUpdate(this);
-                    break; // 一度に1つだけ処理
-                }
-            }
-        }
 
         // 現在の選択を変更して適用
         public void ChangeActiveEmo(int newIndex)
         {
             if (newIndex == ActiveEmoIndex) return;
             ActiveEmoIndex = newIndex;
-            ActiveEmo?.MarkNeedUpdate();
         }
 
-        public FPMKEmo ActiveEmo => (Emos != null && ActiveEmoIndex < Emos.GetLength(1)) ? Emos[0, ActiveEmoIndex] : null;
+        public FPMKEmo ActiveEmo => Emos[ActiveEmoIndex];
 
         public void Dispose()
         {
@@ -378,7 +387,7 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public List<FPMKShape> Shapes = new List<FPMKShape>();
         public Texture2D Texture;
-        public bool NeedUpdate { get; private set; } = true; // 初期状態では更新が必要
+        public bool NeedUpdate;
 
         public FPMKEmo(List<FPMKShape> shapes, int textureSize)
         {
@@ -393,48 +402,95 @@ namespace com.github.pandrabox.flatsplus.editor
                     });
                 }
             }
-
-            CreateTexture(textureSize);
+            ReserveTmb();
         }
 
-        public void CreateTexture(int size)
-        {
-            if (Texture != null) return;
-            Texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        }
-
-        // Update要求フラグを建てる
-        public void MarkNeedUpdate()
+        public void ReserveTmb()
         {
             NeedUpdate = true;
+            FPEMTmb.I.Reserve(this);
         }
 
-        // 実際の更新処理
-        public void ExecuteUpdate(EmoMakerCommon common)
+        public string Hash => string.Join(",", Shapes.Select(s => $"{s.FullName}:{s.Val}").ToArray());
+    }
+
+
+    /// <summary>
+    /// 画像サムネの作成と配布
+    /// </summary>
+    public class FPEMTmb
+    {
+        private static FPEMTmb _instance = new FPEMTmb();
+        public static FPEMTmb I => _instance ?? (_instance = new FPEMTmb());
+        private FPEMTmb() { }
+        public Dictionary<string, Texture2D> Tmb = new Dictionary<string, Texture2D>();
+        private FPMKEmo _currentEmo;
+        public bool Running = false;
+        private bool _need => _currentEmo.NeedUpdate;
+        private bool _exected => Tmb.ContainsKey(_currentEmo.Hash);
+        private string _hash; //キャプチャ中に値が変わるとまずいのでキャプチャ中は保持しておく
+
+        //削除
+        public void Clear()
         {
-            if (!NeedUpdate) return;
-
-            // フラグをリセット
-            NeedUpdate = false;
-
-            // シェイプを設定
-            SetShape(common.WorkObj?.BodyRenderer);
-
-            // 遅延してテクスチャを更新
-            EditorApplication.delayCall += () => {
-                if (common?.Capture != null && !common.Capture.IsCapturing)
-                {
-                    UpdateTexture(common.Capture, common.TextureSize);
-                }
-            };
+            Tmb.Clear();
         }
 
-        private void SetShape(SkinnedMeshRenderer bodyRenderer)
+        //サムネ予約の受付
+        public void Reserve(FPMKEmo emo)
         {
-            if (Shapes == null || Shapes.Count == 0) return;
+            _currentEmo = emo;
+            RunCurrent();
+        }
+
+        //カレントの実行
+        private void RunCurrent()
+        {
+            //いらないならやめる
+            if (!_need) return;
+            //あるなら返す
+            if (_exected)
+            {
+                //Log.I.Info($@"作成済みのサムネイルを返します{_currentEmo.Hash}");
+                _currentEmo.Texture = Tmb[_currentEmo.Hash];
+                _currentEmo.NeedUpdate = false;
+                return;
+            }
+            //実行中ならやめる
+            if (Running) return;
+
+            //作る
+            Running = true;
+            _hash = _currentEmo.Hash;
+            SetShape();
+            EditorApplication.delayCall += () => Capture();
+        }
+
+        //フラグのあるものを探して画像生成
+        public void CheckAndProcess()
+        {
+            if (EmoMakerCommon.I.Emos == null) return;
+            if (Running) return;
+
+            var tgt = EmoMakerCommon.I.Emos.FirstOrDefault(emo => emo != null && emo.NeedUpdate);
+            if (tgt != null) Reserve(tgt);
+            tgt = EmoMakerCommon.I.Emos.FirstOrDefault(emo => emo != null && emo.Texture == null);
+            if (tgt != null) Reserve(tgt);
+        }
+
+        //シェイプをセット
+        private void SetShape()
+        {
+            var shapes = _currentEmo.Shapes;
+            if (shapes == null || shapes.Count == 0)
+            {
+                Log.I.Error("シェイプがありません。無限ループするかもしれない");
+                return;
+            }
+            var bodyRenderer = EmoMakerCommon.I.WorkObj.BodyRenderer;
             if (bodyRenderer == null) return;
 
-            foreach (var shape in Shapes)
+            foreach (var shape in shapes)
             {
                 int shapeIndex = bodyRenderer.sharedMesh.GetBlendShapeIndex(shape.FullName);
                 if (shapeIndex != -1)
@@ -443,13 +499,36 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             }
         }
-
-        private void UpdateTexture(FPCapture capture, int textureSize)
+        private void Capture()
         {
-            CreateTexture(textureSize);
-            capture?.CaptureToTexture(Texture, textureSize);
+            try
+            {
+                var capture = EmoMakerCommon.I.Capture;
+                var textureSize = EmoMakerCommon.I.TextureSize;
+                Texture2D tex = new Texture2D(textureSize, textureSize, TextureFormat.RGBA32, false);
+                EmoMakerCommon.I.Capture.CaptureToTexture(tex, textureSize);
+                Tmb[_hash] = tex;
+                _currentEmo.Texture = tex;
+                Log.I.Info($@"サムネイルを作成しました: {_hash}");
+                EditorWindow.GetWindow<FPEmoMaker>().Repaint();
+                if (_hash != _currentEmo.Hash)
+                {
+                    //Log.I.Error("Hashが変わったので、再作成をコールします");
+                    _currentEmo.ReserveTmb();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.I.Error($"キャプチャ中にエラーが発生しました: {ex.Message}");
+            }
+            finally
+            {
+
+                Running = false; // 必ず実行フラグをリセット
+            }
         }
     }
+
 
     public class LeftContent
     {
@@ -459,9 +538,9 @@ namespace com.github.pandrabox.flatsplus.editor
 
             GUILayout.BeginHorizontal();
 
-            for (int i = 0; i < EmoMakerCommon.I.Emos.GetLength(1); i++)
+            for (int i = 0; i < EmoMakerCommon.I.Emos.Length; i++)
             {
-                var emo = EmoMakerCommon.I.Emos[0, i];
+                var emo = EmoMakerCommon.I.Emos[i];
                 if (emo == null) continue;
 
                 GUILayout.BeginVertical(GUILayout.Width(EmoMakerCommon.I.TextureSize + 10));
@@ -591,7 +670,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             if (prevVal != shape.Val)
             {
-                EmoMakerCommon.I.ActiveEmo?.MarkNeedUpdate();
+                EmoMakerCommon.I.ActiveEmo.ReserveTmb();
             }
 
             EditorGUILayout.EndHorizontal();
