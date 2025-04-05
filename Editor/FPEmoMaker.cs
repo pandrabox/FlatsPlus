@@ -591,7 +591,7 @@ namespace com.github.pandrabox.flatsplus.editor
             // 列選択ボタン
             for (int col = 0; col < GRID_SIZE; col++)
             {
-                string colLabel = ((Gesture)col).ToString();
+                string colLabel = $"Right\n{((Gesture)col)}"; 
 
                 // スタイルを選択状態に応じて変更
                 GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -633,7 +633,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 GUILayout.BeginHorizontal();
 
                 // 行選択ボタン
-                string rowLabel = ((Gesture)row).ToString();
+                string rowLabel = $"Left\n{((Gesture)row)}";
 
                 // スタイルを選択状態に応じて変更
                 GUIStyle rowButtonStyle = new GUIStyle(GUI.skin.button);
