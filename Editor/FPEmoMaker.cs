@@ -885,10 +885,33 @@ namespace com.github.pandrabox.flatsplus.editor
 
             GUILayout.Label("Control", EditorStyles.boldLabel);
 
+            // アバターを取得ボタン
             if (GUILayout.Button("アクティブなアバターを取得"))
             {
                 EmoMakerCommon.I.Initialize();
             }
+
+            // Config操作用のボタンを横並びに配置
+            EditorGUILayout.BeginHorizontal();
+
+            // Configの読み込みボタン
+            GUI.enabled = EmoMakerCommon.I.MShapes != null && EmoMakerCommon.I.MShapes.Count > 0; // アバター取得済みの場合のみ有効
+            if (GUILayout.Button("Config読み込み"))
+            {
+                LoadConfigFile();
+            }
+
+            // Configの書き出しボタン
+            GUI.enabled = EmoMakerCommon.I.MShapes != null && EmoMakerCommon.I.MShapes.Count > 0; // アバター取得済みの場合のみ有効
+            if (GUILayout.Button("Config書き出し"))
+            {
+                ExportConfigFile();
+            }
+
+            // ボタンの有効状態をリセット
+            GUI.enabled = true;
+
+            EditorGUILayout.EndHorizontal();
 
             EmoMakerCommon.I.OriginalDesc = (VRCAvatarDescriptor)EditorGUILayout.ObjectField(
                 "Target", EmoMakerCommon.I.OriginalDesc, typeof(VRCAvatarDescriptor), true);
@@ -957,6 +980,198 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // 大きなプレビューを描画
             DrawLargePreview(selectedIndices);
+        }
+
+        // CSVファイル読み込み処理
+        private void LoadConfigFile()
+        {
+            if (EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
+            {
+                EditorUtility.DisplayDialog("エラー", "アバターが取得されていません。先にアバターを取得してください。", "OK");
+                return;
+            }
+
+            // ファイル選択ダイアログを表示
+            string path = EditorUtility.OpenFilePanel("設定ファイルを選択", "", "csv");
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            try
+            {
+                // ファイルを読み込む
+                string[] lines = System.IO.File.ReadAllLines(path);
+                if (lines.Length < 2)
+                {
+                    EditorUtility.DisplayDialog("エラー", "ファイルが空か、ヘッダーのみです。", "OK");
+                    return;
+                }
+
+                // ヘッダー行を解析
+                string[] headers = lines[0].Split(',');
+                if (headers.Length < 3 || headers[0] != "Left" || headers[1] != "Right")
+                {
+                    EditorUtility.DisplayDialog("エラー", "ファイルフォーマットが正しくありません。先頭2列はLeft,Rightである必要があります。", "OK");
+                    return;
+                }
+
+                // シェイプ名のマッピング作成
+                Dictionary<string, int> shapeIndices = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase); // 大文字小文字を区別しない
+                for (int i = 2; i < headers.Length; i++)
+                {
+                    string shapeName = headers[i];
+                    if (!string.IsNullOrEmpty(shapeName))
+                    {
+                        shapeIndices[shapeName] = i;
+                    }
+                }
+
+                // データ行を解析して適用
+                int configCount = 0;
+                for (int lineIndex = 1; lineIndex < lines.Length; lineIndex++)
+                {
+                    string line = lines[lineIndex];
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    string[] values = line.Split(',');
+                    if (values.Length < 3) continue; // 少なくともLeft, Right, 1つの値が必要
+
+                    // Left,Right座標を解析
+                    if (!int.TryParse(values[0], out int leftValue) || !int.TryParse(values[1], out int rightValue))
+                        continue;
+
+                    // 値が範囲内かチェック
+                    if (leftValue < 0 || leftValue >= 8 || rightValue < 0 || rightValue >= 8)
+                        continue;
+
+                    // インデックスの計算
+                    int emoIndex = leftValue * 8 + rightValue;
+                    if (emoIndex < 0 || emoIndex >= EmoMakerCommon.I.Emos.Length || EmoMakerCommon.I.Emos[emoIndex] == null)
+                        continue;
+
+                    var emo = EmoMakerCommon.I.Emos[emoIndex];
+                    bool updated = false;
+
+                    // シェイプ値を適用
+                    foreach (var shape in emo.Shapes)
+                    {
+                        string shapeName = shape.ShortName;
+                        if (shapeIndices.TryGetValue(shapeName, out int shapeIndex) && shapeIndex < values.Length)
+                        {
+                            if (int.TryParse(values[shapeIndex], out int shapeValue))
+                            {
+                                shape.Val = Mathf.Clamp(shapeValue, 0, 100); // 0〜100の範囲に制限
+                                updated = true;
+                            }
+                        }
+                    }
+
+                    if (updated)
+                    {
+                        emo.ReserveTmb();
+                        configCount++;
+                    }
+                }
+
+                EditorUtility.DisplayDialog("完了", $"{configCount}個の表情設定を適用しました。", "OK");
+            }
+            catch (Exception ex)
+            {
+                EditorUtility.DisplayDialog("エラー", $"ファイルの読み込み中にエラーが発生しました: {ex.Message}", "OK");
+                Debug.LogError($"Config読み込みエラー: {ex}");
+            }
+        }
+
+        // CSVファイル書き出し処理
+        private void ExportConfigFile()
+        {
+            if (EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
+            {
+                EditorUtility.DisplayDialog("エラー", "アバターが取得されていません。先にアバターを取得してください。", "OK");
+                return;
+            }
+
+            // ファイル保存ダイアログを表示
+            string path = EditorUtility.SaveFilePanel("設定ファイルを保存", "", "config.csv", "csv");
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            try
+            {
+                using (var writer = new System.IO.StreamWriter(path, false, System.Text.Encoding.UTF8))
+                {
+                    // すべてのシェイプキーの名前を収集
+                    HashSet<string> allShapeNames = new HashSet<string>();
+                    foreach (var emo in EmoMakerCommon.I.Emos)
+                    {
+                        if (emo != null && emo.Shapes != null)
+                        {
+                            foreach (var shape in emo.Shapes)
+                            {
+                                if (!string.IsNullOrEmpty(shape.ShortName) && shape.Val > 0) // 値が0より大きいもののみ
+                                {
+                                    allShapeNames.Add(shape.ShortName);
+                                }
+                            }
+                        }
+                    }
+
+                    // ヘッダー行を書き出し
+                    writer.Write("Left,Right");
+                    foreach (var shapeName in allShapeNames)
+                    {
+                        writer.Write($",{shapeName}");
+                    }
+                    writer.WriteLine();
+
+                    // 各表情の値を書き出し
+                    int exportCount = 0;
+                    for (int left = 0; left < 8; left++)
+                    {
+                        for (int right = 0; right < 8; right++)
+                        {
+                            int index = left * 8 + right;
+                            if (index < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[index] != null)
+                            {
+                                var emo = EmoMakerCommon.I.Emos[index];
+
+                                // 表情のいずれかのシェイプが0より大きい値を持っているかチェック
+                                bool hasNonZeroValue = false;
+                                foreach (var shape in emo.Shapes)
+                                {
+                                    if (shape.Val > 0)
+                                    {
+                                        hasNonZeroValue = true;
+                                        break;
+                                    }
+                                }
+
+                                // 値がある表情のみ出力
+                                if (hasNonZeroValue)
+                                {
+                                    writer.Write($"{left},{right}");
+
+                                    // 各シェイプの値を出力
+                                    foreach (var shapeName in allShapeNames)
+                                    {
+                                        var shape = emo.Shapes.FirstOrDefault(s => s.ShortName == shapeName);
+                                        int value = shape != null ? shape.Val : 0;
+                                        writer.Write($",{value}");
+                                    }
+                                    writer.WriteLine();
+                                    exportCount++;
+                                }
+                            }
+                        }
+                    }
+
+                    EditorUtility.DisplayDialog("完了", $"{exportCount}個の表情設定をエクスポートしました。", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                EditorUtility.DisplayDialog("エラー", $"ファイルの書き出し中にエラーが発生しました: {ex.Message}", "OK");
+                Debug.LogError($"Config書き出しエラー: {ex}");
+            }
         }
 
         // 大きなプレビュー部分を描画する新しいメソッド
