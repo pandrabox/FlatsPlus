@@ -563,7 +563,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private bool _allSelected = false; // 全選択状態の管理
 
         // コピー・貼り付け機能用
-        private int _copiedEmoIndex = -1; // -1 はコピーしていない状態
+        private enum CopyMode { None, Cell, Row, Column }
+        private CopyMode _currentCopyMode = CopyMode.None;
+        private int _copiedEmoIndex = -1; // セルコピー用: -1 はコピーしていない状態
+        private int _copiedRowIndex = -1; // 行コピー用: -1 はコピーしていない状態
+        private int _copiedColIndex = -1; // 列コピー用: -1 はコピーしていない状態
         private Material _copyHighlightMaterial = null; // コピー元表示用マテリアル
 
         // 入れ替え機能用
@@ -784,8 +788,28 @@ namespace com.github.pandrabox.flatsplus.editor
                     // セルの背景を描画
                     EditorGUI.DrawRect(cellRect, new Color(0.2f, 0.2f, 0.2f, 1.0f));
 
-                    // コピー元のセルかどうか確認
-                    bool isCopiedCell = (emoIndex == _copiedEmoIndex);
+                    // コピー元のセルかどうか確認（複数のコピーモードに対応）
+                    bool isCopiedElement = false;
+                    bool shouldDisplayCLabel = false;
+
+                    // セル単位のコピー
+                    if (_currentCopyMode == CopyMode.Cell && emoIndex == _copiedEmoIndex)
+                    {
+                        isCopiedElement = true;
+                        shouldDisplayCLabel = true;
+                    }
+                    // 行単位のコピー
+                    else if (_currentCopyMode == CopyMode.Row && row == _copiedRowIndex)
+                    {
+                        isCopiedElement = true;
+                        shouldDisplayCLabel = (col == 0); // 行の先頭のみにラベル表示
+                    }
+                    // 列単位のコピー
+                    else if (_currentCopyMode == CopyMode.Column && col == _copiedColIndex)
+                    {
+                        isCopiedElement = true;
+                        shouldDisplayCLabel = (row == 0); // 列の先頭のみにラベル表示
+                    }
 
                     // 入れ替え元のセルかどうか確認
                     bool isSwapSourceCell = (_currentSwapMode == SwapMode.Cell && _swapSourceIndex == emoIndex);
@@ -794,11 +818,11 @@ namespace com.github.pandrabox.flatsplus.editor
                     bool isInSwapSourceRow = (_currentSwapMode == SwapMode.Row && row == _swapSourceIndex);
                     bool isInSwapSourceCol = (_currentSwapMode == SwapMode.Column && col == _swapSourceIndex);
 
-                    // 表情テクスチャを表示（コード修正部分）
+                    // 表情テクスチャを表示
                     if (emo != null && emo.Texture != null)
                     {
                         // 表示状態を決定（コピー元・入れ替え元は常に明るく、選択されたセルも明るい）
-                        bool displayBright = _selectedCells[row, col] || isCopiedCell || isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol;
+                        bool displayBright = _selectedCells[row, col] || isCopiedElement || isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol;
 
                         // 明るさを設定
                         Color oldColor = GUI.color;
@@ -815,12 +839,15 @@ namespace com.github.pandrabox.flatsplus.editor
                         // テクスチャを描画
                         GUI.DrawTexture(cellRect, emo.Texture, ScaleMode.ScaleToFit);
 
-                        // 特殊状態のオーバーレイ（コピー元：青、入れ替え元：赤）
-                        if (isCopiedCell && _copyHighlightMaterial != null)
+                        // 特殊状態のオーバーレイ
+                        if (isCopiedElement && _copyHighlightMaterial != null)
                         {
                             Graphics.DrawTexture(cellRect, Texture2D.whiteTexture, _copyHighlightMaterial);
-                            GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "C",
-                                      new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.cyan } });
+                            if (shouldDisplayCLabel)
+                            {
+                                GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "C",
+                                          new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.cyan } });
+                            }
                         }
                         else if ((isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol) && _swapHighlightMaterial != null)
                         {
@@ -828,8 +855,8 @@ namespace com.github.pandrabox.flatsplus.editor
 
                             // セル入替モードの場合、または行/列入替モードでセルにSマークを表示
                             if (isSwapSourceCell ||
-                                (_currentSwapMode == SwapMode.Row && isInSwapSourceRow) ||
-                                (_currentSwapMode == SwapMode.Column && isInSwapSourceCol))
+                                (_currentSwapMode == SwapMode.Row && isInSwapSourceRow && col == 0) ||
+                                (_currentSwapMode == SwapMode.Column && isInSwapSourceCol && row == 0))
                             {
                                 GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "S",
                                           new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.red } });
@@ -841,7 +868,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     else
                     {
                         // テクスチャがない場合も同様の処理
-                        bool displayBright = _selectedCells[row, col] || isCopiedCell || isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol;
+                        bool displayBright = _selectedCells[row, col] || isCopiedElement || isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol;
 
                         if (displayBright)
                         {
@@ -856,11 +883,14 @@ namespace com.github.pandrabox.flatsplus.editor
                             GUI.Box(cellRect, $"{row},{col}", dimStyle);
                         }
 
-                        if (isCopiedCell && _copyHighlightMaterial != null)
+                        if (isCopiedElement && _copyHighlightMaterial != null)
                         {
                             Graphics.DrawTexture(cellRect, Texture2D.whiteTexture, _copyHighlightMaterial);
-                            GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "C",
-                                      new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.cyan } });
+                            if (shouldDisplayCLabel)
+                            {
+                                GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "C",
+                                          new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.cyan } });
+                            }
                         }
                         else if ((isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol) && _swapHighlightMaterial != null)
                         {
@@ -868,8 +898,8 @@ namespace com.github.pandrabox.flatsplus.editor
 
                             // セル入替モードの場合、または行/列入替モードでセルにSマークを表示
                             if (isSwapSourceCell ||
-                                (_currentSwapMode == SwapMode.Row && isInSwapSourceRow) ||
-                                (_currentSwapMode == SwapMode.Column && isInSwapSourceCol))
+                                (_currentSwapMode == SwapMode.Row && isInSwapSourceRow && col == 0) ||
+                                (_currentSwapMode == SwapMode.Column && isInSwapSourceCol && row == 0))
                             {
                                 GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "S",
                                           new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.red } });
@@ -921,38 +951,71 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             EditorGUILayout.BeginHorizontal();
 
-            // 選択されたセルの数を取得
+            // 選択されたセル情報を取得
             List<int> selectedIndices = GetSelectedIndices();
             int selectedRowCount = _selectedRows.Count(r => r);
             int selectedColCount = _selectedColumns.Count(c => c);
 
-            // コピーボタンの状態設定
-            bool inCopyMode = _copiedEmoIndex >= 0;
-            bool canStartCopy = _currentSwapMode == SwapMode.None && selectedIndices.Count == 1;
+            // コピーモード判定
+            bool inCopyMode = _currentCopyMode != CopyMode.None;
+
+            // コピーの可否判定
+            bool canStartCopy = _currentSwapMode == SwapMode.None && !inCopyMode;
+            bool canStartCellCopy = canStartCopy && selectedIndices.Count == 1;
+            bool canStartRowCopy = canStartCopy && selectedRowCount == 1 && selectedColCount == 0;
+            bool canStartColCopy = canStartCopy && selectedColCount == 1 && selectedRowCount == 0;
 
             // コピー開始/解除ボタン
-            GUI.enabled = canStartCopy || inCopyMode;
+            GUI.enabled = (canStartCellCopy || canStartRowCopy || canStartColCopy) || inCopyMode;
             string copyButtonText = inCopyMode ? "コピー解除" : "コピー";
             if (GUILayout.Button(copyButtonText, GUILayout.Height(24)))
             {
                 if (inCopyMode)
                 {
                     // コピー解除
-                    _copiedEmoIndex = -1;
+                    ClearCopyMode();
                 }
                 else
                 {
-                    // コピー実行
-                    _copiedEmoIndex = selectedIndices[0];
+                    // コピーモード設定
+                    if (canStartCellCopy)
+                    {
+                        _currentCopyMode = CopyMode.Cell;
+                        _copiedEmoIndex = selectedIndices[0];
+                    }
+                    else if (canStartRowCopy)
+                    {
+                        _currentCopyMode = CopyMode.Row;
+                        for (int row = 0; row < GRID_SIZE; row++)
+                        {
+                            if (_selectedRows[row])
+                            {
+                                _copiedRowIndex = row;
+                                break;
+                            }
+                        }
+                    }
+                    else if (canStartColCopy)
+                    {
+                        _currentCopyMode = CopyMode.Column;
+                        for (int col = 0; col < GRID_SIZE; col++)
+                        {
+                            if (_selectedColumns[col])
+                            {
+                                _copiedColIndex = col;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 
             // 入れ替えボタンの状態設定
             bool inSwapMode = _currentSwapMode != SwapMode.None;
-            bool canStartSwap = _copiedEmoIndex < 0 && !inSwapMode;
+            bool canStartSwap = !inCopyMode && !inSwapMode;
             bool canStartCellSwap = canStartSwap && selectedIndices.Count == 1;
-            bool canStartRowSwap = canStartSwap && selectedRowCount == 1;
-            bool canStartColSwap = canStartSwap && selectedColCount == 1;
+            bool canStartRowSwap = canStartSwap && selectedRowCount == 1 && selectedColCount == 0;
+            bool canStartColSwap = canStartSwap && selectedColCount == 1 && selectedRowCount == 0;
 
             // 入れ替え開始/解除ボタン
             GUI.enabled = (canStartSwap && (canStartCellSwap || canStartRowSwap || canStartColSwap)) || inSwapMode;
@@ -1008,7 +1071,9 @@ namespace com.github.pandrabox.flatsplus.editor
             string actionButtonText = "確定";
 
             // コピー貼り付け実行判定
-            bool canPaste = !inSwapMode && inCopyMode && selectedIndices.Count > 0;
+            bool canPaste = !inSwapMode && inCopyMode &&
+                (selectedIndices.Count > 0 || selectedRowCount > 0 || selectedColCount > 0);
+
             if (canPaste)
             {
                 canExecuteAction = true;
@@ -1062,7 +1127,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 if (canPaste)
                 {
                     // 貼り付け実行
-                    PasteShapeValues(selectedIndices);
+                    ExecutePaste();
                 }
                 else if (canExecuteSwap)
                 {
@@ -1072,9 +1137,283 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             GUI.enabled = true; // ボタン制御をリセット
 
-            
-
             EditorGUILayout.EndHorizontal();
+        }
+
+        // コピーモードをクリア
+        private void ClearCopyMode()
+        {
+            _currentCopyMode = CopyMode.None;
+            _copiedEmoIndex = -1;
+            _copiedRowIndex = -1;
+            _copiedColIndex = -1;
+        }
+
+        // 貼り付け処理を実行
+        private void ExecutePaste()
+        {
+            // 選択されたインデックス、行、列を取得
+            List<int> selectedIndices = GetSelectedIndices();
+            List<int> selectedRows = new List<int>();
+            List<int> selectedColumns = new List<int>();
+
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                if (_selectedRows[i]) selectedRows.Add(i);
+                if (_selectedColumns[i]) selectedColumns.Add(i);
+            }
+
+            switch (_currentCopyMode)
+            {
+                case CopyMode.Cell:
+                    // セル単位のコピーの場合
+                    if (_copiedEmoIndex >= 0 && selectedIndices.Count > 0)
+                    {
+                        PasteCellToTargets(_copiedEmoIndex, selectedIndices);
+                    }
+                    break;
+
+                case CopyMode.Row:
+                    // 行単位のコピーの場合
+                    if (_copiedRowIndex >= 0)
+                    {
+                        if (selectedRows.Count > 0)
+                        {
+                            // 行単位で貼り付け
+                            foreach (int targetRow in selectedRows)
+                            {
+                                if (targetRow != _copiedRowIndex) // 自分自身にはコピーしない
+                                {
+                                    PasteRowToRow(_copiedRowIndex, targetRow);
+                                }
+                            }
+                        }
+                        else if (selectedIndices.Count > 0)
+                        {
+                            // 選択されたセルに行の内容を貼り付け
+                            PasteRowToCells(_copiedRowIndex, selectedIndices);
+                        }
+                    }
+                    break;
+
+                case CopyMode.Column:
+                    // 列単位のコピーの場合
+                    if (_copiedColIndex >= 0)
+                    {
+                        if (selectedColumns.Count > 0)
+                        {
+                            // 列単位で貼り付け
+                            foreach (int targetCol in selectedColumns)
+                            {
+                                if (targetCol != _copiedColIndex) // 自分自身にはコピーしない
+                                {
+                                    PasteColumnToColumn(_copiedColIndex, targetCol);
+                                }
+                            }
+                        }
+                        else if (selectedIndices.Count > 0)
+                        {
+                            // 選択されたセルに列の内容を貼り付け
+                            PasteColumnToCells(_copiedColIndex, selectedIndices);
+                        }
+                    }
+                    break;
+            }
+
+            // コピーモードをクリア
+            ClearCopyMode();
+        }
+
+        // セルの内容を複数のセルに貼り付ける
+        private void PasteCellToTargets(int sourceIndex, List<int> targetIndices)
+        {
+            if (sourceIndex < 0 || sourceIndex >= EmoMakerCommon.I.Emos.Length)
+                return;
+
+            var sourceEmo = EmoMakerCommon.I.Emos[sourceIndex];
+            if (sourceEmo == null || sourceEmo.Shapes == null)
+                return;
+
+            // コピー元のシェイプ値をすべての選択セルに貼り付け
+            foreach (int targetIndex in targetIndices)
+            {
+                if (targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex != sourceIndex) // 自分自身には貼り付けない
+                {
+                    var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
+                    if (targetEmo != null && targetEmo.Shapes != null)
+                    {
+                        // 各シェイプ値をコピー
+                        foreach (var sourceShape in sourceEmo.Shapes)
+                        {
+                            var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == sourceShape.FullName);
+                            if (targetShape != null)
+                            {
+                                targetShape.Val = sourceShape.Val;
+                            }
+                        }
+
+                        // サムネイル更新を予約
+                        targetEmo.ReserveTmb();
+                    }
+                }
+            }
+        }
+
+        // 行の内容を別の行に貼り付ける
+        private void PasteRowToRow(int sourceRow, int targetRow)
+        {
+            if (sourceRow < 0 || sourceRow >= GRID_SIZE || targetRow < 0 || targetRow >= GRID_SIZE || sourceRow == targetRow)
+                return;
+
+            for (int col = 0; col < GRID_SIZE; col++)
+            {
+                int sourceIndex = sourceRow * GRID_SIZE + col;
+                int targetIndex = targetRow * GRID_SIZE + col;
+
+                if (sourceIndex >= 0 && sourceIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length)
+                {
+                    var sourceEmo = EmoMakerCommon.I.Emos[sourceIndex];
+                    var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
+
+                    if (sourceEmo != null && targetEmo != null && sourceEmo.Shapes != null && targetEmo.Shapes != null)
+                    {
+                        // 各シェイプ値をコピー
+                        foreach (var sourceShape in sourceEmo.Shapes)
+                        {
+                            var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == sourceShape.FullName);
+                            if (targetShape != null)
+                            {
+                                targetShape.Val = sourceShape.Val;
+                            }
+                        }
+
+                        // サムネイル更新を予約
+                        targetEmo.ReserveTmb();
+                    }
+                }
+            }
+        }
+
+        // 行の内容を選択されたセルに貼り付ける
+        private void PasteRowToCells(int sourceRow, List<int> targetIndices)
+        {
+            if (sourceRow < 0 || sourceRow >= GRID_SIZE)
+                return;
+
+            foreach (int targetIndex in targetIndices)
+            {
+                int targetRow = targetIndex / GRID_SIZE;
+                int targetCol = targetIndex % GRID_SIZE;
+
+                // 同じ行の場合はスキップ
+                if (targetRow == sourceRow)
+                    continue;
+
+                int sourceIndex = sourceRow * GRID_SIZE + targetCol; // 同じ列のセルをソースとして使用
+
+                if (sourceIndex >= 0 && sourceIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length)
+                {
+                    var sourceEmo = EmoMakerCommon.I.Emos[sourceIndex];
+                    var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
+
+                    if (sourceEmo != null && targetEmo != null && sourceEmo.Shapes != null && targetEmo.Shapes != null)
+                    {
+                        // 各シェイプ値をコピー
+                        foreach (var sourceShape in sourceEmo.Shapes)
+                        {
+                            var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == sourceShape.FullName);
+                            if (targetShape != null)
+                            {
+                                targetShape.Val = sourceShape.Val;
+                            }
+                        }
+
+                        // サムネイル更新を予約
+                        targetEmo.ReserveTmb();
+                    }
+                }
+            }
+        }
+
+        // 列の内容を別の列に貼り付ける
+        private void PasteColumnToColumn(int sourceCol, int targetCol)
+        {
+            if (sourceCol < 0 || sourceCol >= GRID_SIZE || targetCol < 0 || targetCol >= GRID_SIZE || sourceCol == targetCol)
+                return;
+
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                int sourceIndex = row * GRID_SIZE + sourceCol;
+                int targetIndex = row * GRID_SIZE + targetCol;
+
+                if (sourceIndex >= 0 && sourceIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length)
+                {
+                    var sourceEmo = EmoMakerCommon.I.Emos[sourceIndex];
+                    var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
+
+                    if (sourceEmo != null && targetEmo != null && sourceEmo.Shapes != null && targetEmo.Shapes != null)
+                    {
+                        // 各シェイプ値をコピー
+                        foreach (var sourceShape in sourceEmo.Shapes)
+                        {
+                            var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == sourceShape.FullName);
+                            if (targetShape != null)
+                            {
+                                targetShape.Val = sourceShape.Val;
+                            }
+                        }
+
+                        // サムネイル更新を予約
+                        targetEmo.ReserveTmb();
+                    }
+                }
+            }
+        }
+
+        // 列の内容を選択されたセルに貼り付ける
+        private void PasteColumnToCells(int sourceCol, List<int> targetIndices)
+        {
+            if (sourceCol < 0 || sourceCol >= GRID_SIZE)
+                return;
+
+            foreach (int targetIndex in targetIndices)
+            {
+                int targetRow = targetIndex / GRID_SIZE;
+                int targetCol = targetIndex % GRID_SIZE;
+
+                // 同じ列の場合はスキップ
+                if (targetCol == sourceCol)
+                    continue;
+
+                int sourceIndex = targetRow * GRID_SIZE + sourceCol; // 同じ行のセルをソースとして使用
+
+                if (sourceIndex >= 0 && sourceIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length)
+                {
+                    var sourceEmo = EmoMakerCommon.I.Emos[sourceIndex];
+                    var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
+
+                    if (sourceEmo != null && targetEmo != null && sourceEmo.Shapes != null && targetEmo.Shapes != null)
+                    {
+                        // 各シェイプ値をコピー
+                        foreach (var sourceShape in sourceEmo.Shapes)
+                        {
+                            var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == sourceShape.FullName);
+                            if (targetShape != null)
+                            {
+                                targetShape.Val = sourceShape.Val;
+                            }
+                        }
+
+                        // サムネイル更新を予約
+                        targetEmo.ReserveTmb();
+                    }
+                }
+            }
         }
 
         // 入れ替え処理を実行
@@ -1227,45 +1566,6 @@ namespace com.github.pandrabox.flatsplus.editor
                     SwapCells(sourceIndex, targetIndex);
                 }
             }
-        }
-
-        // シェイプ値を貼り付ける
-        private void PasteShapeValues(List<int> targetIndices)
-        {
-            if (_copiedEmoIndex < 0 || _copiedEmoIndex >= EmoMakerCommon.I.Emos.Length)
-                return;
-
-            var sourceEmo = EmoMakerCommon.I.Emos[_copiedEmoIndex];
-            if (sourceEmo == null || sourceEmo.Shapes == null)
-                return;
-
-            // コピー元のシェイプ値をすべての選択セルに貼り付け
-            foreach (int targetIndex in targetIndices)
-            {
-                if (targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length &&
-                    targetIndex != _copiedEmoIndex) // 自分自身には貼り付けない
-                {
-                    var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
-                    if (targetEmo != null && targetEmo.Shapes != null)
-                    {
-                        // 各シェイプ値をコピー
-                        foreach (var sourceShape in sourceEmo.Shapes)
-                        {
-                            var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == sourceShape.FullName);
-                            if (targetShape != null)
-                            {
-                                targetShape.Val = sourceShape.Val;
-                            }
-                        }
-
-                        // サムネイル更新を予約
-                        targetEmo.ReserveTmb();
-                    }
-                }
-            }
-
-            // 貼り付け後はコピーモードを解除
-            _copiedEmoIndex = -1;
         }
 
         // 全選択の切り替え
