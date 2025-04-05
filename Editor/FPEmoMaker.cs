@@ -8,13 +8,25 @@ using VRC.SDK3.Avatars.Components;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
+    public enum Gesture
+    {
+        Neutral,
+        Fist,
+        HandOpen,
+        FingerPoint,
+        Victory,
+        RocknRoll,
+        HandGun,
+        Thumbsup
+    }
+
     public class FPEmoMaker : EditorWindow
     {
-        private LeftContent leftContent;
+        public LeftContent leftContent;
         private RightContent rightContent;
         private float lastUpdateTime;
         private const float UPDATE_INTERVAL = 0.1f; // 0.1秒ごとに更新
-        private const float RIGHT_PANEL_WIDTH = 400f; // 右パネルの固定幅
+        public const float RIGHT_PANEL_WIDTH = 400f; // 右パネルの固定幅
 
         [MenuItem("Pan/EmoMaker")]
         public static void ShowWindow()
@@ -291,7 +303,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public List<FPMKShape> MShapes;
         public FPWorkObject WorkObj { get; private set; }
         public FPCapture Capture { get; private set; }
-        public FPMKEmo[] Emos = new FPMKEmo[5];
+        public FPMKEmo[] Emos = new FPMKEmo[64];
         public int ActiveEmoIndex = 0; // アクティブな表情のインデックス
 
         public int TextureSize = 180;
@@ -535,65 +547,320 @@ namespace com.github.pandrabox.flatsplus.editor
     public class LeftContent
     {
         private Vector2 _thumbnailScroll = Vector2.zero;
+        private const int GRID_SIZE = 8; // 8x8グリッド
+
+        // 選択状態の管理
+        private bool[] _selectedRows = new bool[GRID_SIZE];
+        private bool[] _selectedColumns = new bool[GRID_SIZE];
+        private bool[,] _selectedCells = new bool[GRID_SIZE, GRID_SIZE];
+
+        // 暗い表示用のマテリアル
+        private Material _dimMaterial = null;
+
+        // 初期化
+        public LeftContent()
+        {
+            // 初期選択：左上のセル
+            _selectedCells[0, 0] = true;
+
+            // 暗い表示用のシェーダーを作成
+            Shader dimShader = Shader.Find("Hidden/Internal-Colored");
+            if (dimShader != null)
+            {
+                _dimMaterial = new Material(dimShader);
+                _dimMaterial.SetColor("_Color", new Color(0.5f, 0.5f, 0.5f, 1.0f));
+            }
+        }
 
         public void OnGUI()
         {
-            // 表情リストのみを表示（プレビューは右側に移動）
-            GUIStyle noMarginStyle = new GUIStyle();
-            noMarginStyle.margin = new RectOffset(0, 0, 0, 0);
-            noMarginStyle.padding = new RectOffset(0, 0, 0, 0);
-
-            EditorGUILayout.BeginVertical(noMarginStyle);
-
-            // スクロールビュー
+            // スクロールビューを開始
             _thumbnailScroll = EditorGUILayout.BeginScrollView(_thumbnailScroll);
-            GUILayout.BeginHorizontal(noMarginStyle);
 
-            for (int i = 0; i < EmoMakerCommon.I.Emos.Length; i++)
+            // グリッド全体の余白を設定
+            float cellSize = (EditorWindow.GetWindow<FPEmoMaker>().position.width - FPEmoMaker.RIGHT_PANEL_WIDTH - 40) / (GRID_SIZE + 1);
+
+            // テーブルレイアウト
+            GUILayout.BeginVertical();
+
+            // 列選択ボタンの行
+            GUILayout.BeginHorizontal();
+            // 左上の空白セル
+            GUILayout.Box("", GUILayout.Width(cellSize), GUILayout.Height(cellSize));
+
+            // 列選択ボタン
+            for (int col = 0; col < GRID_SIZE; col++)
             {
-                var emo = EmoMakerCommon.I.Emos[i];
-                if (emo == null) continue;
+                string colLabel = ((Gesture)col).ToString();
 
-                GUILayout.BeginVertical(GUILayout.Width(EmoMakerCommon.I.TextureSize + 10));
-
-                if (EmoMakerCommon.I.ActiveEmoIndex == i)
+                // スタイルを選択状態に応じて変更
+                GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+                if (_selectedColumns[col])
                 {
-                    GUILayout.Label($"表情 {i + 1}", EditorStyles.boldLabel);
-                }
-                else
-                {
-                    GUILayout.Label($"表情 {i + 1}");
+                    buttonStyle.normal.textColor = Color.yellow;
+                    buttonStyle.fontStyle = FontStyle.Bold;
                 }
 
-                Rect boxRect = GUILayoutUtility.GetRect(EmoMakerCommon.I.TextureSize, EmoMakerCommon.I.TextureSize);
-
-                if (EmoMakerCommon.I.ActiveEmoIndex == i)
+                if (GUILayout.Button(colLabel, buttonStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
                 {
-                    EditorGUI.DrawRect(new Rect(boxRect.x - 3, boxRect.y - 3, boxRect.width + 6, boxRect.height + 6), new Color(1f, 0.8f, 0f));
+                    // Ctrlキーが押されていなければ選択をクリア
+                    if (!Event.current.control)
+                    {
+                        ClearSelection();
+                    }
+
+                    // 列選択の切り替え
+                    _selectedColumns[col] = !_selectedColumns[col];
+
+                    // 列内の全セルの選択状態を設定
+                    for (int row = 0; row < GRID_SIZE; row++)
+                    {
+                        _selectedCells[row, col] = _selectedColumns[col];
+                    }
+
+                    // 選択が変更されたことをEmoMakerに通知
+                    UpdateSelectedEmos();
+
+                    // イベントを処理済みとしてマーク
+                    Event.current.Use();
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            // 各行の表示
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                GUILayout.BeginHorizontal();
+
+                // 行選択ボタン
+                string rowLabel = ((Gesture)row).ToString();
+
+                // スタイルを選択状態に応じて変更
+                GUIStyle rowButtonStyle = new GUIStyle(GUI.skin.button);
+                if (_selectedRows[row])
+                {
+                    rowButtonStyle.normal.textColor = Color.yellow;
+                    rowButtonStyle.fontStyle = FontStyle.Bold;
                 }
 
-                if (emo.Texture != null)
+                if (GUILayout.Button(rowLabel, rowButtonStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
                 {
-                    GUI.DrawTexture(boxRect, emo.Texture);
-                }
-                else
-                {
-                    GUI.Box(boxRect, "No Preview");
-                }
+                    // Ctrlキーが押されていなければ選択をクリア
+                    if (!Event.current.control)
+                    {
+                        ClearSelection();
+                    }
 
-                // クリック時の処理
-                if (Event.current.type == EventType.MouseDown && boxRect.Contains(Event.current.mousePosition))
-                {
-                    EmoMakerCommon.I.ChangeActiveEmo(i);
+                    // 行選択の切り替え
+                    _selectedRows[row] = !_selectedRows[row];
+
+                    // 行内の全セルの選択状態を設定
+                    for (int col = 0; col < GRID_SIZE; col++)
+                    {
+                        _selectedCells[row, col] = _selectedRows[row];
+                    }
+
+                    // 選択が変更されたことをEmoMakerに通知
+                    UpdateSelectedEmos();
+
+                    // イベントを処理済みとしてマーク
                     Event.current.Use();
                 }
 
-                GUILayout.EndVertical();
+                // セルの表示
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    int emoIndex = row * GRID_SIZE + col;
+                    var emo = emoIndex < EmoMakerCommon.I.Emos.Length ? EmoMakerCommon.I.Emos[emoIndex] : null;
+
+                    // セルの矩形を定義
+                    Rect cellRect = GUILayoutUtility.GetRect(cellSize, cellSize);
+
+                    // セルの背景を描画
+                    EditorGUI.DrawRect(cellRect, new Color(0.2f, 0.2f, 0.2f, 1.0f));
+
+                    // 表情テクスチャを表示
+                    if (emo != null && emo.Texture != null)
+                    {
+                        if (_selectedCells[row, col])
+                        {
+                            // 選択されたセルは通常の明るさで表示（明るさを100%に設定）
+                            Color oldColor = GUI.color;
+                            GUI.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); // 完全な明るさ
+                            GUI.DrawTexture(cellRect, emo.Texture, ScaleMode.ScaleToFit);
+                            GUI.color = oldColor;
+                        }
+                        else
+                        {
+                            // 選択されていないセルは暗く表示（明るさを20%に設定）
+                            Color oldColor = GUI.color;
+                            float intensity = 0.2f;
+                            GUI.color = new Color(intensity, intensity, intensity, 1.0f);
+                            GUI.DrawTexture(cellRect, emo.Texture, ScaleMode.ScaleToFit);
+                            GUI.color = oldColor;
+                        }
+                    }
+                    else
+                    {
+                        // テクスチャがない場合は空欄 (暗い表示/明るい表示を区別)
+                        if (_selectedCells[row, col])
+                        {
+                            GUIStyle brightStyle = new GUIStyle(GUI.skin.box);
+                            brightStyle.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f); // 明るいテキスト色
+                            GUI.Box(cellRect, $"{row},{col}", brightStyle);
+                        }
+                        else
+                        {
+                            GUIStyle dimStyle = new GUIStyle(GUI.skin.box);
+                            dimStyle.normal.textColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+                            GUI.Box(cellRect, $"{row},{col}", dimStyle);
+                        }
+                    }
+
+                    // クリック時の処理
+                    if (Event.current.type == EventType.MouseDown && cellRect.Contains(Event.current.mousePosition))
+                    {
+                        if (Event.current.button == 0) // 左クリック
+                        {
+                            // Ctrlキーが押されていない場合は行と列も含めて選択をクリア
+                            if (!Event.current.control)
+                            {
+                                ClearSelection();
+                            }
+
+                            // セルの選択状態を切り替え
+                            _selectedCells[row, col] = !_selectedCells[row, col];
+
+                            // 行と列の選択状態を更新
+                            UpdateRowColumnSelection();
+
+                            // emoIndexが有効な範囲内かつ対応するEmoが存在する場合
+                            if (emoIndex < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[emoIndex] != null)
+                            {
+                                // アクティブなインデックスを更新
+                                EmoMakerCommon.I.ChangeActiveEmo(emoIndex);
+                            }
+
+                            Event.current.Use();
+                        }
+                    }
+                }
+
+                GUILayout.EndHorizontal();
             }
 
-            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
-            EditorGUILayout.EndVertical();
+        }
+
+        // 行と列の選択状態をセルの状態から更新
+        private void UpdateRowColumnSelection()
+        {
+            // 行の選択状態を更新
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                bool allSelected = true;
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    if (!_selectedCells[row, col])
+                    {
+                        allSelected = false;
+                        break;
+                    }
+                }
+                _selectedRows[row] = allSelected;
+            }
+
+            // 列の選択状態を更新
+            for (int col = 0; col < GRID_SIZE; col++)
+            {
+                bool allSelected = true;
+                for (int row = 0; row < GRID_SIZE; row++)
+                {
+                    if (!_selectedCells[row, col])
+                    {
+                        allSelected = false;
+                        break;
+                    }
+                }
+                _selectedColumns[col] = allSelected;
+            }
+        }
+
+        // 選択をすべてクリア（行・列も含む）
+        private void ClearSelection()
+        {
+            // 行選択をクリア
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                _selectedRows[i] = false;
+            }
+
+            // 列選択をクリア
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                _selectedColumns[i] = false;
+            }
+
+            // セル選択をクリア
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    _selectedCells[row, col] = false;
+                }
+            }
+        }
+
+        // 選択された表情の更新を適用
+        private void UpdateSelectedEmos()
+        {
+            // 選択されたセルのインデックスを収集
+            List<int> selectedIndices = new List<int>();
+
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    if (_selectedCells[row, col])
+                    {
+                        int emoIndex = row * GRID_SIZE + col;
+                        if (emoIndex < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[emoIndex] != null)
+                        {
+                            selectedIndices.Add(emoIndex);
+                        }
+                    }
+                }
+            }
+
+            // 最初に選択されたものをアクティブに
+            if (selectedIndices.Count > 0)
+            {
+                EmoMakerCommon.I.ChangeActiveEmo(selectedIndices[0]);
+            }
+        }
+
+        // 選択されたインデックスのリストを返す
+        public List<int> GetSelectedIndices()
+        {
+            List<int> selectedIndices = new List<int>();
+
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    if (_selectedCells[row, col])
+                    {
+                        int emoIndex = row * GRID_SIZE + col;
+                        if (emoIndex < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[emoIndex] != null)
+                        {
+                            selectedIndices.Add(emoIndex);
+                        }
+                    }
+                }
+            }
+
+            return selectedIndices;
         }
     }
 
@@ -605,6 +872,9 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public void OnGUI()
         {
+            LeftContent leftContent = EditorWindow.GetWindow<FPEmoMaker>().leftContent;
+            List<int> selectedIndices = leftContent.GetSelectedIndices();
+
             float totalHeight = EditorWindow.GetWindow<FPEmoMaker>().position.height;
             // 上部70%（コントロール・スライダー）、下部30%（大きいプレビュー）に分割
             float upperHeight = totalHeight * 0.7f;
@@ -623,13 +893,14 @@ namespace com.github.pandrabox.flatsplus.editor
             EmoMakerCommon.I.OriginalDesc = (VRCAvatarDescriptor)EditorGUILayout.ObjectField(
                 "Target", EmoMakerCommon.I.OriginalDesc, typeof(VRCAvatarDescriptor), true);
 
-            EditorGUILayout.LabelField($"現在の表情: {EmoMakerCommon.I.ActiveEmoIndex + 1}", EditorStyles.boldLabel);
+            // 選択された表情の数を表示
+            EditorGUILayout.LabelField($"選択中: {selectedIndices.Count} 個の表情", EditorStyles.boldLabel);
 
             if (EmoMakerCommon.I.WorkObj?.WorkObject == null || EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
             {
                 GUILayout.Label("アバターが取得されていません。上のボタンをクリックして取得してください。", EditorStyles.helpBox);
                 EditorGUILayout.EndVertical();
-                DrawLargePreview(); // 下部プレビュー部分
+                DrawLargePreview(selectedIndices); // 下部プレビュー部分
                 return;
             }
 
@@ -639,7 +910,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 GUILayout.Label("表情データがありません。", EditorStyles.helpBox);
                 EditorGUILayout.EndVertical();
-                DrawLargePreview(); // 下部プレビュー部分
+                DrawLargePreview(selectedIndices); // 下部プレビュー部分
                 return;
             }
 
@@ -656,7 +927,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 foreach (var shape in visibleShapes)
                 {
-                    DrawShapeControl(shape);
+                    DrawShapeControl(shape, selectedIndices);
                 }
             }
 
@@ -670,7 +941,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     foreach (var shape in hiddenShapes)
                     {
-                        DrawShapeControl(shape);
+                        DrawShapeControl(shape, selectedIndices);
                     }
                 }
             }
@@ -685,11 +956,11 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.Space(1);
 
             // 大きなプレビューを描画
-            DrawLargePreview();
+            DrawLargePreview(selectedIndices);
         }
 
         // 大きなプレビュー部分を描画する新しいメソッド
-        private void DrawLargePreview()
+        private void DrawLargePreview(List<int> selectedIndices)
         {
             float lowerHeight = EditorWindow.GetWindow<FPEmoMaker>().position.height * 0.3f;
 
@@ -700,10 +971,11 @@ namespace com.github.pandrabox.flatsplus.editor
 
             EditorGUILayout.BeginVertical(noMarginStyle, GUILayout.Height(lowerHeight));
 
+            // アクティブな表情を取得
             var activeEmo = EmoMakerCommon.I.ActiveEmo;
 
             // プレビューエリアのサイズを計算（正方形かつ利用可能なスペース内で最大サイズ）
-            float availableWidth = 400 - 10; // 右パネル幅から余白を引く
+            float availableWidth = FPEmoMaker.RIGHT_PANEL_WIDTH - 10; // 右パネル幅から余白を引く
             float availableHeight = lowerHeight - 5;
             _largePreviewSize = Mathf.Min(availableWidth, availableHeight);
 
@@ -730,7 +1002,7 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.EndVertical();
         }
 
-        private void DrawShapeControl(FPMKShape shape)
+        private void DrawShapeControl(FPMKShape shape, List<int> selectedIndices)
         {
             EditorGUILayout.BeginHorizontal();
 
@@ -743,19 +1015,66 @@ namespace com.github.pandrabox.flatsplus.editor
             // スライダーの前に小さなスペースを追加して見栄えを改善
             GUILayout.Space(5);
 
-            // スライダーを表示（残りの利用可能な幅を使用）
-            int prevVal = shape.Val;
-            shape.Val = EditorGUILayout.IntSlider(shape.Val, 0, 100, GUILayout.ExpandWidth(true));
+            // 選択された全ての表情でこのシェイプの値を取得
+            bool allSameValue = true;
+            int commonValue = shape.Val;
 
-            // 値を数値で表示（オプション）
-            //EditorGUILayout.LabelField(shape.Val.ToString(), GUILayout.Width(30));
-
-            if (prevVal != shape.Val)
+            foreach (int index in selectedIndices)
             {
-                EmoMakerCommon.I.ActiveEmo.ReserveTmb();
+                if (index >= 0 && index < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[index] != null)
+                {
+                    var emo = EmoMakerCommon.I.Emos[index];
+                    var shapeInEmo = emo.Shapes.FirstOrDefault(s => s.FullName == shape.FullName);
+
+                    if (shapeInEmo != null && shapeInEmo.Val != commonValue)
+                    {
+                        allSameValue = false;
+                        break;
+                    }
+                }
+            }
+
+            if (allSameValue)
+            {
+                // 全ての値が同じ場合はスライダーを表示
+                int prevVal = shape.Val;
+                shape.Val = EditorGUILayout.IntSlider(shape.Val, 0, 100, GUILayout.ExpandWidth(true));
+
+                if (prevVal != shape.Val)
+                {
+                    // 選択された全ての表情のシェイプ値を更新
+                    UpdateAllSelectedShapes(shape, selectedIndices);
+                }
+            }
+            else
+            {
+                // 値が異なる場合は「あわせる」ボタン
+                if (GUILayout.Button("値をあわせる", GUILayout.ExpandWidth(true)))
+                {
+                    UpdateAllSelectedShapes(shape, selectedIndices);
+                }
             }
 
             EditorGUILayout.EndHorizontal();
+        }
+
+        // 選択された全ての表情のシェイプ値を更新
+        private void UpdateAllSelectedShapes(FPMKShape referenceShape, List<int> selectedIndices)
+        {
+            foreach (int index in selectedIndices)
+            {
+                if (index >= 0 && index < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[index] != null)
+                {
+                    var emo = EmoMakerCommon.I.Emos[index];
+                    var shapeInEmo = emo.Shapes.FirstOrDefault(s => s.FullName == referenceShape.FullName);
+
+                    if (shapeInEmo != null)
+                    {
+                        shapeInEmo.Val = referenceShape.Val;
+                        emo.ReserveTmb(); // サムネイルの更新を予約
+                    }
+                }
+            }
         }
     }
 
