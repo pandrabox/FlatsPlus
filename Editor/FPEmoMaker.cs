@@ -483,7 +483,9 @@ namespace com.github.pandrabox.flatsplus.editor
             Running = true;
             _hash = _currentEmo.Hash;
             SetShape();
-            EditorApplication.delayCall += () => Capture();
+            EditorApplication.delayCall += () => {
+                EditorApplication.delayCall += () => Capture();
+            };
         }
 
         //フラグのあるものを探して画像生成
@@ -560,6 +562,16 @@ namespace com.github.pandrabox.flatsplus.editor
         private bool[,] _selectedCells = new bool[GRID_SIZE, GRID_SIZE];
         private bool _allSelected = false; // 全選択状態の管理
 
+        // コピー・貼り付け機能用
+        private int _copiedEmoIndex = -1; // -1 はコピーしていない状態
+        private Material _copyHighlightMaterial = null; // コピー元表示用マテリアル
+
+        // 入れ替え機能用
+        private enum SwapMode { None, Cell, Row, Column }
+        private SwapMode _currentSwapMode = SwapMode.None;
+        private int _swapSourceIndex = -1; // 入れ替え元のインデックス（セル/行/列のいずれか）
+        private Material _swapHighlightMaterial = null; // 入れ替え元表示用マテリアル
+
         // 暗い表示用のマテリアル
         private Material _dimMaterial = null;
 
@@ -575,11 +587,22 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 _dimMaterial = new Material(dimShader);
                 _dimMaterial.SetColor("_Color", new Color(0.5f, 0.5f, 0.5f, 1.0f));
+
+                // コピー元表示用のマテリアル（青っぽい色に、濃度を上げる）
+                _copyHighlightMaterial = new Material(dimShader);
+                _copyHighlightMaterial.SetColor("_Color", new Color(0.3f, 0.5f, 0.8f, 0.7f));
+
+                // 入れ替え元表示用のマテリアル（赤っぽい色に、濃度を上げる）
+                _swapHighlightMaterial = new Material(dimShader);
+                _swapHighlightMaterial.SetColor("_Color", new Color(0.8f, 0.3f, 0.3f, 0.7f));
             }
         }
 
         public void OnGUI()
         {
+            // スクロールビューの前にコピー・貼り付けボタンとして表示
+            DrawControlButtons();
+
             // スクロールビューを開始
             _thumbnailScroll = EditorGUILayout.BeginScrollView(_thumbnailScroll);
 
@@ -619,31 +642,60 @@ namespace com.github.pandrabox.flatsplus.editor
                     buttonStyle.fontStyle = FontStyle.Bold;
                 }
 
-                if (GUILayout.Button(colLabel, buttonStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
+                // 入れ替えモードで列が入れ替え元として選択されている場合
+                if (_currentSwapMode == SwapMode.Column && _swapSourceIndex == col)
                 {
-                    // Ctrlキーが押されていなければ選択をクリア
-                    if (!Event.current.control)
+                    // 背景色を赤く設定
+                    Rect buttonRect = GUILayoutUtility.GetRect(cellSize, cellSize);
+                    EditorGUI.DrawRect(buttonRect, new Color(0.8f, 0.4f, 0.4f, 1.0f));
+
+                    // ボタンを表示
+                    if (GUI.Button(buttonRect, colLabel, buttonStyle))
                     {
-                        ClearSelection();
+                        // ボタンの処理
+                        if (!Event.current.control)
+                        {
+                            ClearSelection();
+                        }
+                        _selectedColumns[col] = !_selectedColumns[col];
+                        for (int row = 0; row < GRID_SIZE; row++)
+                        {
+                            _selectedCells[row, col] = _selectedColumns[col];
+                        }
+                        UpdateAllSelectedState();
+                        UpdateSelectedEmos();
+                        Event.current.Use();
                     }
-
-                    // 列選択の切り替え
-                    _selectedColumns[col] = !_selectedColumns[col];
-
-                    // 列内の全セルの選択状態を設定
-                    for (int row = 0; row < GRID_SIZE; row++)
+                }
+                else
+                {
+                    // 通常ボタン表示
+                    if (GUILayout.Button(colLabel, buttonStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
                     {
-                        _selectedCells[row, col] = _selectedColumns[col];
+                        // Ctrlキーが押されていなければ選択をクリア
+                        if (!Event.current.control)
+                        {
+                            ClearSelection();
+                        }
+
+                        // 列選択の切り替え
+                        _selectedColumns[col] = !_selectedColumns[col];
+
+                        // 列内の全セルの選択状態を設定
+                        for (int row = 0; row < GRID_SIZE; row++)
+                        {
+                            _selectedCells[row, col] = _selectedColumns[col];
+                        }
+
+                        // 全選択状態を更新
+                        UpdateAllSelectedState();
+
+                        // 選択が変更されたことをEmoMakerに通知
+                        UpdateSelectedEmos();
+
+                        // イベントを処理済みとしてマーク
+                        Event.current.Use();
                     }
-
-                    // 全選択状態を更新
-                    UpdateAllSelectedState();
-
-                    // 選択が変更されたことをEmoMakerに通知
-                    UpdateSelectedEmos();
-
-                    // イベントを処理済みとしてマーク
-                    Event.current.Use();
                 }
             }
             GUILayout.EndHorizontal();
@@ -664,31 +716,60 @@ namespace com.github.pandrabox.flatsplus.editor
                     rowButtonStyle.fontStyle = FontStyle.Bold;
                 }
 
-                if (GUILayout.Button(rowLabel, rowButtonStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
+                // 入れ替えモードで行が入れ替え元として選択されている場合
+                if (_currentSwapMode == SwapMode.Row && _swapSourceIndex == row)
                 {
-                    // Ctrlキーが押されていなければ選択をクリア
-                    if (!Event.current.control)
+                    // 背景色を赤く設定
+                    Rect buttonRect = GUILayoutUtility.GetRect(cellSize, cellSize);
+                    EditorGUI.DrawRect(buttonRect, new Color(0.8f, 0.4f, 0.4f, 1.0f));
+
+                    // ボタンを表示
+                    if (GUI.Button(buttonRect, rowLabel, rowButtonStyle))
                     {
-                        ClearSelection();
+                        // ボタンの処理
+                        if (!Event.current.control)
+                        {
+                            ClearSelection();
+                        }
+                        _selectedRows[row] = !_selectedRows[row];
+                        for (int col = 0; col < GRID_SIZE; col++)
+                        {
+                            _selectedCells[row, col] = _selectedRows[row];
+                        }
+                        UpdateAllSelectedState();
+                        UpdateSelectedEmos();
+                        Event.current.Use();
                     }
-
-                    // 行選択の切り替え
-                    _selectedRows[row] = !_selectedRows[row];
-
-                    // 行内の全セルの選択状態を設定
-                    for (int col = 0; col < GRID_SIZE; col++)
+                }
+                else
+                {
+                    // 通常ボタン表示
+                    if (GUILayout.Button(rowLabel, rowButtonStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
                     {
-                        _selectedCells[row, col] = _selectedRows[row];
+                        // Ctrlキーが押されていなければ選択をクリア
+                        if (!Event.current.control)
+                        {
+                            ClearSelection();
+                        }
+
+                        // 行選択の切り替え
+                        _selectedRows[row] = !_selectedRows[row];
+
+                        // 行内の全セルの選択状態を設定
+                        for (int col = 0; col < GRID_SIZE; col++)
+                        {
+                            _selectedCells[row, col] = _selectedRows[row];
+                        }
+
+                        // 全選択状態を更新
+                        UpdateAllSelectedState();
+
+                        // 選択が変更されたことをEmoMakerに通知
+                        UpdateSelectedEmos();
+
+                        // イベントを処理済みとしてマーク
+                        Event.current.Use();
                     }
-
-                    // 全選択状態を更新
-                    UpdateAllSelectedState();
-
-                    // 選択が変更されたことをEmoMakerに通知
-                    UpdateSelectedEmos();
-
-                    // イベントを処理済みとしてマーク
-                    Event.current.Use();
                 }
 
                 // セルの表示
@@ -703,34 +784,69 @@ namespace com.github.pandrabox.flatsplus.editor
                     // セルの背景を描画
                     EditorGUI.DrawRect(cellRect, new Color(0.2f, 0.2f, 0.2f, 1.0f));
 
-                    // 表情テクスチャを表示
+                    // コピー元のセルかどうか確認
+                    bool isCopiedCell = (emoIndex == _copiedEmoIndex);
+
+                    // 入れ替え元のセルかどうか確認
+                    bool isSwapSourceCell = (_currentSwapMode == SwapMode.Cell && _swapSourceIndex == emoIndex);
+
+                    // 行と列の入れ替えモードの場合も考慮
+                    bool isInSwapSourceRow = (_currentSwapMode == SwapMode.Row && row == _swapSourceIndex);
+                    bool isInSwapSourceCol = (_currentSwapMode == SwapMode.Column && col == _swapSourceIndex);
+
+                    // 表情テクスチャを表示（コード修正部分）
                     if (emo != null && emo.Texture != null)
                     {
-                        if (_selectedCells[row, col])
+                        // 表示状態を決定（コピー元・入れ替え元は常に明るく、選択されたセルも明るい）
+                        bool displayBright = _selectedCells[row, col] || isCopiedCell || isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol;
+
+                        // 明るさを設定
+                        Color oldColor = GUI.color;
+                        if (displayBright)
                         {
-                            // 選択されたセルは通常の明るさで表示（明るさを100%に設定）
-                            Color oldColor = GUI.color;
                             GUI.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); // 完全な明るさ
-                            GUI.DrawTexture(cellRect, emo.Texture, ScaleMode.ScaleToFit);
-                            GUI.color = oldColor;
                         }
                         else
                         {
-                            // 選択されていないセルは暗く表示（明るさを20%に設定）
-                            Color oldColor = GUI.color;
                             float intensity = 0.2f;
                             GUI.color = new Color(intensity, intensity, intensity, 1.0f);
-                            GUI.DrawTexture(cellRect, emo.Texture, ScaleMode.ScaleToFit);
-                            GUI.color = oldColor;
                         }
+
+                        // テクスチャを描画
+                        GUI.DrawTexture(cellRect, emo.Texture, ScaleMode.ScaleToFit);
+
+                        // 特殊状態のオーバーレイ（コピー元：青、入れ替え元：赤）
+                        if (isCopiedCell && _copyHighlightMaterial != null)
+                        {
+                            Graphics.DrawTexture(cellRect, Texture2D.whiteTexture, _copyHighlightMaterial);
+                            GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "C",
+                                      new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.cyan } });
+                        }
+                        else if ((isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol) && _swapHighlightMaterial != null)
+                        {
+                            Graphics.DrawTexture(cellRect, Texture2D.whiteTexture, _swapHighlightMaterial);
+
+                            // セル入替モードの場合、または行/列入替モードでセルにSマークを表示
+                            if (isSwapSourceCell ||
+                                (_currentSwapMode == SwapMode.Row && isInSwapSourceRow) ||
+                                (_currentSwapMode == SwapMode.Column && isInSwapSourceCol))
+                            {
+                                GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "S",
+                                          new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.red } });
+                            }
+                        }
+
+                        GUI.color = oldColor;
                     }
                     else
                     {
-                        // テクスチャがない場合は空欄 (暗い表示/明るい表示を区別)
-                        if (_selectedCells[row, col])
+                        // テクスチャがない場合も同様の処理
+                        bool displayBright = _selectedCells[row, col] || isCopiedCell || isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol;
+
+                        if (displayBright)
                         {
                             GUIStyle brightStyle = new GUIStyle(GUI.skin.box);
-                            brightStyle.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f); // 明るいテキスト色
+                            brightStyle.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                             GUI.Box(cellRect, $"{row},{col}", brightStyle);
                         }
                         else
@@ -738,6 +854,26 @@ namespace com.github.pandrabox.flatsplus.editor
                             GUIStyle dimStyle = new GUIStyle(GUI.skin.box);
                             dimStyle.normal.textColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);
                             GUI.Box(cellRect, $"{row},{col}", dimStyle);
+                        }
+
+                        if (isCopiedCell && _copyHighlightMaterial != null)
+                        {
+                            Graphics.DrawTexture(cellRect, Texture2D.whiteTexture, _copyHighlightMaterial);
+                            GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "C",
+                                      new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.cyan } });
+                        }
+                        else if ((isSwapSourceCell || isInSwapSourceRow || isInSwapSourceCol) && _swapHighlightMaterial != null)
+                        {
+                            Graphics.DrawTexture(cellRect, Texture2D.whiteTexture, _swapHighlightMaterial);
+
+                            // セル入替モードの場合、または行/列入替モードでセルにSマークを表示
+                            if (isSwapSourceCell ||
+                                (_currentSwapMode == SwapMode.Row && isInSwapSourceRow) ||
+                                (_currentSwapMode == SwapMode.Column && isInSwapSourceCol))
+                            {
+                                GUI.Label(new Rect(cellRect.x + 5, cellRect.y + 5, 20, 20), "S",
+                                          new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = Color.red } });
+                            }
                         }
                     }
 
@@ -778,6 +914,358 @@ namespace com.github.pandrabox.flatsplus.editor
 
             GUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
+        }
+
+        // コントロールボタンを描画（コピー・貼り付け・入れ替え機能を統合）
+        private void DrawControlButtons()
+        {
+            EditorGUILayout.BeginHorizontal();
+
+            // 選択されたセルの数を取得
+            List<int> selectedIndices = GetSelectedIndices();
+            int selectedRowCount = _selectedRows.Count(r => r);
+            int selectedColCount = _selectedColumns.Count(c => c);
+
+            // コピーボタンの状態設定
+            bool inCopyMode = _copiedEmoIndex >= 0;
+            bool canStartCopy = _currentSwapMode == SwapMode.None && selectedIndices.Count == 1;
+
+            // コピー開始/解除ボタン
+            GUI.enabled = canStartCopy || inCopyMode;
+            string copyButtonText = inCopyMode ? "コピー解除" : "コピー";
+            if (GUILayout.Button(copyButtonText, GUILayout.Height(24)))
+            {
+                if (inCopyMode)
+                {
+                    // コピー解除
+                    _copiedEmoIndex = -1;
+                }
+                else
+                {
+                    // コピー実行
+                    _copiedEmoIndex = selectedIndices[0];
+                }
+            }
+
+            // 入れ替えボタンの状態設定
+            bool inSwapMode = _currentSwapMode != SwapMode.None;
+            bool canStartSwap = _copiedEmoIndex < 0 && !inSwapMode;
+            bool canStartCellSwap = canStartSwap && selectedIndices.Count == 1;
+            bool canStartRowSwap = canStartSwap && selectedRowCount == 1;
+            bool canStartColSwap = canStartSwap && selectedColCount == 1;
+
+            // 入れ替え開始/解除ボタン
+            GUI.enabled = (canStartSwap && (canStartCellSwap || canStartRowSwap || canStartColSwap)) || inSwapMode;
+            string swapButtonText = inSwapMode ? "入替解除" : "入替開始";
+            if (GUILayout.Button(swapButtonText, GUILayout.Height(24)))
+            {
+                if (inSwapMode)
+                {
+                    // 入れ替えモード解除
+                    _currentSwapMode = SwapMode.None;
+                    _swapSourceIndex = -1;
+                }
+                else
+                {
+                    // 入替モード判定と開始
+                    if (canStartCellSwap)
+                    {
+                        // セル入れ替えモード開始
+                        _currentSwapMode = SwapMode.Cell;
+                        _swapSourceIndex = selectedIndices[0];
+                    }
+                    else if (canStartRowSwap)
+                    {
+                        // 行入れ替えモード開始
+                        _currentSwapMode = SwapMode.Row;
+                        for (int row = 0; row < GRID_SIZE; row++)
+                        {
+                            if (_selectedRows[row])
+                            {
+                                _swapSourceIndex = row;
+                                break;
+                            }
+                        }
+                    }
+                    else if (canStartColSwap)
+                    {
+                        // 列入れ替えモード開始
+                        _currentSwapMode = SwapMode.Column;
+                        for (int col = 0; col < GRID_SIZE; col++)
+                        {
+                            if (_selectedColumns[col])
+                            {
+                                _swapSourceIndex = col;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 実行ボタン（貼り付けと入替実行を統合）
+            bool canExecuteAction = false;
+            string actionButtonText = "確定";
+
+            // コピー貼り付け実行判定
+            bool canPaste = !inSwapMode && inCopyMode && selectedIndices.Count > 0;
+            if (canPaste)
+            {
+                canExecuteAction = true;
+                actionButtonText = "確定";
+            }
+
+            // 入れ替え実行判定
+            bool canExecuteSwap = false;
+            switch (_currentSwapMode)
+            {
+                case SwapMode.Cell when selectedIndices.Count == 1 && _swapSourceIndex >= 0 && _swapSourceIndex != selectedIndices[0]:
+                    canExecuteSwap = true;
+                    break;
+
+                case SwapMode.Row when selectedRowCount == 1:
+                    int targetRow = -1;
+                    for (int row = 0; row < GRID_SIZE; row++)
+                    {
+                        if (_selectedRows[row])
+                        {
+                            targetRow = row;
+                            break;
+                        }
+                    }
+                    canExecuteSwap = (targetRow >= 0 && targetRow != _swapSourceIndex);
+                    break;
+
+                case SwapMode.Column when selectedColCount == 1:
+                    int targetCol = -1;
+                    for (int col = 0; col < GRID_SIZE; col++)
+                    {
+                        if (_selectedColumns[col])
+                        {
+                            targetCol = col;
+                            break;
+                        }
+                    }
+                    canExecuteSwap = (targetCol >= 0 && targetCol != _swapSourceIndex);
+                    break;
+            }
+
+            if (canExecuteSwap)
+            {
+                canExecuteAction = true;
+                actionButtonText = "確定";
+            }
+
+            GUI.enabled = canExecuteAction;
+            if (GUILayout.Button(actionButtonText, GUILayout.Height(24)))
+            {
+                if (canPaste)
+                {
+                    // 貼り付け実行
+                    PasteShapeValues(selectedIndices);
+                }
+                else if (canExecuteSwap)
+                {
+                    // 入れ替え実行
+                    ExecuteSwap();
+                }
+            }
+            GUI.enabled = true; // ボタン制御をリセット
+
+            
+
+            EditorGUILayout.EndHorizontal();
+        }
+
+        // 入れ替え処理を実行
+        private void ExecuteSwap()
+        {
+            if (_currentSwapMode == SwapMode.None || _swapSourceIndex < 0)
+                return;
+
+            List<int> selectedIndices = GetSelectedIndices();
+
+            switch (_currentSwapMode)
+            {
+                case SwapMode.Cell when selectedIndices.Count == 1:
+                    int targetCellIndex = selectedIndices[0];
+                    if (_swapSourceIndex != targetCellIndex)
+                    {
+                        SwapCells(_swapSourceIndex, targetCellIndex);
+                    }
+                    break;
+
+                case SwapMode.Row:
+                    int targetRow = -1;
+                    for (int row = 0; row < GRID_SIZE; row++)
+                    {
+                        if (_selectedRows[row])
+                        {
+                            targetRow = row;
+                            break;
+                        }
+                    }
+
+                    if (_swapSourceIndex != targetRow && targetRow >= 0)
+                    {
+                        SwapRows(_swapSourceIndex, targetRow);
+                    }
+                    break;
+
+                case SwapMode.Column:
+                    int targetCol = -1;
+                    for (int col = 0; col < GRID_SIZE; col++)
+                    {
+                        if (_selectedColumns[col])
+                        {
+                            targetCol = col;
+                            break;
+                        }
+                    }
+
+                    if (_swapSourceIndex != targetCol && targetCol >= 0)
+                    {
+                        SwapColumns(_swapSourceIndex, targetCol);
+                    }
+                    break;
+            }
+
+            // 入れ替えモードを解除
+            _currentSwapMode = SwapMode.None;
+            _swapSourceIndex = -1;
+
+            // 更新を通知
+            EditorWindow.GetWindow<FPEmoMaker>().Repaint();
+        }
+
+        // セル同士を入れ替える
+        private void SwapCells(int sourceIndex, int targetIndex)
+        {
+            if (sourceIndex < 0 || sourceIndex >= EmoMakerCommon.I.Emos.Length ||
+                targetIndex < 0 || targetIndex >= EmoMakerCommon.I.Emos.Length)
+                return;
+
+            var sourceEmo = EmoMakerCommon.I.Emos[sourceIndex];
+            var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
+
+            if (sourceEmo == null || targetEmo == null)
+                return;
+
+            // シェイプ値を交換
+            List<FPMKShape> tempShapes = new List<FPMKShape>();
+
+            // ソースのシェイプをコピー
+            foreach (var shape in sourceEmo.Shapes)
+            {
+                tempShapes.Add(new FPMKShape(shape.FullName)
+                {
+                    Hide = shape.Hide,
+                    Val = shape.Val
+                });
+            }
+
+            // ターゲットから元ソースへコピー
+            foreach (var targetShape in targetEmo.Shapes)
+            {
+                var sourceShape = sourceEmo.Shapes.FirstOrDefault(s => s.FullName == targetShape.FullName);
+                if (sourceShape != null)
+                {
+                    sourceShape.Val = targetShape.Val;
+                }
+            }
+
+            // 一時保存したソースからターゲットへコピー
+            foreach (var tempShape in tempShapes)
+            {
+                var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == tempShape.FullName);
+                if (targetShape != null)
+                {
+                    targetShape.Val = tempShape.Val;
+                }
+            }
+
+            // サムネイルの更新を予約
+            sourceEmo.ReserveTmb();
+            targetEmo.ReserveTmb();
+        }
+
+        // 行同士を入れ替える
+        private void SwapRows(int sourceRow, int targetRow)
+        {
+            if (sourceRow < 0 || sourceRow >= GRID_SIZE ||
+                targetRow < 0 || targetRow >= GRID_SIZE)
+                return;
+
+            for (int col = 0; col < GRID_SIZE; col++)
+            {
+                int sourceIndex = sourceRow * GRID_SIZE + col;
+                int targetIndex = targetRow * GRID_SIZE + col;
+
+                if (sourceIndex >= 0 && sourceIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length)
+                {
+                    SwapCells(sourceIndex, targetIndex);
+                }
+            }
+        }
+
+        // 列同士を入れ替える
+        private void SwapColumns(int sourceCol, int targetCol)
+        {
+            if (sourceCol < 0 || sourceCol >= GRID_SIZE ||
+                targetCol < 0 || targetCol >= GRID_SIZE)
+                return;
+
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                int sourceIndex = row * GRID_SIZE + sourceCol;
+                int targetIndex = row * GRID_SIZE + targetCol;
+
+                if (sourceIndex >= 0 && sourceIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length)
+                {
+                    SwapCells(sourceIndex, targetIndex);
+                }
+            }
+        }
+
+        // シェイプ値を貼り付ける
+        private void PasteShapeValues(List<int> targetIndices)
+        {
+            if (_copiedEmoIndex < 0 || _copiedEmoIndex >= EmoMakerCommon.I.Emos.Length)
+                return;
+
+            var sourceEmo = EmoMakerCommon.I.Emos[_copiedEmoIndex];
+            if (sourceEmo == null || sourceEmo.Shapes == null)
+                return;
+
+            // コピー元のシェイプ値をすべての選択セルに貼り付け
+            foreach (int targetIndex in targetIndices)
+            {
+                if (targetIndex >= 0 && targetIndex < EmoMakerCommon.I.Emos.Length &&
+                    targetIndex != _copiedEmoIndex) // 自分自身には貼り付けない
+                {
+                    var targetEmo = EmoMakerCommon.I.Emos[targetIndex];
+                    if (targetEmo != null && targetEmo.Shapes != null)
+                    {
+                        // 各シェイプ値をコピー
+                        foreach (var sourceShape in sourceEmo.Shapes)
+                        {
+                            var targetShape = targetEmo.Shapes.FirstOrDefault(s => s.FullName == sourceShape.FullName);
+                            if (targetShape != null)
+                            {
+                                targetShape.Val = sourceShape.Val;
+                            }
+                        }
+
+                        // サムネイル更新を予約
+                        targetEmo.ReserveTmb();
+                    }
+                }
+            }
+
+            // 貼り付け後はコピーモードを解除
+            _copiedEmoIndex = -1;
         }
 
         // 全選択の切り替え
@@ -941,6 +1429,28 @@ namespace com.github.pandrabox.flatsplus.editor
             }
 
             return selectedIndices;
+        }
+
+        // リソースをクリーンアップ
+        public void Dispose()
+        {
+            if (_dimMaterial != null)
+            {
+                UnityEngine.Object.DestroyImmediate(_dimMaterial);
+                _dimMaterial = null;
+            }
+
+            if (_copyHighlightMaterial != null)
+            {
+                UnityEngine.Object.DestroyImmediate(_copyHighlightMaterial);
+                _copyHighlightMaterial = null;
+            }
+
+            if (_swapHighlightMaterial != null)
+            {
+                UnityEngine.Object.DestroyImmediate(_swapHighlightMaterial);
+                _swapHighlightMaterial = null;
+            }
         }
     }
 
@@ -1152,7 +1662,6 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
 
-                EditorUtility.DisplayDialog("完了", $"{configCount}個の表情設定を適用しました。", "OK");
             }
             catch (Exception ex)
             {
