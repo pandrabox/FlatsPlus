@@ -92,7 +92,6 @@ namespace com.github.pandrabox.flatsplus.editor
         public GameObject WorkObject { get; private set; }
         public const string WorkObjectName = "FlatsPlusEmoMakerRoot";
         private SkinnedMeshRenderer _bodyRenderer;
-        private bool _disposed = false;
         private VRCAvatarDescriptor _originalDesc;
 
         public FPWorkObject()
@@ -138,7 +137,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             WorkObject = new GameObject(WorkObjectName);
             WorkObject.tag = "EditorOnly";
-            WorkObject.transform.position = new Vector3(10, 0);
+            WorkObject.transform.position = Vector3.one*-10;
 
             GameObject originalObj = _originalDesc.gameObject;
             GameObject duplicateObj = GameObject.Instantiate(originalObj, WorkObject.transform);
@@ -182,13 +181,9 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public void Dispose()
         {
-            if (_disposed) return;
-
             Reset();
             WorkObject = null;
             _bodyRenderer = null;
-
-            _disposed = true;
         }
 
     }
@@ -201,25 +196,22 @@ namespace com.github.pandrabox.flatsplus.editor
         private Camera _camera;
         private RenderTexture _renderTexture;
         private bool _isCapturing = false;
-        private bool _disposed = false;
 
         public FPCapture()
         {
         }
 
-        public void Initialize(GameObject parent, int textureSize)
+        public void Initialize(GameObject parent, int textureSize, float cameraHeight = 1f)
         {
             if (parent == null) return;
 
             Dispose();
-            _disposed = false;
-
             // カメラの作成
             _camera = new GameObject("Camera").AddComponent<Camera>();
             _camera.transform.parent = parent.transform;
             _camera.orthographic = true;
             _camera.orthographicSize = .3f;
-            _camera.transform.localPosition = new Vector3(0, 1.28f, 100f);
+            _camera.transform.localPosition = new Vector3(0, cameraHeight, 100f);
             _camera.transform.eulerAngles = new Vector3(0, 180, 0);
             _camera.clearFlags = CameraClearFlags.SolidColor;
             _camera.backgroundColor = new Color(0.8f, 0.8f, 0.8f, 1);
@@ -227,6 +219,25 @@ namespace com.github.pandrabox.flatsplus.editor
 
             CreateRenderTexture(textureSize);
         }
+
+        public void SetHeight(float height)
+        {
+            if (_camera != null)
+            {
+                _camera.transform.localPosition = new Vector3(0, height, 100f);
+            }
+        }
+
+        public void SetOrthographicSize(float size)
+        {
+            if (_camera != null)
+            {
+                _camera.orthographicSize = size;
+            }
+        }
+
+        public float CameraHeight => _camera.transform.localPosition.y;
+        public float OrthographicSize => _camera.orthographicSize;
 
         private void CreateRenderTexture(int textureSize)
         {
@@ -271,8 +282,6 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public void Dispose()
         {
-            if (_disposed) return;
-
             if (_camera != null)
             {
                 if (_camera.gameObject != null)
@@ -287,8 +296,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 RenderTexture.ReleaseTemporary(_renderTexture);
                 _renderTexture = null;
             }
-
-            _disposed = true;
         }
 
         public bool IsCapturing => _isCapturing;
@@ -307,7 +314,6 @@ namespace com.github.pandrabox.flatsplus.editor
         public int ActiveEmoIndex = 0; // アクティブな表情のインデックス
 
         public int TextureSize = 300;//180;
-        private bool _disposed = false;
 
         private EmoMakerCommon()
         {
@@ -320,9 +326,11 @@ namespace com.github.pandrabox.flatsplus.editor
             Reset();
             OriginalDesc = WorkObj.Initialize();
             if (OriginalDesc == null) return;
-            Capture.Initialize(WorkObj.WorkObject, TextureSize);
+            //Vector3 viewWorldPosition = OriginalDesc.transform.TransformPoint(OriginalDesc.ViewPosition);
+            Capture.Initialize(WorkObj.WorkObject, TextureSize, OriginalDesc.ViewPosition.y);
             MShapes = WorkObj.GetShapes();
             InitializeEmos();
+
         }
 
         // リセット機能の追加
@@ -371,15 +379,11 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public void Dispose()
         {
-            if (_disposed) return;
-
             Capture?.Dispose();
             Capture = null;
 
             WorkObj?.Dispose();
             WorkObj = null;
-
-            _disposed = true;
         }
     }
 
@@ -554,6 +558,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private bool[] _selectedRows = new bool[GRID_SIZE];
         private bool[] _selectedColumns = new bool[GRID_SIZE];
         private bool[,] _selectedCells = new bool[GRID_SIZE, GRID_SIZE];
+        private bool _allSelected = false; // 全選択状態の管理
 
         // 暗い表示用のマテリアル
         private Material _dimMaterial = null;
@@ -586,13 +591,25 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // 列選択ボタンの行
             GUILayout.BeginHorizontal();
-            // 左上の空白セル
-            GUILayout.Box("", GUILayout.Width(cellSize), GUILayout.Height(cellSize));
+
+            // 左上の全選択ボタン
+            GUIStyle allSelectStyle = new GUIStyle(GUI.skin.button);
+            if (_allSelected)
+            {
+                allSelectStyle.normal.textColor = Color.yellow;
+                allSelectStyle.fontStyle = FontStyle.Bold;
+            }
+
+            if (GUILayout.Button("全選択", allSelectStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
+            {
+                ToggleAllSelection();
+                Event.current.Use();
+            }
 
             // 列選択ボタン
             for (int col = 0; col < GRID_SIZE; col++)
             {
-                string colLabel = $"Right\n{((Gesture)col)}"; 
+                string colLabel = $"Right\n{((Gesture)col)}";
 
                 // スタイルを選択状態に応じて変更
                 GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -618,6 +635,9 @@ namespace com.github.pandrabox.flatsplus.editor
                     {
                         _selectedCells[row, col] = _selectedColumns[col];
                     }
+
+                    // 全選択状態を更新
+                    UpdateAllSelectedState();
 
                     // 選択が変更されたことをEmoMakerに通知
                     UpdateSelectedEmos();
@@ -660,6 +680,9 @@ namespace com.github.pandrabox.flatsplus.editor
                     {
                         _selectedCells[row, col] = _selectedRows[row];
                     }
+
+                    // 全選択状態を更新
+                    UpdateAllSelectedState();
 
                     // 選択が変更されたことをEmoMakerに通知
                     UpdateSelectedEmos();
@@ -735,6 +758,9 @@ namespace com.github.pandrabox.flatsplus.editor
                             // 行と列の選択状態を更新
                             UpdateRowColumnSelection();
 
+                            // 全選択状態を更新
+                            UpdateAllSelectedState();
+
                             // emoIndexが有効な範囲内かつ対応するEmoが存在する場合
                             if (emoIndex < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[emoIndex] != null)
                             {
@@ -752,6 +778,56 @@ namespace com.github.pandrabox.flatsplus.editor
 
             GUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
+        }
+
+        // 全選択の切り替え
+        private void ToggleAllSelection()
+        {
+            if (_allSelected)
+            {
+                // すでに全選択されている場合は全解除
+                ClearSelection();
+                _allSelected = false;
+            }
+            else
+            {
+                // 全選択する
+                for (int row = 0; row < GRID_SIZE; row++)
+                {
+                    for (int col = 0; col < GRID_SIZE; col++)
+                    {
+                        _selectedCells[row, col] = true;
+                    }
+                    _selectedRows[row] = true;
+                }
+
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    _selectedColumns[col] = true;
+                }
+
+                _allSelected = true;
+
+                // 選択が変更されたことをEmoMakerに通知
+                UpdateSelectedEmos();
+            }
+        }
+
+        // 全選択状態を更新
+        private void UpdateAllSelectedState()
+        {
+            _allSelected = true;
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    if (!_selectedCells[row, col])
+                    {
+                        _allSelected = false;
+                        return;
+                    }
+                }
+            }
         }
 
         // 行と列の選択状態をセルの状態から更新
@@ -811,6 +887,9 @@ namespace com.github.pandrabox.flatsplus.editor
                     _selectedCells[row, col] = false;
                 }
             }
+
+            // 全選択状態を更新
+            _allSelected = false;
         }
 
         // 選択された表情の更新を適用
@@ -1192,7 +1271,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // プレビューエリアのサイズを計算（正方形かつ利用可能なスペース内で最大サイズ）
             float availableWidth = FPEmoMaker.RIGHT_PANEL_WIDTH - 10; // 右パネル幅から余白を引く
-            float availableHeight = lowerHeight - 5;
+            float availableHeight = lowerHeight - 35; // カメラ設定スライダー用に高さを少し減らす
             _largePreviewSize = Mathf.Min(availableWidth, availableHeight);
 
             // 大きなサムネイル表示用のレイアウト
@@ -1215,7 +1294,74 @@ namespace com.github.pandrabox.flatsplus.editor
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
+            // カメラ設定スライダーを追加（カメラが初期化されている場合のみ）
+            if (EmoMakerCommon.I.WorkObj?.WorkObject != null && EmoMakerCommon.I.Capture != null)
+            {
+                // 利用可能な幅を計算
+                float availableControlWidth = FPEmoMaker.RIGHT_PANEL_WIDTH - 20; // パネル幅から余白を引いた値
+                float sliderWidth = (availableControlWidth - 130) / 2; // ラベル幅とスペースを考慮して2分割
+
+                EditorGUILayout.BeginHorizontal();
+
+                try
+                {
+                    // カメラのOrthographicSize設定
+                    EditorGUILayout.LabelField("サイズ:", GUILayout.Width(50));
+                    float currentSize = EmoMakerCommon.I.Capture.OrthographicSize;
+                    float newSize = EditorGUILayout.Slider(currentSize, 0.1f, 1.0f, GUILayout.Width(sliderWidth));
+                    if (newSize != currentSize)
+                    {
+                        EmoMakerCommon.I.Capture.SetOrthographicSize(newSize);
+                        RegenerateAllThumbnails();
+                    }
+
+                    GUILayout.Space(10);
+
+                    // カメラの高さ設定
+                    EditorGUILayout.LabelField("高さ:", GUILayout.Width(50));
+                    float currentHeight = EmoMakerCommon.I.Capture.CameraHeight;
+                    float newHeight = EditorGUILayout.Slider(currentHeight, 0.8f, 1.5f, GUILayout.Width(sliderWidth));
+                    if (newHeight != currentHeight)
+                    {
+                        EmoMakerCommon.I.Capture.SetHeight(newHeight);
+                        RegenerateAllThumbnails();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // エラー発生時はユーザーに通知せず、デバッグログに書き込む
+                    Debug.LogError($"カメラ設定でエラーが発生しました: {ex.Message}");
+                }
+
+                EditorGUILayout.EndHorizontal();
+            }
+            else
+            {
+                // カメラが初期化されていない場合のメッセージ
+                EditorGUILayout.HelpBox("カメラ設定はアバター取得後に利用できます。", MessageType.Info);
+            }
+
             EditorGUILayout.EndVertical();
+        }
+        private void RegenerateAllThumbnails()
+        {
+            // キャッシュをクリア
+            FPEMTmb.I.Clear();
+
+            // すべての表情の更新フラグを立てる
+            if (EmoMakerCommon.I.Emos != null)
+            {
+                foreach (var emo in EmoMakerCommon.I.Emos)
+                {
+                    if (emo != null)
+                    {
+                        emo.NeedUpdate = true;
+                    }
+                }
+            }
+
+            // 更新メッセージを表示
+            //EditorUtility.DisplayDialog("更新", "カメラ設定が変更されました。すべての表情のサムネイルを再生成します。", "OK");
         }
 
         private void DrawShapeControl(FPMKShape shape, List<int> selectedIndices)
