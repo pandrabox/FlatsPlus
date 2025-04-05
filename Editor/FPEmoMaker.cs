@@ -14,6 +14,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private RightContent rightContent;
         private float lastUpdateTime;
         private const float UPDATE_INTERVAL = 0.1f; // 0.1秒ごとに更新
+        private const float RIGHT_PANEL_WIDTH = 400f; // 右パネルの固定幅
 
         [MenuItem("Pan/EmoMaker")]
         public static void ShowWindow()
@@ -48,11 +49,13 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             EditorGUILayout.BeginHorizontal();
 
-            EditorGUILayout.BeginVertical(GUILayout.Width(position.width / 2));
+            // 左パネル - 残りのスペースを使用
+            EditorGUILayout.BeginVertical(GUILayout.Width(position.width - RIGHT_PANEL_WIDTH));
             leftContent.OnGUI();
             EditorGUILayout.EndVertical();
 
-            EditorGUILayout.BeginVertical(GUILayout.Width(position.width / 2));
+            // 右パネル - 固定幅400px
+            EditorGUILayout.BeginVertical(GUILayout.Width(RIGHT_PANEL_WIDTH));
             rightContent.OnGUI();
             EditorGUILayout.EndVertical();
 
@@ -509,7 +512,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 EmoMakerCommon.I.Capture.CaptureToTexture(tex, textureSize);
                 Tmb[_hash] = tex;
                 _currentEmo.Texture = tex;
-                Log.I.Info($@"サムネイルを作成しました: {_hash}");
+                //Log.I.Info($@"サムネイルを作成しました: {_hash}");
                 EditorWindow.GetWindow<FPEmoMaker>().Repaint();
                 if (_hash != _currentEmo.Hash)
                 {
@@ -529,14 +532,22 @@ namespace com.github.pandrabox.flatsplus.editor
         }
     }
 
-
     public class LeftContent
     {
+        private Vector2 _thumbnailScroll = Vector2.zero;
+
         public void OnGUI()
         {
-            GUILayout.Label("表情リスト", EditorStyles.boldLabel);
+            // 表情リストのみを表示（プレビューは右側に移動）
+            GUIStyle noMarginStyle = new GUIStyle();
+            noMarginStyle.margin = new RectOffset(0, 0, 0, 0);
+            noMarginStyle.padding = new RectOffset(0, 0, 0, 0);
 
-            GUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical(noMarginStyle);
+
+            // スクロールビュー
+            _thumbnailScroll = EditorGUILayout.BeginScrollView(_thumbnailScroll);
+            GUILayout.BeginHorizontal(noMarginStyle);
 
             for (int i = 0; i < EmoMakerCommon.I.Emos.Length; i++)
             {
@@ -581,6 +592,8 @@ namespace com.github.pandrabox.flatsplus.editor
             }
 
             GUILayout.EndHorizontal();
+            EditorGUILayout.EndScrollView();
+            EditorGUILayout.EndVertical();
         }
     }
 
@@ -588,9 +601,18 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         private Vector2 _scrollPosition = Vector2.zero;
         private bool _showHiddenShapes = false;
+        private float _largePreviewSize = 300f; // 大きなサムネイルのサイズ
 
         public void OnGUI()
         {
+            float totalHeight = EditorWindow.GetWindow<FPEmoMaker>().position.height;
+            // 上部70%（コントロール・スライダー）、下部30%（大きいプレビュー）に分割
+            float upperHeight = totalHeight * 0.7f;
+            float lowerHeight = totalHeight * 0.3f;
+
+            // ===== 上部エリア：コントロールとスライダー =====
+            EditorGUILayout.BeginVertical(GUILayout.Height(upperHeight));
+
             GUILayout.Label("Control", EditorStyles.boldLabel);
 
             if (GUILayout.Button("アクティブなアバターを取得"))
@@ -606,6 +628,8 @@ namespace com.github.pandrabox.flatsplus.editor
             if (EmoMakerCommon.I.WorkObj?.WorkObject == null || EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
             {
                 GUILayout.Label("アバターが取得されていません。上のボタンをクリックして取得してください。", EditorStyles.helpBox);
+                EditorGUILayout.EndVertical();
+                DrawLargePreview(); // 下部プレビュー部分
                 return;
             }
 
@@ -614,6 +638,8 @@ namespace com.github.pandrabox.flatsplus.editor
             if (activeEmo?.Shapes == null || activeEmo.Shapes.Count == 0)
             {
                 GUILayout.Label("表情データがありません。", EditorStyles.helpBox);
+                EditorGUILayout.EndVertical();
+                DrawLargePreview(); // 下部プレビュー部分
                 return;
             }
 
@@ -638,7 +664,7 @@ namespace com.github.pandrabox.flatsplus.editor
             if (hiddenShapes.Count > 0)
             {
                 EditorGUILayout.Space(10);
-                _showHiddenShapes = EditorGUILayout.Foldout(_showHiddenShapes, $"隠しシェイプ ({hiddenShapes.Count})", true);
+                _showHiddenShapes = EditorGUILayout.Foldout(_showHiddenShapes, $"その他 ({hiddenShapes.Count})", true);
 
                 if (_showHiddenShapes)
                 {
@@ -650,23 +676,79 @@ namespace com.github.pandrabox.flatsplus.editor
             }
 
             EditorGUILayout.EndScrollView();
+            EditorGUILayout.EndVertical();
+
+            // セパレーター
+            EditorGUILayout.Space(1);
+            Rect separatorRect = EditorGUILayout.GetControlRect(false, 1);
+            EditorGUI.DrawRect(separatorRect, new Color(0.5f, 0.5f, 0.5f, 0.3f));
+            EditorGUILayout.Space(1);
+
+            // 大きなプレビューを描画
+            DrawLargePreview();
+        }
+
+        // 大きなプレビュー部分を描画する新しいメソッド
+        private void DrawLargePreview()
+        {
+            float lowerHeight = EditorWindow.GetWindow<FPEmoMaker>().position.height * 0.3f;
+
+            // 余分なパディングを除去するスタイル
+            GUIStyle noMarginStyle = new GUIStyle();
+            noMarginStyle.margin = new RectOffset(0, 0, 0, 0);
+            noMarginStyle.padding = new RectOffset(0, 0, 0, 0);
+
+            EditorGUILayout.BeginVertical(noMarginStyle, GUILayout.Height(lowerHeight));
+
+            var activeEmo = EmoMakerCommon.I.ActiveEmo;
+
+            // プレビューエリアのサイズを計算（正方形かつ利用可能なスペース内で最大サイズ）
+            float availableWidth = 400 - 10; // 右パネル幅から余白を引く
+            float availableHeight = lowerHeight - 5;
+            _largePreviewSize = Mathf.Min(availableWidth, availableHeight);
+
+            // 大きなサムネイル表示用のレイアウト
+            EditorGUILayout.BeginHorizontal(noMarginStyle);
+            GUILayout.FlexibleSpace();
+
+            // 大きなサムネイルの表示用Rect
+            Rect largePreviewRect = GUILayoutUtility.GetRect(_largePreviewSize, _largePreviewSize);
+
+            // アクティブな表情のテクスチャを表示
+            if (activeEmo != null && activeEmo.Texture != null)
+            {
+                GUI.DrawTexture(largePreviewRect, activeEmo.Texture, ScaleMode.ScaleToFit);
+            }
+            else
+            {
+                GUI.Box(largePreviewRect, "");
+            }
+
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.EndVertical();
         }
 
         private void DrawShapeControl(FPMKShape shape)
         {
             EditorGUILayout.BeginHorizontal();
 
-            bool newHide = EditorGUILayout.Toggle(shape.Hide, GUILayout.Width(20));
-            if (newHide != shape.Hide)
-            {
-                shape.Hide = newHide;
-                EditorGUIUtility.ExitGUI();
-            }
+            // ラベルの幅を調整（短いラベル名の場合でも一定の幅を確保）
+            float labelWidth = 150;
 
-            EditorGUILayout.LabelField(shape.ShortName, GUILayout.Width(150));
+            // ラベルを表示
+            EditorGUILayout.LabelField(shape.ShortName, GUILayout.Width(labelWidth));
 
+            // スライダーの前に小さなスペースを追加して見栄えを改善
+            GUILayout.Space(5);
+
+            // スライダーを表示（残りの利用可能な幅を使用）
             int prevVal = shape.Val;
-            shape.Val = EditorGUILayout.IntSlider(shape.Val, 0, 100);
+            shape.Val = EditorGUILayout.IntSlider(shape.Val, 0, 100, GUILayout.ExpandWidth(true));
+
+            // 値を数値で表示（オプション）
+            //EditorGUILayout.LabelField(shape.Val.ToString(), GUILayout.Width(30));
 
             if (prevVal != shape.Val)
             {
@@ -676,4 +758,7 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.EndHorizontal();
         }
     }
+
+
+
 }
