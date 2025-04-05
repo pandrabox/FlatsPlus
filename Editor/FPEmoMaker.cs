@@ -306,7 +306,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public FPMKEmo[] Emos = new FPMKEmo[64];
         public int ActiveEmoIndex = 0; // アクティブな表情のインデックス
 
-        public int TextureSize = 180;
+        public int TextureSize = 300;//180;
         private bool _disposed = false;
 
         private EmoMakerCommon()
@@ -393,7 +393,8 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             FullName = fullName;
             ShortName = FullName.Replace("blendShape.", "");
-            Hide = ShortName.StartsWith("vrc.v_");
+            var aiueo = new[] { "あ", "い", "う", "え", "お" };
+            Hide = ShortName.StartsWith("vrc.v_") || aiueo.Contains(ShortName);
             Val = 0;
         }
     }
