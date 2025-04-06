@@ -38,7 +38,25 @@ namespace com.github.pandrabox.flatsplus.editor
         private Dictionary<string, bool> _blushInfo;
         private string _blushShape => _prj.OriginalBlushName;
         private string emoDataFolder = "Packages/com.github.pandrabox.flatsplus/Assets/Emo/res/";
-        private string emoDataFile => $@"{emoDataFolder}{_prj.CurrentAvatarName}.csv";
+        private string _defaultEmoDataPath => $@"{emoDataFolder}{_prj.CurrentAvatarName}.csv";
+        private string _emoDataFile
+        {
+            get
+            {
+                if(_config.D_Emo_Preset == "Auto")
+                {
+                    return _defaultEmoDataPath;
+                }
+                if (_config.D_Emo_Preset == "Custom")
+                {
+                    return _config.D_Emo_ConfigFilePath;
+                }
+                else
+                {
+                    return _config.D_Emo_Preset;
+                }
+            }
+        }  
 
         public FPEmoWork(FlatsProject fp) : base(fp) { }
 
@@ -79,7 +97,7 @@ namespace com.github.pandrabox.flatsplus.editor
         // 表情クリップ生成
         private void CreateEmoClips()
         {
-            string dataText = File.ReadAllText(emoDataFile);
+            string dataText = File.ReadAllText(_emoDataFile);
             string[] lines = dataText.Split('\n');
             if (lines.Length < 66)
             {
