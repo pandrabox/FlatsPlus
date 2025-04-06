@@ -207,3 +207,15 @@ Updater/CanUseNewVersion,新しいバージョンが利用可能です,New versi
 Updater/Update,アップデート,Update,업데이트,更新,更新
 Updater/Newest,お使いのFlatsPlusは最新です,Your FlatsPlus is up to date,사용 중인 FlatsPlus가 최신입니다,您的 FlatsPlus 是最新的,您的 FlatsPlus 是最新的
 Updater/Reload,再読込,Reload,다시 읽기,重新加载,重新加載
+
+D_Emo_ConfigFilePath/Name,表情設定ファイル,Emo Config File Path,표정 설정 파일,表情设置文件,表情設置文件
+OpenEmoMaker/Name,表情編集,Open Emo Maker,표정 편집,打开表情编辑器,打開表情編輯器
+OpenEmoMaker/ButtonName,開く,Open,열기,打开,打開
+Emo_Reset/Name,表情リセット,Emo Reset,표정 초기화,重置表情,重置表情
+Emo_Reset/ButtonName,リセット,Reset,초기화,重置,重置
+Emo_TransitionTime/Name,変化時間,Transition Time,변화 시간,变化时间,變化時間
+D_Emo_Preset/Name,表情タイプ,Emo Preset,표정 타입,表情类型,表情類型
+
+Emo/Help/Auto,アバター標準の表情を使用します。表情編集する場合はアバターを指定してからの実施がお勧めです(Autoからだと全て無表情スタートになります)。,Use the standard expressions of the avatar. It is recommended to specify the avatar before editing expressions (starting from Auto will result in all expressions being neutral).,아바타 표준 표정을 사용합니다. 표정 편집을 하려면 아바타를 지정하는 것이 좋습니다(Auto에서 시작하면 모든 표정이 중립이 됩니다).,使用头像的标准表情。建议在编辑表情之前指定头像（从Auto开始将导致所有表情都为中性）。,使用頭像的標準表情。建議在編輯表情之前指定頭像（從Auto開始將導致所有表情都為中性）。
+Emo/Help/Custom,表情編集で作成した表情を使用します。,Use the expressions created in the expression editor.,표정 편집에서 만든 표정을 사용합니다.,使用在表情编辑器中创建的表情。,使用在表情編輯器中創建的表情。
+Emo/Help/Avatar,指定アバターの表情を使用します(現在のアバターと一致する必要はありません。これは表情編集の初期値として利用されます),Use the specified avatar's expressions (does not need to match the current avatar. This is used as the initial value for expression editing),지정된 아바타의 표정을 사용합니다(현재 아바타와 일치할 필요는 없습니다. 이는 표정 편집의 초기값으로 사용됩니다),使用指定头像的表情（不需要与当前头像匹配。这用作表情编辑的初始值）,使用指定頭像的表情（不需要與當前頭像匹配。這用作表情編輯的初始值）

@@ -2,8 +2,15 @@
 
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using VRC.SDK3.Avatars.Components;
 using FP = com.github.pandrabox.flatsplus.runtime.FlatsPlus;
+using static com.github.pandrabox.pandravase.editor.Localizer;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -24,7 +31,67 @@ namespace com.github.pandrabox.flatsplus.editor
     }
     public class FPFuncEmo : ME_FuncBase
     {
+        private Dictionary<string, string> _presets;
         public override string ManagementFunc => nameof(FP.Func_Emo);
+
+        public override void DrawDetail()
+        {
+            LoadPreset();
+            DrawDictionarySelect(nameof(FP.D_Emo_Preset), _presets);
+
+            string helpmsg;
+            switch(SP(nameof(FP.D_Emo_Preset)).stringValue)
+            {
+                case "Auto":
+                    helpmsg = L("Emo/Help/Auto");
+                    break;
+                case "Custom":
+                    helpmsg = L("Emo/Help/Custom");
+                    break;
+                default:
+                    helpmsg = L("Emo/Help/Avatar");
+                    break;
+            }
+            EditorGUILayout.HelpBox(helpmsg, MessageType.Info);
+
+
+            if (SP(nameof(FP.D_Emo_Preset)).stringValue == "Custom")
+            {
+                DrawFileField(nameof(FP.D_Emo_ConfigFilePath), "csv");
+            }
+            DrawButton("OpenEmoMaker", OpenEmoMaker);
+            DrawFloatField(nameof(FP.Emo_TransitionTime),0,3);
+        }
+
+        private void OpenEmoMaker()
+        {
+            var targetPath = SP(nameof(FP.D_Emo_Preset)).stringValue;
+            if(targetPath== "Custom")
+            {
+                targetPath = SP(nameof(FP.D_Emo_ConfigFilePath)).stringValue;
+            }
+            string configSavePath = "Assets/Pan/FlatsPlus/Save/Emo";
+            Action<string> onSaveAction = (path) => {
+                SP(nameof(FP.D_Emo_Preset)).stringValue = "Custom";
+                SP(nameof(FP.D_Emo_ConfigFilePath)).stringValue = path;
+            };
+            GameObject targetObj = ME_FuncManager.I.EditorObj;
+            FPEmoMaker.OpenWindow(targetObj, targetPath, configSavePath, onSaveAction);
+        }
+        private void LoadPreset()
+        {
+            if (_presets != null ) return;
+            _presets = new Dictionary<string, string>();
+            _presets.Add("Auto", "Auto");
+            var path = "Packages/com.github.pandrabox.flatsplus/Assets/Emo/res";
+            var files = System.IO.Directory.GetFiles(path, "*.csv");
+            foreach (var file in files)
+            {
+                var name = System.IO.Path.GetFileNameWithoutExtension(file);
+                _presets.Add(name, file);
+            }
+            _presets.Add("Custom", "Custom");
+        }
     }
     public class FPFuncExplore : ME_FuncBase
     {

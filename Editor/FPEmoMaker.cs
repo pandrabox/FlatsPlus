@@ -6,6 +6,24 @@ using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 
+
+
+///<summary>
+///EmoMakerは表情を作成するためのエディタウィンドウです。
+///これはエディタ拡張から呼び出して使います
+///FPEmoMaker.OpenWindow(
+///VRCAvatarDescriptor targetAvatar = null,  // オプション: 対象アバター
+///    string configPath = null                  // オプション: 設定ファイルのパス
+///);
+///※一応オプションとはしていますが、基本的にはどちらも必須です
+///設定ファイルはカンマ区切りのcsvファイルです
+///1行目はヘッダ行で、以下のような内容です
+///Left,Right,シェイプ一覧
+///以降はデータ行です
+///Lジェスチャ番号, Rジェスチャ番号, 各シェイプ値(0～100)
+///</summary>
+
+
 namespace com.github.pandrabox.flatsplus.editor
 {
     public enum Gesture
@@ -20,6 +38,7 @@ namespace com.github.pandrabox.flatsplus.editor
         Thumbsup
     }
 
+
     public class FPEmoMaker : EditorWindow
     {
         public LeftContent leftContent;
@@ -27,12 +46,77 @@ namespace com.github.pandrabox.flatsplus.editor
         private float lastUpdateTime;
         private const float UPDATE_INTERVAL = 0.1f; // 0.1秒ごとに更新
         public const float RIGHT_PANEL_WIDTH = 400f; // 右パネルの固定幅
+        private string _pendingConfigPath = null; // 保留中の設定ファイルパス
 
-        [MenuItem("Pan/EmoMaker")]
-        public static void ShowWindow()
+        // 外部から呼び出すためのスタティックメソッドを修正
+        public static void OpenWindow(GameObject targetObject = null, string configPath = null, string configSavePath = null, Action<string> onSaveAction = null)
         {
-            var window = GetWindow<FPEmoMaker>("EmoMaker");
-            window.minSize = new Vector2(600, 400);
+            try
+            {
+                if (targetObject == null)
+                {
+                    Debug.LogError("EmoMakerにnullのGameObjectが渡されました");
+                    return;
+                }
+
+                var window = GetWindow<FPEmoMaker>("EmoMaker");
+                window.minSize = new Vector2(600, 400);
+
+                // EmoMakerCommonを確実に再初期化
+                EmoMakerCommon.I.Reinitialize();
+
+                // 設定ファイルパスを保持
+                if (!string.IsNullOrEmpty(configPath))
+                {
+                    window._pendingConfigPath = configPath;
+                }
+
+                // 保存先フォルダと保存時アクションを設定
+                if (!string.IsNullOrEmpty(configSavePath))
+                {
+                    window.rightContent.ConfigSavePath = configSavePath;
+                }
+
+                if (onSaveAction != null)
+                {
+                    window.rightContent.OnSaveAction = onSaveAction;
+                }
+
+                // GameObjectからアバターディスクリプタを取得して初期化
+                var descriptor = targetObject.GetComponent<VRCAvatarDescriptor>();
+
+                // 直接見つからなかった場合は親階層を探索
+                if (descriptor == null)
+                {
+                    Transform parent = targetObject.transform.parent;
+                    while (parent != null && descriptor == null)
+                    {
+                        descriptor = parent.GetComponent<VRCAvatarDescriptor>();
+                        parent = parent.parent;
+                    }
+                }
+
+                // ディスクリプタが見つかった場合は初期化
+                if (descriptor != null)
+                {
+                    try
+                    {
+                        EmoMakerCommon.I.SetAvatarTarget(descriptor);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"アバターの初期化中にエラーが発生しました: {ex.Message}\n{ex.StackTrace}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"VRCAvatarDescriptorが見つかりませんでした: {targetObject.name}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"EmoMakerの初期化中にエラーが発生しました: {ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         private void OnEnable()
@@ -54,6 +138,16 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 lastUpdateTime = currentTime;
                 FPEMTmb.I.CheckAndProcess(); // サムネイルの更新をチェック
+
+                // Emosが初期化された後で保留中の設定ファイルを読み込む
+                if (_pendingConfigPath != null && EmoMakerCommon.I.MShapes != null && EmoMakerCommon.I.MShapes.Count > 0)
+                {
+                    if (System.IO.File.Exists(_pendingConfigPath))
+                    {
+                        rightContent.LoadConfigFile(_pendingConfigPath);
+                    }
+                    _pendingConfigPath = null; // 読み込み後にクリア
+                }
             }
         }
 
@@ -98,33 +192,40 @@ namespace com.github.pandrabox.flatsplus.editor
         {
         }
 
-        public VRCAvatarDescriptor Initialize()
+        public VRCAvatarDescriptor Initialize(VRCAvatarDescriptor targetDesc = null)
         {
-            // 選択されているGameObjectからアバターを取得
-            var triggerObject = Selection.activeGameObject;
-            if (triggerObject == null)
+            if (targetDesc != null)
             {
-                Log.I.Error("アクティブなGameObjectが選択されていません。");
-                return null;
+                _originalDesc = targetDesc;
             }
-
-            // VRCAvatarDescriptorを検索
-            _originalDesc = triggerObject.GetComponent<VRCAvatarDescriptor>();
-            if (_originalDesc == null)
+            else
             {
-                Transform parent = triggerObject.transform.parent;
-                while (parent != null)
+                // 選択されているGameObjectからアバターを取得
+                var triggerObject = Selection.activeGameObject;
+                if (triggerObject == null)
                 {
-                    _originalDesc = parent.GetComponent<VRCAvatarDescriptor>();
-                    if (_originalDesc != null) break;
-                    parent = parent.parent;
+                    Log.I.Error("アクティブなGameObjectが選択されていません。");
+                    return null;
                 }
-            }
 
-            if (_originalDesc == null)
-            {
-                Log.I.Error("VRCAvatarDescriptorが見つかりませんでした");
-                return null;
+                // VRCAvatarDescriptorを検索
+                _originalDesc = triggerObject.GetComponent<VRCAvatarDescriptor>();
+                if (_originalDesc == null)
+                {
+                    Transform parent = triggerObject.transform.parent;
+                    while (parent != null)
+                    {
+                        _originalDesc = parent.GetComponent<VRCAvatarDescriptor>();
+                        if (_originalDesc != null) break;
+                        parent = parent.parent;
+                    }
+                }
+
+                if (_originalDesc == null)
+                {
+                    Log.I.Error("VRCAvatarDescriptorが見つかりませんでした");
+                    return null;
+                }
             }
 
             CreateWorkObject();
@@ -137,7 +238,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             WorkObject = new GameObject(WorkObjectName);
             WorkObject.tag = "EditorOnly";
-            WorkObject.transform.position = Vector3.one*-10;
+            WorkObject.transform.position = Vector3.one * -10;
 
             GameObject originalObj = _originalDesc.gameObject;
             GameObject duplicateObj = GameObject.Instantiate(originalObj, WorkObject.transform);
@@ -185,7 +286,6 @@ namespace com.github.pandrabox.flatsplus.editor
             WorkObject = null;
             _bodyRenderer = null;
         }
-
     }
 
     /// <summary>
@@ -306,6 +406,18 @@ namespace com.github.pandrabox.flatsplus.editor
         private static EmoMakerCommon _instance;
         public static EmoMakerCommon I => _instance ?? (_instance = new EmoMakerCommon());
 
+        public void Reinitialize()
+        {
+            // WorkObjとCaptureが既にnullなら新しいインスタンスを作成
+            if (WorkObj == null)
+                WorkObj = new FPWorkObject();
+            if (Capture == null)
+                Capture = new FPCapture();
+
+            // リセットして初期状態に戻す
+            Reset();
+        }
+
         public VRCAvatarDescriptor OriginalDesc;
         public List<FPMKShape> MShapes;
         public FPWorkObject WorkObj { get; private set; }
@@ -321,6 +433,20 @@ namespace com.github.pandrabox.flatsplus.editor
             Capture = new FPCapture();
         }
 
+        // 外部からアバターを指定して初期化するメソッドを追加
+        public void SetAvatarTarget(VRCAvatarDescriptor avatarDesc)
+        {
+            if (avatarDesc == null) return;
+
+            Reset();
+            OriginalDesc = WorkObj.Initialize(avatarDesc);
+            if (OriginalDesc == null) return;
+
+            Capture.Initialize(WorkObj.WorkObject, TextureSize, OriginalDesc.ViewPosition.y);
+            MShapes = WorkObj.GetShapes();
+            InitializeEmos();
+        }
+
         public void Initialize()
         {
             Reset();
@@ -330,7 +456,6 @@ namespace com.github.pandrabox.flatsplus.editor
             Capture.Initialize(WorkObj.WorkObject, TextureSize, OriginalDesc.ViewPosition.y);
             MShapes = WorkObj.GetShapes();
             InitializeEmos();
-
         }
 
         // リセット機能の追加
@@ -366,7 +491,6 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             //Emos[0].ReserveTmb();//対症療法で表情1を直す場合
         }
-
 
         // 現在の選択を変更して適用
         public void ChangeActiveEmo(int newIndex)
@@ -433,7 +557,6 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public string Hash => string.Join(",", Shapes.Select(s => $"{s.FullName}:{s.Val}").ToArray());
     }
-
 
     /// <summary>
     /// 画像サムネの作成と配布
@@ -521,6 +644,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             }
         }
+
         private void Capture()
         {
             try
@@ -545,7 +669,6 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             finally
             {
-
                 Running = false; // 必ず実行フラグをリセット
             }
         }
@@ -553,7 +676,6 @@ namespace com.github.pandrabox.flatsplus.editor
 
     public class LeftContent
     {
-        private Vector2 _thumbnailScroll = Vector2.zero;
         private const int GRID_SIZE = 8; // 8x8グリッド
 
         // 選択状態の管理
@@ -607,17 +729,36 @@ namespace com.github.pandrabox.flatsplus.editor
             // スクロールビューの前にコピー・貼り付けボタンとして表示
             DrawControlButtons();
 
-            // スクロールビューを開始
-            _thumbnailScroll = EditorGUILayout.BeginScrollView(_thumbnailScroll);
+            // 利用可能な表示領域を取得
+            float availableWidth = EditorWindow.GetWindow<FPEmoMaker>().position.width - FPEmoMaker.RIGHT_PANEL_WIDTH - 20; // マージンを考慮
+            float availableHeight = EditorWindow.GetWindow<FPEmoMaker>().position.height - 40; // コントロールボタン用に少し余白を確保
 
-            // グリッド全体の余白を設定
-            float cellSize = (EditorWindow.GetWindow<FPEmoMaker>().position.width - FPEmoMaker.RIGHT_PANEL_WIDTH - 40) / (GRID_SIZE + 1);
+            // セルサイズを計算 - 横長表示を考慮して小さい方の値を使用
+            float cellSize = Mathf.Min(
+                availableWidth / (GRID_SIZE + 1),
+                availableHeight / (GRID_SIZE + 1)
+            );
 
-            // テーブルレイアウト
+            // 全体のテーブルを配置する矩形を計算
+            float tableWidth = cellSize * (GRID_SIZE + 1);
+            float tableHeight = cellSize * (GRID_SIZE + 1);
+
+            // 中央に配置するための水平方向のオフセットを計算
+            float horizontalOffset = (availableWidth - tableWidth) / 2;
+
+            // テーブル全体を囲むレイアウト
             GUILayout.BeginVertical();
+            GUILayout.Space(10); // 上部に少し余白を追加
+
+            // 水平方向の余白を追加
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(horizontalOffset);
+
+            // テーブル本体
+            EditorGUILayout.BeginVertical(GUILayout.Width(tableWidth), GUILayout.Height(tableHeight));
 
             // 列選択ボタンの行
-            GUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal(GUILayout.Height(cellSize));
 
             // 左上の全選択ボタン
             GUIStyle allSelectStyle = new GUIStyle(GUI.skin.button);
@@ -640,6 +781,9 @@ namespace com.github.pandrabox.flatsplus.editor
 
                 // スタイルを選択状態に応じて変更
                 GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+                buttonStyle.fixedWidth = cellSize;
+                buttonStyle.fixedHeight = cellSize;
+
                 if (_selectedColumns[col])
                 {
                     buttonStyle.normal.textColor = Color.yellow;
@@ -702,18 +846,21 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            GUILayout.EndHorizontal();
+            EditorGUILayout.EndHorizontal();
 
             // 各行の表示
             for (int row = 0; row < GRID_SIZE; row++)
             {
-                GUILayout.BeginHorizontal();
+                EditorGUILayout.BeginHorizontal(GUILayout.Height(cellSize));
 
                 // 行選択ボタン
                 string rowLabel = $"Left\n{((Gesture)row)}";
 
                 // スタイルを選択状態に応じて変更
                 GUIStyle rowButtonStyle = new GUIStyle(GUI.skin.button);
+                rowButtonStyle.fixedWidth = cellSize;
+                rowButtonStyle.fixedHeight = cellSize;
+
                 if (_selectedRows[row])
                 {
                     rowButtonStyle.normal.textColor = Color.yellow;
@@ -776,13 +923,13 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
 
-                // セルの表示
+                // セルの表示 - 固定の幅と高さを使用
                 for (int col = 0; col < GRID_SIZE; col++)
                 {
                     int emoIndex = row * GRID_SIZE + col;
                     var emo = emoIndex < EmoMakerCommon.I.Emos.Length ? EmoMakerCommon.I.Emos[emoIndex] : null;
 
-                    // セルの矩形を定義
+                    // セルの矩形を固定サイズで取得
                     Rect cellRect = GUILayoutUtility.GetRect(cellSize, cellSize);
 
                     // セルの背景を描画
@@ -939,11 +1086,23 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
 
-                GUILayout.EndHorizontal();
+                EditorGUILayout.EndHorizontal();
             }
 
+            EditorGUILayout.EndVertical(); // テーブル本体の終了
+            GUILayout.Space(horizontalOffset); // 右側の余白
+            EditorGUILayout.EndHorizontal();
+
             GUILayout.EndVertical();
-            EditorGUILayout.EndScrollView();
+
+            EditorGUILayout.HelpBox(
+                "・編集したい表情をクリックしてから右側のバーを動かして編集\n" +
+                "・Ctrlを押しながらクリックすると複数選択\n" +
+                "・列・行を押してまとめて選択\n" +
+                "・左上のメニューよりコピー・入替\n" +
+                "・編集が完了したら「保存して適用」\n" +
+                "・初期配置はFlatsPlusの「表情タイプ」によります",
+                MessageType.Info);
         }
 
         // コントロールボタンを描画（コピー・貼り付け・入れ替え機能を統合）
@@ -1477,6 +1636,7 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorWindow.GetWindow<FPEmoMaker>().Repaint();
         }
 
+
         // セル同士を入れ替える
         private void SwapCells(int sourceIndex, int targetIndex)
         {
@@ -1527,6 +1687,7 @@ namespace com.github.pandrabox.flatsplus.editor
             sourceEmo.ReserveTmb();
             targetEmo.ReserveTmb();
         }
+
 
         // 行同士を入れ替える
         private void SwapRows(int sourceRow, int targetRow)
@@ -1759,6 +1920,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private Vector2 _scrollPosition = Vector2.zero;
         private bool _showHiddenShapes = false;
         private float _largePreviewSize = 300f; // 大きなサムネイルのサイズ
+        private bool _showLoadButton = false; // 「アクティブなアバターを取得」ボタン表示フラグ
+
+        // 追加: コンフィグの保存先フォルダとコールバックアクション
+        public string ConfigSavePath { get; set; } = "";
+        public Action<string> OnSaveAction { get; set; }
 
         public void OnGUI()
         {
@@ -1773,12 +1939,15 @@ namespace com.github.pandrabox.flatsplus.editor
             // ===== 上部エリア：コントロールとスライダー =====
             EditorGUILayout.BeginVertical(GUILayout.Height(upperHeight));
 
-            GUILayout.Label("Control", EditorStyles.boldLabel);
+            // "Control"ラベルを削除
 
-            // アバターを取得ボタン
-            if (GUILayout.Button("アクティブなアバターを取得"))
+            // アバターを取得ボタン（非表示）
+            if (_showLoadButton)
             {
-                EmoMakerCommon.I.Initialize();
+                if (GUILayout.Button("アクティブなアバターを取得"))
+                {
+                    EmoMakerCommon.I.Initialize();
+                }
             }
 
             // Config操作用のボタンを横並びに配置
@@ -1791,11 +1960,11 @@ namespace com.github.pandrabox.flatsplus.editor
                 LoadConfigFile();
             }
 
-            // Configの書き出しボタン
+            // 「保存して適用」ボタン（「Config書き出し」から変更）
             GUI.enabled = EmoMakerCommon.I.MShapes != null && EmoMakerCommon.I.MShapes.Count > 0; // アバター取得済みの場合のみ有効
-            if (GUILayout.Button("Config書き出し"))
+            if (GUILayout.Button("保存して適用"))
             {
-                ExportConfigFile();
+                SaveAndApplyConfig();
             }
 
             // ボタンの有効状態をリセット
@@ -1803,8 +1972,10 @@ namespace com.github.pandrabox.flatsplus.editor
 
             EditorGUILayout.EndHorizontal();
 
-            EmoMakerCommon.I.OriginalDesc = (VRCAvatarDescriptor)EditorGUILayout.ObjectField(
-                "Target", EmoMakerCommon.I.OriginalDesc, typeof(VRCAvatarDescriptor), true);
+            // Targetフィールドを編集不可に設定
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField("Target", EmoMakerCommon.I.OriginalDesc, typeof(VRCAvatarDescriptor), true);
+            EditorGUI.EndDisabledGroup();
 
             // 選択された表情の数を表示
             EditorGUILayout.LabelField($"選択中: {selectedIndices.Count} 個の表情", EditorStyles.boldLabel);
@@ -1872,27 +2043,33 @@ namespace com.github.pandrabox.flatsplus.editor
             DrawLargePreview(selectedIndices);
         }
 
-        // CSVファイル読み込み処理
-        private void LoadConfigFile()
+        // CSVファイル読み込み処理（外部からも呼び出せるように修正）
+        public void LoadConfigFile(string path = null)
         {
             if (EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
             {
-                EditorUtility.DisplayDialog("エラー", "アバターが取得されていません。先にアバターを取得してください。", "OK");
+                Debug.LogError("アバターが取得されていません。先にアバターを取得してください。");
                 return;
             }
 
-            // ファイル選択ダイアログを表示
-            string path = EditorUtility.OpenFilePanel("設定ファイルを選択", "", "csv");
+            // ファイル選択ダイアログを表示（パスが指定されていない場合のみ）
             if (string.IsNullOrEmpty(path))
-                return;
+            {
+                path = EditorUtility.OpenFilePanel("設定ファイルを選択", "", "csv");
+                if (string.IsNullOrEmpty(path))
+                    return;
+            }
 
             try
             {
+                // サムネイルを明示的にクリア
+                FPEMTmb.I.Clear();
+
                 // ファイルを読み込む
                 string[] lines = System.IO.File.ReadAllLines(path);
                 if (lines.Length < 2)
                 {
-                    EditorUtility.DisplayDialog("エラー", "ファイルが空か、ヘッダーのみです。", "OK");
+                    Debug.LogError("ファイルが空か、ヘッダーのみです。");
                     return;
                 }
 
@@ -1900,7 +2077,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 string[] headers = lines[0].Split(',');
                 if (headers.Length < 3 || headers[0] != "Left" || headers[1] != "Right")
                 {
-                    EditorUtility.DisplayDialog("エラー", "ファイルフォーマットが正しくありません。先頭2列はLeft,Rightである必要があります。", "OK");
+                    Debug.LogError("ファイルフォーマットが正しくありません。先頭2列はLeft,Rightである必要があります。");
                     return;
                 }
 
@@ -1962,31 +2139,48 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
 
+                Debug.Log($"{configCount}個の表情設定を適用しました。");
             }
             catch (Exception ex)
             {
-                EditorUtility.DisplayDialog("エラー", $"ファイルの読み込み中にエラーが発生しました: {ex.Message}", "OK");
                 Debug.LogError($"Config読み込みエラー: {ex}");
             }
         }
 
-        // CSVファイル書き出し処理
-        private void ExportConfigFile()
+        // 保存して適用ボタンの処理
+        private void SaveAndApplyConfig()
         {
             if (EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
             {
-                EditorUtility.DisplayDialog("エラー", "アバターが取得されていません。先にアバターを取得してください。", "OK");
+                Debug.LogError("アバターが取得されていません。先にアバターを取得してください。");
                 return;
             }
 
-            // ファイル保存ダイアログを表示
-            string path = EditorUtility.SaveFilePanel("設定ファイルを保存", "", "config.csv", "csv");
-            if (string.IsNullOrEmpty(path))
-                return;
+            // 保存先フォルダが指定されていない場合は標準の保存ダイアログを表示
+            string filePath;
+            if (string.IsNullOrEmpty(ConfigSavePath))
+            {
+                // 標準の保存ダイアログを表示
+                filePath = EditorUtility.SaveFilePanel("表情設定ファイルを保存", "", "CustomEmo.csv", "csv");
+                if (string.IsNullOrEmpty(filePath))
+                    return; // キャンセルされた場合
+            }
+            else
+            {
+                // 保存先フォルダが指定されている場合はそこにデフォルト名で保存
+                string defaultFileName = "CustomEmo.csv";
+
+                // ユーザーが名前を指定できるようにする（オプション）
+                string fileName = EditorUtility.SaveFilePanel("表情設定ファイル名を指定", ConfigSavePath, defaultFileName, "csv");
+                if (string.IsNullOrEmpty(fileName))
+                    return; // キャンセルされた場合
+
+                filePath = fileName;
+            }
 
             try
             {
-                using (var writer = new System.IO.StreamWriter(path, false, System.Text.Encoding.UTF8))
+                using (var writer = new System.IO.StreamWriter(filePath, false, System.Text.Encoding.UTF8))
                 {
                     // すべてのシェイプキーの名前を収集
                     HashSet<string> allShapeNames = new HashSet<string>();
@@ -2053,14 +2247,44 @@ namespace com.github.pandrabox.flatsplus.editor
                         }
                     }
 
-                    EditorUtility.DisplayDialog("完了", $"{exportCount}個の表情設定をエクスポートしました。", "OK");
+                    AssetDatabase.Refresh();
+                    Debug.Log($"{exportCount}個の表情設定をエクスポートしました。: {filePath}");
                 }
+
+                string unityPath = ConvertToProjectRelativePath(filePath);
+                OnSaveAction?.Invoke(unityPath ?? filePath);
             }
             catch (Exception ex)
             {
-                EditorUtility.DisplayDialog("エラー", $"ファイルの書き出し中にエラーが発生しました: {ex.Message}", "OK");
-                Debug.LogError($"Config書き出しエラー: {ex}");
+                Debug.LogError($"Config保存エラー: {ex}");
             }
+        }
+
+
+        private string ConvertToProjectRelativePath(string systemPath)
+        {
+            if (string.IsNullOrEmpty(systemPath))
+                return null;
+
+            // データパスを取得（/Assets）
+            string dataPath = Application.dataPath;
+            string projectRoot = dataPath.Substring(0, dataPath.Length - 6); // /Assetsを削除
+
+            // Assetsフォルダ内のパスを変換
+            if (systemPath.StartsWith(dataPath))
+            {
+                return "Assets" + systemPath.Substring(dataPath.Length).Replace('\\', '/');
+            }
+
+            // Packagesフォルダ内のパスを変換
+            string packagesPath = System.IO.Path.Combine(projectRoot, "Packages").Replace('\\', '/');
+            if (systemPath.StartsWith(packagesPath))
+            {
+                return "Packages" + systemPath.Substring(packagesPath.Length).Replace('\\', '/');
+            }
+
+            // プロジェクト内のパスでない場合
+            return null;
         }
 
         // 大きなプレビュー部分を描画する新しいメソッド
@@ -2152,6 +2376,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             EditorGUILayout.EndVertical();
         }
+
         private void RegenerateAllThumbnails()
         {
             // キャッシュをクリア
@@ -2168,9 +2393,6 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-
-            // 更新メッセージを表示
-            //EditorUtility.DisplayDialog("更新", "カメラ設定が変更されました。すべての表情のサムネイルを再生成します。", "OK");
         }
 
         private void DrawShapeControl(FPMKShape shape, List<int> selectedIndices)
@@ -2248,7 +2470,4 @@ namespace com.github.pandrabox.flatsplus.editor
             }
         }
     }
-
-
-
 }

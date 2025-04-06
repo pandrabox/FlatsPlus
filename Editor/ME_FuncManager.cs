@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using static com.github.pandrabox.pandravase.editor.Localizer;
+using com.github.pandrabox.flatsplus.runtime;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -12,7 +13,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class ME_FuncManager
     {
         private static ME_FuncManager _instance;
-        public static ME_FuncManager Instance => _instance ?? (_instance = new ME_FuncManager());
+        public static ME_FuncManager I => _instance ?? (_instance = new ME_FuncManager());
 
         private SerializedObject _serializedObject;
         private Dictionary<string, SerializedProperty> _serializedProperties = new Dictionary<string, SerializedProperty>();
@@ -21,6 +22,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private bool _showDetail = false;
         private string _detailKey = "";
         private ME_FuncBase _currentDetailModule = null;
+        public GameObject EditorObj => ((FlatsPlus)_editor.target).gameObject;
 
         // シングルトンなのでプライベートコンストラクタ
         private ME_FuncManager() { }

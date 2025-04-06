@@ -14,10 +14,10 @@ namespace com.github.pandrabox.flatsplus.editor
         protected override void DefineSerial()
         {
             // シングルトンマネージャーの初期化
-            ME_FuncManager.Instance.Initialize(serializedObject, this);
+            ME_FuncManager.I.Initialize(serializedObject, this);
 
             // 言語マネージャーの初期化
-            ME_LanguageManager.Instance.Initialize(ME_FuncManager.Instance.GetLanguageProperty());
+            ME_LanguageManager.Instance.Initialize(ME_FuncManager.I.GetLanguageProperty());
 
             // ログ解析マネージャーの初期化
             ME_LogAnalyzer.Instance.Initialize(this);
@@ -26,7 +26,7 @@ namespace com.github.pandrabox.flatsplus.editor
         protected override void OnInnerEnable()
         {
             // モジュールの初期化
-            ME_FuncManager.Instance.OnEnableAll();
+            ME_FuncManager.I.OnEnableAll();
         }
 
         public override void OnInnerInspectorGUI()
@@ -38,13 +38,13 @@ namespace com.github.pandrabox.flatsplus.editor
             ME_Updater.I.DrawUpdateInfo();
 
             // 機能モジュールのメニュー表示
-            ME_FuncManager.Instance.DrawAllMenus();
+            ME_FuncManager.I.DrawAllMenus();
 
             // 機能の一括ON/OFF
             DrawAllChangeField();
 
             // 詳細設定表示
-            ME_FuncManager.Instance.DrawDetailIfNeeded();
+            ME_FuncManager.I.DrawDetailIfNeeded();
 
             // ログ解析結果表示
             ME_LogAnalyzer.Instance.DrawAnalysisResults();
@@ -56,11 +56,11 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button(L("Editor/AllOff")))
             {
-                ME_FuncManager.Instance.SetAllFunctionsEnabled(false);
+                ME_FuncManager.I.SetAllFunctionsEnabled(false);
             }
             if (GUILayout.Button(L("Editor/AllOn")))
             {
-                ME_FuncManager.Instance.SetAllFunctionsEnabled(true);
+                ME_FuncManager.I.SetAllFunctionsEnabled(true);
             }
             EditorGUILayout.EndHorizontal();
         }

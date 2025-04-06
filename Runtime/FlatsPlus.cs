@@ -51,6 +51,9 @@ namespace com.github.pandrabox.flatsplus.runtime
         public float D_Onaka_RadiusTuning = 1f;
 
         public float Emo_TransitionTime = 0.5f;
+        public string D_Emo_Preset = "";
+        public string D_Emo_ConfigFilePath = "";
+
         public Texture2D[] Ico_Textures = new Texture2D[6];
         public bool Ico_VerView = false;
         public bool Light_IntensityPerfectSync = false;
