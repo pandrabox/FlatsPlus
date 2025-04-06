@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
-
+using static com.github.pandrabox.pandravase.editor.Localizer;
 
 
 ///<summary>
@@ -726,12 +726,17 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public void OnGUI()
         {
+            // ヘルプテキスト表示
+            EditorGUILayout.HelpBox(
+                L("EmoMaker/Help/Usage"),
+                MessageType.Info);
+
             // スクロールビューの前にコピー・貼り付けボタンとして表示
             DrawControlButtons();
 
             // 利用可能な表示領域を取得
             float availableWidth = EditorWindow.GetWindow<FPEmoMaker>().position.width - FPEmoMaker.RIGHT_PANEL_WIDTH - 20; // マージンを考慮
-            float availableHeight = EditorWindow.GetWindow<FPEmoMaker>().position.height - 40; // コントロールボタン用に少し余白を確保
+            float availableHeight = EditorWindow.GetWindow<FPEmoMaker>().position.height - 40 - 80; // コントロールボタン用と説明テキスト用に余白を確保
 
             // セルサイズを計算 - 横長表示を考慮して小さい方の値を使用
             float cellSize = Mathf.Min(
@@ -768,7 +773,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 allSelectStyle.fontStyle = FontStyle.Bold;
             }
 
-            if (GUILayout.Button("全選択", allSelectStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
+            if (GUILayout.Button(L("EmoMaker/AllSelect"), allSelectStyle, GUILayout.Width(cellSize), GUILayout.Height(cellSize)))
             {
                 ToggleAllSelection();
                 Event.current.Use();
@@ -777,7 +782,7 @@ namespace com.github.pandrabox.flatsplus.editor
             // 列選択ボタン
             for (int col = 0; col < GRID_SIZE; col++)
             {
-                string colLabel = $"Right\n{((Gesture)col)}";
+                string colLabel = $"{L("EmoMaker/Right")}\n{((Gesture)col)}";
 
                 // スタイルを選択状態に応じて変更
                 GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -854,7 +859,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 EditorGUILayout.BeginHorizontal(GUILayout.Height(cellSize));
 
                 // 行選択ボタン
-                string rowLabel = $"Left\n{((Gesture)row)}";
+                string rowLabel = $"{L("EmoMaker/Left")}\n{((Gesture)row)}";
 
                 // スタイルを選択状態に応じて変更
                 GUIStyle rowButtonStyle = new GUIStyle(GUI.skin.button);
@@ -1094,15 +1099,6 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
-
-            EditorGUILayout.HelpBox(
-                "・編集したい表情をクリックしてから右側のバーを動かして編集\n" +
-                "・Ctrlを押しながらクリックすると複数選択\n" +
-                "・列・行を押してまとめて選択\n" +
-                "・左上のメニューよりコピー・入替\n" +
-                "・編集が完了したら「保存して適用」\n" +
-                "・初期配置はFlatsPlusの「表情タイプ」によります",
-                MessageType.Info);
         }
 
         // コントロールボタンを描画（コピー・貼り付け・入れ替え機能を統合）
@@ -1126,7 +1122,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // コピー開始/解除ボタン
             GUI.enabled = (canStartCellCopy || canStartRowCopy || canStartColCopy) || inCopyMode;
-            string copyButtonText = inCopyMode ? "コピー解除" : "コピー";
+            string copyButtonText = inCopyMode ? L("EmoMaker/CopyCancel") : L("EmoMaker/Copy");
             if (GUILayout.Button(copyButtonText, GUILayout.Height(24)))
             {
                 if (inCopyMode)
@@ -1178,7 +1174,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // 入れ替え開始/解除ボタン
             GUI.enabled = (canStartSwap && (canStartCellSwap || canStartRowSwap || canStartColSwap)) || inSwapMode;
-            string swapButtonText = inSwapMode ? "入替解除" : "入替開始";
+            string swapButtonText = inSwapMode ? L("EmoMaker/SwapCancel") : L("EmoMaker/SwapStart");
             if (GUILayout.Button(swapButtonText, GUILayout.Height(24)))
             {
                 if (inSwapMode)
@@ -1227,7 +1223,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // 実行ボタン（貼り付けと入替実行を統合）
             bool canExecuteAction = false;
-            string actionButtonText = "確定";
+            string actionButtonText = L("EmoMaker/Confirm");
 
             // コピー貼り付け実行判定
             bool canPaste = !inSwapMode && inCopyMode &&
@@ -1236,7 +1232,6 @@ namespace com.github.pandrabox.flatsplus.editor
             if (canPaste)
             {
                 canExecuteAction = true;
-                actionButtonText = "確定";
             }
 
             // 入れ替え実行判定
@@ -1277,7 +1272,6 @@ namespace com.github.pandrabox.flatsplus.editor
             if (canExecuteSwap)
             {
                 canExecuteAction = true;
-                actionButtonText = "確定";
             }
 
             GUI.enabled = canExecuteAction;
@@ -1298,6 +1292,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             EditorGUILayout.EndHorizontal();
         }
+
 
         // コピーモードをクリア
         private void ClearCopyMode()
@@ -1939,12 +1934,10 @@ namespace com.github.pandrabox.flatsplus.editor
             // ===== 上部エリア：コントロールとスライダー =====
             EditorGUILayout.BeginVertical(GUILayout.Height(upperHeight));
 
-            // "Control"ラベルを削除
-
             // アバターを取得ボタン（非表示）
             if (_showLoadButton)
             {
-                if (GUILayout.Button("アクティブなアバターを取得"))
+                if (GUILayout.Button(L("EmoMaker/GetActiveAvatar")))
                 {
                     EmoMakerCommon.I.Initialize();
                 }
@@ -1955,14 +1948,14 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // Configの読み込みボタン
             GUI.enabled = EmoMakerCommon.I.MShapes != null && EmoMakerCommon.I.MShapes.Count > 0; // アバター取得済みの場合のみ有効
-            if (GUILayout.Button("Config読み込み"))
+            if (GUILayout.Button(L("EmoMaker/LoadConfig")))
             {
                 LoadConfigFile();
             }
 
-            // 「保存して適用」ボタン（「Config書き出し」から変更）
+            // 「保存して適用」ボタン
             GUI.enabled = EmoMakerCommon.I.MShapes != null && EmoMakerCommon.I.MShapes.Count > 0; // アバター取得済みの場合のみ有効
-            if (GUILayout.Button("保存して適用"))
+            if (GUILayout.Button(L("EmoMaker/SaveAndApply")))
             {
                 SaveAndApplyConfig();
             }
@@ -1974,15 +1967,15 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // Targetフィールドを編集不可に設定
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.ObjectField("Target", EmoMakerCommon.I.OriginalDesc, typeof(VRCAvatarDescriptor), true);
+            EditorGUILayout.ObjectField(L("EmoMaker/Target"), EmoMakerCommon.I.OriginalDesc, typeof(VRCAvatarDescriptor), true);
             EditorGUI.EndDisabledGroup();
 
             // 選択された表情の数を表示
-            EditorGUILayout.LabelField($"選択中: {selectedIndices.Count} 個の表情", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(string.Format(L("EmoMaker/SelectedCount"), selectedIndices.Count), EditorStyles.boldLabel);
 
             if (EmoMakerCommon.I.WorkObj?.WorkObject == null || EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
             {
-                GUILayout.Label("アバターが取得されていません。上のボタンをクリックして取得してください。", EditorStyles.helpBox);
+                GUILayout.Label(L("EmoMaker/AvatarNotLoaded"), EditorStyles.helpBox);
                 EditorGUILayout.EndVertical();
                 DrawLargePreview(selectedIndices); // 下部プレビュー部分
                 return;
@@ -1992,7 +1985,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
             if (activeEmo?.Shapes == null || activeEmo.Shapes.Count == 0)
             {
-                GUILayout.Label("表情データがありません。", EditorStyles.helpBox);
+                GUILayout.Label(L("EmoMaker/NoEmoData"), EditorStyles.helpBox);
                 EditorGUILayout.EndVertical();
                 DrawLargePreview(selectedIndices); // 下部プレビュー部分
                 return;
@@ -2000,12 +1993,12 @@ namespace com.github.pandrabox.flatsplus.editor
 
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
-            GUILayout.Label("通常シェイプ", EditorStyles.boldLabel);
+            GUILayout.Label(L("EmoMaker/NormalShapes"), EditorStyles.boldLabel);
             var visibleShapes = activeEmo.Shapes.Where(s => !s.Hide).ToList();
 
             if (visibleShapes.Count == 0)
             {
-                GUILayout.Label("表示するシェイプがありません", EditorStyles.miniLabel);
+                GUILayout.Label(L("EmoMaker/NoShapesToDisplay"), EditorStyles.miniLabel);
             }
             else
             {
@@ -2019,7 +2012,7 @@ namespace com.github.pandrabox.flatsplus.editor
             if (hiddenShapes.Count > 0)
             {
                 EditorGUILayout.Space(10);
-                _showHiddenShapes = EditorGUILayout.Foldout(_showHiddenShapes, $"その他 ({hiddenShapes.Count})", true);
+                _showHiddenShapes = EditorGUILayout.Foldout(_showHiddenShapes, string.Format(L("EmoMaker/Others"), hiddenShapes.Count), true);
 
                 if (_showHiddenShapes)
                 {
@@ -2048,14 +2041,14 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             if (EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
             {
-                Debug.LogError("アバターが取得されていません。先にアバターを取得してください。");
+                Debug.LogError(L("EmoMaker/Error/AvatarNotLoaded"));
                 return;
             }
 
             // ファイル選択ダイアログを表示（パスが指定されていない場合のみ）
             if (string.IsNullOrEmpty(path))
             {
-                path = EditorUtility.OpenFilePanel("設定ファイルを選択", "", "csv");
+                path = EditorUtility.OpenFilePanel(L("EmoMaker/SelectConfigFile"), "", "csv");
                 if (string.IsNullOrEmpty(path))
                     return;
             }
@@ -2069,7 +2062,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 string[] lines = System.IO.File.ReadAllLines(path);
                 if (lines.Length < 2)
                 {
-                    Debug.LogError("ファイルが空か、ヘッダーのみです。");
+                    Debug.LogError(L("EmoMaker/Error/EmptyFile"));
                     return;
                 }
 
@@ -2077,7 +2070,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 string[] headers = lines[0].Split(',');
                 if (headers.Length < 3 || headers[0] != "Left" || headers[1] != "Right")
                 {
-                    Debug.LogError("ファイルフォーマットが正しくありません。先頭2列はLeft,Rightである必要があります。");
+                    Debug.LogError(L("EmoMaker/Error/InvalidFormat"));
                     return;
                 }
 
@@ -2139,11 +2132,11 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
 
-                Debug.Log($"{configCount}個の表情設定を適用しました。");
+                Debug.Log(string.Format(L("EmoMaker/ConfigApplied"), configCount));
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Config読み込みエラー: {ex}");
+                Debug.LogError($"{L("EmoMaker/Error/LoadConfig")}: {ex}");
             }
         }
 
@@ -2152,7 +2145,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             if (EmoMakerCommon.I.MShapes == null || EmoMakerCommon.I.MShapes.Count == 0)
             {
-                Debug.LogError("アバターが取得されていません。先にアバターを取得してください。");
+                Debug.LogError(L("EmoMaker/Error/AvatarNotLoaded"));
                 return;
             }
 
@@ -2161,7 +2154,7 @@ namespace com.github.pandrabox.flatsplus.editor
             if (string.IsNullOrEmpty(ConfigSavePath))
             {
                 // 標準の保存ダイアログを表示
-                filePath = EditorUtility.SaveFilePanel("表情設定ファイルを保存", "", "CustomEmo.csv", "csv");
+                filePath = EditorUtility.SaveFilePanel(L("EmoMaker/SaveConfigFile"), "", "CustomEmo.csv", "csv");
                 if (string.IsNullOrEmpty(filePath))
                     return; // キャンセルされた場合
             }
@@ -2171,7 +2164,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 string defaultFileName = "CustomEmo.csv";
 
                 // ユーザーが名前を指定できるようにする（オプション）
-                string fileName = EditorUtility.SaveFilePanel("表情設定ファイル名を指定", ConfigSavePath, defaultFileName, "csv");
+                string fileName = EditorUtility.SaveFilePanel(L("EmoMaker/SpecifyFileName"), ConfigSavePath, defaultFileName, "csv");
                 if (string.IsNullOrEmpty(fileName))
                     return; // キャンセルされた場合
 
@@ -2248,7 +2241,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
 
                     AssetDatabase.Refresh();
-                    Debug.Log($"{exportCount}個の表情設定をエクスポートしました。: {filePath}");
+                    Debug.Log(string.Format(L("EmoMaker/ConfigExported"), exportCount, filePath));
                 }
 
                 string unityPath = ConvertToProjectRelativePath(filePath);
@@ -2256,10 +2249,9 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Config保存エラー: {ex}");
+                Debug.LogError($"{L("EmoMaker/Error/SaveConfig")}: {ex}");
             }
         }
-
 
         private string ConvertToProjectRelativePath(string systemPath)
         {
@@ -2339,7 +2331,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 try
                 {
                     // カメラのOrthographicSize設定
-                    EditorGUILayout.LabelField("サイズ:", GUILayout.Width(50));
+                    EditorGUILayout.LabelField(L("EmoMaker/Size"), GUILayout.Width(50));
                     float currentSize = EmoMakerCommon.I.Capture.OrthographicSize;
                     float newSize = EditorGUILayout.Slider(currentSize, 0.1f, 1.0f, GUILayout.Width(sliderWidth));
                     if (newSize != currentSize)
@@ -2351,7 +2343,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     GUILayout.Space(10);
 
                     // カメラの高さ設定
-                    EditorGUILayout.LabelField("高さ:", GUILayout.Width(50));
+                    EditorGUILayout.LabelField(L("EmoMaker/Height"), GUILayout.Width(50));
                     float currentHeight = EmoMakerCommon.I.Capture.CameraHeight;
                     float newHeight = EditorGUILayout.Slider(currentHeight, 0.8f, 1.5f, GUILayout.Width(sliderWidth));
                     if (newHeight != currentHeight)
@@ -2371,7 +2363,7 @@ namespace com.github.pandrabox.flatsplus.editor
             else
             {
                 // カメラが初期化されていない場合のメッセージ
-                EditorGUILayout.HelpBox("カメラ設定はアバター取得後に利用できます。", MessageType.Info);
+                EditorGUILayout.HelpBox(L("EmoMaker/CameraSettings"), MessageType.Info);
             }
 
             EditorGUILayout.EndVertical();
@@ -2442,7 +2434,7 @@ namespace com.github.pandrabox.flatsplus.editor
             else
             {
                 // 値が異なる場合は「あわせる」ボタン
-                if (GUILayout.Button("値をあわせる", GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button(L("EmoMaker/FixValue"), GUILayout.ExpandWidth(true)))
                 {
                     UpdateAllSelectedShapes(shape, selectedIndices);
                 }

@@ -132,8 +132,8 @@ Menu/Carry/Distance,距離調整,Distance,거리 조정,调整距离,調整距�
 Menu/Carry/Distance/Message,距離を調整する。だっこ・おんぶ共用。,Adjust the distance. Shared with hug and carry.,거리를 조정합니다. 안기 업기와 공용입니다.,调整距离。与拥抱和背部共用。,調整距離。與擁抱和背部共用。
 Menu/Carry/Rotation,角度調整,Rotation,각도 조정,调整角度,調整角度
 Menu/Carry/Rotation/Message,角度を調整する。全ての「他者移動」共用。,Adjust the angle. Shared with all "Carry".,각도를 조정합니다. 모든 "다른 사람 이동"과 공용입니다.,调整角度。与所有“移动他人”共用。,調整角度。與所有“移動他人”共用。
-D_Carry_AllowBlueGateDefault/Name,青ゲート許可,Allow Blue Gate Default,파란 게이트 허용,允许蓝色传送门默认,允许蓝色传送门默认
-D_Carry_AllowBlueGateDefault/Detail,他者が自身に青ゲートを作成することを許可する。,Allow others to create a blue gate for yourself.,다른 사람이 자신에게 파란 게이트를 만들 수 있도록 허용합니다.,允许其他人为自己创建蓝色传送门。,允许其他人为自己创建蓝色传送门。
+Func/D_Carry_AllowBlueGateDefault/Name,青ゲート許可,Allow Blue Gate Default,파란 게이트 허용,允许蓝色传送门默认,允许蓝色传送门默认
+Func/D_Carry_AllowBlueGateDefault/Detail,他者が自身に青ゲートを作成することを許可する。,Allow others to create a blue gate for yourself.,다른 사람이 자신에게 파란 게이트를 만들 수 있도록 허용합니다.,允许其他人为自己创建蓝色传送门。,允许其他人为自己创建蓝色传送门。
 D_Carry_GateMaxRange/Name,最大ゲート距離,Maximum Gate Distance,최대 게이트 거리,最大门距离,最大門距離
 D_Carry_GateMaxRange/Detail,ゲートを呼び出せる最大距離,Maximum distance at which gates can be called,게이트를 호출할 수 있는 최대 거리,可以呼叫门的最大距离,可以呼叫門的最大距離
 
@@ -155,22 +155,22 @@ Editor/Detail,詳細,Detail,상세,详细,詳細
 Editor/Detail2,詳細設定,Detail setting,상세 설정,详细设置,詳細設置
 Editor/CloseDetail,詳細設定を閉じる,Close detail setting,상세 설정을 닫습니다,关闭详细设置,關閉詳細設置
 
-D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
-D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
-D_Hoppe_AllowStretch/Name,伸ばす許可,Allow Stretch,늘리기 허용,允许拉伸,允许拉伸
-D_Hoppe_AllowStretch/Detail,ほっぺたを伸ばすことを許可する,Allow stretching the cheeks,볼을 늘릴 수 있게 허용,允许拉伸脸颊,允许拉伸脸颊
+Func/D_Hoppe_AllowTouch/Name,接触許可,Allow Touch,접촉 허용,允许触摸,允许触摸
+Func/D_Hoppe_AllowTouch/Detail,ほっぺたを触ることを許可する,Allow touching the cheeks,볼을 만질 수 있게 허용,允许触摸脸颊,允许触摸脸颊
+Func/D_Hoppe_AllowStretch/Name,伸ばす許可,Allow Stretch,늘리기 허용,允许拉伸,允许拉伸
+Func/D_Hoppe_AllowStretch/Detail,ほっぺたを伸ばすことを許可する,Allow stretching the cheeks,볼을 늘릴 수 있게 허용,允许拉伸脸颊,允许拉伸脸颊
 D_Hoppe_StretchLimit/Name,伸ばす制限,Stretch Limit,늘리기 제한,拉伸限制,拉伸限制
 D_Hoppe_StretchLimit/Detail,ほっぺたを伸ばす制限値,Limit value for stretching the cheeks,볼을 늘리는 제한 값,拉伸脸颊的限制值,拉伸脸颊的限制值
-D_Hoppe_Blush/Name,頬紅,Blush,볼터치,腮红,腮红
-D_Hoppe_Blush/Detail,頬紅を自動制御する,Automatically control the blush,볼터치를 자동으로 제어합니다,自动控制腮红,自动控制腮红
+Func/D_Hoppe_Blush/Name,頬紅,Blush,볼터치,腮红,腮红
+Func/D_Hoppe_Blush/Detail,頬紅を自動制御する,Automatically control the blush,볼터치를 자동으로 제어합니다,自动控制腮红,自动控制腮红
 D_Hoppe_Blush_Sensitivity/Name,頬紅感知距離,Blush Sensitivity,볼터치 감지 거리,腮红灵敏度,腮红灵敏度
-D_Hoppe_Blush_Sensitivity/Detail,手を近づけたときに頬紅が感知する距離,Distance at which the blush is sensed when the hand is brought close,손을 가까이 가져갔을 때 볼터치가 감지되는 거리,手靠近时感应腮红的距离,手靠近時感應腮紅的距離
-D_Hoppe_UseOriginalBlush/Name,元の頬紅を使用,Use Original Blush,원래의 볼터치 사용,使用原始腮红,使用原始腮紅
-D_Hoppe_UseOriginalBlush/Detail,アバターオリジナルの頬紅を使用する,Use the original blush of the avatar,아바타의 원래 볼터치를 사용합니다,使用头像的原始腮红,使用頭像的原始腮紅
+Func/D_Hoppe_Blush_Sensitivity/Detail,手を近づけたときに頬紅が感知する距離,Distance at which the blush is sensed when the hand is brought close,손을 가까이 가져갔을 때 볼터치가 감지되는 거리,手靠近时感应腮红的距离,手靠近時感應腮紅的距離
+Func/D_Hoppe_UseOriginalBlush/Name,元の頬紅を使用,Use Original Blush,원래의 볼터치 사용,使用原始腮红,使用原始腮紅
+Func/D_Hoppe_UseOriginalBlush/Detail,アバターオリジナルの頬紅を使用する,Use the original blush of the avatar,아바타의 원래 볼터치를 사용합니다,使用头像的原始腮红,使用頭像的原始腮紅
 D_Hoppe_BlushControlType/Name,頬紅制御タイプ,Blush Control Type,볼터치 제어 유형,腮红控制类型,腮红控制类型
 D_Hoppe_BlushControlType/Detail,頬紅の制御タイプを選択,Select the type of blush control,볼터치 제어 유형 선택,选择腮红控制类型,选择腮红控制类型
-D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
-D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單
+Func/D_Hoppe_ShowExpressionMenu/Name,メニュー表示,Display Menu,메뉴 표시,显示菜单,顯示菜單
+Func/D_Hoppe_ShowExpressionMenu/Detail,ExpressionMenuにほっぺメニューを表示,Display the cheek menu in the ExpressionMenu,ExpressionMenu에 볼 메뉴를 표시,在ExpressionMenu中显示脸颊菜单,在ExpressionMenu中顯示臉頰菜單
 
 D_Onaka_Pull/Name,Pull,Pull,당기기,拉动,拉動
 D_Onaka_Pull/Detail,元の形に戻ろうとする力,Force to return to the original shape,원래 모양으로 돌아가려는 힘,试图恢复原来的形状的力量,試圖恢復原來的形狀的力量
@@ -219,3 +219,38 @@ D_Emo_Preset/Name,表情タイプ,Emo Preset,표정 타입,表情类型,表情�
 Emo/Help/Auto,アバター標準の表情を使用します。表情編集する場合はアバターを指定してからの実施がお勧めです(Autoからだと全て無表情スタートになります)。,Use the standard expressions of the avatar. It is recommended to specify the avatar before editing expressions (starting from Auto will result in all expressions being neutral).,아바타 표준 표정을 사용합니다. 표정 편집을 하려면 아바타를 지정하는 것이 좋습니다(Auto에서 시작하면 모든 표정이 중립이 됩니다).,使用头像的标准表情。建议在编辑表情之前指定头像（从Auto开始将导致所有表情都为中性）。,使用頭像的標準表情。建議在編輯表情之前指定頭像（從Auto開始將導致所有表情都為中性）。
 Emo/Help/Custom,表情編集で作成した表情を使用します。,Use the expressions created in the expression editor.,표정 편집에서 만든 표정을 사용합니다.,使用在表情编辑器中创建的表情。,使用在表情編輯器中創建的表情。
 Emo/Help/Avatar,指定アバターの表情を使用します(現在のアバターと一致する必要はありません。これは表情編集の初期値として利用されます),Use the specified avatar's expressions (does not need to match the current avatar. This is used as the initial value for expression editing),지정된 아바타의 표정을 사용합니다(현재 아바타와 일치할 필요는 없습니다. 이는 표정 편집의 초기값으로 사용됩니다),使用指定头像的表情（不需要与当前头像匹配。这用作表情编辑的初始值）,使用指定頭像的表情（不需要與當前頭像匹配。這用作表情編輯的初始值）
+
+EmoMaker/Help/Usage,・編集したい表情をクリックしてから右側のバーを動かして編集\n・Ctrlを押しながらクリックすると複数選択\n・列・行を押してまとめて選択\n・左上のメニューよりコピー・入替\n・編集が完了したら「保存して適用」\n・初期配置はFlatsPlusの「表情タイプ」によります,・Click on the expression you want to edit then adjust the sliders on the right\n・Hold Ctrl to select multiple expressions\n・Click on columns/rows to select entire rows/columns\n・Copy/swap from the menu in the top left\n・Click "Save and Apply" when finished editing\n・Initial layout depends on FlatsPlus "Expression Type",・편집하고 싶은 표정을 클릭한 후 오른쪽 슬라이더로 조정\n・Ctrl을 누르면서 클릭하면 여러 표정 선택\n・행과 열을 클릭하여 한 번에 선택\n・왼쪽 상단의 메뉴에서 복사/교체\n・편집이 완료되면 "저장하고 적용"\n・초기 배치는 FlatsPlus "표정 유형"에 따름,・点击要编辑的表情，然后调整右侧滑块\n・按住Ctrl可选择多个表情\n・点击行/列可选择整行/整列\n・从左上角菜单复制/交换\n・编辑完成后点击"保存并应用"\n・初始布局取决于FlatsPlus的"表情类型",・點擊要編輯的表情，然後調整右側滑塊\n・按住Ctrl可選擇多個表情\n・點擊行/列可選擇整行/整列\n・從左上角菜單複製/交換\n・編輯完成後點擊"保存並應用"\n・初始佈局取決於FlatsPlus的"表情類型"
+EmoMaker/AllSelect,全選択,Select All,모두 선택,全选,全選
+EmoMaker/Left,左,Left,왼쪽,左,左
+EmoMaker/Right,右,Right,오른쪽,右,右
+EmoMaker/Copy,コピー,Copy,복사,复制,複製
+EmoMaker/CopyCancel,コピー解除,Cancel Copy,복사 취소,取消复制,取消複製
+EmoMaker/SwapStart,入替開始,Start Swap,교체 시작,开始交换,開始交換
+EmoMaker/SwapCancel,入替解除,Cancel Swap,교체 취소,取消交换,取消交換
+EmoMaker/Confirm,確定,Confirm,확인,确认,確認
+EmoMaker/GetActiveAvatar,アクティブなアバターを取得,Get Active Avatar,활성 아바타 가져오기,获取活跃头像,獲取活躍頭像
+EmoMaker/LoadConfig,Config読み込み,Load Config,설정 불러오기,加载配置,加載配置
+EmoMaker/SaveAndApply,保存して適用,Save and Apply,저장하고 적용,保存并应用,保存並應用
+EmoMaker/Target,Target,Target,대상,目标,目標
+EmoMaker/SelectedCount,選択中: {0} 個の表情,Selected: {0} expressions,선택됨: {0} 표정,已选择: {0} 个表情,已選擇: {0} 個表情
+EmoMaker/AvatarNotLoaded,アバターが取得されていません。上のボタンをクリックして取得してください。,Avatar not loaded. Please click the button above to get it.,아바타가 로드되지 않았습니다. 위의 버튼을 클릭하여 가져오세요.,未加载头像。请点击上方按钮获取。,未加載頭像。請點擊上方按鈕獲取。
+EmoMaker/NoEmoData,表情データがありません。,No expression data available.,표정 데이터가 없습니다.,没有表情数据。,沒有表情數據。
+EmoMaker/NormalShapes,通常シェイプ,Normal Shapes,일반 셰이프,普通形状,普通形狀
+EmoMaker/NoShapesToDisplay,表示するシェイプがありません,No shapes to display,표시할 셰이프가 없습니다,没有可显示的形状,沒有可顯示的形狀
+EmoMaker/Others,その他 ({0}),Others ({0}),기타 ({0}),其他 ({0}),其他 ({0})
+EmoMaker/SetValue,値をあわせる,Align Value,값 맞추기,对齐值,對齊值
+EmoMaker/Size,サイズ:,Size:,크기:,大小:,大小:
+EmoMaker/Height,高さ:,Height:,높이:,高度:,高度:
+EmoMaker/CameraSettings,カメラ設定はアバター取得後に利用できます。,Camera settings available after avatar is loaded.,카메라 설정은 아바타 로드 후 사용할 수 있습니다.,头像加载后可使用相机设置。,頭像加載後可使用相機設置。
+EmoMaker/SelectConfigFile,設定ファイルを選択,Select Config File,설정 파일 선택,选择配置文件,選擇配置文件
+EmoMaker/SpecifyFileName,表情設定ファイル名を指定,Specify Expression File Name,표정 설정 파일 이름 지정,指定表情设置文件名,指定表情設置文件名
+EmoMaker/SaveConfigFile,表情設定ファイルを保存,Save Expression Settings File,표정 설정 파일 저장,保存表情设置文件,保存表情設置文件
+EmoMaker/Error/AvatarNotLoaded,アバターが取得されていません。先にアバターを取得してください。,Avatar not loaded. Please get the avatar first.,아바타가 로드되지 않았습니다. 먼저 아바타를 가져오세요.,未加载头像。请先获取头像。,未加載頭像。請先獲取頭像。
+EmoMaker/Error/EmptyFile,ファイルが空か、ヘッダーのみです。,File is empty or contains only the header.,파일이 비어 있거나 헤더만 포함되어 있습니다.,文件为空或仅包含标题。,文件為空或僅包含標題。
+EmoMaker/Error/InvalidFormat,ファイルフォーマットが正しくありません。先頭2列はLeft,Rightである必要があります。,Invalid file format. The first two columns must be Left,Right.,잘못된 파일 형식입니다. 처음 두 열은 Left,Right여야 합니다.,文件格式无效。前两列必须是Left,Right。,文件格式無效。前兩列必須是Left,Right。
+EmoMaker/ConfigApplied,{0}個の表情設定を適用しました。,Applied {0} expression settings.,{0}개의 표정 설정을 적용했습니다.,已应用{0}个表情设置。,已應用{0}個表情設置。
+EmoMaker/Error/LoadConfig,Config読み込みエラー,Config loading error,설정 로드 오류,配置加载错误,配置加載錯誤
+EmoMaker/Error/SaveConfig,Config保存エラー,Config saving error,설정 저장 오류,配置保存错误,配置保存錯誤
+EmoMaker/ConfigExported,{0}個の表情設定をエクスポートしました。: {1},{0} expression settings exported: {1},{0}개의 표정 설정을 내보냈습니다: {1},已导出{0}个表情设置: {1},已導出{0}個表情設置: {1}
+EmoMaker/FixValue,値をあわせる,Align Value,값 맞추기,对齐值,對齊值
