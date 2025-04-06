@@ -98,3 +98,10 @@ ClippingCancelerが正しく動作しない不具合を修正しました。
 ClippingCanceler가 올바르게 작동하지 않는 문제를 수정했습니다.
 修复了ClippingCanceler无法正常工作的bug。
 修復了ClippingCanceler無法正常工作的bug。
+
+FlatsPlus v0.14.0  
+Added EmoMaker. You can freely edit expressions from the detailed editing of "Emo Control".  
+EmoMakerを追加しました。「表情制御」の詳細編集から表情を自由に編集できます。  
+EmoMaker를 추가했습니다. "표정 제어"의 상세 편집에서 표정을 자유롭게 편집할 수 있습니다.  
+添加了EmoMaker。您可以从“表情控制”的详细编辑中自由编辑表情。  
+添加了EmoMaker。您可以從“表情控制”的詳細編輯中自由編輯表情。  
