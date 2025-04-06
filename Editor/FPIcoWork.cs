@@ -31,6 +31,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public FPIcoWork(FlatsProject fp) : base(fp) { }
 
         GameObject _callPlane;
+        Texture2D[] _icos;
 
         sealed protected override void OnConstruct()
         {
@@ -39,13 +40,67 @@ namespace com.github.pandrabox.flatsplus.editor
             CreateMenu();
         }
 
+
+        /// <summary>
+        /// _config.Ico_Texturesは度々nullになるので安全に取得する
+        /// </summary>
+        public Texture2D[] Icos
+        {
+            get
+            {
+                //正しく取得できている場合はそのまま返す
+                if (_icos != null)
+                {
+                    if (_icos.All(t => t != null))
+                    {
+                        return _icos;
+                    }
+                }
+
+                _icos = new Texture2D[8];
+
+                try
+                {
+                    // _configから読める分を読む
+                    if (!(_config == null || _config.Ico_Textures == null))
+                    {
+                        for (int i = 0; i < Math.Min(_icos.Length, _config.Ico_Textures.Length); i++)
+                        {
+                            _icos[i] = _config.Ico_Textures[i];
+                        }
+                    }
+
+                    // ない分をデフォルトから読み込み
+                    for (int i = 0; i < _icos.Length; i++)
+                    {
+                        if (_icos[i] == null)
+                        {
+                            string path = $"Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i{i + 1}.png";
+                            _icos[i] = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+
+                            if (_icos[i] == null) //まずあり得ないが念のためのチェック
+                            {
+                                Log.I.Warning($"Could not load default texture at path: {path}");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.I.Exception(ex, "_icos getter でエラーが発生しました");
+                }
+
+                return _icos;
+            }
+        }
+
         private void ReplacePackTexture()
         {
             using (var capture = new PanCapture(BGColor: new Color(1, 1, 1, 1), margin: 10, padding: 10, width: 170))
             {
                 FlatsProject prj = new FlatsProject(_desc);
                 var strImg = capture.TextToImage($"{prj.ProjectName}\n\r{prj.VPMVersion}");
-                List<Texture2D> textures = _config.Ico_Textures.ToList();
+                List<Texture2D> textures = new List<Texture2D>(_icos);
                 textures.Add(strImg);
                 Texture2D packTexture = PackTexture(textures, 3, 170 * 3);
                 try
@@ -63,15 +118,12 @@ namespace com.github.pandrabox.flatsplus.editor
             MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Ico"));
             string name;
+            Texture2D[] iconTextures = _icos;
             for (int i = 1; i < 9; i++)
             {
-                Texture2D currentIco = _config.Ico_Textures[i - 1];
-                if (currentIco == null)
-                {
-                    string path = $"Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i{i}.png";
-                    currentIco = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-                    _config.Ico_Textures[i - 1] = currentIco;
-                }
+                // 配列のインデックスは0始まり、iは1始まり
+                int index = i - 1;
+                Texture2D currentIco = iconTextures[index];
                 if (i < 7)
                 {
                     name = (i).ToString();

@@ -43,18 +43,59 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             get
             {
-                if (_config.D_Emo_Preset == "Auto")
+                string emoPath = "";
+                if (_config?.D_Emo_Preset == "Custom")
                 {
-                    return _defaultEmoDataPath;
+                    emoPath = _config?.D_Emo_ConfigFilePath;
+                    if (IsEmoDataFile(emoPath)) return emoPath;
                 }
-                if (_config.D_Emo_Preset == "Custom")
+
+                if (_config?.D_Emo_Preset != "Auto")
                 {
-                    return _config.D_Emo_ConfigFilePath;
+                    emoPath = _config?.D_Emo_Preset;
+                    if (IsEmoDataFile(emoPath)) return emoPath;
                 }
-                else
+                return _defaultEmoDataPath;
+            }
+        }
+        private bool IsEmoDataFile(string path)
+        {
+            if (path == null) return false;
+
+            // 存在しなければfalse
+            if (!File.Exists(path))
+            {
+                Log.I.Warning($"Emoファイルが存在しません: {path}");
+                return false;
+            }
+
+            try
+            {
+                // 読み込む。失敗したらfalse
+                string[] lines = File.ReadAllLines(path);
+
+                // 66行未満ならばfalse (ヘッダー + 64 表情 + 余裕分)
+                if (lines.Length < 66)
                 {
-                    return _config.D_Emo_Preset;
+                    Log.I.Warning($"Emoファイルの行数が足りません: {lines.Length}行 (66行以上必要)");
+                    return false;
                 }
+
+                // 1行目がLeft,Right,で開始していなければfalse
+                string header = lines[0];
+                if (!header.StartsWith("Left,Right,"))
+                {
+                    Log.I.Warning($"Emoファイルのヘッダー形式が不正です: {header}");
+                    return false;
+                }
+
+                // すべてのチェックをパスした場合はtrue
+                return true;
+            }
+            catch
+            {
+                Log.I.Warning($"Emoファイルの検証中にエラーが発生しました: {path}");
+                return false;
             }
         }
 
@@ -99,11 +140,6 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             string dataText = File.ReadAllText(_emoDataFile);
             string[] lines = dataText.Split('\n');
-            if (lines.Length < 66)
-            {
-                Log.I.Error("表情データに異常があります");
-                return;
-            }
             clips = new AnimationClipsBuilder();
             string[] shapeNames = lines[0].Split(',');
             for (int i = 0; i < 64; i++)
