@@ -606,7 +606,8 @@ namespace com.github.pandrabox.flatsplus.editor
             Running = true;
             _hash = _currentEmo.Hash;
             SetShape();
-            EditorApplication.delayCall += () => {
+            EditorApplication.delayCall += () =>
+            {
                 EditorApplication.delayCall += () => Capture();
             };
         }

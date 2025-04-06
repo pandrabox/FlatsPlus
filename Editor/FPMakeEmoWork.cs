@@ -67,11 +67,12 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void SetConfig()
         {
-            _ui.MenuOpacity = _tgt.MenuOpacity;
-            _ui.MenuSize = _tgt.MenuSize;
+            _ui.MenuOpacity = _config.MakeEmo_MenuOpacity;
+            _ui.MenuSize = _config.MakeEmo_MenuSize;
             _ui.SelectColor = _tgt.SelectColor;
-            _ui.Speed = _tgt.ScrollSpeed;
-            _ui.DeadZone = _tgt.DeadZone;
+            _ui.Speed = _config.MakeEmo_ScrollSpeed;
+            _ui.DeadZone = _config.MakeEmo_DeadZone;
+            _ui.LockSize = _config.MakeEmo_LockSize;
         }
 
         // GridUIÇÃçÏê¨
@@ -87,7 +88,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _ui.yMax = y;
             _ui.ItemCount = eyeCount;
             Log.I.Info($"EyeCount:{eyeCount}, x:{x}, y:{y}");
-            _ui.MainTex = PackTexture(eyeTextures, x, x * TILESIZE, y * TILESIZE, _tgt.BackGroundColor, true, _tgt.Margin);
+            _ui.MainTex = PackTexture(eyeTextures, x, x * TILESIZE, y * TILESIZE, _tgt.BackGroundColor, true, _config.MakeEmo_Margin);
         }
 
         //êßå‰ïî

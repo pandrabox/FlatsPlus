@@ -1,11 +1,11 @@
-﻿using com.github.pandrabox.pandravase.editor;
+﻿using com.github.pandrabox.flatsplus.runtime;
+using com.github.pandrabox.pandravase.editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using static com.github.pandrabox.pandravase.editor.Localizer;
-using com.github.pandrabox.flatsplus.runtime;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -24,6 +24,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private ME_FuncBase _currentDetailModule = null;
         public GameObject EditorObj => ((FlatsPlus)_editor.target).gameObject;
 
+        // 詳細表示の状態維持フラグ
+        private bool _keepDetailOpen = false;
+        // オブジェクトフィールド操作検出用
+        private bool _objectPickerWasOpen = false;
+
         // シングルトンなのでプライベートコンストラクタ
         private ME_FuncManager() { }
 
@@ -37,6 +42,43 @@ namespace com.github.pandrabox.flatsplus.editor
 
             // モジュールを初期化
             InitializeFunctionModules();
+
+            // EditorApplicationイベントを登録
+            EditorApplication.update += OnEditorUpdate;
+            // イベント検出のためにSceneViewのDelegateを設定
+            SceneView.duringSceneGui += OnSceneGUI;
+        }
+
+        private void OnSceneGUI(SceneView sceneView)
+        {
+            // オブジェクトピッカー操作時の状態維持
+            Event e = Event.current;
+            if (e != null && e.commandName == "ObjectSelectorClosed" && _objectPickerWasOpen)
+            {
+                _objectPickerWasOpen = false;
+                _keepDetailOpen = true;
+                EditorApplication.delayCall += () =>
+                {
+                    // 詳細ビューを開き続ける
+                    if (_currentDetailModule != null)
+                    {
+                        _showDetail = true;
+                    }
+                    EditorUtility.SetDirty(_editor.target);
+                };
+            }
+        }
+
+        // エディタの更新時に呼ばれるメソッド
+        private void OnEditorUpdate()
+        {
+            // オブジェクトピッカーが表示されている場合はフラグを設定
+            int controlID = EditorGUIUtility.GetObjectPickerControlID();
+            if (controlID != 0)
+            {
+                _objectPickerWasOpen = true;
+                _keepDetailOpen = true;
+            }
         }
 
         // SerializedPropertyの取得（キャッシュ使用）
@@ -85,32 +127,81 @@ namespace com.github.pandrabox.flatsplus.editor
         // 詳細表示
         public void DrawDetailIfNeeded()
         {
-            if (!_showDetail || _currentDetailModule == null) return;
+            // 詳細表示が不要な場合は早期リターン
+            if (!_showDetail && !_keepDetailOpen)
+            {
+                _currentDetailModule = null;
+                return;
+            }
 
-            EditorGUI.BeginChangeCheck();
+            // 詳細表示を維持する場合、強制的に表示フラグをON
+            if (_keepDetailOpen && _currentDetailModule != null)
+            {
+                _showDetail = true;
+                _keepDetailOpen = false; // 一度だけ使用
+            }
 
             try
             {
-                ShowDetailTitle();
-                _currentDetailModule.DrawDetail(); // 引数なしに変更
+                EditorGUI.BeginChangeCheck();
 
+                // タイトルとモジュールの詳細を描画
+                ShowDetailTitle();
+
+                if (_currentDetailModule != null)
+                {
+                    try
+                    {
+                        // モジュールの詳細表示を行う
+                        _currentDetailModule.DrawDetail();
+                    }
+                    catch (ExitGUIException)
+                    {
+                        // 通常のGUIの中断例外は無視（Unity EditorのGUIシステムの一部）
+                        // この例外によって上位のGUIレイアウトが壊れないように、ここでキャッチする
+                        _keepDetailOpen = true;
+                        EditorApplication.delayCall += () =>
+                        {
+                            // 次のフレームで強制的にインスペクタを再描画
+                            EditorUtility.SetDirty(_editor.target);
+                        };
+                        return; // 即座にリターンして、残りのGUI描画をスキップ
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"Error drawing module detail: {ex.Message}\n{ex.StackTrace}");
+                    }
+                }
+
+                // 閉じるボタン
                 if (GUILayout.Button("Editor/CloseDetail".LL()))
                 {
                     _showDetail = false;
+                    _keepDetailOpen = false;
                     _currentDetailModule = null;
                 }
+
+                // 変更を適用
+                if (EditorGUI.EndChangeCheck())
+                {
+                    ApplyModifiedProperties();
+                }
+            }
+            catch (ExitGUIException)
+            {
+                // 最上位レベルでも例外を捕捉し、次のフレームで状態を回復
+                _keepDetailOpen = true;
+                EditorApplication.delayCall += () =>
+                {
+                    EditorUtility.SetDirty(_editor.target);
+                };
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Error drawing detail view: {ex.Message}");
+                Debug.LogError($"Error drawing detail view: {ex.Message}\n{ex.StackTrace}");
                 _showDetail = false;
+                _keepDetailOpen = false;
                 _currentDetailModule = null;
-            }
-
-            // 詳細表示での変更を適用
-            if (EditorGUI.EndChangeCheck())
-            {
-                ApplyModifiedProperties();
             }
         }
 
@@ -139,6 +230,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _detailKey = key;
             _currentDetailModule = module;
             _showDetail = true;
+            _keepDetailOpen = false;
         }
 
         // キャッシュのクリア
@@ -166,7 +258,6 @@ namespace com.github.pandrabox.flatsplus.editor
                     {
                         var instance = (ME_FuncBase)constructor.Invoke(null);
                         _functionModules.Add(instance);
-                        Debug.Log($"Added function module: {type.Name}");
                     }
                     else
                     {
@@ -196,6 +287,13 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 module.OnEnable();
             }
+        }
+
+        // アンロード時のクリーンアップ
+        public void OnDisable()
+        {
+            EditorApplication.update -= OnEditorUpdate;
+            SceneView.duringSceneGui -= OnSceneGUI;
         }
 
         // モジュールをすべて取得

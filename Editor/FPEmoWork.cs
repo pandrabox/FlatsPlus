@@ -43,7 +43,7 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             get
             {
-                if(_config.D_Emo_Preset == "Auto")
+                if (_config.D_Emo_Preset == "Auto")
                 {
                     return _defaultEmoDataPath;
                 }
@@ -56,7 +56,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     return _config.D_Emo_Preset;
                 }
             }
-        }  
+        }
 
         public FPEmoWork(FlatsProject fp) : base(fp) { }
 

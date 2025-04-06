@@ -45,7 +45,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 FlatsProject prj = new FlatsProject(_desc);
                 var strImg = capture.TextToImage($"{prj.ProjectName}\n\r{prj.VPMVersion}");
-                List<Texture2D> textures = _tgt.textures.ToList();
+                List<Texture2D> textures = _config.Ico_Textures.ToList();
                 textures.Add(strImg);
                 Texture2D packTexture = PackTexture(textures, 3, 170 * 3);
                 try
@@ -65,21 +65,27 @@ namespace com.github.pandrabox.flatsplus.editor
             string name;
             for (int i = 1; i < 9; i++)
             {
+                Texture2D currentIco = _config.Ico_Textures[i - 1];
+                if (currentIco == null)
+                {
+                    string path = $"Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i{i}.png";
+                    currentIco = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                    _config.Ico_Textures[i - 1] = currentIco;
+                }
                 if (i < 7)
                 {
                     name = (i).ToString();
-                    mb.AddToggle($"FlatsPlus/Ico/IcoType", name, i, ParameterSyncType.Int).SetIco(_tgt.textures[i - 1]);
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", name, i, ParameterSyncType.Int).SetIco(currentIco);
                 }
                 else if (i == 7)
                 {
                     name = L("Menu/Ico/Resonance");
-                    mb.AddToggle($"FlatsPlus/Ico/IcoType", name, i, ParameterSyncType.Int).SetMessage("Menu/Ico/Resonance/Detail".LL()).SetIco(_tgt.textures[i - 1]);
+                    mb.AddToggle($"FlatsPlus/Ico/IcoType", name, i, ParameterSyncType.Int).SetMessage("Menu/Ico/Resonance/Detail".LL()).SetIco(currentIco);
                 }
-                else if (_tgt.VerView && i == 8)
+                else if (_config.Ico_VerView && i == 8)
                 {
                     name = L("Menu/Ico/VerView");
-                    Texture2D vvico = AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i8.png");
-                    mb.AddButton("FlatsPlus/Icon/VerView", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/VerView/Detail".LL()).SetIco(vvico);
+                    mb.AddButton("FlatsPlus/Ico/IcoType", i, ParameterSyncType.Int, name).SetMessage("Menu/Ico/VerView/Detail".LL()).SetIco(currentIco);
                 }
             }
         }

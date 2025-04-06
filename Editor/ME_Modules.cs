@@ -1,16 +1,12 @@
 ﻿#if UNITY_EDITOR
 
 using com.github.pandrabox.pandravase.editor;
-using com.github.pandrabox.pandravase.runtime;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
-using FP = com.github.pandrabox.flatsplus.runtime.FlatsPlus;
 using static com.github.pandrabox.pandravase.editor.Localizer;
+using FP = com.github.pandrabox.flatsplus.runtime.FlatsPlus;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -33,14 +29,13 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         private Dictionary<string, string> _presets;
         public override string ManagementFunc => nameof(FP.Func_Emo);
-
         public override void DrawDetail()
         {
             LoadPreset();
             DrawDictionarySelect(nameof(FP.D_Emo_Preset), _presets);
 
             string helpmsg;
-            switch(SP(nameof(FP.D_Emo_Preset)).stringValue)
+            switch (SP(nameof(FP.D_Emo_Preset)).stringValue)
             {
                 case "Auto":
                     helpmsg = L("Emo/Help/Auto");
@@ -60,18 +55,18 @@ namespace com.github.pandrabox.flatsplus.editor
                 DrawFileField(nameof(FP.D_Emo_ConfigFilePath), "csv");
             }
             DrawButton("OpenEmoMaker", OpenEmoMaker);
-            DrawFloatField(nameof(FP.Emo_TransitionTime),0,3);
+            DrawFloatField(nameof(FP.Emo_TransitionTime), 0, 3);
         }
-
         private void OpenEmoMaker()
         {
             var targetPath = SP(nameof(FP.D_Emo_Preset)).stringValue;
-            if(targetPath== "Custom")
+            if (targetPath == "Custom")
             {
                 targetPath = SP(nameof(FP.D_Emo_ConfigFilePath)).stringValue;
             }
             string configSavePath = "Assets/Pan/FlatsPlus/Save/Emo";
-            Action<string> onSaveAction = (path) => {
+            Action<string> onSaveAction = (path) =>
+            {
                 SP(nameof(FP.D_Emo_Preset)).stringValue = "Custom";
                 SP(nameof(FP.D_Emo_ConfigFilePath)).stringValue = path;
             };
@@ -80,7 +75,7 @@ namespace com.github.pandrabox.flatsplus.editor
         }
         private void LoadPreset()
         {
-            if (_presets != null ) return;
+            if (_presets != null) return;
             _presets = new Dictionary<string, string>();
             _presets.Add("Auto", "Auto");
             var path = "Packages/com.github.pandrabox.flatsplus/Assets/Emo/res";
@@ -117,34 +112,80 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public override string ManagementFunc => nameof(FP.Func_Ico);
 
-        //public override void DrawDetail()
-        //{
-        //    DrawBoolField(nameof(FP.Ico_VerView));
-        //}
+        public override void OnEnable()
+        {
+            // コンポーネント初期化時に配列の初期化を行う
+            EnsureAllTexturesInitialized();
+        }
+
+
+        public override void DrawDetail()
+        {
+            DrawBoolField(nameof(FP.Ico_VerView));
+            EnsureAllTexturesInitialized();
+            EditorGUILayout.BeginHorizontal();
+            //6個だけ編集を許可
+            for (int i = 0; i < 6; i++)
+            {
+                DrawTextureField($"{nameof(FP.Ico_Textures)}.Array.data[{i}]", 50, 50);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        // 表示用と非表示用を含む全テクスチャの初期化
+        private void EnsureAllTexturesInitialized()
+        {
+            SerializedProperty texturesArray = SP(nameof(FP.Ico_Textures));
+
+            // 配列のサイズが不足している場合、拡張する
+            if (texturesArray.arraySize < 8)
+            {
+                texturesArray.arraySize = 8;
+                ME_FuncManager.I.ApplyModifiedProperties();
+            }
+
+            // 全テクスチャをチェックして初期化
+            for (int i = 0; i < 8; i++)
+            {
+                SerializedProperty texProp = texturesArray.GetArrayElementAtIndex(i);
+
+                // テクスチャが未設定の場合は初期値を読み込む
+                if (texProp.objectReferenceValue == null)
+                {
+                    // 対応するテクスチャを読み込む
+                    string path = $"Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i{i + 1}.png";
+                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+
+                    if (tex != null)
+                    {
+                        texProp.objectReferenceValue = tex;
+                        ME_FuncManager.I.ApplyModifiedProperties();
+                    }
+                }
+            }
+        }
     }
     public class FPFuncLight : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Light);
 
-        //public override void DrawDetail()
-        //{
-        //    DrawBoolField(nameof(FP.Light_IntensityPerfectSync));
-        //}
+        public override void DrawDetail()
+        {
+            DrawBoolField(nameof(FP.Light_IntensityPerfectSync));
+        }
     }
     public class FPFuncMakeEmo : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_MakeEmo);
 
-        //public override void DrawDetail()
-        //{
-        //    DrawFloatField(nameof(FP.MakeEmo_MenuSize), 0.1f, 1f);
-        //    DrawFloatField(nameof(FP.MakeEmo_LockSize), 0.01f, 0.2f);
-        //    DrawFloatField(nameof(FP.MakeEmo_MenuOpacity), 0, 1);
-        //    // 色の設定は専用UIが必要になるため省略
-        //    DrawIntField(nameof(FP.MakeEmo_Margin), 0, 50);
-        //    DrawFloatField(nameof(FP.MakeEmo_ScrollSpeed), 0.01f, 0.1f);
-        //    DrawFloatField(nameof(FP.MakeEmo_DeadZone), 0, 1);
-        //}
+        public override void DrawDetail()
+        {
+            DrawFloatField(nameof(FP.MakeEmo_MenuSize), 0.1f, 1f);
+            DrawFloatField(nameof(FP.MakeEmo_LockSize), 0.01f, 0.2f);
+            DrawFloatField(nameof(FP.MakeEmo_MenuOpacity), 0, 1);
+            DrawIntField(nameof(FP.MakeEmo_Margin), 0, 50);
+            DrawFloatField(nameof(FP.MakeEmo_ScrollSpeed), 0.01f, 0.1f);
+            DrawFloatField(nameof(FP.MakeEmo_DeadZone), 0, 1);
+        }
     }
     public class FPFuncMeshSetting : ME_FuncBase
     {
@@ -181,18 +222,15 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public override string ManagementFunc => nameof(FP.Func_Tail);
 
-        //public override void DrawDetail()
-        //{
-        //    DrawFloatField(nameof(FP.Tail_SwingPeriod), 0.5f, 5f);
-        //    DrawFloatField(nameof(FP.Tail_SwingAngle), 0, 180);
-        //    DrawFloatField(nameof(FP.Tail_SizeMax), 0.1f, 2f);
-        //    DrawFloatField(nameof(FP.Tail_SizeMin), 0.01f, 1f);
-        //    DrawBoolField(nameof(FP.Tail_SizePerfectSync));
-        //    DrawFloatField(nameof(FP.Tail_DefaultSize), 0, 1);
-        //    DrawFloatField(nameof(FP.Tail_GravityRange), 0, 1);
-        //    DrawBoolField(nameof(FP.Tail_GravityPerfectSync));
-        //    DrawFloatField(nameof(FP.Tail_DefaultGravity), 0, 1);
-        //}
+        public override void DrawDetail()
+        {
+            DrawFloatField(nameof(FP.Tail_SwingPeriod), 0.1f, 5f);
+            DrawFloatField(nameof(FP.Tail_SwingAngle), 0, 180);
+            DrawFloatField(nameof(FP.Tail_SizeMax), 0.1f, 5f);
+            DrawFloatField(nameof(FP.Tail_SizeMin), 0.01f, 1f);
+            DrawBoolField(nameof(FP.Tail_SizePerfectSync));
+            DrawFloatField(nameof(FP.Tail_DefaultSize), 0, 5);
+        }
     }
     public class FPFuncLink : ME_FuncBase
     {

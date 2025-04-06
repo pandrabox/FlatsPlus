@@ -54,7 +54,7 @@ namespace com.github.pandrabox.flatsplus.runtime
         public string D_Emo_Preset = "";
         public string D_Emo_ConfigFilePath = "";
 
-        public Texture2D[] Ico_Textures = new Texture2D[6];
+        public Texture2D[] Ico_Textures = new Texture2D[8];
         public bool Ico_VerView = false;
         public bool Light_IntensityPerfectSync = false;
         public float MakeEmo_MenuSize = 0.35f;

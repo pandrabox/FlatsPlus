@@ -63,7 +63,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateMenu()
         {
             var mSync = _prj.VirtualSync("FlatsPlus/Light/LightMode", 2, PVnBitSync.nBitSyncMode.IntMode, toggleSync: true);
-            _prj.VirtualSync("FlatsPlus/Light/Intensity", 4, PVnBitSync.nBitSyncMode.FloatMode, _tgt.IntensityPerfectSync);
+            _prj.VirtualSync("FlatsPlus/Light/Intensity", 4, PVnBitSync.nBitSyncMode.FloatMode, _config.Light_IntensityPerfectSync);
             new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Light"))
                 .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Spot"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Light/Spot/Detail"))
                 .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Area"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Light/Area/Detail"))

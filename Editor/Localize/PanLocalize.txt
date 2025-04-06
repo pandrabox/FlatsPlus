@@ -254,3 +254,29 @@ EmoMaker/Error/LoadConfig,Config読み込みエラー,Config loading error,설�
 EmoMaker/Error/SaveConfig,Config保存エラー,Config saving error,설정 저장 오류,配置保存错误,配置保存錯誤
 EmoMaker/ConfigExported,{0}個の表情設定をエクスポートしました。: {1},{0} expression settings exported: {1},{0}개의 표정 설정을 내보냈습니다: {1},已导出{0}个表情设置: {1},已導出{0}個表情設置: {1}
 EmoMaker/FixValue,値をあわせる,Align Value,값 맞추기,对齐值,對齊值
+
+Func/Light_IntensityPerfectSync/Name,光量完全同期,Intensity Perfect Sync,광량 완전 동기화,光量完全同步,光量完全同步
+Func/Light_IntensityPerfectSync/Detail,自分と他者における光の見た目を一致させる,Match the appearance of light between yourself and others,자신과 다른 사람 사이의 빛의 외관을 일치시킵니다,使自己和他人之间的光线外观一致,使自己和他人之間的光線外觀一致
+
+
+MakeEmo_MenuSize/Name,メニューサイズ,Menu Size,메뉴 크기,菜单大小,選單大小
+MakeEmo_LockSize/Name,ロックサイズ,Lock Size,잠금 크기,锁定大小,鎖定大小
+MakeEmo_MenuOpacity/Name,メニュー透明度,Menu Opacity,메뉴 투명도,菜单透明度,選單透明度
+MakeEmo_Margin/Name,余白サイズ,Margin Size,여백 크기,边距大小,邊距大小
+MakeEmo_ScrollSpeed/Name,スクロール速度,Scroll Speed,스크롤 속도,滚动速度,滾動速度
+MakeEmo_DeadZone/Name,デッドゾーン,Dead Zone,데드존,死区,死區
+
+
+
+    
+Tail_SwingPeriod/Name,振れ周期,Swing Period,흔들림 주기,摇摆周期,搖擺週期
+Tail_SwingAngle/Name,揺れ角度,Swing Angle,흔들림 각도,摇摆角度,搖擺角度
+Tail_SizeMax/Name,最大サイズ,Maximum Size,최대 크기,最大尺寸,最大尺寸
+Tail_SizeMin/Name,最小サイズ,Minimum Size,최소 크기,最小尺寸,最小尺寸
+Func/Tail_SizePerfectSync/Name,サイズ完全同期,Size Perfect Sync,크기 완전 동기화,尺寸完全同步,尺寸完全同步
+Tail_DefaultSize/Name,デフォルトサイズ,Default Size,기본 크기,默认尺寸,默認尺寸
+
+Func/Tail_SizePerfectSync/Detail,自分と他者におけるしっぽのサイズを一致させる,Match the tail size between yourself and others,자신과 다른 사람 사이의 꼬리 크기를 일치시킵니다,使自己和他人之间的尾巴尺寸一致,使自己和他人之間的尾巴尺寸一致
+
+Func/Ico_VerView/Detail,他者が使っているFlatsPlusのバージョンを表示する,Display the version of FlatsPlus used by others,다른 사람이 사용하는 FlatsPlus 버전을 표시합니다,显示其他人使用的FlatsPlus版本。,顯示其他人使用的FlatsPlus版本。
+Func/Ico_VerView/Name,バージョン表示,Version View,버전 보기,版本视图,版本視圖

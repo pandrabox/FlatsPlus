@@ -102,36 +102,36 @@ namespace com.github.pandrabox.flatsplus.editor
             //_tailColliders.Add(_groundCollider);
         }
 
-        private void Gravity()
-        {
-            var ac = new AnimationClipsBuilder();
-            ac.Clip("Gravity-1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(-_tgt.GravityRange);
-            ac.Clip("Gravity1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(_tgt.GravityRange);
-            _bb.Param("1").Add1D("FlatsPlus/Tail/GravityRx", () =>
-            {
-                _bb.Param(0).AddMotion(ac.Outp("Gravity-1"));
-                _bb.Param(1).AddMotion(ac.Outp("Gravity1"));
-            });
-            _bb.Param("1").FDiffChecker("FlatsPlus/Tail/GravityRx");
-            _bb.Param("1").FDiffChecker("FlatsPlus/Tail/Gravity", "RxIsDiff");
-            float unitTime = 10 / FPS;
-            ac.Clip("PBReload")
-                .Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled")
-                .Smooth(0f, 0f, unitTime, 0f, unitTime, 1f, 3 * unitTime, 1f);
-            AnimatorBuilder ab = new AnimatorBuilder("FlatsPlus/Tail/PBReload");
-            ab.AddLayer().AddState("Reload", ac.Outp("PBReload"));
-            ab.TransFromCurrent(ab.InitialState).MoveInstant();
-            ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater, .5f, "FlatsPlus/Tail/GravityRxIsDiff");
-            //ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.IfNot, 1, "IsAnimatorEnabled");
-            ab.Attach(_tail);
+        //private void Gravity()
+        //{
+        //    var ac = new AnimationClipsBuilder();
+        //    ac.Clip("Gravity-1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(-_tgt.GravityRange);
+        //    ac.Clip("Gravity1").Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "gravity").Const2F(_tgt.GravityRange);
+        //    _bb.Param("1").Add1D("FlatsPlus/Tail/GravityRx", () =>
+        //    {
+        //        _bb.Param(0).AddMotion(ac.Outp("Gravity-1"));
+        //        _bb.Param(1).AddMotion(ac.Outp("Gravity1"));
+        //    });
+        //    _bb.Param("1").FDiffChecker("FlatsPlus/Tail/GravityRx");
+        //    _bb.Param("1").FDiffChecker("FlatsPlus/Tail/Gravity", "RxIsDiff");
+        //    float unitTime = 10 / FPS;
+        //    ac.Clip("PBReload")
+        //        .Bind("", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled")
+        //        .Smooth(0f, 0f, unitTime, 0f, unitTime, 1f, 3 * unitTime, 1f);
+        //    AnimatorBuilder ab = new AnimatorBuilder("FlatsPlus/Tail/PBReload");
+        //    ab.AddLayer().AddState("Reload", ac.Outp("PBReload"));
+        //    ab.TransFromCurrent(ab.InitialState).MoveInstant();
+        //    ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.Greater, .5f, "FlatsPlus/Tail/GravityRxIsDiff");
+        //    //ab.TransToCurrent(ab.InitialState).AddCondition(AnimatorConditionMode.IfNot, 1, "IsAnimatorEnabled");
+        //    ab.Attach(_tail);
 
-            _prj.VirtualSync("FlatsPlus/Tail/Gravity", 3, PVnBitSync.nBitSyncMode.FloatMode, _tgt.GravityPerfectSync);
-        }
+        //    _prj.VirtualSync("FlatsPlus/Tail/Gravity", 3, PVnBitSync.nBitSyncMode.FloatMode, _tgt.GravityPerfectSync);
+        //}
 
         private void CreateSize()
         {
             Vector3 tail0NormalSize = _tail.transform.localScale;
-            Vector3 tail0BigParam = Vector3.one * _prj.TailScaleLimit0 * _tgt.SizeMax;
+            Vector3 tail0BigParam = Vector3.one * _prj.TailScaleLimit0 * _config.Tail_SizeMax;
             if (_prj.TailScaleXLimit0 != -1) tail0BigParam.x = _prj.TailScaleXLimit0;
             Vector3 tail0Big = tail0NormalSize.HadamardProduct(tail0BigParam);
 
@@ -141,7 +141,7 @@ namespace com.github.pandrabox.flatsplus.editor
             Vector3 tail1Big = tail1NormalSize.HadamardProduct(tail1BigParam);
 
             AnimationClipsBuilder ac = new AnimationClipsBuilder();
-            float smallVal = _tgt.SizeMin;
+            float smallVal = _config.Tail_SizeMin;
             ac.Clip("Small").IsVector3((x) =>
             {
                 x.Bind("", typeof(Transform), $"m_LocalScale.@a").Const2F(smallVal);
@@ -164,13 +164,13 @@ namespace com.github.pandrabox.flatsplus.editor
                 _bb.Param(1).AddMotion(ac.Outp("Big"));
             });
 
-            _prj.VirtualSync("FlatsPlus/Tail/Size", 4, PVnBitSync.nBitSyncMode.FloatMode, _tgt.SizePerfectSync);
+            _prj.VirtualSync("FlatsPlus/Tail/Size", 4, PVnBitSync.nBitSyncMode.FloatMode, _config.Tail_SizePerfectSync);
         }
 
         private void CreateSwing()
         {
-            float swingAngle = _tgt.SwingAngle;
-            float swingPeriod = _tgt.SwingPeriod;
+            float swingAngle = _config.Tail_SwingAngle;
+            float swingPeriod = _config.Tail_SwingPeriod;
 
             var ac = new AnimationClipsBuilder();
             Quaternion[] sPos = new Quaternion[3]; //Eularだとぺちゃっとした変な動きになったがQuaternionだと奇麗だった
@@ -207,7 +207,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 .AddFolder(PRJNAME, true)
                 .AddFolder(L("Menu/Tail"), true)
                 //.AddRadial("FlatsPlus/Tail/Gravity", L("Menu/Tail/Gravity"), _tgt.DefaultGravity)
-                .AddRadial("FlatsPlus/Tail/Size", L("Menu/Tail/Size"), _tgt.DefaultSize)
+                .AddRadial("FlatsPlus/Tail/Size", L("Menu/Tail/Size"), _config.Tail_DefaultSize)
                 .AddToggle("FlatsPlus/Tail/Swing", L("Menu/Tail/Swing"), 1, ParameterSyncType.Bool, 1, false);
         }
 

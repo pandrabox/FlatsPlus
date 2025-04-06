@@ -105,3 +105,10 @@ EmoMakerを追加しました。「表情制御」の詳細編集から表情を
 EmoMaker를 추가했습니다. "표정 제어"의 상세 편집에서 표정을 자유롭게 편집할 수 있습니다.  
 添加了EmoMaker。您可以从“表情控制”的详细编辑中自由编辑表情。  
 添加了EmoMaker。您可以從“表情控制”的詳細編輯中自由編輯表情。  
+
+FlatsPlus v0.14.2  
+Performed localization, code cleanup, and various detailed adjustments, including the addition of several detailed settings.  
+ローカライズ、コードクリーンアップ、色々な詳細設定追加など細かい調整をしました。  
+로컬라이제이션, 코드 정리, 다양한 상세 설정 추가 등 세부 조정을 수행했습니다.  
+进行了本地化、代码清理以及各种详细设置的添加等细微调整。  
+進行了本地化、代碼清理以及各種詳細設置的添加等細微調整。  

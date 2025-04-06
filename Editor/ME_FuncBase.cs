@@ -294,5 +294,21 @@ namespace com.github.pandrabox.flatsplus.editor
             EditorGUILayout.EndHorizontal();
         }
 
+        protected void DrawTextureField(string propName, int sizex, int? sizey)
+        {
+
+            sizey = sizey ?? sizex;
+            SerializedProperty property = SP(propName);
+
+            // 画像フィールドを表示
+            property.objectReferenceValue = EditorGUILayout.ObjectField(
+                property.objectReferenceValue,
+                typeof(Texture2D),
+                false,
+                GUILayout.Width(sizex),
+                GUILayout.Height((int)sizey)
+            );
+        }
+
     }
 }
