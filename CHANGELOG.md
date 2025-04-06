@@ -112,3 +112,10 @@ Performed localization, code cleanup, and various detailed adjustments, includin
 로컬라이제이션, 코드 정리, 다양한 상세 설정 추가 등 세부 조정을 수행했습니다.  
 进行了本地化、代码清理以及各种详细设置的添加等细微调整。  
 進行了本地化、代碼清理以及各種詳細設置的添加等細微調整。  
+
+FlatsPlus v0.14.4  
+Fixed an issue where some features would throw an error if the detailed button was never pressed.  
+いくつかの機能が詳細ボタンを一度も押していないときにエラーを出す問題を修正しました  
+일부 기능에서 세부 버튼을 한 번도 누르지 않았을 때 오류가 발생하는 문제를 수정했습니다  
+修复了某些功能在从未按下详细按钮时会抛出错误的问题  
+修復了某些功能在從未按下詳細按鈕時會拋出錯誤的問題  

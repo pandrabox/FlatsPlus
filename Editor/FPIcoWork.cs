@@ -31,7 +31,7 @@ namespace com.github.pandrabox.flatsplus.editor
         public FPIcoWork(FlatsProject fp) : base(fp) { }
 
         GameObject _callPlane;
-        Texture2D[] _icos;
+        Texture2D[] _icosDoNotUseDirectly; //直接読まない！Icosから使って下さい
 
         sealed protected override void OnConstruct()
         {
@@ -49,36 +49,36 @@ namespace com.github.pandrabox.flatsplus.editor
             get
             {
                 //正しく取得できている場合はそのまま返す
-                if (_icos != null)
+                if (_icosDoNotUseDirectly != null)
                 {
-                    if (_icos.All(t => t != null))
+                    if (_icosDoNotUseDirectly.All(t => t != null))
                     {
-                        return _icos;
+                        return _icosDoNotUseDirectly;
                     }
                 }
 
-                _icos = new Texture2D[8];
+                _icosDoNotUseDirectly = new Texture2D[8];
 
                 try
                 {
                     // _configから読める分を読む
                     if (!(_config == null || _config.Ico_Textures == null))
                     {
-                        for (int i = 0; i < Math.Min(_icos.Length, _config.Ico_Textures.Length); i++)
+                        for (int i = 0; i < Math.Min(_icosDoNotUseDirectly.Length, _config.Ico_Textures.Length); i++)
                         {
-                            _icos[i] = _config.Ico_Textures[i];
+                            _icosDoNotUseDirectly[i] = _config.Ico_Textures[i];
                         }
                     }
 
                     // ない分をデフォルトから読み込み
-                    for (int i = 0; i < _icos.Length; i++)
+                    for (int i = 0; i < _icosDoNotUseDirectly.Length; i++)
                     {
-                        if (_icos[i] == null)
+                        if (_icosDoNotUseDirectly[i] == null)
                         {
                             string path = $"Packages/com.github.pandrabox.flatsplus/Assets/Ico/Ico/i{i + 1}.png";
-                            _icos[i] = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                            _icosDoNotUseDirectly[i] = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
 
-                            if (_icos[i] == null) //まずあり得ないが念のためのチェック
+                            if (_icosDoNotUseDirectly[i] == null) //まずあり得ないが念のためのチェック
                             {
                                 Log.I.Warning($"Could not load default texture at path: {path}");
                             }
@@ -90,7 +90,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     Log.I.Exception(ex, "_icos getter でエラーが発生しました");
                 }
 
-                return _icos;
+                return _icosDoNotUseDirectly;
             }
         }
 
