@@ -65,7 +65,7 @@ namespace com.github.pandrabox.flatsplus.editor
             // 存在しなければfalse
             if (!File.Exists(path))
             {
-                Log.I.Warning($"Emoファイルが存在しません: {path}");
+                Log.I.Info($"Emoファイルが存在しません: {path}");
                 return false;
             }
 
@@ -77,7 +77,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 // 66行未満ならばfalse (ヘッダー + 64 表情 + 余裕分)
                 if (lines.Length < 66)
                 {
-                    Log.I.Warning($"Emoファイルの行数が足りません: {lines.Length}行 (66行以上必要)");
+                    Log.I.Info($"Emoファイルの行数が足りません: {lines.Length}行 (66行以上必要)");
                     return false;
                 }
 
@@ -85,7 +85,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 string header = lines[0];
                 if (!header.StartsWith("Left,Right,"))
                 {
-                    Log.I.Warning($"Emoファイルのヘッダー形式が不正です: {header}");
+                    Log.I.Info($"Emoファイルのヘッダー形式が不正です: {header}");
                     return false;
                 }
 
@@ -94,7 +94,7 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             catch
             {
-                Log.I.Warning($"Emoファイルの検証中にエラーが発生しました: {path}");
+                Log.I.Info($"Emoファイルの検証中にエラーが発生しました: {path}");
                 return false;
             }
         }

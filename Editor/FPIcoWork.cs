@@ -100,7 +100,9 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 FlatsProject prj = new FlatsProject(_desc);
                 var strImg = capture.TextToImage($"{prj.ProjectName}\n\r{prj.VPMVersion}");
-                List<Texture2D> textures = new List<Texture2D>(_icos);
+
+                List<Texture2D> textures = new List<Texture2D>(Icos);
+
                 textures.Add(strImg);
                 Texture2D packTexture = PackTexture(textures, 3, 170 * 3);
                 try
@@ -118,7 +120,7 @@ namespace com.github.pandrabox.flatsplus.editor
             MenuBuilder mb = new MenuBuilder(_prj);
             mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Ico"));
             string name;
-            Texture2D[] iconTextures = _icos;
+            Texture2D[] iconTextures = Icos;
             for (int i = 1; i < 9; i++)
             {
                 // 配列のインデックスは0始まり、iは1始まり
