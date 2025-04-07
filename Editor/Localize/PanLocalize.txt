@@ -290,3 +290,12 @@ Func/D_Dance_FxDisable/Name,ダンスFx無効,Dance Fx Disable,댄스 Fx 비활�
 Func/D_Dance_FxDisable/Detail,通常OFF。ONにすると表情等が動きやすいが同期問題がおきます,Usually OFF. When ON expressions move more freely but sync issues may occur,보통 꺼짐. 켜면 표정 등이 더 자유롭게 움직이지만 동기화 문제가 발생할 수 있습니다,通常为关闭. 开启时表情等运动更自由但可能出现同步问题,通常為關閉. 開啟時表情等運動更自由但可能出現同步問題
 Func/D_Dance_FxEnable/Name,ダンスFx有効,Dance FX Enable,댄스 FX 활성화,舞蹈FX启用,舞蹈FX啟用
 Func/D_Dance_FxEnable/Detail,通常ON。OFFにすると表情等が動きやすいが同期問題がおきます,Usually ON. When OFF expressions move more freely but sync issues may occur,보통 켜짐. 끄면 표정 등이 더 자유롭게 움직이지만 동기화 문제가 발생할 수 있습니다,通常为开启. 关闭时表情等运动更自由但可能出现同步问题,通常為開啟. 關閉時表情等運動更自由但可能出現同步問題
+
+Func/Guide/Name,ガイド,Guide,가이드,指南,指南
+Func/Guide/Detail,画面に文字ガイドを表示します,Display text guide on screen,화면에 텍스트 가이드를 표시합니다,在屏幕上显示文字指南,在屏幕上顯示文字指南
+
+
+
+Func/D_Guide_DefaultActive/Name,デフォルトアクティブ,Default Active,기본 활성화,默认激活,默認激活
+Func/D_Guide_DefaultActive/Detail,デフォルトでガイドをON,Default to ON for the guide,기본적으로 가이드를 켭니다,默认打开指南,默認打開指南
+D_Guide_DefaultSize/Name,デフォルトサイズ,Default Size,기본 크기,默认尺寸,默認尺寸

@@ -126,3 +126,10 @@ Implemented detailed settings for dancing.
 댄스에 대한 상세 설정을 구현했습니다  
 实现了舞蹈的详细设置  
 實現了舞蹈的詳細設置  
+
+FlatsPlus v0.14.6  
+Added guide settings.  
+ガイドの設定を追加しました  
+가이드 설정을 추가했습니다  
+添加了指南设置  
+添加了指南設置  

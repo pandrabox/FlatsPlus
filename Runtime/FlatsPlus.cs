@@ -25,8 +25,12 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool Func_Link = true;
         public bool Func_Sync = true;
         public bool Func_WriteDefaultOn = true;
+        public bool Func_Guide = true;
         public bool Func_ClippingCanceler = true;
 
+
+        public bool D_Guide_DefaultActive = true;
+        public float D_Guide_DefaultSize = 0.4f;
 
         public string Language = null;
         public bool D_Hoppe_AllowTouch = true;

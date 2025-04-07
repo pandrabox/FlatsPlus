@@ -64,7 +64,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateInstantiate(fp.Func_Link, "Link");
                 CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo");
                 CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting");
-                CreateInstantiate(true, "MessageUI");
+                //CreateInstantiate(true, "MessageUI");
                 CreateWork<FPMoveWork>(fp.Func_Move, "Move");
                 CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka");
                 CreateWork<FPPenWork>(fp.Func_Pen, "Pen");
@@ -73,6 +73,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateInstantiate(fp.Func_Sync, "Sync");
                 CreateWork<FPTailWork>(fp.Func_Tail, "Tail");
                 CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn");
+                CreateWork<FPGuideWork>(fp.Func_Guide, "Guide");
             }
             catch (Exception ex)
             {

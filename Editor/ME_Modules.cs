@@ -262,6 +262,16 @@ namespace com.github.pandrabox.flatsplus.editor
         public override string ManagementFunc => nameof(FP.Func_PoseClipper);
     }
 
+    public class FPFuncGuide : ME_FuncBase
+    {
+        public override string ManagementFunc => nameof(FP.Func_Guide);
+        public override void DrawDetail()
+        {
+            DrawBoolField(nameof(FP.D_Guide_DefaultActive));
+            DrawFloatField(nameof(FP.D_Guide_DefaultSize), 0.1f, 1f);
+        }
+    }
+
     public class FPFuncClippingCanceler : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_ClippingCanceler);
