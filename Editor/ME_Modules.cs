@@ -1,6 +1,8 @@
 ﻿#if UNITY_EDITOR
 
+using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using com.github.pandrabox.pandravase.runtime;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -24,6 +26,17 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncDanceController : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_DanceController);
+        public override void DrawDetail()
+        {
+            DrawEnumField(nameof(FP.D_Dance_ControlType));
+            SerializedProperty danceProp = SP(nameof(FP.D_Dance_ControlType));
+            Type enumType = typeof(PVDanceController.DaceControlType);
+            string enumValueName = Enum.GetName(enumType, danceProp.enumValueIndex);
+            string helpmsg = L($@"Dance/Help/{enumValueName}");
+            EditorGUILayout.HelpBox(helpmsg, MessageType.Info);
+
+            DrawBoolField(nameof(FP.D_Dance_FxEnable));
+        }
     }
     public class FPFuncEmo : ME_FuncBase
     {

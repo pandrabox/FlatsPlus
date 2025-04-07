@@ -53,7 +53,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 Localizer.SetLanguage(fp.Language);
 
                 CreateWork<FPCarryWork>(fp.Func_Carry, "Carry");
-                CreateInstantiate(fp.Func_DanceController, "DanceController");
+                CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController");
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo");
                 CreateWork<FPExploreWork>(fp.Func_Explore, "Explore");
                 CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe");

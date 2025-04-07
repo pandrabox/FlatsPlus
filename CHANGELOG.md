@@ -119,3 +119,10 @@ Fixed an issue where some features would throw an error if the detailed button w
 일부 기능에서 세부 버튼을 한 번도 누르지 않았을 때 오류가 발생하는 문제를 수정했습니다  
 修复了某些功能在从未按下详细按钮时会抛出错误的问题  
 修復了某些功能在從未按下詳細按鈕時會拋出錯誤的問題  
+
+FlatsPlus v0.14.5  
+Implemented detailed settings for dancing.  
+ダンスの詳細設定を実装しました  
+댄스에 대한 상세 설정을 구현했습니다  
+实现了舞蹈的详细设置  
+實現了舞蹈的詳細設置  
