@@ -133,3 +133,10 @@ Added guide settings.
 가이드 설정을 추가했습니다  
 添加了指南设置  
 添加了指南設置  
+
+FlatsPlus v0.14.7  
+Adjusted the Hips001 bone of clothing to follow the stomach.  
+服のHips001ボーンがお腹に追従するようにしました  
+옷의 Hips001 본이 배를 따라가도록 조정했습니다  
+调整了服装的Hips001骨骼以跟随腹部  
+調整了服裝的Hips001骨骼以跟隨腹部  
