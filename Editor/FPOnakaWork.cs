@@ -79,9 +79,9 @@ namespace com.github.pandrabox.flatsplus.editor
         private void ProcessForClothes()
         {
             Log.I.StartMethod();
-            if(_hips==null || _hips001 == null) return;
+            if (_hips == null || _hips001 == null) return;
             var clothesHips001 = _prj.RootObject.GetComponentsInChildren<Transform>(true).Where(t => t.name == "Hips.001" && t != _hips001).ToList();
-            foreach(var cHips001 in clothesHips001)
+            foreach (var cHips001 in clothesHips001)
             {
                 var cHips = cHips001.parent;
                 if (cHips.name != "Hips")

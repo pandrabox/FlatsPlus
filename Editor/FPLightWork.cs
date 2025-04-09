@@ -34,6 +34,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         sealed protected override void OnConstruct()
         {
+            if (!_config.D_Explore_Light) return;
             _animFolder = $@"{_prj.ProjectFolder}Assets/Light/Anim/";
             CreateControl();
             CreateMenu();
@@ -64,11 +65,11 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             var mSync = _prj.VirtualSync("FlatsPlus/Light/LightMode", 2, PVnBitSync.nBitSyncMode.IntMode, toggleSync: true);
             _prj.VirtualSync("FlatsPlus/Light/Intensity", 4, PVnBitSync.nBitSyncMode.FloatMode, _config.Light_IntensityPerfectSync);
-            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Light"))
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Explore"), true)
                 .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Spot"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Light/Spot/Detail"))
                 .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Area"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Light/Area/Detail"))
                 .AddRadial("FlatsPlus/Light/Intensity", L("Menu/Light/Intensity"), .5f)
-                .AddToggle(mSync.SyncParameter, L("Menu/Light/Global"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Light/Global/Detail"));
+                .AddToggle(mSync.SyncParameter, L("Menu/Light/Global"), 1, ParameterSyncType.Bool, (_config.D_Explore_Light_DefaultGlobal ? 1 : 0)).SetMessage(L("Menu/Light/Global/Detail"));
         }
     }
 }

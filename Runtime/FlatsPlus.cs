@@ -89,6 +89,11 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool Tail_GravityPerfectSync = false;
         public float Tail_DefaultGravity = .5f; //0～1
         public bool Func_PoseClipper = true;
+
+        public bool D_Explore_Pin = true;
+        public bool D_Explore_Line = true;
+        public bool D_Explore_Light = true;
+        public bool D_Explore_Light_DefaultGlobal = false;
     }
 }
 #endif

@@ -1,6 +1,5 @@
 ﻿#if UNITY_EDITOR
 
-using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using System;
@@ -104,6 +103,13 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncExplore : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Explore);
+        public override void DrawDetail()
+        {
+            DrawBoolField(nameof(FP.D_Explore_Pin));
+            DrawBoolField(nameof(FP.D_Explore_Line));
+            DrawBoolField(nameof(FP.D_Explore_Light));
+            DrawBoolField(nameof(FP.D_Explore_Light_DefaultGlobal));
+        }
     }
     public class FPFuncHoppe : ME_FuncBase
     {
@@ -177,15 +183,15 @@ namespace com.github.pandrabox.flatsplus.editor
             }
         }
     }
-    public class FPFuncLight : ME_FuncBase
-    {
-        public override string ManagementFunc => nameof(FP.Func_Light);
+    //public class FPFuncLight : ME_FuncBase
+    //{
+    //    public override string ManagementFunc => nameof(FP.Func_Light);
 
-        public override void DrawDetail()
-        {
-            DrawBoolField(nameof(FP.Light_IntensityPerfectSync));
-        }
-    }
+    //    public override void DrawDetail()
+    //    {
+    //        DrawBoolField(nameof(FP.Light_IntensityPerfectSync));
+    //    }
+    //}
     public class FPFuncMakeEmo : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_MakeEmo);

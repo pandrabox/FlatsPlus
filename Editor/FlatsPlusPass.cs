@@ -60,7 +60,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null);
                 CreateWork<FPIcoWork>(fp.Func_Ico, "Ico");
                 CreateInstantiate(fp.Func_Sync, "Sync");
-                CreateWork<FPLightWork>(fp.Func_Light, "Light");
+                CreateWork<FPLightWork>(fp.Func_Explore, "Light"); //LightはExploreに統合されました
                 CreateInstantiate(fp.Func_Link, "Link");
                 CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo");
                 CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting");

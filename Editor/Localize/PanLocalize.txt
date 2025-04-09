@@ -12,10 +12,10 @@ Menu/Explore/Path/Clear/Detail,軌跡を削除しました,Path has been cleared
 Menu/Explore/Path/Clear,軌跡削除,Path Clear,경로 삭제,清除路径,清除路徑
 
 Menu/Light,ライト,Light,라이트,灯光,燈光
-Menu/Light/Spot,前方,Spot,앞쪽,前方,前方
-Menu/Light/Area,周囲,Area,주변,周围,周圍
+Menu/Light/Spot,前方ライト,Spot Light,앞쪽 라이트,前方灯光,前方燈光
+Menu/Light/Area,周囲ライト,Area Light,주변 라이트,周围灯光,周圍燈光
 Menu/Light/Intensity,明るさ,Intensity,밝기,亮度,亮度
-Menu/Light/Global,グローバル,Global,글로벌,全局,全局
+Menu/Light/Global,ライトグローバル化,Global Light,라이트 글로벌화,灯光全局化,燈光全局化
 Menu/Light/Spot/Detail,自分の前方を照らす,Illuminate the area in front of you,앞쪽을 비추다,照亮你前方的区域,照亮你前方的區域
 Menu/Light/Area/Detail,自分の周囲を照らす,Illuminate the area around you,주변을 비추다,照亮你周围的区域,照亮你周圍的區域
 Menu/Light/Global/Detail,全員に見える（OFFの場合自分のみ）,Visible to everyone (only you if OFF),모두에게 보임 (OFF인 경우 자신만),对所有人可见（关闭时仅对自己可见）,對所有人可見（關閉時僅對自己可見）
@@ -299,3 +299,13 @@ Func/Guide/Detail,画面に文字ガイドを表示します,Display text guide 
 Func/D_Guide_DefaultActive/Name,デフォルトアクティブ,Default Active,기본 활성화,默认激活,默認激活
 Func/D_Guide_DefaultActive/Detail,デフォルトでガイドをON,Default to ON for the guide,기본적으로 가이드를 켭니다,默认打开指南,默認打開指南
 D_Guide_DefaultSize/Name,デフォルトサイズ,Default Size,기본 크기,默认尺寸,默認尺寸
+
+
+Func/D_Explore_Pin/Name,ピン,Pin,핀,图钉,圖釘
+Func/D_Explore_Pin/Detail,どこからでも見えるピンを表示,Display a pin visible from anywhere,어디서나 보이는 핀을 표시,显示一个从任何地方都能看到的图钉,顯示一個從任何地方都能看到的圖釘
+Func/D_Explore_Line/Name,軌跡,Line,궤적,轨迹,軌跡
+Func/D_Explore_Line/Detail,移動した軌跡を表示,Display the path of movement,이동한 궤적을 표시,显示移动的轨迹,顯示移動的軌跡
+Func/D_Explore_Light/Name,ライト,Light,빛,光,光
+Func/D_Explore_Light/Detail,前方や周囲を照らすライト,Light that illuminates the front and surroundings,앞쪽과 주변을 비추는 빛,照亮前方和周围的光,照亮前方和周圍的光
+Func/D_Explore_Light/DefaultGlobal/Name,グローバルのデフォルト,Global Default,글로벌 기본값,全局默认,全局默認
+Func/D_Explore_Light/DefaultGlobal/Detail,ライトをデフォルトで全体表示,Light is displayed globally by default,조명이 기본적으로 전역에 표시됨,默认情况下全局显示光线,默認情況下全局顯示光線

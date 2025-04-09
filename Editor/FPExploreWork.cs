@@ -30,8 +30,19 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public FPExploreWork(FlatsProject p) : base(p) { }
 
+        private bool _colorDefined = false;
+
         sealed protected override void OnConstruct()
         {
+            CreatePin();
+            CreateLine();
+
+            //Lightは別LightWorkで実行
+        }
+
+        private void CreatePin()
+        {
+            if (_config.D_Explore_Pin == false) return;
             Transform pinTransform = _tgt.FindEx("Pin").NullCheck();
             pinTransform.localPosition = new Vector3(0, _prj.PinY, 0);
 
@@ -59,13 +70,29 @@ namespace com.github.pandrabox.flatsplus.editor
             });
             bb.Attach(_tgt.gameObject);
 
-            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Explore"))
-                .AddToggle("FlatsPlus/Explore/SW", L("Menu/Explore/Pin"), 1, ParameterSyncType.Bool, 0, false).SetMessage(L("Menu/Explore/Pin/Enable"), L("Menu/Explore/Pin/Disable"))
-                .AddToggle("FlatsPlus/Pen/ExploreOverride", L("Menu/Explore/Path"), 1, ParameterSyncType.Bool, 0, false).SetMessage(L("Menu/Explore/Path/Enable"), L("Menu/Explore/Path/Disable"))
-                .AddButton("FlatsPlus/Pen/Clear", 1, ParameterSyncType.Bool, L("Menu/Explore/Path/Clear")).SetMessage(L("Menu/Explore/Path/Clear/Detail"))
-                .AddRadial("FlatsPlus/Explore/Color", L("Menu/Explore/Color")).SetMessage(L("Menu/Explore/Color/Detail"));
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Explore"), true)
+                .AddToggle("FlatsPlus/Explore/SW", L("Menu/Explore/Pin"), 1, ParameterSyncType.Bool, 0, false).SetMessage(L("Menu/Explore/Pin/Enable"), L("Menu/Explore/Pin/Disable"));
 
+            DefineColor();
+
+        }
+        private void CreateLine()
+        {
+            if (_config.D_Explore_Line == false) return;
+
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Explore"), true)
+                .AddToggle("FlatsPlus/Pen/ExploreOverride", L("Menu/Explore/Path"), 1, ParameterSyncType.Bool, 0, false).SetMessage(L("Menu/Explore/Path/Enable"), L("Menu/Explore/Path/Disable"))
+                .AddButton("FlatsPlus/Pen/Clear", 1, ParameterSyncType.Bool, L("Menu/Explore/Path/Clear")).SetMessage(L("Menu/Explore/Path/Clear/Detail"));
+            DefineColor();
+        }
+
+        private void DefineColor()
+        {
+            if (_colorDefined) return;
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Explore"), true)
+                .AddRadial("FlatsPlus/Explore/Color", L("Menu/Explore/Color")).SetMessage(L("Menu/Explore/Color/Detail"));
             _prj.VirtualSync("FlatsPlus/Explore/Color", 3, PVnBitSync.nBitSyncMode.FloatMode, true);
+            _colorDefined = true;
         }
     }
 }

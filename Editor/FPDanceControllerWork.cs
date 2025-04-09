@@ -1,12 +1,5 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
-using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
-using nadena.dev.modular_avatar.core;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Animations;
-using static com.github.pandrabox.pandravase.editor.Localizer;
-using static com.github.pandrabox.pandravase.editor.Util;
 
 
 namespace com.github.pandrabox.flatsplus.editor
