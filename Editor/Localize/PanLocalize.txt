@@ -307,5 +307,5 @@ Func/D_Explore_Line/Name,軌跡,Line,궤적,轨迹,軌跡
 Func/D_Explore_Line/Detail,移動した軌跡を表示,Display the path of movement,이동한 궤적을 표시,显示移动的轨迹,顯示移動的軌跡
 Func/D_Explore_Light/Name,ライト,Light,빛,光,光
 Func/D_Explore_Light/Detail,前方や周囲を照らすライト,Light that illuminates the front and surroundings,앞쪽과 주변을 비추는 빛,照亮前方和周围的光,照亮前方和周圍的光
-Func/D_Explore_Light/DefaultGlobal/Name,グローバルのデフォルト,Global Default,글로벌 기본값,全局默认,全局默認
-Func/D_Explore_Light/DefaultGlobal/Detail,ライトをデフォルトで全体表示,Light is displayed globally by default,조명이 기본적으로 전역에 표시됨,默认情况下全局显示光线,默認情況下全局顯示光線
+Func/D_Explore_Light_DefaultGlobal/Name,グローバルのデフォルト,Global Default,글로벌 기본값,全局默认,全局默認
+Func/D_Explore_Light_DefaultGlobal/Detail,ライトをデフォルトで全体表示,Light is displayed globally by default,조명이 기본적으로 전역에 표시됨,默认情况下全局显示光线,默認情況下全局顯示光線
