@@ -140,3 +140,10 @@ Adjusted the Hips001 bone of clothing to follow the stomach.
 옷의 Hips001 본이 배를 따라가도록 조정했습니다  
 调整了服装的Hips001骨骼以跟随腹部  
 調整了服裝的Hips001骨骼以跟隨腹部  
+
+FlatsPlus v0.14.8  
+Integrated Light into Explorer.  
+LightをExplorerに統合しました  
+Light를 Explorer에 통합했습니다  
+将Light集成到Explorer中  
+將Light集成到Explorer中  
