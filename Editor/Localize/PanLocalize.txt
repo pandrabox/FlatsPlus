@@ -309,3 +309,6 @@ Func/D_Explore_Light/Name,ライト,Light,빛,光,光
 Func/D_Explore_Light/Detail,前方や周囲を照らすライト,Light that illuminates the front and surroundings,앞쪽과 주변을 비추는 빛,照亮前方和周围的光,照亮前方和周圍的光
 Func/D_Explore_Light_DefaultGlobal/Name,グローバルのデフォルト,Global Default,글로벌 기본값,全局默认,全局默認
 Func/D_Explore_Light_DefaultGlobal/Detail,ライトをデフォルトで全体表示,Light is displayed globally by default,조명이 기본적으로 전역에 표시됨,默认情况下全局显示光线,默認情況下全局顯示光線
+
+Func/MultiTool/Name,マルチツール,Multi Tool,멀티 툴,多功能工具,多功能工具
+Func/MultiTool/Detail,様々な機能で使用するメッシュを導入,Import meshes for various functions,다양한 기능에 사용할 메시를 가져옵니다,导入用于各种功能的网格,導入用於各種功能的網格

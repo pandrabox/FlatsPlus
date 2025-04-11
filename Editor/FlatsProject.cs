@@ -94,6 +94,8 @@ namespace com.github.pandrabox.flatsplus.editor
         public float TotalBoundsExtentY => GetDBFloat("TotalBoundsExtentY");
         public float TotalBoundsExtentZ => GetDBFloat("TotalBoundsExtentZ");
         public string OriginalBlushName => GetDBString("OriginalBlushName");
+        public Vector3 MultiHeadPos => GetAtVector3("MultiHeadPos");
+        public Vector3 MultiHeadScale => Vector3.one * GetDBFloat("MultiHeadScale");
 
         public string LinkRx => "FlatsPlus/Link/Rx";
         public string LinkTx => "FlatsPlus/Link/Tx";
@@ -145,6 +147,12 @@ namespace com.github.pandrabox.flatsplus.editor
         private const int ATTRIBUTEINDEX = 26;
         private const int FLOORINDEX = 7;
 
+        private Vector3 GetAtVector3(string key)
+        {
+            var v = GetDBString(key);
+            var split = v.Split('@');
+            return new Vector3(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]));
+        }
 
         private Dictionary<string, Dictionary<string, string>> data;
         private Dictionary<string, Dictionary<string, string>> Data

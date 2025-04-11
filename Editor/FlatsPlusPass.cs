@@ -74,6 +74,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPTailWork>(fp.Func_Tail, "Tail");
                 CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn");
                 CreateWork<FPGuideWork>(fp.Func_Guide, "Guide");
+                CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool");
             }
             catch (Exception ex)
             {

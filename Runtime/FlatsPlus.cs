@@ -26,6 +26,7 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool Func_Sync = true;
         public bool Func_WriteDefaultOn = true;
         public bool Func_Guide = true;
+        public bool Func_MultiTool = true;
         public bool Func_ClippingCanceler = true;
 
 

@@ -2,7 +2,6 @@
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
-using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Dynamics.Contact.Components;
 using static com.github.pandrabox.pandravase.editor.Localizer;
@@ -17,21 +16,6 @@ using static com.github.pandrabox.pandravase.editor.Util;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
-#if PANDRADBG
-    public class FPHoppePoDebug
-    {
-        [MenuItem("PanDbg/FPHoppePo")]
-        public static void FPHoppePo_Debug()
-        {
-            SetDebugMode(true);
-            foreach (var a in AllAvatar)
-            {
-                var fp = new FlatsProject(a);
-                new FPHoppePoWork(fp);
-            }
-        }
-    }
-#endif
 
     public class FPHoppePoWork : FlatsWork<FPHoppe>
     {
@@ -43,7 +27,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private static string __hoppePath = "Head/hoppe";
         private static string __contactPath = $@"Head/BlushContact";
         private static string __hoppeContact = $@"FlatsPlus/Hoppe/Blush/Contact";
-        private Transform _hoppe2;
+        //private Transform _hoppe2;
         private Transform _blushArmature;
         private Transform _blushHead;
         AnimationClipsBuilder _ac;
@@ -66,9 +50,9 @@ namespace com.github.pandrabox.flatsplus.editor
         }
         private void GetStructure()
         {
-            _hoppe2 = _tgt.transform.Find("Hoppe2").NullCheck("Hoppe2ObjRoot");
-            _blushArmature = _hoppe2.transform.Find("Armature").NullCheck("BlushArmature");
-            _blushHead = _blushArmature.transform.Find("Head").NullCheck("BlushHead");
+            //_hoppe2 = _tgt.transform.Find("Hoppe2").NullCheck("Hoppe2ObjRoot");
+            //_blushArmature = _hoppe2.transform.Find("Armature").NullCheck("BlushArmature");
+            //_blushHead = _blushArmature.transform.Find("Head").NullCheck("BlushHead");
 
             Transform firstHead = _tgt.FindEx("Head").NullCheck("FirstHead");
             Transform blushContactTransform = firstHead.FindEx("BlushContact").NullCheck("BlushContactTransform");
@@ -83,17 +67,17 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateAnim()
         {
             _ac = new AnimationClipsBuilder();
-            void createContaceMode(string name, bool allowSelf, bool allowOther)
+            void createContactMode(string name, bool allowSelf, bool allowOther)
             {
                 _ac.Clip(name)
                     .Bind(__contactPath, typeof(VRCContactReceiver), "allowSelf").Const2F(allowSelf ? 1 : 0)
                     .Bind(__contactPath, typeof(VRCContactReceiver), "allowOthers").Const2F(allowOther ? 1 : 0);
             }
-            createContaceMode("CM0_Auto", true, true);
-            createContaceMode("CM1_OtherOnly", false, true);
-            createContaceMode("CM2_WithoutDance", true, true);
-            createContaceMode("CM3_On", false, false);
-            createContaceMode("CM4_Off", false, false);
+            createContactMode("CM0_Auto", true, true);
+            createContactMode("CM1_OtherOnly", false, true);
+            createContactMode("CM2_WithoutDance", true, true);
+            createContactMode("CM3_On", false, false);
+            createContactMode("CM4_Off", false, false);
 
             if (_useOriginalBlush)
             {
@@ -105,9 +89,9 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateBlush()
         {
             //モデルのサイズを適切にしてMerge
-            _hoppe2.transform.localScale = new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
-            var mama = _blushHead.gameObject.AddComponent<ModularAvatarMergeArmature>();
-            mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
+            //_hoppe2.transform.localScale = new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
+            //var mama = _blushHead.gameObject.AddComponent<ModularAvatarMergeArmature>();
+            //mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
 
             //Controlの生成
 
@@ -151,11 +135,12 @@ namespace com.github.pandrabox.flatsplus.editor
                 });
                 if (!_useOriginalBlush) //FP版Blushの制御
                 {
-                    bb.NName("BlushObj").Param("1").Add1D(__blushOnRx, () =>
-                    {
-                        bb.Param(0).AddMotion(_ac.OffAnim(__hoppePath));
-                        bb.Param(1).AddMotion(_ac.OnAnim(__hoppePath));
-                    });
+                    bb.Param("1").FAssignmentBy1D(__blushOnRx, 0, 1, FPMultiToolWork.GetParamName("HoppeOff"), 1, 0);
+                    //bb.NName("BlushObj").Param("1").Add1D(__blushOnRx, () =>
+                    //{
+                    //    bb.Param(0).AddMotion(_ac.OffAnim(__hoppePath));
+                    //    bb.Param(1).AddMotion(_ac.OnAnim(__hoppePath));
+                    //});
                 }
             });
             bb.Attach(_tgt.gameObject);
