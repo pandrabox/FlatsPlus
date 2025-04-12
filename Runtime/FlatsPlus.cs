@@ -23,7 +23,7 @@ namespace com.github.pandrabox.flatsplus.runtime
         public bool Func_Sleep = true;
         public bool Func_Tail = true;
         public bool Func_Link = true;
-        public bool Func_Sync = true;
+        //public bool Func_Sync = true;
         public bool Func_WriteDefaultOn = true;
         public bool Func_Guide = true;
         public bool Func_MultiTool = true;

@@ -255,10 +255,10 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public override string ManagementFunc => nameof(FP.Func_Link);
     }
-    public class FPFuncSync : ME_FuncBase
-    {
-        public override string ManagementFunc => nameof(FP.Func_Sync);
-    }
+    //public class FPFuncSync : ME_FuncBase
+    //{
+    //    public override string ManagementFunc => nameof(FP.Func_Sync);
+    //}
     public class FPFuncWriteDefaultOn : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_WriteDefaultOn);

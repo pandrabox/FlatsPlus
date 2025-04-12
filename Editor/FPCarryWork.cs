@@ -138,7 +138,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     .Bind("Obj/Head/StationH/Station", typeof(GameObject), "m_IsActive").Const2F(stHActive ? 1 : 0)
                     //.Bind("Obj/Head/StationH/Ring", typeof(GameObject), "m_IsActive").Const2F(stHRingActive ? 1 : 0)
                     .Bind("Obj/StationX/Station", typeof(GameObject), "m_IsActive").Const2F(stXActive ? 1 : 0)
-                    .Bind("Obj/StationX/Ring", typeof(GameObject), "m_IsActive").Const2F(stXRingActive ? 1 : 0)
+                    //.Bind("Obj/StationX/Ring", typeof(GameObject), "m_IsActive").Const2F(stXRingActive ? 1 : 0)
                     .Bind("Obj/StationX", typeof(ParentConstraint), "m_Enabled").Const2F(stXConstraintActive ? 1 : 0);
                 DefineParentConstraint(currentACB, "Obj/Head/StationH/Exit", 2, stHExitPos);
                 DefineParentConstraint(currentACB, "Obj/StationX", 2, stXRootPos);

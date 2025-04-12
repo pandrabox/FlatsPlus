@@ -30,8 +30,8 @@ namespace com.github.pandrabox.flatsplus.editor
             var multiBluthArmature = _tgt.transform.Find("MultiTool/Root/Armature").NullCheck("multiBluthArmature");
             var multiHead = multiBluthArmature.Find("Head").NullCheck("multiHead");
             multiBluthArmature.transform.localScale = new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
-            var mama = multiHead.gameObject.AddComponent<ModularAvatarMergeArmature>();
-            mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
+            var mama = multiHead.gameObject.AddComponent<ModularAvatarMergeArmature>().NullCheck("multiHeadmama");
+            mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head).NullCheck("headReference"); 
         }
 
         private void CreateControl()
@@ -48,6 +48,14 @@ namespace com.github.pandrabox.flatsplus.editor
                 ShapeToggle(bb, _config.Func_Carry, "RedRingOff");
                 ShapeToggle(bb, _config.Func_Carry, "BlueRingOff");
                 ShapeToggle(bb, _config.Func_Move, "CloudOff");
+                ShapeToggle(bb, _config.Func_Ico, "i1");
+                ShapeToggle(bb, _config.Func_Ico, "i2");
+                ShapeToggle(bb, _config.Func_Ico, "i3");
+                ShapeToggle(bb, _config.Func_Ico, "i4");
+                ShapeToggle(bb, _config.Func_Ico, "i5");
+                ShapeToggle(bb, _config.Func_Ico, "i6");
+                ShapeToggle(bb, _config.Func_Ico, "i7");
+                ShapeToggle(bb, _config.Func_Ico, "i8");
                 AntiCulling(bb);
                 PenColorSetting(bb);
             });

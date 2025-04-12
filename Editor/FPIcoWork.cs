@@ -32,15 +32,24 @@ namespace com.github.pandrabox.flatsplus.editor
 
         GameObject _callPlane;
         Texture2D[] _icosDoNotUseDirectly; //直接読まない！Icosから使って下さい
+        Texture2D _versionTex;
 
         sealed protected override void OnConstruct()
         {
+            GetMultiTool();
             GetStructure();
-            ReplacePackTexture();
+            GetVersionTexture();
+            CreateTexture();
+            //ReplacePackTexture();
             CreateMenu();
+            CreateDBT();
         }
-
-
+        private void GetMultiTool()
+        {
+            var multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
+            var pos = _tgt.transform.Find("Obj/Head/Offset/CallPlate/Size10").NullCheck("CallPlate");
+            multiTool.SetBone("Ico", pos);
+        }
         /// <summary>
         /// _config.Ico_Texturesは度々nullになるので安全に取得する
         /// </summary>
@@ -93,28 +102,131 @@ namespace com.github.pandrabox.flatsplus.editor
                 return _icosDoNotUseDirectly;
             }
         }
-
-        private void ReplacePackTexture()
+        private void GetVersionTexture()
         {
             using (var capture = new PanCapture(BGColor: new Color(1, 1, 1, 1), margin: 10, padding: 10, width: 170))
             {
                 FlatsProject prj = new FlatsProject(_desc);
-                var strImg = capture.TextToImage($"{prj.ProjectName}\n\r{prj.VPMVersion}");
+                _versionTex = capture.TextToImage($"{prj.ProjectName}\n\r{prj.VPMVersion}");
+            }
+            //_prj.DebugOutp(_versionTex);
+        }
+        private void CreateTexture()
+        {
+            Log.I.StartMethod();
+            //追加するアイコンの定義
+            List<Texture2D> textures = new List<Texture2D>(Icos);
+            textures.RemoveAt(textures.Count - 1);
+            textures.Add(_versionTex);
 
-                List<Texture2D> textures = new List<Texture2D>(Icos);
+            //追加元テクスチャの取得
+            FPMultiTool multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
+            SkinnedMeshRenderer smr = multiTool.MultiMeshSMR;
+            Texture2D multiTexture = smr.material.mainTexture as Texture2D;
 
-                textures.Add(strImg);
-                Texture2D packTexture = PackTexture(textures, 3, 170 * 3);
-                try
+            //アイコンをパックして戻す
+            Texture2D packedTexture = PackTexture(multiTexture, textures, new Vector2(1024,1024), new Vector2(170,170), 5);
+            smr.material.mainTexture = packedTexture;
+            
+            //_prj.DebugOutp(packedTexture);
+        }
+        private Texture2D PackTexture(Texture2D original, List<Texture2D> icos, Vector2 originalSize, Vector2 icoSize, int turnAroundCount)
+        {
+            Log.I.StartMethod();
+            // 新しいテクスチャを作成
+            Texture2D result = new Texture2D((int)originalSize.x, (int)originalSize.y, TextureFormat.RGBA32, false);
+
+            // 元のテクスチャの内容をコピー
+            Color[] originalPixels = original.GetPixels();
+            result.SetPixels(originalPixels);
+
+            // アイコンを配置する
+            for (int i = 0; i < icos.Count; i++)
+            {
+                // アイコンがnullの場合はスキップ
+                if (icos[i] == null)
+                    continue;
+
+                // アイコンの位置を計算
+                int x, y;
+
+                if (i < turnAroundCount)
                 {
-                    _callPlane.GetComponent<Renderer>().material.mainTexture = packTexture;
+                    // 最初のturnAroundCount個は縦に並べる
+                    x = 0;
+                    y = i;
                 }
-                catch (Exception ex)
+                else
                 {
-                    Log.I.Exception(ex, "Textureの置換に失敗しました(設定先mainTextureの取得に失敗しました)");
+                    // それ以降は右に進んで上に積み上げる
+                    x = (i - turnAroundCount) / turnAroundCount + 1;
+                    y = (i - turnAroundCount) % turnAroundCount;
+                }
+
+                Log.I.Info($@"Icon {i}: x={x}, y={y} ({icos[i].width}x{icos[i].height})");
+
+                // アイコンのピクセル座標
+                int pixelX = x * (int)icoSize.x;
+                int pixelY = y * (int)icoSize.y;
+
+                // テクスチャを読み込む
+                Texture2D resizedIco = ResizeTexture(icos[i], (int)icoSize.x, (int)icoSize.y);
+                Color[] icoPixels = resizedIco.GetPixels();
+
+                // アイコンを描画（左下から配置）
+                for (int icoY = 0; icoY < (int)icoSize.y; icoY++)
+                {
+                    for (int icoX = 0; icoX < (int)icoSize.x; icoX++)
+                    {
+                        // 元のテクスチャの対応する位置（左下からの座標）
+                        int targetX = pixelX + icoX;
+                        int targetY = pixelY + icoY;
+
+                        // 範囲チェック
+                        if (targetX >= 0 && targetX < originalSize.x && targetY >= 0 && targetY < originalSize.y)
+                        {
+                            // アイコンのピクセルを取得
+                            int icoPixelIndex = icoY * (int)icoSize.x + icoX;
+                            Color icoPixel = icoPixels[icoPixelIndex];
+
+                            // 元のテクスチャの対応するピクセル位置
+                            int targetPixelIndex = targetY * (int)originalSize.x + targetX;
+
+                            // ピクセルを置換（RGBAすべて置換）
+                            if (targetPixelIndex < originalPixels.Length)
+                            {
+                                result.SetPixel(targetX, targetY, icoPixel);
+                            }
+                        }
+                    }
                 }
             }
+
+            // テクスチャの変更を適用
+            result.Apply();
+            return result;
         }
+        //private void ReplacePackTexture()
+        //{
+        //    using (var capture = new PanCapture(BGColor: new Color(1, 1, 1, 1), margin: 10, padding: 10, width: 170))
+        //    {
+        //        FlatsProject prj = new FlatsProject(_desc);
+        //        var strImg = capture.TextToImage($"{prj.ProjectName}\n\r{prj.VPMVersion}");
+
+        //        List<Texture2D> textures = new List<Texture2D>(Icos);
+
+        //        textures.Add(strImg);
+        //        Texture2D packTexture = PackTexture(textures, 3, 170 * 3);
+        //        try
+        //        {
+        //            _callPlane.GetComponent<Renderer>().material.mainTexture = packTexture;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Log.I.Exception(ex, "Textureの置換に失敗しました(設定先mainTextureの取得に失敗しました)");
+        //        }
+        //    }
+        //}
         private void CreateMenu()
         {
             MenuBuilder mb = new MenuBuilder(_prj);
@@ -143,7 +255,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             }
         }
-
         /// <summary>
         /// プレハブの構造確認・取得
         /// </summary>
@@ -153,6 +264,44 @@ namespace com.github.pandrabox.flatsplus.editor
             Transform Offset = _tgt.transform.Find("Obj/Head/Offset").NullCheck("Offset");
             _callPlane = Offset.GetComponentsInChildren<Transform>(true).FirstOrDefault(child => child.name == "CallPlate").gameObject.NullCheck("_callPlane");
             return true;
+        }
+        private void CreateDBT()
+        {
+            BlendTreeBuilder bb = new BlendTreeBuilder("IcoControl");
+            AnimationClipsBuilder ac = new AnimationClipsBuilder();
+            bb.RootDBT(() =>
+            {
+                bb.NName("RestoreIcoNo").Param("1").AddD(() =>
+                {
+                    bb.Param("FlatsPlus/Ico/IcoTypeB2").AddAAP("FlatsPlus/Ico/RestoredIcoNo", 4);
+                    bb.Param("FlatsPlus/Ico/IcoTypeB1").AddAAP("FlatsPlus/Ico/RestoredIcoNo", 2);
+                    bb.Param("FlatsPlus/Ico/IcoTypeB0").AddAAP("FlatsPlus/Ico/RestoredIcoNo", 1);
+                });
+                bb.NName("AppearIco").Param("1").Add1D("FlatPlus/Ico/LocalTypeB0", () => {
+                    bb.Param(0).Add1D("FlatsPlus/Ico/RestoredIcoNo", () => {
+                        for (int i = 0; i < 8; i++)
+                        {
+                            bb.Param(i).AddMotion(AnimIcoEnable(i));
+                        }
+                    });
+                    bb.Param(1).Add1D("FlatPlus/Ico/LocalTypeB1", () =>
+                    {
+                        bb.Param(0).AddMotion(AnimIcoEnable(7));
+                        bb.Param(1).AddMotion(AnimIcoEnable(8));
+                    });
+                });
+            });
+            bb.Attach(_tgt.gameObject);
+        }
+        private AnimationClip AnimIcoEnable(int n)
+        {
+            string icoName = $"i{n + 1}";
+            AnimationClipBuilder ac = new AnimationClipBuilder(icoName);
+            for (int i = 1; i < 9; i++)
+            {
+                ac.Bind("", typeof(Animator),FPMultiToolWork.GetParamName($"i{i}")).Const2F(i == n ? 0 : 1);
+            }
+            return ac.Outp();
         }
     }
 }

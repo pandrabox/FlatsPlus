@@ -60,8 +60,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe");
                 CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null);
                 CreateWork<FPIcoWork>(fp.Func_Ico, "Ico");
-                CreateInstantiate(fp.Func_Sync, "Sync");
-                CreateWork<FPLightWork>(fp.Func_Explore, "Light"); //LightはExploreに統合されました
+                //CreateInstantiate(fp.Func_Sync, "Sync");
+                CreateWork<FPLightWork>(fp.Func_Explore, "Light"); //LightはExploreに統合されました　処理自体はこちらで実施
                 CreateInstantiate(fp.Func_Link, "Link");
                 CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo");
                 CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting");
@@ -71,7 +71,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPPenWork>(fp.Func_Pen, "Pen");
                 CreateInstantiate(fp.Func_PoseClipper, "FPPoseClipper");
                 CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep");
-                CreateInstantiate(fp.Func_Sync, "Sync");
+                //CreateInstantiate(fp.Func_Sync, "Sync");//MultiToolに完全統合されました
                 CreateWork<FPTailWork>(fp.Func_Tail, "Tail");
                 CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn");
                 CreateWork<FPGuideWork>(fp.Func_Guide, "Guide");
