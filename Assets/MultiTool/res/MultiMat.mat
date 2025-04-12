@@ -124,7 +124,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main2ndBlendMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: bc289c86f766d8049951656f67a75675, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main2ndDissolveMask:
@@ -136,7 +136,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main2ndTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 51ca5ad0a02cb584d85c5ca1920dc7f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main3rdBlendMask:
@@ -635,7 +635,7 @@ Material:
     - _UseEmission: 0
     - _UseEmission2nd: 0
     - _UseGlitter: 0
-    - _UseMain2ndTex: 0
+    - _UseMain2ndTex: 1
     - _UseMain3rdTex: 0
     - _UseMatCap: 0
     - _UseMatCap2nd: 0

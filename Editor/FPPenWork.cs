@@ -2,6 +2,7 @@
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
+using System;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -40,6 +41,25 @@ namespace com.github.pandrabox.flatsplus.editor
 
         sealed protected override void OnConstruct()
         {
+            GetMultiTool();
+            Activate();
+        }
+
+        private void GetMultiTool()
+        {
+            var multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
+            var multiPen = multiTool.transform.Find("MultiTool/Root/Pen").NullCheck("MultiPen");
+            var penPos = _tgt.transform.Find("Obj/HandR/Offset/pen").NullCheck("GimmickPen");
+            multiPen.SetParent(penPos, false);
+            multiPen.localScale = Vector3.one;
+            multiPen.localPosition = Vector3.zero;
+            multiPen.localEulerAngles= new Vector3(90f,0,0);
+        }
+
+
+        private void Activate()
+        {
+
             float penAnimTime = .25f;
 
             var ac = new AnimationClipsBuilder();
@@ -61,7 +81,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     x.Bind("Obj/HandR/Offset/pen", typeof(Transform), "localEulerAnglesRaw.@a").Const2F(rot);
                 })
-                .Bind("Obj/HandR/Offset/pen", typeof(GameObject), "m_IsActive").Const2F(penVisible ? 1 : 0);
+                .Bind("", typeof(Animator), FPMultiToolWork.GetParamName("PenOff")).Const2F(penVisible ? 0 : 1);
             }
             Set2("PenErace", true, true);
             Set2("PenOff", false, false);
@@ -79,12 +99,13 @@ namespace com.github.pandrabox.flatsplus.editor
             };
             for (int i = 0; i < COLORNUM; i++)
             {
-                Quaternion q = new Quaternion(1, 1, (float)i / COLORNUM, 0);
-                ac.Clip($@"Color{i}").IsQuaternion((x) =>
-                {
-                    x.Bind("Obj/HandR/Offset/pen", typeof(MeshRenderer), "material._MainTex_ST.@a").Const2F(q);
-                    x.Bind("Obj/HandR/Offset/pen", typeof(MeshRenderer), "material._EmissionMap_ST.@a").Const2F(q);
-                })
+                //Quaternion q = new Quaternion(1, 1, (float)i / COLORNUM, 0);
+                ac.Clip($@"Color{i}")
+                //    .IsQuaternion((x) =>
+                //{
+                //    x.Bind("Obj/HandR/Offset/pen", typeof(MeshRenderer), "material._MainTex_ST.@a").Const2F(q);
+                //    x.Bind("Obj/HandR/Offset/pen", typeof(MeshRenderer), "material._EmissionMap_ST.@a").Const2F(q);
+                //})
                 .Color("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "InitialModule.startColor.maxColor", penColors[i]);
             }
 

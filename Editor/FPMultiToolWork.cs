@@ -1,16 +1,7 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
-using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
-using System.Globalization;
-using System.Linq;
-using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
-using VRC.SDK3.Dynamics.PhysBone.Components;
-using static com.github.pandrabox.flatsplus.editor.Global;
-using static com.github.pandrabox.pandravase.editor.Localizer;
-using static com.github.pandrabox.pandravase.editor.Util;
 
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -38,7 +29,6 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             var multiBluthArmature = _tgt.transform.Find("MultiTool/Root/Armature").NullCheck("multiBluthArmature");
             var multiHead = multiBluthArmature.Find("Head").NullCheck("multiHead");
-
             multiBluthArmature.transform.localScale = new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
             var mama = multiHead.gameObject.AddComponent<ModularAvatarMergeArmature>();
             mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head);
@@ -48,14 +38,17 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             BlendTreeBuilder bb = new BlendTreeBuilder("MultiMesh");
             AnimationClipsBuilder ac = new AnimationClipsBuilder();
-            bb.RootDBT(() => {
+            bb.RootDBT(() =>
+            {
                 bb.Param("1").AddMotion(ac.OnAnim(__meshPath));
                 //bb.Param("1").AddAAP(GetParamName("HoppeOff"), 0);//辞書を作るときに便利（ほっぺ強制ON）
                 ShapeToggle(bb, "HoppeOff");
+                ShapeToggle(bb, "PenOff");
+                PenColorSetting(bb);
             });
             bb.Attach(_tgt.gameObject);
         }
-        
+
 
         private void ShapeToggle(BlendTreeBuilder bb, string shapeName)
         {
@@ -76,6 +69,29 @@ namespace com.github.pandrabox.flatsplus.editor
         public static string GetParamName(string shapeName)
         {
             return $@"FlatsPlus/MT/{shapeName}";
+        }
+
+        private void PenColorSetting(BlendTreeBuilder bb)
+        {
+            int COLORNUM = 8;
+            var ac = new AnimationClipsBuilder();
+            for (int i = 0; i < COLORNUM; i++)
+            {
+                Quaternion q = new Quaternion(1, 1, 0, -(float)i / COLORNUM);
+                ac.Clip($@"Color{i}").IsQuaternion((x) =>
+                {
+                    x.Bind("MultiTool/MultiMesh", typeof(SkinnedMeshRenderer), "material._Main2ndTex_ST.@a").Const2F(q);
+                });
+            }
+
+            int OFFSET = 3;
+            bb.NName("Color").Param("1").Add1D("FlatsPlus/Pen/ComRx", () =>
+            {
+                for (int i = 0; i < COLORNUM; i++)
+                {
+                    bb.Param(i + OFFSET).AddMotion(ac.Outp($@"Color{i}"));
+                }
+            });
         }
     }
 }

@@ -52,6 +52,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
                 Localizer.SetLanguage(fp.Language);
 
+                CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool"); // かなり最初のほうで実行する必要がある
                 CreateWork<FPCarryWork>(fp.Func_Carry, "Carry");
                 CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController");
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo");
@@ -74,7 +75,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateWork<FPTailWork>(fp.Func_Tail, "Tail");
                 CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn");
                 CreateWork<FPGuideWork>(fp.Func_Guide, "Guide");
-                CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool");
             }
             catch (Exception ex)
             {
