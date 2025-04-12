@@ -9,6 +9,7 @@ using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
 
 
+
 namespace com.github.pandrabox.flatsplus.editor
 {
 #if PANDRADBG
@@ -51,15 +52,29 @@ namespace com.github.pandrabox.flatsplus.editor
         private string __AllowBlueGate => $@"{__suffix}/AllowBlueGate";
         private string[] __Modes => new string[] { "MC_Hide", "MC_TakeMe", "MC_FixTakeMe", "MC_Hug", "MC_Carry", "MC_Adjust", "MC_Fix" };
         private float _takeMeComm => 2f;
+        private string[] colors => new string[] { "Gray", "Red", "Blue" };
 
         sealed protected override void OnConstruct()
         {
+            GetMultiTool();
             CreateClip();
             DefineParam();
             CreateDBT();
             CreateAPD();
             CreateMenu();
         }
+
+        private void GetMultiTool()
+        {
+            var multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
+            var posX = _tgt.transform.Find("Obj/StationX/Ring").NullCheck("posF");
+            var posH = _tgt.transform.Find("Obj/Head/StationH/Ring").NullCheck("posH");
+            multiTool.SetBone("HeadRing", posH);
+            //multiTool.SetBone("XGrayRing", posX);
+            //multiTool.SetBone("XRedRing", posX);
+            //multiTool.SetBone("XBlueRing", posX);
+        }
+
         private void CreateClip()
         {
             _ac = new AnimationClipsBuilder();
@@ -78,10 +93,10 @@ namespace com.github.pandrabox.flatsplus.editor
             void DefineRingMode(string name, float r, float g, float b)
             {
                 _ac.Clip(name)
-                    .Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.r").Const2F(r)
-                    .Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.g").Const2F(g)
-                    .Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
-                    .Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.a").Const2F(1f)
+                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.r").Const2F(r)
+                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.g").Const2F(g)
+                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
+                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.a").Const2F(1f)
                     .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.r").Const2F(r)
                     .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.g").Const2F(g)
                     .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
@@ -91,12 +106,24 @@ namespace com.github.pandrabox.flatsplus.editor
             DefineRingMode("RM_Blue", .5f, .5f, 1f);
             DefineRingMode("RM_Red", 1f, .5f, .5f);
 
+            for (int m = 0; m < colors.Length + 1; m++)
+            {
+                var color1 = m < colors.Length ? colors[m] : "None";
+                for (int i = 0; i < colors.Length; i++)
+                {
+                    var color2 = colors[i];
+                    var val = color1 == color2 ? 0 : 1;
+                    _ac.Clip($@"RingDrive_{color1}")
+                        .Bind("", typeof(Animator), FPMultiToolWork.GetParamName($@"{color2}RingOff")).Const2F(val);
+                }
+            }
+
             /// <summary>
             /// Define the main control animation clip with various parameters.
             /// </summary>
             /// <param name="name">アニメ名</param>
             /// <param name="stHActive">頭のからSitするStationの有効</param>
-            /// <param name="stHRingActive">頭の上にあるRingの有効</param>
+            /// <param name="stHRingActive">[マルチツールにより無効になりました]頭の上にあるRingの有効</param>
             /// <param name="stHExitPos">頭から出るExitの位置 0:Hの位置 1:Xの位置</param>
             /// <param name="stXConstraintActive">StationXのConstraint有効</param>
             /// <param name="stXActive">StationX座り判定の有効</param>
@@ -109,7 +136,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 AnimationClipBuilder currentACB = _ac.Clip(name);
                 currentACB
                     .Bind("Obj/Head/StationH/Station", typeof(GameObject), "m_IsActive").Const2F(stHActive ? 1 : 0)
-                    .Bind("Obj/Head/StationH/Ring", typeof(GameObject), "m_IsActive").Const2F(stHRingActive ? 1 : 0)
+                    //.Bind("Obj/Head/StationH/Ring", typeof(GameObject), "m_IsActive").Const2F(stHRingActive ? 1 : 0)
                     .Bind("Obj/StationX/Station", typeof(GameObject), "m_IsActive").Const2F(stXActive ? 1 : 0)
                     .Bind("Obj/StationX/Ring", typeof(GameObject), "m_IsActive").Const2F(stXRingActive ? 1 : 0)
                     .Bind("Obj/StationX", typeof(ParentConstraint), "m_Enabled").Const2F(stXConstraintActive ? 1 : 0);
@@ -201,15 +228,29 @@ namespace com.github.pandrabox.flatsplus.editor
                     for (int i = 0; i < __Modes.Length; i++)
                         bb.Param(i).AddMotion(_ac.Outp(__Modes[i]));
                 });
-                bb.NName("リング色").Param("1").Add1D(__ModeActual, () =>
+                bb.NName("Xリング色").Param("1").Add1D(__ModeActual, () =>
                 {
                     bb.Param(3).AddMotion(_ac.Outp("RM_Blue")); //0はないので無視、1,2はTakeMeで青
-                    bb.Param(4).Add1D(__isLocal, () => //通常ゲートは5,6
+                    bb.Param(4).Add1D(__isLocal, () => //4以降はローカルリモートで分岐
                     {
                         bb.Param(0).AddMotion(_ac.Outp("RM_Red")); //リモートは赤
                         bb.Param(1).AddMotion(_ac.Outp("RM_Gray")); //ローカルは灰
                     });
                 });
+
+                bb.NName("RingDrive").Param("1").Add1D(__ModeActual, () =>
+                {
+                    bb.Param(0).NName("MC_Hide").AddMotion(_ac.Outp($"RingDrive_None"));
+                    bb.Param(1).NName("MC_TakeMe").AddMotion(_ac.Outp($"RingDrive_Blue"));
+                    bb.Param(2).NName("MC_FixTakeMe").AddMotion(_ac.Outp($"RingDrive_Blue"));
+                    bb.Param(3).NName("MC_Hug").AddMotion(_ac.Outp($"RingDrive_None"));
+                    bb.Param(4).Add1D(__isLocal, () => //4以降はローカルリモートで分岐
+                    {
+                        bb.Param(0).AddMotion(_ac.Outp($"RingDrive_Red"));
+                        bb.Param(1).AddMotion(_ac.Outp($"RingDrive_Gray"));
+                    });
+                });
+                //bb.NName("アンチカリング").Param("1").AddAAP("FlatsPlus/Sync/Global", 1);
             });
             bb.Attach(_tgt.gameObject);
         }

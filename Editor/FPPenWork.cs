@@ -48,12 +48,8 @@ namespace com.github.pandrabox.flatsplus.editor
         private void GetMultiTool()
         {
             var multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
-            var multiPen = multiTool.transform.Find("MultiTool/Root/Pen").NullCheck("MultiPen");
-            var penPos = _tgt.transform.Find("Obj/HandR/Offset/pen").NullCheck("GimmickPen");
-            multiPen.SetParent(penPos, false);
-            multiPen.localScale = Vector3.one;
-            multiPen.localPosition = Vector3.zero;
-            multiPen.localEulerAngles= new Vector3(90f,0,0);
+            var pos = _tgt.transform.Find("Obj/HandR/Offset/pen").NullCheck("GimmickPen");
+            multiTool.SetBone("Pen", pos);
         }
 
 

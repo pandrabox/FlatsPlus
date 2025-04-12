@@ -44,6 +44,9 @@ namespace com.github.pandrabox.flatsplus.editor
                 //bb.Param("1").AddAAP(GetParamName("HoppeOff"), 0);//辞書を作るときに便利（ほっぺ強制ON）
                 ShapeToggle(bb, "HoppeOff");
                 ShapeToggle(bb, "PenOff");
+                ShapeToggle(bb, "GrayRingOff");
+                ShapeToggle(bb, "RedRingOff");
+                ShapeToggle(bb, "BlueRingOff");
                 PenColorSetting(bb);
             });
             bb.Attach(_tgt.gameObject);
