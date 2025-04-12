@@ -1,7 +1,9 @@
-﻿using com.github.pandrabox.flatsplus.runtime;
+﻿using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.BC;
+using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using nadena.dev.modular_avatar.core;
 using UnityEditor;
+using UnityEngine;
 using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
 
@@ -27,10 +29,33 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPMoveWork : FlatsWork<FPMove>
     {
         public FPMoveWork(FlatsProject fp) : base(fp) { }
-
+        private AnimationClipsBuilder _ac;
         sealed protected override void OnConstruct()
         {
+            GetMultiTool();
+            CloudControl();
             CreateMenu();
+        }
+
+
+        private void GetMultiTool()
+        {
+            var multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
+            var cloudPos = _tgt.transform.Find("Obj/Cart/Sphere").NullCheck("CloudPos");
+            multiTool.SetBone("Cloud", cloudPos);
+        }
+
+        private void CloudControl()
+        {
+            var bb = new BlendTreeBuilder("CloudControl");
+            bb.RootDBT(() =>
+            {
+                bb.Param("1").Add1D("FlatsPlus/Move/Mode", () => { 
+                    bb.Param(0).AddAAP(FPMultiToolWork.GetParamName("CloudOff"), 1);
+                    bb.Param(1).AddAAP(FPMultiToolWork.GetParamName("CloudOff"), 0);
+                });
+            });
+            bb.Attach(_tgt.gameObject);
         }
 
         private void CreateMenu()

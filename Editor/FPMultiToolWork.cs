@@ -42,22 +42,23 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 bb.Param("1").AddMotion(ac.OnAnim(__meshPath));
                 //bb.Param("1").AddAAP(GetParamName("HoppeOff"), 0);//辞書を作るときに便利（ほっぺ強制ON）
-                ShapeToggle(bb, "HoppeOff");
-                ShapeToggle(bb, "PenOff");
-                ShapeToggle(bb, "GrayRingOff");
-                ShapeToggle(bb, "RedRingOff");
-                ShapeToggle(bb, "BlueRingOff");
+                ShapeToggle(bb, _config.Func_Hoppe, "HoppeOff");
+                ShapeToggle(bb, _config.Func_Pen, "PenOff");
+                ShapeToggle(bb, _config.Func_Carry, "GrayRingOff");
+                ShapeToggle(bb, _config.Func_Carry, "RedRingOff");
+                ShapeToggle(bb, _config.Func_Carry, "BlueRingOff");
+                ShapeToggle(bb, _config.Func_Move, "CloudOff");
                 PenColorSetting(bb);
             });
             bb.Attach(_tgt.gameObject);
         }
 
 
-        private void ShapeToggle(BlendTreeBuilder bb, string shapeName)
+        private void ShapeToggle(BlendTreeBuilder bb, bool isActive, string shapeName)
         {
             bb.NName(shapeName).Param("1").Add1D(GetParamName(shapeName), () =>
             {
-                bb.Param(0).AddMotion(ShapeAnim(shapeName, 0));
+                bb.Param(0).AddMotion(ShapeAnim(shapeName, (isActive ? 0 : 100)));
                 bb.Param(1).AddMotion(ShapeAnim(shapeName, 100));
             });
         }
@@ -96,5 +97,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 }
             });
         }
+
     }
 }
