@@ -48,6 +48,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 ShapeToggle(bb, _config.Func_Carry, "RedRingOff");
                 ShapeToggle(bb, _config.Func_Carry, "BlueRingOff");
                 ShapeToggle(bb, _config.Func_Move, "CloudOff");
+                AntiCulling(bb);
                 PenColorSetting(bb);
             });
             bb.Attach(_tgt.gameObject);
@@ -61,6 +62,16 @@ namespace com.github.pandrabox.flatsplus.editor
                 bb.Param(0).AddMotion(ShapeAnim(shapeName, (isActive ? 0 : 100)));
                 bb.Param(1).AddMotion(ShapeAnim(shapeName, 100));
             });
+        }
+
+        private void AntiCulling(BlendTreeBuilder bb)
+        {
+            _ac.Clip("AntiCulling")
+                .Bind("MultiTool/Root/ForBounds", typeof(Transform), "m_LocalScale.x").Const2F(100)
+                .Bind("MultiTool/Root/ForBounds", typeof(Transform), "m_LocalScale.y").Const2F(100)
+                .Bind("MultiTool/Root/ForBounds", typeof(Transform), "m_LocalScale.z").Const2F(100);
+
+            bb.NName("AntiCulling").Param("1").AddMotion(_ac.Outp("AntiCulling"));
         }
 
         private AnimationClip ShapeAnim(string shapeName, int val)

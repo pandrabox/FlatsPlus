@@ -1576,7 +1576,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 31ac8064769aae947a5f6265bbc3a702,
         type: 3}
       propertyPath: m_Name
-      value: Ring(Bug)
+      value: Ring
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 31ac8064769aae947a5f6265bbc3a702,
         type: 3}
@@ -1586,7 +1586,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 31ac8064769aae947a5f6265bbc3a702,
         type: 3}
       propertyPath: m_TagString
-      value: EditorOnly
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -7511558181221131132, guid: 31ac8064769aae947a5f6265bbc3a702, type: 3}
@@ -1678,17 +1678,17 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 31ac8064769aae947a5f6265bbc3a702,
         type: 3}
       propertyPath: m_Name
-      value: Ring
+      value: Ring(Backup)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 31ac8064769aae947a5f6265bbc3a702,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 31ac8064769aae947a5f6265bbc3a702,
         type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: EditorOnly
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31ac8064769aae947a5f6265bbc3a702, type: 3}

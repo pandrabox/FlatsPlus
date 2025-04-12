@@ -70,7 +70,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var posX = _tgt.transform.Find("Obj/StationX/Ring").NullCheck("posF");
             var posH = _tgt.transform.Find("Obj/Head/StationH/Ring").NullCheck("posH");
             multiTool.SetBone("HeadRing", posH);
-            //multiTool.SetBone("XGrayRing", posX);
+            multiTool.SetBone("XRing", posX);
             //multiTool.SetBone("XRedRing", posX);
             //multiTool.SetBone("XBlueRing", posX);
         }
@@ -228,15 +228,15 @@ namespace com.github.pandrabox.flatsplus.editor
                     for (int i = 0; i < __Modes.Length; i++)
                         bb.Param(i).AddMotion(_ac.Outp(__Modes[i]));
                 });
-                bb.NName("Xリング色").Param("1").Add1D(__ModeActual, () =>
-                {
-                    bb.Param(3).AddMotion(_ac.Outp("RM_Blue")); //0はないので無視、1,2はTakeMeで青
-                    bb.Param(4).Add1D(__isLocal, () => //4以降はローカルリモートで分岐
-                    {
-                        bb.Param(0).AddMotion(_ac.Outp("RM_Red")); //リモートは赤
-                        bb.Param(1).AddMotion(_ac.Outp("RM_Gray")); //ローカルは灰
-                    });
-                });
+                //bb.NName("Xリング色").Param("1").Add1D(__ModeActual, () =>
+                //{
+                //    bb.Param(3).AddMotion(_ac.Outp("RM_Blue")); //0はないので無視、1,2はTakeMeで青
+                //    bb.Param(4).Add1D(__isLocal, () => //4以降はローカルリモートで分岐
+                //    {
+                //        bb.Param(0).AddMotion(_ac.Outp("RM_Red")); //リモートは赤
+                //        bb.Param(1).AddMotion(_ac.Outp("RM_Gray")); //ローカルは灰
+                //    });
+                //});
 
                 bb.NName("RingDrive").Param("1").Add1D(__ModeActual, () =>
                 {
