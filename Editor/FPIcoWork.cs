@@ -295,7 +295,7 @@ namespace com.github.pandrabox.flatsplus.editor
         }
         private AnimationClip AnimIcoEnable(int n)
         {
-            string icoName = $"i{n + 1}";
+            string icoName = $"i{n}";
             AnimationClipBuilder ac = new AnimationClipBuilder(icoName);
             for (int i = 1; i < 9; i++)
             {

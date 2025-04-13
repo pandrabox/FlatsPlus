@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MultiMat
-  m_Shader: {fileID: 4800000, guid: 85d6126cae43b6847aff4b13f4adb8ec, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3b4aa19949601f046a20ca8bdaee929f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -140,7 +140,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main3rdBlendMask:
-        m_Texture: {fileID: 2800000, guid: d579a02e66b6cf34eae010b3970105b8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1953ad06e71dfb94b973bd6a14a58663, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main3rdDissolveMask:
@@ -152,9 +152,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main3rdTex:
-        m_Texture: {fileID: 2800000, guid: c3ed2470a6a92b94b9e7a4a757065aba, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9f5b32ccaec1b95408436f74ab23c5e3, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Offset: {x: -0.3, y: 0}
     - _MainColorAdjustMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -208,7 +208,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineWidthMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 1953ad06e71dfb94b973bd6a14a58663, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -441,7 +441,7 @@ Material:
     - _Main2ndTex_UVMode: 0
     - _Main3rdDissolveNoiseStrength: 0.1
     - _Main3rdEnableLighting: 1
-    - _Main3rdTexAlphaMode: 3
+    - _Main3rdTexAlphaMode: 0
     - _Main3rdTexAngle: 0
     - _Main3rdTexBlendMode: 0
     - _Main3rdTexIsDecal: 0
@@ -488,7 +488,7 @@ Material:
     - _OcclusionStrength: 1
     - _OffsetFactor: 0
     - _OffsetUnits: 0
-    - _OutlineAlphaToMask: 0
+    - _OutlineAlphaToMask: 1
     - _OutlineBlendOp: 0
     - _OutlineBlendOpAlpha: 0
     - _OutlineBlendOpAlphaFA: 4
@@ -502,7 +502,7 @@ Material:
     - _OutlineDstBlendAlphaFA: 1
     - _OutlineDstBlendFA: 1
     - _OutlineEnableLighting: 1
-    - _OutlineFixWidth: 0.5
+    - _OutlineFixWidth: 1
     - _OutlineLitApplyTex: 0
     - _OutlineLitOffset: -8
     - _OutlineLitScale: 10
@@ -523,7 +523,7 @@ Material:
     - _OutlineVectorScale: 1
     - _OutlineVectorUVMode: 0
     - _OutlineVertexR2Width: 0
-    - _OutlineWidth: 0.08
+    - _OutlineWidth: 1
     - _OutlineZBias: 0
     - _OutlineZClip: 1
     - _OutlineZTest: 2
@@ -665,7 +665,7 @@ Material:
     - _UseEmission2nd: 0
     - _UseGlitter: 0
     - _UseMain2ndTex: 1
-    - _UseMain3rdTex: 0
+    - _UseMain3rdTex: 1
     - _UseMatCap: 0
     - _UseMatCap2nd: 0
     - _UseOutline: 0
@@ -744,7 +744,7 @@ Material:
     - _MatCap2ndColor: {r: 1, g: 1, b: 1, a: 1}
     - _MatCapBlendUV1: {r: 0, g: 0, b: 0, a: 0}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.6, g: 0.56, b: 0.73, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineLitColor: {r: 1, g: 0.19999996, b: 0, a: 0}
     - _OutlineTexHSVG: {r: 0, g: 1, b: 1, a: 1}
     - _OutlineTex_ScrollRotate: {r: 0, g: 0, b: 0, a: 0}

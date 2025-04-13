@@ -90,21 +90,21 @@ namespace com.github.pandrabox.flatsplus.editor
                 .Bind("Obj/Head/StationH/Station", typeof(BoxCollider), "m_Enabled").Const2F(1);
             _ac.Clip("PlzBlueGate")
                 .Bind("", typeof(Animator), "FlatsPlus/Carry/RunTakeMe");
-            void DefineRingMode(string name, float r, float g, float b)
-            {
-                _ac.Clip(name)
-                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.r").Const2F(r)
-                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.g").Const2F(g)
-                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
-                    //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.a").Const2F(1f)
-                    .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.r").Const2F(r)
-                    .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.g").Const2F(g)
-                    .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
-                    .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.a");
-            }
-            DefineRingMode("RM_Gray", .4f, .4f, .4f);
-            DefineRingMode("RM_Blue", .5f, .5f, 1f);
-            DefineRingMode("RM_Red", 1f, .5f, .5f);
+            //void DefineRingMode(string name, float r, float g, float b)
+            //{
+            //    _ac.Clip(name)
+            //        //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.r").Const2F(r)
+            //        //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.g").Const2F(g)
+            //        //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
+            //        //.Bind("Obj/Head/StationH/Ring", typeof(MeshRenderer), "material._Color.a").Const2F(1f)
+            //        .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.r").Const2F(r)
+            //        .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.g").Const2F(g)
+            //        .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.b").Const2F(b)
+            //        .Bind("Obj/StationX/Ring", typeof(MeshRenderer), "material._Color.a");
+            //}
+            //DefineRingMode("RM_Gray", .4f, .4f, .4f);
+            //DefineRingMode("RM_Blue", .5f, .5f, 1f);
+            //DefineRingMode("RM_Red", 1f, .5f, .5f);
 
             for (int m = 0; m < colors.Length + 1; m++)
             {
@@ -238,18 +238,40 @@ namespace com.github.pandrabox.flatsplus.editor
                 //    });
                 //});
 
-                bb.NName("RingDrive").Param("1").Add1D(__ModeActual, () =>
-                {
-                    bb.Param(0).NName("MC_Hide").AddMotion(_ac.Outp($"RingDrive_None"));
-                    bb.Param(1).NName("MC_TakeMe").AddMotion(_ac.Outp($"RingDrive_Blue"));
-                    bb.Param(2).NName("MC_FixTakeMe").AddMotion(_ac.Outp($"RingDrive_Blue"));
-                    bb.Param(3).NName("MC_Hug").AddMotion(_ac.Outp($"RingDrive_None"));
-                    bb.Param(4).Add1D(__isLocal, () => //4以降はローカルリモートで分岐
-                    {
-                        bb.Param(0).AddMotion(_ac.Outp($"RingDrive_Red"));
-                        bb.Param(1).AddMotion(_ac.Outp($"RingDrive_Gray"));
-                    });
+
+                var swAAP = FPMultiToolWork.GetParamName("RingOff");
+                bb.NName("RingSW").Param("1").Add1D(__ModeActual, () => { 
+                    bb.Param(0).NName("MC_Hide").AddAAP(swAAP, 1);
+                    bb.Param(1).NName("MC_TakeMe").AddAAP(swAAP, 0);
+                    bb.Param(2).NName("MC_FixTakeMe").AddAAP(swAAP, 0);
+                    bb.Param(3).NName("MC_Hug").AddAAP(swAAP, 1);
+                    bb.Param(4).NName("MC_Carry").AddAAP(swAAP, 0);
                 });
+
+                //色制御はMultiTool側でやっている
+
+                //bb.NName("リング色").Param("1").Add1D(__ModeActual, () =>
+                //{
+                //    bb.Param(3).AddMotion(_ac.Outp("RM_Blue")); //0はないので無視、1,2はTakeMeで青
+                //    bb.Param(4).Add1D(__isLocal, () => //4以降はローカルリモートで分岐
+                //    {
+                //        bb.Param(0).AddMotion(_ac.Outp("RM_Red")); //リモートは赤
+                //        bb.Param(1).AddMotion(_ac.Outp("RM_Gray")); //ローカルは灰
+                //    });
+                //});
+
+                //bb.NName("RingDrive").Param("1").Add1D(__ModeActual, () =>
+                //{
+                //    bb.Param(0).NName("MC_Hide").AddMotion(_ac.Outp($"RingDrive_None"));
+                //    bb.Param(1).NName("MC_TakeMe").AddMotion(_ac.Outp($"RingDrive_Blue"));
+                //    bb.Param(2).NName("MC_FixTakeMe").AddMotion(_ac.Outp($"RingDrive_Blue"));
+                //    bb.Param(3).NName("MC_Hug").AddMotion(_ac.Outp($"RingDrive_None"));
+                //    bb.Param(4).Add1D(__isLocal, () => //4以降はローカルリモートで分岐
+                //    {
+                //        bb.Param(0).AddMotion(_ac.Outp($"RingDrive_Red"));
+                //        bb.Param(1).AddMotion(_ac.Outp($"RingDrive_Gray"));
+                //    });
+                //});
                 //bb.NName("アンチカリング").Param("1").AddAAP("FlatsPlus/Sync/Global", 1);
             });
             bb.Attach(_tgt.gameObject);

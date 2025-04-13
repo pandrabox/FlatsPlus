@@ -44,9 +44,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 //bb.Param("1").AddAAP(GetParamName("HoppeOff"), 0);//辞書を作るときに便利（ほっぺ強制ON）
                 ShapeToggle(bb, _config.Func_Hoppe, "HoppeOff");
                 ShapeToggle(bb, _config.Func_Pen, "PenOff");
-                ShapeToggle(bb, _config.Func_Carry, "GrayRingOff");
-                ShapeToggle(bb, _config.Func_Carry, "RedRingOff");
-                ShapeToggle(bb, _config.Func_Carry, "BlueRingOff");
+                ShapeToggle(bb, _config.Func_Carry, "RingOff");
                 ShapeToggle(bb, _config.Func_Move, "CloudOff");
                 ShapeToggle(bb, _config.Func_Ico, "i1");
                 ShapeToggle(bb, _config.Func_Ico, "i2");
@@ -58,6 +56,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 ShapeToggle(bb, _config.Func_Ico, "i8");
                 AntiCulling(bb);
                 PenColorSetting(bb);
+                RingColorSetting(bb);
             });
             bb.Attach(_tgt.gameObject);
         }
@@ -108,7 +107,7 @@ namespace com.github.pandrabox.flatsplus.editor
             }
 
             int OFFSET = 3;
-            bb.NName("Color").Param("1").Add1D("FlatsPlus/Pen/ComRx", () =>
+            bb.NName("PenColor").Param("1").Add1D("FlatsPlus/Pen/ComRx", () =>
             {
                 for (int i = 0; i < COLORNUM; i++)
                 {
@@ -117,5 +116,27 @@ namespace com.github.pandrabox.flatsplus.editor
             });
         }
 
+        private void RingColorSetting(BlendTreeBuilder bb)
+        {
+            int COLORNUM = 3;
+            var ac = new AnimationClipsBuilder();
+            for (int i = 0; i < COLORNUM; i++)
+            {
+                Quaternion q = new Quaternion(1, 1, -(float)i / COLORNUM, 0);
+                ac.Clip($@"RingColor{i}").IsQuaternion((x) =>
+                {
+                    x.Bind("MultiTool/MultiMesh", typeof(SkinnedMeshRenderer), "material._Main3rdTex_ST.@a").Const2F(q);
+                });
+            }
+            bb.NName("RingColor").Param("1").Add1D("FlatsPlus/Carry/ModeActual", () =>
+            {
+                bb.Param(3).AddMotion(ac.Outp($@"RingColor{0}")); //0はないので無視、1,2はTakeMeで青
+                bb.Param(4).Add1D("IsLocal", () => //4以降はローカルリモートで分岐
+                {
+                    bb.Param(0).AddMotion(ac.Outp($@"RingColor{1}")); //リモートは赤
+                    bb.Param(1).AddMotion(ac.Outp($@"RingColor{2}")); //ローカルは灰
+                });
+            });
+        }
     }
 }
