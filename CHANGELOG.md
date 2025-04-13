@@ -147,3 +147,11 @@ LightをExplorerに統合しました
 Light를 Explorer에 통합했습니다  
 将Light集成到Explorer中  
 將Light集成到Explorer中  
+
+FlatsPlus v0.15.0  
+Performed mesh optimization, reducing 7 MeshRenderers and Materials. As a result, the PerformanceRank when used in flat is now Medium.  
+メッシュ最適化を行い7個のMeshRendererとMaterialを削減しました。これにより、フラットで使用したときのPerformanceRankがMediumになります。  
+메시 최적화를 수행하여 7개의 MeshRenderer와 Material을 줄였습니다. 이로 인해 플랫에서 사용 시 PerformanceRank가 Medium으로 변경되었습니다.  
+进行了网格优化，减少了7个MeshRenderer和材质。因此，在Flat中使用时，PerformanceRank变为Medium。  
+進行了網格優化，減少了7個MeshRenderer和材質。因此，在Flat中使用時，PerformanceRank變為Medium。  
+
