@@ -1,6 +1,7 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using nadena.dev.modular_avatar.core;
+using System;
 using UnityEngine;
 
 
@@ -40,8 +41,8 @@ namespace com.github.pandrabox.flatsplus.editor
             AnimationClipsBuilder ac = new AnimationClipsBuilder();
             bb.RootDBT(() =>
             {
-                bb.Param("1").AddMotion(ac.OnAnim(__meshPath));
                 //bb.Param("1").AddAAP(GetParamName("HoppeOff"), 0);//辞書を作るときに便利（ほっぺ強制ON）
+                Activate(bb);
                 ShapeToggle(bb, _config.Func_Hoppe, "HoppeOff");
                 ShapeToggle(bb, _config.Func_Pen, "PenOff");
                 ShapeToggle(bb, _config.Func_Carry, "RingOff");
@@ -61,6 +62,14 @@ namespace com.github.pandrabox.flatsplus.editor
             bb.Attach(_tgt.gameObject);
         }
 
+        private void Activate(BlendTreeBuilder bb)
+        {
+            bb.Param("1").Add1D(_prj.IsDance, () =>
+            {
+                bb.Param(0).AddMotion(_ac.OnAnim(__meshPath));
+                bb.Param(1).AddMotion(_ac.OffAnim(__meshPath));
+            });
+        }
 
         private void ShapeToggle(BlendTreeBuilder bb, bool isActive, string shapeName)
         {
@@ -74,10 +83,9 @@ namespace com.github.pandrabox.flatsplus.editor
         private void AntiCulling(BlendTreeBuilder bb)
         {
             _ac.Clip("AntiCulling")
-                .Bind("MultiTool/Root/ForBounds", typeof(Transform), "m_LocalScale.x").Const2F(100)
-                .Bind("MultiTool/Root/ForBounds", typeof(Transform), "m_LocalScale.y").Const2F(100)
-                .Bind("MultiTool/Root/ForBounds", typeof(Transform), "m_LocalScale.z").Const2F(100);
-
+                .Bind("MultiTool/MultiMesh", typeof(SkinnedMeshRenderer), "m_AABB.m_Extent.x").Const2F(9999)
+                .Bind("MultiTool/MultiMesh", typeof(SkinnedMeshRenderer), "m_AABB.m_Extent.y").Const2F(9999)
+                .Bind("MultiTool/MultiMesh", typeof(SkinnedMeshRenderer), "m_AABB.m_Extent.z").Const2F(9999);
             bb.NName("AntiCulling").Param("1").AddMotion(_ac.Outp("AntiCulling"));
         }
 

@@ -53,6 +53,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private string[] __Modes => new string[] { "MC_Hide", "MC_TakeMe", "MC_FixTakeMe", "MC_Hug", "MC_Carry", "MC_Adjust", "MC_Fix" };
         private float _takeMeComm => 2f;
         private string[] colors => new string[] { "Gray", "Red", "Blue" };
+        private Transform _posX, _posH;
 
         sealed protected override void OnConstruct()
         {
@@ -67,12 +68,10 @@ namespace com.github.pandrabox.flatsplus.editor
         private void GetMultiTool()
         {
             var multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
-            var posX = _tgt.transform.Find("Obj/StationX/Ring").NullCheck("posF");
-            var posH = _tgt.transform.Find("Obj/Head/StationH/Ring").NullCheck("posH");
-            multiTool.SetBone("HeadRing", posH);
-            multiTool.SetBone("XRing", posX);
-            //multiTool.SetBone("XRedRing", posX);
-            //multiTool.SetBone("XBlueRing", posX);
+            _posX = _tgt.transform.Find("Obj/StationX/Ring").NullCheck("posF");
+            _posH = _tgt.transform.Find("Obj/Head/StationH/Ring").NullCheck("posH");
+            multiTool.SetBone("HeadRing", _posH);
+            multiTool.SetBone("XRing", _posX);
         }
 
         private void CreateClip()
@@ -90,6 +89,22 @@ namespace com.github.pandrabox.flatsplus.editor
                 .Bind("Obj/Head/StationH/Station", typeof(BoxCollider), "m_Enabled").Const2F(1);
             _ac.Clip("PlzBlueGate")
                 .Bind("", typeof(Animator), "FlatsPlus/Carry/RunTakeMe");
+
+            _ac.Clip("RingON")
+                .IsVector3((x) =>
+                {
+                    x.Bind("Obj/StationX/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(1);
+                    x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(1);
+                    x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalPosition.@a").Const2F(0);
+                });
+            _ac.Clip("RingOFF")
+                .IsVector3((x) =>
+                {
+                    x.Bind("Obj/StationX/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(0);
+                    x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(0);
+                    x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalPosition.@a").Const2F(new Vector3(0, -1.016f, -0.179f));
+                });
+
             //void DefineRingMode(string name, float r, float g, float b)
             //{
             //    _ac.Clip(name)
@@ -239,13 +254,18 @@ namespace com.github.pandrabox.flatsplus.editor
                 //});
 
 
-                var swAAP = FPMultiToolWork.GetParamName("RingOff");
-                bb.NName("RingSW").Param("1").Add1D(__ModeActual, () => { 
+                var swAAP = "FlatsPlus/Carry/RingDisable";
+                bb.NName("CalcRingDisable").Param("1").Add1D(__ModeActual, () => { 
                     bb.Param(0).NName("MC_Hide").AddAAP(swAAP, 1);
                     bb.Param(1).NName("MC_TakeMe").AddAAP(swAAP, 0);
                     bb.Param(2).NName("MC_FixTakeMe").AddAAP(swAAP, 0);
                     bb.Param(3).NName("MC_Hug").AddAAP(swAAP, 1);
                     bb.Param(4).NName("MC_Carry").AddAAP(swAAP, 0);
+                });
+                bb.NName("RingControl").Param("1").Add1D(swAAP, () =>
+                {
+                    bb.Param(0).AddMotion(_ac.Outp("RingON"));
+                    bb.Param(1).AddMotion(_ac.Outp("RingOFF"));
                 });
 
                 //色制御はMultiTool側でやっている

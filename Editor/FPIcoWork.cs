@@ -269,6 +269,14 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             BlendTreeBuilder bb = new BlendTreeBuilder("IcoControl");
             AnimationClipsBuilder ac = new AnimationClipsBuilder();
+            ac.Clip("OffPos")
+                .Bind("Obj/Head/Offset/CallPlate/Size10", typeof(Transform), "m_LocalPosition.x").Const2F(0)
+                .Bind("Obj/Head/Offset/CallPlate/Size10", typeof(Transform), "m_LocalPosition.y").Const2F(-3.75f)
+                .Bind("Obj/Head/Offset/CallPlate/Size10", typeof(Transform), "m_LocalPosition.z").Const2F(.03289148f);
+            ac.Clip("OnPos")
+                .Bind("Obj/Head/Offset/CallPlate/Size10", typeof(Transform), "m_LocalPosition.x").Const2F(0)
+                .Bind("Obj/Head/Offset/CallPlate/Size10", typeof(Transform), "m_LocalPosition.y").Const2F(0)
+                .Bind("Obj/Head/Offset/CallPlate/Size10", typeof(Transform), "m_LocalPosition.z").Const2F(0);
             bb.RootDBT(() =>
             {
                 bb.NName("RestoreIcoNo").Param("1").AddD(() =>
@@ -289,6 +297,14 @@ namespace com.github.pandrabox.flatsplus.editor
                         bb.Param(0).AddMotion(AnimIcoEnable(7));
                         bb.Param(1).AddMotion(AnimIcoEnable(8));
                     });
+                });
+                bb.NName("PosControl").Param("1").Add1D("FlatPlus/Ico/LocalTypeB0", () =>
+                {
+                    bb.Param(0).Add1D("FlatsPlus/Ico/RestoredIcoNo", () => {
+                        bb.Param(0).AddMotion(ac.Outp("OffPos"));
+                        bb.Param(1).AddMotion(ac.Outp("OnPos"));
+                    });
+                    bb.Param(1).AddMotion(ac.Outp("OnPos"));
                 });
             });
             bb.Attach(_tgt.gameObject);
