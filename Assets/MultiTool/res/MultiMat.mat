@@ -495,7 +495,7 @@ Material:
     - _OutlineBlendOpFA: 4
     - _OutlineColorMask: 15
     - _OutlineCull: 1
-    - _OutlineDeleteMesh: 0
+    - _OutlineDeleteMesh: 1
     - _OutlineDisableInVR: 0
     - _OutlineDstBlend: 0
     - _OutlineDstBlendAlpha: 10
