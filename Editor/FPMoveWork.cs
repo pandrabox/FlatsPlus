@@ -50,7 +50,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var bb = new BlendTreeBuilder("CloudControl");
             bb.RootDBT(() =>
             {
-                bb.Param("1").Add1D("FlatsPlus/Move/Mode", () => { 
+                bb.Param("1").Add1D("FlatsPlus/Moove/Cart", () => { 
                     bb.Param(0).AddAAP(FPMultiToolWork.GetParamName("CloudOff"), 1);
                     bb.Param(1).AddAAP(FPMultiToolWork.GetParamName("CloudOff"), 0);
                 });
@@ -66,6 +66,7 @@ namespace com.github.pandrabox.flatsplus.editor
             mb.AddRadial("FlatsPlus/Move/DashSpeed", L("Menu/Move/DashSpeed"));
             mb.AddToggle("FlatsPlus/Move/Mode", L("Menu/Move/Continue"), 2, ParameterSyncType.Int);
             mb.AddRadial("FlatsPlus/Move/ContinueDirection", L("Menu/Move/ContinueDirection"), .55f);
+            _prj.AddParameter("FlatsPlus/Moove/Cart", ParameterSyncType.Bool, false, 0, false);
         }
     }
 }
