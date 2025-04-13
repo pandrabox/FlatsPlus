@@ -142,6 +142,11 @@ namespace com.github.pandrabox.flatsplus.editor
                     //    bb.Param(1).AddMotion(_ac.OnAnim(__hoppePath));
                     //});
                 }
+                else
+                {
+                    //useOriginalなら常にHoppeOffを再生
+                    bb.Param("1").AddAAP(FPMultiToolWork.GetParamName("HoppeOff"), 1);
+                }
             });
             bb.Attach(_tgt.gameObject);
 
