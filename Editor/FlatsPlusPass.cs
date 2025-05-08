@@ -48,7 +48,14 @@ namespace com.github.pandrabox.flatsplus.editor
                 AppearPackageInfo();
                 _desc = desc.NullCheck();
                 _p = new FlatsProject(_desc, true);
-                FlatsPlus fp = _desc.GetComponentInChildren<FlatsPlus>().NullCheck();
+                FlatsPlus fp = _desc.GetComponentInChildren<FlatsPlus>();
+
+                if(fp == null)
+                {
+                    Log.I.Info("This avatar not use FlatsPlus");
+                    return;
+                }
+
 
                 Localizer.SetLanguage(fp.Language);
 

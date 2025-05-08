@@ -155,3 +155,10 @@ Performed mesh optimization, reducing 7 MeshRenderers and Materials. As a result
 进行了网格优化，减少了7个MeshRenderer和材质。因此，在Flat中使用时，PerformanceRank变为Medium。  
 進行了網格優化，減少了7個MeshRenderer和材質。因此，在Flat中使用時，PerformanceRank變為Medium。  
 
+FlatsPlus v0.15.1  
+Fixed an issue where errors would occur when uploading without FlatsPlus in an environment where FlatsPlus was previously installed.  
+FlatsPlusが入っている環境でFlatsPlusなしでUploadするとエラーが出る不具合の修正  
+FlatsPlus가 설치된 환경에서 FlatsPlus 없이 업로드할 때 오류가 발생하는 문제를 수정했습니다  
+修复了在安装了FlatsPlus的环境中不使用FlatsPlus上传时出现错误的问题  
+修復了在安裝了FlatsPlus的環境中不使用FlatsPlus上傳時出現錯誤的問題  
+
