@@ -162,3 +162,9 @@ FlatsPlus가 설치된 환경에서 FlatsPlus 없이 업로드할 때 오류가 
 修复了在安装了FlatsPlus的环境中不使用FlatsPlus上传时出现错误的问题  
 修復了在安裝了FlatsPlus的環境中不使用FlatsPlus上傳時出現錯誤的問題  
 
+FlatsPlus v0.15.11  
+Internal error handling improvements, fixed an issue where Traditional Chinese characters sometimes would not display, adjusted the display of various objects, and fine-tuned cheek touch detection areas.  
+内部エラー処理、繁体字が表示されないことがある不具合、様々なオブジェクトの表示調整、ほっぺた触り判定の調整等を行いました  
+내부 오류 처리 개선, 번체 중국어가 표시되지 않는 문제 수정, 다양한 객체의 표시 조정, 볼 터치 감지 영역 미세 조정 등을 수행했습니다  
+改进了内部错误处理，修复了繁体中文字有时无法显示的问题，调整了各种对象的显示，并微调了脸颊触摸检测区域  
+改進了內部錯誤處理，修復了繁體中文字有時無法顯示的問題，調整了各種對象的顯示，並微調了臉頰觸摸檢測區域  
