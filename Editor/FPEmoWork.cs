@@ -8,6 +8,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using static com.github.pandrabox.flatsplus.editor.Global;
 using static com.github.pandrabox.pandravase.editor.Util;
 #endregion
 
@@ -117,19 +118,38 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             Log.I.Info("RemoveExistEmo");
             var ac = new AnimationClipsBuilder();
+
+            // 対象となるシェイプ名一覧を取得
+            var targetShapeNames = _prj.GeneralShapes
+                .Where(x => x.Value == FaceType.Mouth || x.Value == FaceType.Other || x.Value == FaceType.Eye)
+                .Select(x => x.Key)
+                .ToList();
+
             for (int m = 0; m < _desc.baseAnimationLayers.Length; m++)
             {
                 var runtimePlayable = _desc.baseAnimationLayers[m].animatorController;
                 if (runtimePlayable == null) continue;
                 var playable = runtimePlayable as AnimatorController;
-                for (int i = playable.layers.Length - 1; i > 0; i--)
+                for (int i = playable.layers.Length - 1; i >= 0; i--)
                 {
                     var layer = playable.layers[i];
-                    AnimatorLayerAnalyzer la = new AnimatorLayerAnalyzer(layer);
-                    var emos = la.EmoTransitions(_prj);
-                    foreach (var emo in emos)
+                    var stateMachine = layer.stateMachine;
+                    foreach (var childState in stateMachine.states)
                     {
-                        emo.Transition.destinationState.motion = ac.DummyClip;
+                        var state = childState.state;
+                        var clip = state.motion as AnimationClip;
+                        if (clip == null) continue;
+
+                        var bindings = AnimationUtility.GetCurveBindings(clip);
+                        bool hasTargetShape = bindings.Any(b =>
+                            b.path == "Body" &&
+                            b.propertyName.StartsWith("blendShape.") &&
+                            targetShapeNames.Contains(b.propertyName.Substring("blendShape.".Length))
+                        );
+                        if (hasTargetShape)
+                        {
+                            state.motion = ac.DummyClip;
+                        }
                     }
                 }
                 _desc.baseAnimationLayers[m].animatorController = playable;
