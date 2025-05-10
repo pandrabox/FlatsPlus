@@ -261,6 +261,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param(2).NName("MC_FixTakeMe").AddAAP(swAAP, 0);
                     bb.Param(3).NName("MC_Hug").AddAAP(swAAP, 1);
                     bb.Param(4).NName("MC_Carry").AddAAP(swAAP, 1);
+                    bb.Param(5).NName("MC_Dummy").AddAAP(swAAP, 0);
                 });
                 bb.NName("RingControl").Param("1").Add1D(swAAP, () =>
                 {
