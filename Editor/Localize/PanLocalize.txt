@@ -23,7 +23,7 @@ Menu/Light/Global/Detail,全員に見える（OFFの場合自分のみ）,Visibl
 Menu/MakeEmo,表情固定,Make Emo,표정 고정,表情固定,表情固定
 Menu/MakeEmo/Enable,有効,Enable,활성화,启用,啟用
 Menu/MakeEmo/Eye,目,Eye,눈,眼睛,眼睛
-Menu/MakeEmo/Eye/Message,Stickで選択 Triggerで確定,Select with stick, confirm with trigger,스틱으로 선택, 트리거로 확인,用摇杆选择，用扳机确认,用搖桿選擇，用扳機確認
+Menu/MakeEmo/Eye/Message,Stickで選択 Triggerで確定,Select with stick & confirm with trigger,스틱으로 선택 & 트리거로 확인,用摇杆选择 & 用扳机确认,用搖桿選擇 & 用扳機確認
 Menu/MakeEmo/EyeLevel,目の強度,Eye Level,눈의 강도,眼睛强度,眼睛強度
 Menu/MakeEmo/Mouth,口,Mouth,입,嘴巴,嘴巴
 Menu/MakeEmo/Mouth/None,None,None,없음,无,無
@@ -181,9 +181,9 @@ D_Onaka_Gravity/Detail,重さ,Weight,무게,重量,重量
 D_Onaka_GravityFallOff/Name,Gravity FallOff,Gravity FallOff,중력 감쇠,重力衰减,重力衰減
 D_Onaka_GravityFallOff/Detail,止まっているときの重さ無視量,Amount of weight ignored when stopped,멈춰 있을 때의 무게 무시량,停止时忽略的重量,停止時忽略的重量
 D_Onaka_Immobile/Name,Immobile,Immobile,움직이지 않음,静止,靜止
-D_Onaka_Immobile/Detail,Immobile,動きにくさ,Immobile,움직이지 않음,静止,靜止
+D_Onaka_Immobile/Detail,動きにくさ,Immobile,움직이지 않음,静止,靜止
 D_Onaka_LimitAngle/Name,LimitAngle,Limit Angle,각도 제한,角度限制,角度限制
-D_Onaka_LimitAngle/Detail,LimitAngle,角度制限,Limit Angle,각도 제한,角度限制,角度限制
+D_Onaka_LimitAngle/Detail,角度制限,Limit Angle,각도 제한,角度限制,角度限制
 D_Onaka_RadiusTuning/Name,半径調整,Radius Tuning,반경 조정,半径调整,半徑調整
 D_Onaka_RadiusTuning/Detail,触り判定のサイズ調整(1が標準),Adjust the size of the touch judgment (1 is standard),터치 판정의 크기 조정(1이 표준),调整触摸判断的大小(1为标准),調整觸摸判斷的大小(1為標準)
 
@@ -248,7 +248,7 @@ EmoMaker/SpecifyFileName,表情設定ファイル名を指定,Specify Expression
 EmoMaker/SaveConfigFile,表情設定ファイルを保存,Save Expression Settings File,표정 설정 파일 저장,保存表情设置文件,保存表情設置文件
 EmoMaker/Error/AvatarNotLoaded,アバターが取得されていません。先にアバターを取得してください。,Avatar not loaded. Please get the avatar first.,아바타가 로드되지 않았습니다. 먼저 아바타를 가져오세요.,未加载头像。请先获取头像。,未加載頭像。請先獲取頭像。
 EmoMaker/Error/EmptyFile,ファイルが空か、ヘッダーのみです。,File is empty or contains only the header.,파일이 비어 있거나 헤더만 포함되어 있습니다.,文件为空或仅包含标题。,文件為空或僅包含標題。
-EmoMaker/Error/InvalidFormat,ファイルフォーマットが正しくありません。先頭2列はLeft,Rightである必要があります。,Invalid file format. The first two columns must be Left,Right.,잘못된 파일 형식입니다. 처음 두 열은 Left,Right여야 합니다.,文件格式无效。前两列必须是Left,Right。,文件格式無效。前兩列必須是Left,Right。
+EmoMaker/Error/InvalidFormat,ファイルフォーマットが正しくありません。先頭2列はLeft & Rightである必要があります。,Invalid file format. The first two columns must be Left & Right.,잘못된 파일 형식입니다. 처음 두 열은 Left & Right여야 합니다.,文件格式无效。前两列必须是Left & Right。,文件格式無效。前兩列必須是Left & Right。
 EmoMaker/ConfigApplied,{0}個の表情設定を適用しました。,Applied {0} expression settings.,{0}개의 표정 설정을 적용했습니다.,已应用{0}个表情设置。,已應用{0}個表情設置。
 EmoMaker/Error/LoadConfig,Config読み込みエラー,Config loading error,설정 로드 오류,配置加载错误,配置加載錯誤
 EmoMaker/Error/SaveConfig,Config保存エラー,Config saving error,설정 저장 오류,配置保存错误,配置保存錯誤
