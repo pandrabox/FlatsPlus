@@ -43,10 +43,10 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 //bb.Param("1").AddAAP(GetParamName("HoppeOff"), 0);//辞書を作るときに便利（ほっぺ強制ON）
                 Activate(bb);
-                ShapeToggle(bb, _config.Func_Hoppe, "HoppeOff");
-                ShapeToggle(bb, _config.Func_Pen, "PenOff");
-                ShapeToggle(bb, _config.Func_Carry, "RingOff");
-                ShapeToggle(bb, _config.Func_Move, "CloudOff");
+                ShapeToggle(bb, _config.Func_Hoppe, "HoppeOn");
+                ShapeToggle(bb, _config.Func_Pen, "PenOn");
+                ShapeToggle(bb, _config.Func_Carry, "RingOn");
+                ShapeToggle(bb, _config.Func_Move, "CloudOn");
                 ShapeToggle(bb, _config.Func_Ico, "i1");
                 ShapeToggle(bb, _config.Func_Ico, "i2");
                 ShapeToggle(bb, _config.Func_Ico, "i3");
@@ -75,8 +75,8 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             bb.NName(shapeName).Param("1").Add1D(GetParamName(shapeName), () =>
             {
-                bb.Param(0).AddMotion(ShapeAnim(shapeName, (isActive ? 0 : 100)));
-                bb.Param(1).AddMotion(ShapeAnim(shapeName, 100));
+                bb.Param(0).AddMotion(ShapeAnim(shapeName, 0));
+                bb.Param(1).AddMotion(ShapeAnim(shapeName, (isActive ? 100 : 0)));
             });
         }
 

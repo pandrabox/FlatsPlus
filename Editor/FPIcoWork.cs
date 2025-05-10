@@ -315,7 +315,7 @@ namespace com.github.pandrabox.flatsplus.editor
             AnimationClipBuilder ac = new AnimationClipBuilder(icoName);
             for (int i = 1; i < 9; i++)
             {
-                ac.Bind("", typeof(Animator),FPMultiToolWork.GetParamName($"i{i}")).Const2F(i == n ? 0 : 1);
+                ac.Bind("", typeof(Animator),FPMultiToolWork.GetParamName($"i{i}")).Const2F(i == n ? 1 : 0);
             }
             return ac.Outp();
         }

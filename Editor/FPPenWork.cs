@@ -77,7 +77,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     x.Bind("Obj/HandR/Offset/pen", typeof(Transform), "localEulerAnglesRaw.@a").Const2F(rot);
                 })
-                .Bind("", typeof(Animator), FPMultiToolWork.GetParamName("PenOff")).Const2F(penVisible ? 0 : 1);
+                .Bind("", typeof(Animator), FPMultiToolWork.GetParamName("PenOn")).Const2F(penVisible ? 1 : 0);
             }
             Set2("PenErace", true, true);
             Set2("PenOff", false, false);

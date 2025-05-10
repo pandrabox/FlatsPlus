@@ -135,18 +135,18 @@ namespace com.github.pandrabox.flatsplus.editor
                 });
                 if (!_useOriginalBlush) //FP版Blushの制御
                 {
-                    bb.Param("1").FAssignmentBy1D(__blushOnRx, 0, 1, FPMultiToolWork.GetParamName("HoppeOff"), 1, 0);
+                    bb.Param("1").FAssignmentBy1D(__blushOnRx, 0, 1, FPMultiToolWork.GetParamName("HoppeOn"), 0, 1);
                     //bb.NName("BlushObj").Param("1").Add1D(__blushOnRx, () =>
                     //{
                     //    bb.Param(0).AddMotion(_ac.OffAnim(__hoppePath));
                     //    bb.Param(1).AddMotion(_ac.OnAnim(__hoppePath));
                     //});
                 }
-                else
-                {
-                    //useOriginalなら常にHoppeOffを再生
-                    bb.Param("1").AddAAP(FPMultiToolWork.GetParamName("HoppeOff"), 1);
-                }
+                //else
+                //{
+                //    //useOriginalなら常にHoppeOffを再生
+                //    bb.Param("1").AddAAP(FPMultiToolWork.GetParamName("HoppeOff"), 1);
+                //}
             });
             bb.Attach(_tgt.gameObject);
 

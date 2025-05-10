@@ -96,6 +96,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     x.Bind("Obj/StationX/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(1);
                     x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(1);
                     x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalPosition.@a").Const2F(0);
+                    x.Bind("", typeof(Animator), FPMultiToolWork.GetParamName($@"RingOn")).Const2F(1);
                 });
             _ac.Clip("RingOFF")
                 .IsVector3((x) =>
@@ -103,6 +104,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     x.Bind("Obj/StationX/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(0);
                     x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalScale.@a").Const2F(0);
                     x.Bind("Obj/Head/StationH/Ring", typeof(Transform), "m_LocalPosition.@a").Const2F(new Vector3(0, -1.016f, -0.179f));
+                    x.Bind("", typeof(Animator), FPMultiToolWork.GetParamName($@"RingOn")).Const2F(0);
                 });
 
             //void DefineRingMode(string name, float r, float g, float b)
@@ -127,9 +129,9 @@ namespace com.github.pandrabox.flatsplus.editor
                 for (int i = 0; i < colors.Length; i++)
                 {
                     var color2 = colors[i];
-                    var val = color1 == color2 ? 0 : 1;
+                    var val = color1 == color2 ? 1 : 0;
                     _ac.Clip($@"RingDrive_{color1}")
-                        .Bind("", typeof(Animator), FPMultiToolWork.GetParamName($@"{color2}RingOff")).Const2F(val);
+                        .Bind("", typeof(Animator), FPMultiToolWork.GetParamName($@"{color2}RingOn")).Const2F(val);
                 }
             }
 

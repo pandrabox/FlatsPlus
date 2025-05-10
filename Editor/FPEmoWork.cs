@@ -115,6 +115,7 @@ namespace com.github.pandrabox.flatsplus.editor
         // 既存のレイヤにEmoへの遷移がある場合、遷移先をDummyClipに変更
         private void RemoveExistEmo()
         {
+            Log.I.Info("RemoveExistEmo");
             var ac = new AnimationClipsBuilder();
             for (int m = 0; m < _desc.baseAnimationLayers.Length; m++)
             {
