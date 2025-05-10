@@ -15,7 +15,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncCarry : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Carry);
-
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool), typeof(FPFuncLink) };
         public override void DrawDetail()
         {
             DrawBoolField(nameof(FP.D_Carry_AllowBlueGateDefault));
@@ -25,6 +25,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncDanceController : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_DanceController);
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncEmo), typeof(FPFuncWriteDefaultOn) };
         public override void DrawDetail()
         {
             DrawEnumField(nameof(FP.D_Dance_ControlType));
@@ -103,6 +104,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncExplore : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Explore);
+        //protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) };
         public override void DrawDetail()
         {
             DrawBoolField(nameof(FP.D_Explore_Pin));
@@ -114,6 +116,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncHoppe : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Hoppe);
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncEmo), typeof(FPFuncMultiTool) };
 
         public override void DrawDetail()
         {
@@ -130,6 +133,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncIco : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Ico);
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) ,typeof(FPFuncLink) };
 
         public override void OnEnable()
         {
@@ -195,6 +199,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncMakeEmo : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_MakeEmo);
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncEmo) };
 
         public override void DrawDetail()
         {
@@ -213,6 +218,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncMove : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Move);
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) };
     }
     public class FPFuncOnaka : ME_FuncBase
     {
@@ -232,10 +238,12 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncPen : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Pen);
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) };
     }
     public class FPFuncSleep : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Sleep);
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncPoseClipper) };
     }
     public class FPFuncTail : ME_FuncBase
     {

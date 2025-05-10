@@ -1,6 +1,7 @@
 ﻿using com.github.pandrabox.pandravase.editor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace com.github.pandrabox.flatsplus.editor
         // まとめてONOFF機能の対象外
         public virtual bool ExcludeFromBulkToggle => false;
 
+        // 依存する機能の型リスト
+        protected virtual List<Type> Dependencies => new List<Type>();
 
         // 詳細設定があるかどうか（DrawDetailがオーバーライドされているかで自動判定）
         public virtual bool HasDetailSettings
@@ -61,9 +64,49 @@ namespace com.github.pandrabox.flatsplus.editor
         }
 
         //DrawBoolFieldのチェック変更時に呼ばれる
-        public virtual void OnChange(bool state) { }
+        public virtual void OnChange(bool state) {}
+
+        private void CheckDependencies(bool state)
+        {
+            if (!state) return;
+            EnableDependencies();
+        }
 
 
+        // 依存するモジュールを有効化するメソッド
+        protected void EnableDependencies()
+        {
+            // 依存関係が空の場合は何もしない
+            if (Dependencies == null || Dependencies.Count == 0)
+                return;
+
+            var allModules = ME_FuncManager.I.GetAllModules();
+            bool anyChanges = false;
+
+            foreach (var dependency in Dependencies)
+            {
+                // 依存するタイプのモジュールを検索
+                var dependentModule = allModules.FirstOrDefault(m => m.GetType() == dependency);
+                if (dependentModule != null)
+                {
+                    // 依存モジュールのプロパティを取得
+                    var property = ME_FuncManager.I.GetProperty(dependentModule.ManagementFunc);
+                    if (property != null && !property.boolValue)
+                    {
+                        // 依存モジュールを有効化
+                        property.boolValue = true;
+                        anyChanges = true;
+                        Debug.Log($"{ManagementFunc}の依存モジュール {dependentModule.ManagementFunc} を自動的に有効化しました");
+                    }
+                }
+            }
+
+            // 変更があった場合のみ適用
+            if (anyChanges)
+            {
+                ME_FuncManager.I.ApplyModifiedProperties();
+            }
+        }
 
 
         private string ConvertToProjectRelativePath(string systemPath)
@@ -138,6 +181,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 if (propName == ManagementFunc && previousState != property.boolValue)
                 {
                     OnChange(property.boolValue);
+                    CheckDependencies(property.boolValue);
                 }
             }
 
