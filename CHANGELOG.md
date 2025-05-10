@@ -168,3 +168,10 @@ Internal error handling improvements, fixed an issue where Traditional Chinese c
 내부 오류 처리 개선, 번체 중국어가 표시되지 않는 문제 수정, 다양한 객체의 표시 조정, 볼 터치 감지 영역 미세 조정 등을 수행했습니다  
 改进了内部错误处理，修复了繁体中文字有时无法显示的问题，调整了各种对象的显示，并微调了脸颊触摸检测区域  
 改進了內部錯誤處理，修復了繁體中文字有時無法顯示的問題，調整了各種對象的顯示，並微調了臉頰觸摸檢測區域  
+
+FlatsPlus v0.15.13  
+Improved dance synchronization processing.  
+ダンス同期処理の改善を行いました  
+댄스 동기화 처리가 개선되었습니다  
+改进了舞蹈同步处理  
+改進了舞蹈同步處理  
