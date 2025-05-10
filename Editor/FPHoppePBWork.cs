@@ -62,7 +62,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 string LR = n == 0 ? "L" : "R";
                 _ac.Clip($"{LR}0").IsVector3((x) => x.Bind($"cheek_{LR}", typeof(Transform), "m_LocalScale.@a").Const2F(_avatarCheeks[n].localScale));
-                _ac.Clip($"{LR}1").IsVector3((x) => x.Bind($"cheek_{LR}", typeof(Transform), "m_LocalScale.@a").Const2F(Vector3.one + new Vector3(3.062213f, 3.869611f, 1.235f) * _config.D_Hoppe_StretchLimit));
+                _ac.Clip($"{LR}1").IsVector3((x) => x.Bind($"cheek_{LR}", typeof(Transform), "m_LocalScale.@a").Const2F(Vector3.one + new Vector3(3.062213f, 3.869611f, 1.235f) * _config.D_Hoppe_StretchLimit * .5f));
 
                 _ac.Clip($"{LR}R0").Bind($"cheek_{LR}", typeof(RotationConstraint), "m_Weight").Const2F(0);
                 _ac.Clip($"{LR}R1").Bind($"cheek_{LR}", typeof(RotationConstraint), "m_Weight").Const2F(1);
