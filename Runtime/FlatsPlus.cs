@@ -60,7 +60,7 @@ namespace com.github.pandrabox.flatsplus.runtime
         public string D_Emo_ConfigFilePath = "";
 
         public PVDanceController.DaceControlType D_Dance_ControlType = PVDanceController.DaceControlType.Normal;
-        public bool D_Dance_FxEnable = false;
+        public bool D_Dance_FxEnable = true;
 
         public Texture2D[] Ico_Textures = new Texture2D[8];
         public bool Ico_VerView = false;
