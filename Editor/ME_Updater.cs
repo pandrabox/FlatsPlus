@@ -203,7 +203,10 @@ namespace com.github.pandrabox.flatsplus.editor
             }
         }
 
-        private static bool canReload => !isChecking && (DateTime.Now - apiSettings.LastRequestTime).TotalMinutes >= MinimumRequestIntervalMinutes;
+        private static bool canReload =>
+            apiSettings != null &&
+            !isChecking &&
+            (DateTime.Now - apiSettings.LastRequestTime).TotalMinutes >= MinimumRequestIntervalMinutes;
 
         public void DrawUpdateInfo()
         {
