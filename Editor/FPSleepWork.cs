@@ -85,12 +85,12 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateMenu()
         {
             var mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Sleep")).SetMessage(L("Menu/Sleep/Message"), duration: 1);
-            mb.AddToggle(__sw, menuName: L("Menu/Sleep/Enable"), localOnly: false);
-            mb.AddToggle(__moveLock, L("Menu/Sleep/MoveLock")).SetMessage(L("Menu/Sleep/MoveLock/Message"), duration: 1);
-            mb.AddRadial(__height, menuName: L("Menu/Sleep/Height"), defaultVal: .5f, localOnly: false);
-            mb.AddToggle(__poseLockAnim, L("Menu/Sleep/LockAnim"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockAnim/Message"), duration: 1);
-            mb.AddToggle(__callPoseClipper, L("Menu/Sleep/LockPose"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockPose/Message"), duration: 1);
+            mb.AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Sleep")).SetMessage(L("Menu/Sleep/Message"), duration: 1).Ico("Sleep");
+            mb.AddToggle(__sw, menuName: L("Menu/Sleep/Enable"), localOnly: false).Ico("Sleep_SW");
+            mb.AddToggle(__moveLock, L("Menu/Sleep/MoveLock")).SetMessage(L("Menu/Sleep/MoveLock/Message"), duration: 1).Ico("FootLock");
+            mb.AddRadial(__height, menuName: L("Menu/Sleep/Height"), defaultVal: .5f, localOnly: false).Ico("Foot_Height");
+            mb.AddToggle(__poseLockAnim, L("Menu/Sleep/LockAnim"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockAnim/Message"), duration: 1).Ico("Sleep_Lock");
+            mb.AddToggle(__callPoseClipper, L("Menu/Sleep/LockPose"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockPose/Message"), duration: 1).Ico("Sleep_Lock");
         }
     }
 }

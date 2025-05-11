@@ -65,11 +65,11 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             var mSync = _prj.VirtualSync("FlatsPlus/Light/LightMode", 2, PVnBitSync.nBitSyncMode.IntMode, toggleSync: true);
             _prj.VirtualSync("FlatsPlus/Light/Intensity", 4, PVnBitSync.nBitSyncMode.FloatMode, _config.Light_IntensityPerfectSync);
-            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).AddFolder(L("Menu/Explore"), true)
-                .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Spot"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Light/Spot/Detail"))
-                .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Area"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Light/Area/Detail"))
-                .AddRadial("FlatsPlus/Light/Intensity", L("Menu/Light/Intensity"), .5f)
-                .AddToggle(mSync.SyncParameter, L("Menu/Light/Global"), 1, ParameterSyncType.Bool, (_config.D_Explore_Light_DefaultGlobal ? 1 : 0)).SetMessage(L("Menu/Light/Global/Detail"));
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Explore"), true).Ico("Explore_Pin")
+                .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Spot"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Light/Spot/Detail")).Ico("Explore_FlashLight")
+                .AddToggle("FlatsPlus/Light/LightMode", L("Menu/Light/Area"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Light/Area/Detail")).Ico("Explore_Light")
+                .AddRadial("FlatsPlus/Light/Intensity", L("Menu/Light/Intensity"), .5f).Ico("Explore_LightStr")
+                .AddToggle(mSync.SyncParameter, L("Menu/Light/Global"), 1, ParameterSyncType.Bool, (_config.D_Explore_Light_DefaultGlobal ? 1 : 0)).SetMessage(L("Menu/Light/Global/Detail")).Ico("Explore_Global");
         }
     }
 }

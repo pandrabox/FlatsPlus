@@ -60,11 +60,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateMenu()
         {
             MenuBuilder mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Move"));
-            mb.AddToggle("FlatsPlus/Move/Mode", L("Menu/Move/FlyDash"), 1, ParameterSyncType.Int);
-            mb.AddRadial("FlatsPlus/Move/DashSpeed", L("Menu/Move/DashSpeed"));
-            mb.AddToggle("FlatsPlus/Move/Mode", L("Menu/Move/Continue"), 2, ParameterSyncType.Int);
-            mb.AddRadial("FlatsPlus/Move/ContinueDirection", L("Menu/Move/ContinueDirection"), .55f);
+            mb.AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Move")).Ico("Move");
+            mb.AddToggle("FlatsPlus/Move/Mode", L("Menu/Move/FlyDash"), 1, ParameterSyncType.Int).Ico("MoveSw");
+            mb.AddRadial("FlatsPlus/Move/DashSpeed", L("Menu/Move/DashSpeed")).Ico("MoveSpeed");
+            mb.AddToggle("FlatsPlus/Move/Mode", L("Menu/Move/Continue"), 2, ParameterSyncType.Int).Ico("MoveHover");
+            mb.AddRadial("FlatsPlus/Move/ContinueDirection", L("Menu/Move/ContinueDirection"), .55f).Ico("MoveHoverHeight");
             _prj.AddParameter("FlatsPlus/Moove/Cart", ParameterSyncType.Bool, false, 0, false);
         }
     }

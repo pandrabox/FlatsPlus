@@ -213,12 +213,12 @@ namespace com.github.pandrabox.flatsplus.editor
 
             _prj.VirtualSync("FlatsPlus/Pen/Com", 4, PVnBitSync.nBitSyncMode.IntMode, true);
 
-            new MenuBuilder(_prj).AddFolder("FlatsPlus", true)
-                .AddFolder(L("Menu/Pen")).SetMessage(L("Menu/Pen/Message"), duration: 1)
-                .AddToggle("FlatsPlus/Pen/Mode", L("Menu/Pen/Write"), 3, ParameterSyncType.Int).SetMessage(L("Menu/Pen/Write/Message"), duration: 1)
-                .AddToggle("FlatsPlus/Pen/Mode", L("Menu/Pen/Erace"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Pen/Erace/Message"), duration: 1)
-                .AddButton("FlatsPlus/Pen/Clear", 1, ParameterSyncType.Bool, L("Menu/Pen/Clear")).SetMessage(L("Menu/Pen/Clear/Message"))
-                .AddRadial("FlatsPlus/Pen/Color", L("Menu/Pen/Color")).SetMessage(L("Menu/Pen/Color/Message"), duration: 1);
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).Ico("FlatsPlus")
+                .AddFolder(L("Menu/Pen")).SetMessage(L("Menu/Pen/Message"), duration: 1).Ico("Pen")
+                .AddToggle("FlatsPlus/Pen/Mode", L("Menu/Pen/Write"), 3, ParameterSyncType.Int).SetMessage(L("Menu/Pen/Write/Message"), duration: 1).Ico("Pen_SW")
+                .AddToggle("FlatsPlus/Pen/Mode", L("Menu/Pen/Erace"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Pen/Erace/Message"), duration: 1).Ico("Erace")
+                .AddButton("FlatsPlus/Pen/Clear", 1, ParameterSyncType.Bool, L("Menu/Pen/Clear")).SetMessage(L("Menu/Pen/Clear/Message")).Ico("EraceAll")
+                .AddRadial("FlatsPlus/Pen/Color", L("Menu/Pen/Color")).SetMessage(L("Menu/Pen/Color/Message"), duration: 1).Ico("PenColor");
 
         }
     }

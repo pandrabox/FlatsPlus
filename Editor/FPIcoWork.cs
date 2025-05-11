@@ -230,7 +230,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateMenu()
         {
             MenuBuilder mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Ico"));
+            mb.AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Ico")).Ico("Explore_LightStr");
             string name;
             Texture2D[] iconTextures = Icos;
             for (int i = 1; i < 9; i++)

@@ -189,12 +189,12 @@ namespace com.github.pandrabox.flatsplus.editor
                 return;
             }
             var mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Hoppe"), true)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Auto"), 0)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/OtherOnly"), 1)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/WithoutDance"), 2)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/On"), 3)
-                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Off"), 4);
+            mb.AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Hoppe"), true).Ico("Hoppe")
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Auto"), 0).Ico("HoppeAny")
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/OtherOnly"), 1).Ico("HoppeOTHERS")
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/WithoutDance"), 2).Ico("HoppeWithoutDance")
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/On"), 3).Ico("HoppeOn")
+                .AddToggle(__blushControlType, L("Menu/Hoppe/Blush/Control/Off"), 4).Ico("HoppeOff");
             Log.I.EndMethod("メニューの作成が完了しました");
         }
     }

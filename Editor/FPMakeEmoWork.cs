@@ -190,11 +190,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateExMenu()
         {
             MenuBuilder mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/MakeEmo"))
-                .AddToggle(enable, L("Menu/MakeEmo/Enable"), 1, ParameterSyncType.Bool, 0, false)
-                .Add2Axis(_ui.Inputx, _ui.Inputy, eyeselecting, L("Menu/MakeEmo/Eye"), 0, 0, true).SetMessage(L("Menu/MakeEmo/Eye/Message"))
-                .AddRadial(eyeLevel, L("Menu/MakeEmo/EyeLevel"), 1, false);
-            mb.AddFolder(L("Menu/MakeEmo/Mouth"));
+            mb.AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/MakeEmo")).Ico("EmoLock")
+                .AddToggle(enable, L("Menu/MakeEmo/Enable"), 1, ParameterSyncType.Bool, 0, false).Ico("EmoLockSW")
+                .Add2Axis(_ui.Inputx, _ui.Inputy, eyeselecting, L("Menu/MakeEmo/Eye"), 0, 0, true).SetMessage(L("Menu/MakeEmo/Eye/Message")).Ico("EmoLockEye")
+                .AddRadial(eyeLevel, L("Menu/MakeEmo/EyeLevel"), 1, false).Ico("EmoLockEyeStr");
+            mb.AddFolder(L("Menu/MakeEmo/Mouth")).Ico("EmoLockMouth");
             var mouths = _faces.Mouths;
             mb.AddToggle(mouth, L("Menu/MakeEmo/Mouth/None"), 0, ParameterSyncType.Int).SetIco(_faces.VoidIco);
             for (int i = 0; i < mouths.Count; i++)
@@ -204,13 +204,13 @@ namespace com.github.pandrabox.flatsplus.editor
             }
             _prj.VirtualSync(mouth, TransmissionBit(mouths.Count), PVnBitSync.nBitSyncMode.IntMode);
             mb.ExitFolder();
-            mb.AddFolder(L("Menu/MakeEmo/Other")).SetMessage(L("Menu/MakeEmo/Other/Message"));
+            mb.AddFolder(L("Menu/MakeEmo/Other")).SetMessage(L("Menu/MakeEmo/Other/Message")).Ico("EmoLockOthers");
             foreach (var o in _faces.Others)
             {
                 mb.AddToggle($"{other}/{o.Name}", localOnly: false).SetIco(o.Tex);
             }
             mb.ExitFolder();
-            mb.AddButton(_ui.Reset, L("Menu/MakeEmo/Reset")).SetMessage(L("Menu/MakeEmo/Clear"));
+            mb.AddButton(_ui.Reset, L("Menu/MakeEmo/Reset")).SetMessage(L("Menu/MakeEmo/Clear")).Ico("EmoLockReset");
         }
     }
 }

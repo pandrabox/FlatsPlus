@@ -214,11 +214,11 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateMenu()
         {
             new MenuBuilder(_prj)
-                .AddFolder(PRJNAME, true)
-                .AddFolder(L("Menu/Tail"), true)
+                .AddFolder(PRJNAME, true).Ico("FlatsPlus")
+                .AddFolder(L("Menu/Tail"), true).Ico("Tail")
                 //.AddRadial("FlatsPlus/Tail/Gravity", L("Menu/Tail/Gravity"), _tgt.DefaultGravity)
-                .AddRadial("FlatsPlus/Tail/Size", L("Menu/Tail/Size"), _config.Tail_DefaultSize)
-                .AddToggle("FlatsPlus/Tail/Swing", L("Menu/Tail/Swing"), 1, ParameterSyncType.Bool, 1, false);
+                .AddRadial("FlatsPlus/Tail/Size", L("Menu/Tail/Size"), _config.Tail_DefaultSize).Ico("Tail_Size")
+                .AddToggle("FlatsPlus/Tail/Swing", L("Menu/Tail/Swing"), 1, ParameterSyncType.Bool, 1, false).Ico("Tail_Swing");
         }
 
     }

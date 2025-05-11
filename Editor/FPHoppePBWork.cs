@@ -171,8 +171,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 return;
             }
             var mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Hoppe"), true)
-                .AddToggle(__touchAble, L("Menu/Hoppe/Cheek/TouchAble"), 1, ParameterSyncType.Bool, 1, false);
+            new MenuBuilder(_prj).AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Hoppe"), true).Ico("Hoppe")
+                .AddToggle(__touchAble, L("Menu/Hoppe/Cheek/TouchAble"), 1, ParameterSyncType.Bool, 1, false).Ico("Hoppe_TouchAble");
             Log.I.EndMethod("メニューの作成が完了しました");
         }
     }
