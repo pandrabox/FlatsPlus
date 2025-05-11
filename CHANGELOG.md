@@ -189,3 +189,10 @@ Quest対応しました
 Quest 호환성을 추가했습니다  
 添加了Quest兼容性  
 添加了Quest兼容性  
+
+FlatsPlus v0.15.24  
+Added icons.  
+アイコンを追加しました  
+아이콘을 추가했습니다  
+添加了图标  
+添加了圖標  
