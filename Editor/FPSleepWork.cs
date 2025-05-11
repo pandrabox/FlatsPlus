@@ -89,8 +89,9 @@ namespace com.github.pandrabox.flatsplus.editor
             mb.AddToggle(__sw, menuName: L("Menu/Sleep/Enable"), localOnly: false).Ico("Sleep_SW");
             mb.AddToggle(__moveLock, L("Menu/Sleep/MoveLock")).SetMessage(L("Menu/Sleep/MoveLock/Message"), duration: 1).Ico("FootLock");
             mb.AddRadial(__height, menuName: L("Menu/Sleep/Height"), defaultVal: .5f, localOnly: false).Ico("Foot_Height");
-            mb.AddToggle(__poseLockAnim, L("Menu/Sleep/LockAnim"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockAnim/Message"), duration: 1).Ico("Sleep_Lock");
-            mb.AddToggle(__callPoseClipper, L("Menu/Sleep/LockPose"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockPose/Message"), duration: 1).Ico("Sleep_Lock");
+            mb.AddToggle(__poseLockAnim, L("Menu/Sleep/LockAnim"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockAnim/Message"), duration: 1).Ico("Sleep_Lock1");
+            mb.AddToggle(__callPoseClipper, L("Menu/Sleep/LockPose"), 1, ParameterSyncType.Bool).SetMessage(L("Menu/Sleep/LockPose/Message"), duration: 1).Ico("Sleep_Lock2");
+            _prj.OverrideFolderIco("PoseClipper", "Packages/com.github.pandrabox.flatsplus/Assets/Icon/Clip.png");
         }
     }
 }
