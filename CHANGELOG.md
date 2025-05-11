@@ -182,3 +182,10 @@ FlatPlusと併用時警告を出すようにしました
 FlatPlus와 함께 사용할 때 경고가 표시되도록 추가했습니다  
 添加了与FlatPlus同时使用时的警告  
 添加了與FlatPlus同時使用時的警告  
+
+FlatsPlus v0.15.22  
+Added Quest compatibility.  
+Quest対応しました  
+Quest 호환성을 추가했습니다  
+添加了Quest兼容性  
+添加了Quest兼容性  
