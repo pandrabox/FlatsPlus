@@ -75,10 +75,11 @@ namespace com.github.pandrabox.flatsplus.editor
                 // 読み込む。失敗したらfalse
                 string[] lines = File.ReadAllLines(path);
 
-                // 66行未満ならばfalse (ヘッダー + 64 表情 + 余裕分)
-                if (lines.Length < 66)
+                // 65行未満ならばfalse (ヘッダー + 64 表情)
+                if (lines.Length < 65)
                 {
-                    Log.I.Info($"Emoファイルの行数が足りません: {lines.Length}行 (66行以上必要)");
+                    Log.I.Info($"Emoファイルの行数が足りません: {lines.Length}行 (65行以上必要), File:{path}");
+
                     return false;
                 }
 
@@ -159,6 +160,7 @@ namespace com.github.pandrabox.flatsplus.editor
         // 表情クリップ生成
         private void CreateEmoClips()
         {
+            Log.I.Info($@"Emoの生成を行います　データファイル：{_emoDataFile}");
             string dataText = File.ReadAllText(_emoDataFile);
             string[] lines = dataText.Split('\n');
             clips = new AnimationClipsBuilder();
