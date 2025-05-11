@@ -193,12 +193,20 @@ namespace com.github.pandrabox.flatsplus.editor
             });
 
             var ab = new AnimatorBuilder("FlatsPlus/Tail/Swing").AddLayer();
-            ab.SetMotion(ac.Outp("Stop"));
-            ab.AddState("on", ac.Outp("Swing"))
-                .TransToCurrent(ab.InitialState, transitionDuration: 1.5f)
-                .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Tail/Swing", true);
+            if (_prj.BuildTargetIsPC)
+            {
+                //PCはSwingとStopを切り替える
+                ab.SetMotion(ac.Outp("Stop"));
+                ab.AddState("on", ac.Outp("Swing"))
+                    .TransToCurrent(ab.InitialState, transitionDuration: 1.5f)
+                    .AddCondition(AnimatorConditionMode.If, 1, "FlatsPlus/Tail/Swing", true);
+            }
+            else
+            {
+                //Questは常時Swing
+                ab.SetMotion(ac.Outp("Swing"));
+            }
             ab.Attach(_tail, true);
-
         }
 
         private void CreateMenu()
