@@ -2,6 +2,7 @@
 using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -164,43 +165,56 @@ namespace com.github.pandrabox.flatsplus.editor
             string dataText = File.ReadAllText(_emoDataFile);
             string[] lines = dataText.Split('\n');
             clips = new AnimationClipsBuilder();
+
+            // 1. 全シェイプ名リストを作る
             string[] shapeNames = lines[0].Split(',');
+            var allShapeNames = new HashSet<string>();
+            for (int i = 1; i <= 64; i++)
+            {
+                var vals = lines[i].Split(',');
+                for (int n = 2; n < vals.Length; n++)
+                {
+                    if (!string.IsNullOrEmpty(vals[n]))
+                        allShapeNames.Add(shapeNames[n]);
+                }
+            }
+            var allShapeNamesArr = allShapeNames.ToArray();
+
             for (int i = 0; i < 64; i++)
             {
-                bool isBlank = true;
                 bool isDisHoppe = false;
                 bool isBlush = false;
                 string clipName = $@"emo{i}";
-                //Log.I.Info($@"{i + 1}:line:{lines[i + 1]}");
-                int?[] shapeVals = lines[i + 1].Split(',').Select(x =>
+                var vals = lines[i + 1].Split(',');
+
+                // 2. 各表情で全シェイプをループ
+                bool isBlank = true;
+                for (int n = 0; n < allShapeNamesArr.Length; n++)
                 {
-                    if (int.TryParse(x, out int result))
-                    {
-                        return (int?)result;
-                    }
-                    return null;
-                }).ToArray();
-                for (int n = 2; n < shapeVals.Length; n++) //0,1はGesture情報
-                {
+                    string shape = allShapeNamesArr[n];
+                    int shapeIdx = Array.IndexOf(shapeNames, shape);
+                    int shapeVal = 0;
                     bool addThis = true;
-                    if (!shapeVals[n].HasValue) continue;
-                    int shapeVal = (int)shapeVals[n];
-                    string shapeName = "blendShape." + shapeNames[n];
-                    if (shapeVal > 5 && _disHoppeShapes.Contains(shapeNames[n]))
+
+                    if (shapeIdx >= 2 && shapeIdx < vals.Length && int.TryParse(vals[shapeIdx], out int v))
+                    {
+                        shapeVal = v;
+                    }
+
+                    if (shapeVal > 5 && _disHoppeShapes.Contains(shape))
                     {
                         isDisHoppe = true;
                     }
-                    if (shapeNames[n] == _blushShape)
+                    if (shape == _blushShape)
                     {
                         isBlush = true;
-                        if (_config.D_Hoppe_Blush) addThis = false; //頬を自動制御する場合はGestureによる制御を無効化
+                        if (_config.D_Hoppe_Blush) addThis = false;
                     }
                     if (addThis)
                     {
-                        clips.Clip(clipName).Bind("Body", typeof(SkinnedMeshRenderer), shapeName).Const2F(shapeVal);
-                        isBlank = false;
+                        clips.Clip(clipName).Bind("Body", typeof(SkinnedMeshRenderer), "blendShape." + shape).Const2F(shapeVal);
+                        if (shapeVal != 0) isBlank = false;
                     }
-                    //Log.I.Info($@"{i}:{shapeName}:{shapeVal}");
                 }
                 _disHoppeInfo.Add(clipName, isDisHoppe);
                 _blushInfo.Add(clipName, isBlush);
@@ -208,7 +222,6 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     clips.Clip(clipName).Dummy();
                 }
-                //OutpAsset(clips.Outp($@"emo{i}"));
             }
         }
         // 表情制御コントローラの生成とアタッチ
