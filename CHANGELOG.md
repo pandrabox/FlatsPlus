@@ -175,3 +175,10 @@ Improved dance synchronization processing.
 댄스 동기화 처리가 개선되었습니다  
 改进了舞蹈同步处理  
 改進了舞蹈同步處理  
+
+FlatsPlus v0.15.14  
+Added warnings when used alongside FlatPlus.  
+FlatPlusと併用時警告を出すようにしました  
+FlatPlus와 함께 사용할 때 경고가 표시되도록 추가했습니다  
+添加了与FlatPlus同时使用时的警告  
+添加了與FlatPlus同時使用時的警告  
