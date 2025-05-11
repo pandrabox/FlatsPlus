@@ -59,29 +59,26 @@ namespace com.github.pandrabox.flatsplus.editor
 
                 Localizer.SetLanguage(fp.Language);
 
-                CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool"); // かなり最初のほうで実行する必要がある
-                CreateWork<FPCarryWork>(fp.Func_Carry, "Carry");
-                CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController");
-                CreateWork<FPEmoWork>(fp.Func_Emo, "Emo");
-                CreateWork<FPExploreWork>(fp.Func_Explore, "Explore");
-                CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe");
-                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null);
-                CreateWork<FPIcoWork>(fp.Func_Ico, "Ico");
-                //CreateInstantiate(fp.Func_Sync, "Sync");
-                CreateWork<FPLightWork>(fp.Func_Explore, "Light"); //LightはExploreに統合されました　処理自体はこちらで実施
-                CreateInstantiate(fp.Func_Link, "Link");
-                CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo");
-                CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting");
-                //CreateInstantiate(true, "MessageUI");
-                CreateWork<FPMoveWork>(fp.Func_Move, "Move");
-                CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka");
-                CreateWork<FPPenWork>(fp.Func_Pen, "Pen");
-                CreateInstantiate(fp.Func_PoseClipper, "FPPoseClipper");
-                CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep");
-                //CreateInstantiate(fp.Func_Sync, "Sync");//MultiToolに完全統合されました
-                CreateWork<FPTailWork>(fp.Func_Tail, "Tail");
-                CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn");
-                CreateWork<FPGuideWork>(fp.Func_Guide, "Guide");
+                CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool" ,false); // かなり最初のほうで実行する必要がある
+                CreateWork<FPCarryWork>(fp.Func_Carry, "Carry", true);
+                CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController", true);
+                CreateWork<FPEmoWork>(fp.Func_Emo, "Emo", false);
+                CreateWork<FPExploreWork>(fp.Func_Explore, "Explore", true);
+                CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe", true);
+                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null, false);
+                CreateWork<FPIcoWork>(fp.Func_Ico, "Ico", true);
+                CreateWork<FPLightWork>(fp.Func_Explore, "Light", true); //LightはExploreに統合されました　処理自体はこちらで実施
+                CreateInstantiate(fp.Func_Link, "Link", true);
+                CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo", true);
+                CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting", false);
+                CreateWork<FPMoveWork>(fp.Func_Move, "Move", true);
+                CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka", false);
+                CreateWork<FPPenWork>(fp.Func_Pen, "Pen", true);
+                CreateInstantiate(fp.Func_PoseClipper, "FPPoseClipper", true);
+                CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep", true);
+                CreateWork<FPTailWork>(fp.Func_Tail, "Tail", false);
+                CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn", false);
+                CreateWork<FPGuideWork>(fp.Func_Guide, "Guide", true);
             }
             catch (Exception ex)
             {
@@ -94,10 +91,15 @@ namespace com.github.pandrabox.flatsplus.editor
             }
         }
 
-        private void CreateInstantiate(bool runCondition, string path) => CreateWork<FlatsWorkBase>(runCondition, path);
+        private void CreateInstantiate(bool runCondition, string path, bool pcOnly) => CreateWork<FlatsWorkBase>(runCondition, path, pcOnly);
 
-        private void CreateWork<T>(bool runCondition, string path) where T : FlatsWorkBase
+        private void CreateWork<T>(bool runCondition, string path, bool pcOnly) where T : FlatsWorkBase
         {
+            if(pcOnly && !_p.BuildTargetIsPC)
+            {
+                Log.I.Info("PC専用のためスキップします");
+                return;
+            }
             try
             {
                 if (!runCondition) return;

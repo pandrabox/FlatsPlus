@@ -15,6 +15,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncCarry : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Carry);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool), typeof(FPFuncLink) };
         public override void DrawDetail()
         {
@@ -104,6 +105,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncExplore : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Explore);
+        public override bool PCOnly => true;
         //protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) };
         public override void DrawDetail()
         {
@@ -133,6 +135,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncIco : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Ico);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool), typeof(FPFuncLink) };
 
         public override void OnEnable()
@@ -199,6 +202,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncMakeEmo : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_MakeEmo);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncEmo) };
 
         public override void DrawDetail()
@@ -218,6 +222,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncMove : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Move);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) };
     }
     public class FPFuncOnaka : ME_FuncBase
@@ -238,11 +243,13 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncPen : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Pen);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) };
     }
     public class FPFuncSleep : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Sleep);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncPoseClipper) };
     }
     public class FPFuncTail : ME_FuncBase
@@ -262,6 +269,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncLink : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Link);
+        public override bool PCOnly => true;
     }
     //public class FPFuncSync : ME_FuncBase
     //{
@@ -274,11 +282,13 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncPoseClipper : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_PoseClipper);
+        public override bool PCOnly => true;
     }
 
     public class FPFuncGuide : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Guide);
+        public override bool PCOnly => true;
         public override void DrawDetail()
         {
             DrawBoolField(nameof(FP.D_Guide_DefaultActive));
@@ -294,6 +304,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncClippingCanceler : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_ClippingCanceler);
+        public override bool PCOnly => true;
         public override bool ExcludeFromBulkToggle => true;
         public override void OnChange(bool state)
         {

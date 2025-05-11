@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using static com.github.pandrabox.flatsplus.editor.Global;
@@ -100,6 +101,17 @@ namespace com.github.pandrabox.flatsplus.editor
         public string LinkRx => "FlatsPlus/Link/Rx";
         public string LinkTx => "FlatsPlus/Link/Tx";
 
+        public bool BuildTargetIsPC
+        {
+            get
+            {
+                BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+                return target == BuildTarget.StandaloneWindows ||
+                       target == BuildTarget.StandaloneWindows64 ||
+                       target == BuildTarget.StandaloneOSX ||
+                       target == BuildTarget.StandaloneLinux64;
+            }
+        }
 
         public Vector3 TotalBoundsCenter => new Vector3(TotalBoundsCenterX, TotalBoundsCenterY, TotalBoundsCenterZ);
         public Vector3 TotalBoundsExtent => new Vector3(TotalBoundsExtentX, TotalBoundsExtentY, TotalBoundsExtentZ);

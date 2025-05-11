@@ -2,7 +2,7 @@
 using com.github.pandrabox.pandravase.editor;
 using nadena.dev.modular_avatar.core;
 using UnityEngine;
-
+using com.github.pandrabox.pandravase.runtime;
 
 namespace com.github.pandrabox.flatsplus.editor
 {
@@ -23,6 +23,21 @@ namespace com.github.pandrabox.flatsplus.editor
             _ac = new AnimationClipsBuilder();
             SetTransform();
             CreateControl();
+            QuestOnly();
+        }
+
+        private void QuestOnly()
+        {
+            if (_prj.BuildTargetIsPC) return;
+            Log.I.Info("Quest専用処理を実施します");
+
+            var targetTransform = _tgt.transform.FindEx("MultiTool").FindEx("MultiMesh").NullCheck();
+            var skinnedMeshRenderer = targetTransform?.GetComponent<SkinnedMeshRenderer>().NullCheck();
+            var targetMaterial = skinnedMeshRenderer.material.NullCheck();
+            string shaderName = "VRChat/Mobile/Toon Lit";
+            Shader questShader = Shader.Find(shaderName).NullCheck();
+            targetMaterial.shader = questShader;
+            Log.I.Info($"Quest専用シェーダーを設定しました: {shaderName}");
         }
 
         private void SetTransform()

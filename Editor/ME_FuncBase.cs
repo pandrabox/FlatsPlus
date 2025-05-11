@@ -18,6 +18,9 @@ namespace com.github.pandrabox.flatsplus.editor
         // まとめてONOFF機能の対象外
         public virtual bool ExcludeFromBulkToggle => false;
 
+        // PCOnly
+        public virtual bool PCOnly => false;
+
         // 依存する機能の型リスト
         protected virtual List<Type> Dependencies => new List<Type>();
 
@@ -45,7 +48,16 @@ namespace com.github.pandrabox.flatsplus.editor
         // メニューの描画
         public virtual void DrawMenu()
         {
+            bool disable = false;
+            if (PCOnly)
+            {
+                var target = EditorUserBuildSettings.activeBuildTarget;
+                disable = !(target == BuildTarget.StandaloneWindows || target == BuildTarget.StandaloneWindows64);
+            }
+
+            EditorGUI.BeginDisabledGroup(disable);
             DrawBoolField(ManagementFunc, HasDetailSettings);
+            EditorGUI.EndDisabledGroup();
         }
 
         // 詳細設定の描画（オーバーライドして実装）- 引数なしに変更
