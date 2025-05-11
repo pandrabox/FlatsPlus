@@ -54,7 +54,7 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - ゆらす
   - PB判定の適正化
   - (表情連携)
-  - 重力変更
+  - 重力変更（安定しなかったので中止）
 
 ## Onaka
 - おなかをぽよぽよに
@@ -75,13 +75,13 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
 
 ## Sleep
 - 3点睡眠
+
 ## PoseClipper
 - そのまま再配布
 
 ## DanceController
-- DanceController時表情が動く
+- Dance時表情が動く
 - ついでにFxのアバターマスクを削除
-
 
 ## HopePoyo
 - ほっぺたをぽよぽよに
@@ -89,36 +89,30 @@ Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバター
   - 引っ張ると膨らむ
   - その状態で固定
   - 一部の表情時に自動で無効化
+
 ## NadePo
 - 触るとほっぺたを赤くする
   - 撫でられ範囲の設定
-  
-# 未実装
-
 
 ## 距離クリッピングキャンセラーを自動で設定するやつ
+
 ## WDONで統一するやつ
 
 ## Manager
 - 各機能のざっくりしたONOFFおよび全Inspectorの表示
 - 状態保存
+- (状態エクスポート)
 
 ## Localize
 - 言語対応　ja, en, ko, zh-CN, zh-TW
-## OnBuildWorker
-- ClippingCancelerONとWDONの呼び出し
-## EarEmo
-- 表情に合わせて耳を動かす
+
 ## FxMinimize
 - デフォルト配布のFxレイヤを最適化
-
 
 # 依存
 - liltoon
 - Modular Avatar
 - PandraVase
-
-
 
 # Thanks
 - [Display Number](https://github.com/noriben327/DisplayNumber) … Commの開発・デバッグにあたって活用させて頂きました
