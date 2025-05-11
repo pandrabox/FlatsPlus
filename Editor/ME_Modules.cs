@@ -133,7 +133,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncIco : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Ico);
-        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) ,typeof(FPFuncLink) };
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool), typeof(FPFuncLink) };
 
         public override void OnEnable()
         {

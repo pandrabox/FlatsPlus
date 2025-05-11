@@ -125,9 +125,9 @@ namespace com.github.pandrabox.flatsplus.editor
             Texture2D multiTexture = smr.material.mainTexture as Texture2D;
 
             //アイコンをパックして戻す
-            Texture2D packedTexture = PackTexture(multiTexture, textures, new Vector2(1024,1024), new Vector2(170,170), 5);
+            Texture2D packedTexture = PackTexture(multiTexture, textures, new Vector2(1024, 1024), new Vector2(170, 170), 5);
             smr.material.mainTexture = packedTexture;
-            
+
             //_prj.DebugOutp(packedTexture);
         }
         private Texture2D PackTexture(Texture2D original, List<Texture2D> icos, Vector2 originalSize, Vector2 icoSize, int turnAroundCount)
@@ -285,8 +285,10 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param("FlatsPlus/Ico/IcoTypeB1").AddAAP("FlatsPlus/Ico/RestoredIcoNo", 2);
                     bb.Param("FlatsPlus/Ico/IcoTypeB0").AddAAP("FlatsPlus/Ico/RestoredIcoNo", 1);
                 });
-                bb.NName("AppearIco").Param("1").Add1D("FlatPlus/Ico/LocalTypeB0", () => {
-                    bb.Param(0).Add1D("FlatsPlus/Ico/RestoredIcoNo", () => {
+                bb.NName("AppearIco").Param("1").Add1D("FlatPlus/Ico/LocalTypeB0", () =>
+                {
+                    bb.Param(0).Add1D("FlatsPlus/Ico/RestoredIcoNo", () =>
+                    {
                         for (int i = 0; i < 8; i++)
                         {
                             bb.Param(i).AddMotion(AnimIcoEnable(i));
@@ -300,7 +302,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 });
                 bb.NName("PosControl").Param("1").Add1D("FlatPlus/Ico/LocalTypeB0", () =>
                 {
-                    bb.Param(0).Add1D("FlatsPlus/Ico/RestoredIcoNo", () => {
+                    bb.Param(0).Add1D("FlatsPlus/Ico/RestoredIcoNo", () =>
+                    {
                         bb.Param(0).AddMotion(ac.Outp("OffPos"));
                         bb.Param(1).AddMotion(ac.Outp("OnPos"));
                     });
@@ -315,7 +318,7 @@ namespace com.github.pandrabox.flatsplus.editor
             AnimationClipBuilder ac = new AnimationClipBuilder(icoName);
             for (int i = 1; i < 9; i++)
             {
-                ac.Bind("", typeof(Animator),FPMultiToolWork.GetParamName($"i{i}")).Const2F(i == n ? 1 : 0);
+                ac.Bind("", typeof(Animator), FPMultiToolWork.GetParamName($"i{i}")).Const2F(i == n ? 1 : 0);
             }
             return ac.Outp();
         }

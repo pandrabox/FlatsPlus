@@ -2,7 +2,6 @@
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
-using System;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;

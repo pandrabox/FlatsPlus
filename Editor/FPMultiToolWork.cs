@@ -1,7 +1,6 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using nadena.dev.modular_avatar.core;
-using System;
 using UnityEngine;
 
 
@@ -32,7 +31,7 @@ namespace com.github.pandrabox.flatsplus.editor
             var multiHead = multiBluthArmature.Find("Head").NullCheck("multiHead");
             multiBluthArmature.transform.localScale = new Vector3(_prj.Hoppe2X, _prj.Hoppe2Y, _prj.Hoppe2Z);
             var mama = multiHead.gameObject.AddComponent<ModularAvatarMergeArmature>().NullCheck("multiHeadmama");
-            mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head).NullCheck("headReference"); 
+            mama.mergeTarget = _prj.HumanoidObjectReference(HumanBodyBones.Head).NullCheck("headReference");
         }
 
         private void CreateControl()

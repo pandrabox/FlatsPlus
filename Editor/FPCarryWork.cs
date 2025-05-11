@@ -257,7 +257,8 @@ namespace com.github.pandrabox.flatsplus.editor
 
 
                 var swAAP = "FlatsPlus/Carry/RingDisable";
-                bb.NName("CalcRingDisable").Param("1").Add1D(__ModeActual, () => { 
+                bb.NName("CalcRingDisable").Param("1").Add1D(__ModeActual, () =>
+                {
                     bb.Param(0).NName("MC_Hide").AddAAP(swAAP, 1);
                     bb.Param(1).NName("MC_TakeMe").AddAAP(swAAP, 0);
                     bb.Param(2).NName("MC_FixTakeMe").AddAAP(swAAP, 0);

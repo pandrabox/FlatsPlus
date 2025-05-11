@@ -64,7 +64,7 @@ namespace com.github.pandrabox.flatsplus.editor
         }
 
         //DrawBoolFieldのチェック変更時に呼ばれる
-        public virtual void OnChange(bool state) {}
+        public virtual void OnChange(bool state) { }
 
         private void CheckDependencies(bool state)
         {

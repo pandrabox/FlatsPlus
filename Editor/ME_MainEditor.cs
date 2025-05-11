@@ -1,7 +1,9 @@
 ﻿using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
+using System;
 using UnityEditor;
 using UnityEngine;
+using VRC.SDK3.Avatars.Components;
 using static com.github.pandrabox.pandravase.editor.Localizer;
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -46,6 +48,8 @@ namespace com.github.pandrabox.flatsplus.editor
             // 詳細設定表示
             ME_FuncManager.I.DrawDetailIfNeeded();
 
+            DrawFlatPlusCheck();
+
             // ログ解析結果表示
             ME_LogAnalyzer.Instance.DrawAnalysisResults();
         }
@@ -63,6 +67,32 @@ namespace com.github.pandrabox.flatsplus.editor
                 ME_FuncManager.I.SetAllFunctionsEnabled(true);
             }
             EditorGUILayout.EndHorizontal();
+        }
+
+        // FlatsPlusの旧バージョンであるFlatPlusの存在をチェックし、あれば警告を表示
+        private void DrawFlatPlusCheck()
+        {
+            //そもそも型があるかチェック
+            var flatPlusType = Type.GetType("Pan.Lib.FlatPlusManager, Assembly-CSharp");
+            if (flatPlusType == null) return;
+
+            //Descriptorを取得            
+            if (!(target is MonoBehaviour monoBehaviour)) return;
+            var thisObj = monoBehaviour.gameObject;
+            var avatarDescriptor = thisObj.GetComponentInParent<VRCAvatarDescriptor>();
+            if (avatarDescriptor == null) return;
+
+            //Descriptorの子供にFlatPlusがあるかチェック
+            var flatPlus = avatarDescriptor.gameObject.GetComponentInChildren(flatPlusType);
+            if (flatPlus == null) return;
+
+            //あるならAutoFixボタンを表示
+            ShowTitle("旧バージョンの警告");
+            EditorGUILayout.HelpBox("FlatPlusが見つかりました。FlatsPlusとの併用は推奨されません。AutoFixを押すと削除します。", MessageType.Warning);
+            if (GUILayout.Button("AutoFix"))
+            {
+                DestroyImmediate(flatPlus.gameObject);
+            }
         }
 
         // タイトル表示（外部からアクセス用）

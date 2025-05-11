@@ -50,7 +50,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 _p = new FlatsProject(_desc, true);
                 FlatsPlus fp = _desc.GetComponentInChildren<FlatsPlus>();
 
-                if(fp == null)
+                if (fp == null)
                 {
                     Log.I.Info("This avatar not use FlatsPlus");
                     return;

@@ -17,7 +17,7 @@ namespace com.github.pandrabox.flatsplus.runtime
             multiObj.localEulerAngles = new Vector3(90f, 0, 0);
         }
         public GameObject MultiMeshObj => this.transform.Find("MultiTool/MultiMesh")?.gameObject.NullCheck("MultiTool_GetMultiMeshObj");
-        public SkinnedMeshRenderer MultiMeshSMR=> MultiMeshObj.GetComponent<SkinnedMeshRenderer>().NullCheck("MultiTool_GetMultiMeshSMR");
+        public SkinnedMeshRenderer MultiMeshSMR => MultiMeshObj.GetComponent<SkinnedMeshRenderer>().NullCheck("MultiTool_GetMultiMeshSMR");
     }
 }
 
