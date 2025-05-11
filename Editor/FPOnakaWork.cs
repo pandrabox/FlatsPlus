@@ -8,6 +8,8 @@ using UnityEngine.Animations;
 using VRC.Dynamics;
 using VRC.SDK3.Dynamics.PhysBone.Components;
 using static com.github.pandrabox.pandravase.editor.Util;
+using static com.github.pandrabox.pandravase.editor.Localizer;
+
 
 
 namespace com.github.pandrabox.flatsplus.editor
@@ -46,6 +48,10 @@ namespace com.github.pandrabox.flatsplus.editor
         public FPOnakaWork(FlatsProject fp, bool dbCreateMode = false) : base(fp)
         {
             _dbCreateMode = dbCreateMode;
+            if (!_prj.BuildTargetIsPC)
+            {
+                EditorUtility.DisplayDialog("Warning", L("Onaka/QuestWarning"), "OK");
+            }
         }
 
         /// <summary>

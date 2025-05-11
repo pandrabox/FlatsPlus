@@ -312,3 +312,5 @@ Func/D_Explore_Light_DefaultGlobal/Detail,ライトをデフォルトで全体�
 
 Func/MultiTool/Name,マルチツール,Multi Tool,멀티 툴,多功能工具,多功能工具
 Func/MultiTool/Detail,様々な機能で使用するメッシュを導入,Import meshes for various functions,다양한 기능에 사용할 메시를 가져옵니다,导入用于各种功能的网格,導入用於各種功能的網格
+
+Onaka/QuestWarning,おなか機能が有効になっています。これはQuestでも動作しますがPhysBoneを追加するためビルド失敗の原因になることがあります,The stomach feature is enabled. This works on Quest but may cause build failures because it adds PhysBones,배 기능이 활성화되어 있습니다. 이것은 Quest에서도 작동하지만 PhysBone을 추가하기 때문에 빌드 실패의 원인이 될 수 있습니다,肚子功能已启用。这在Quest上也能运行但可能因添加PhysBone而导致构建失败,肚子功能已啟用。這在Quest上也能運行但可能因添加PhysBone而導致構建失敗
