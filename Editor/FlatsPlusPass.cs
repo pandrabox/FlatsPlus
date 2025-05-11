@@ -61,11 +61,11 @@ namespace com.github.pandrabox.flatsplus.editor
 
                 CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool" ,false); // かなり最初のほうで実行する必要がある
                 CreateWork<FPCarryWork>(fp.Func_Carry, "Carry", true);
-                CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController", true);
+                CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController", false);
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo", false);
                 CreateWork<FPExploreWork>(fp.Func_Explore, "Explore", true);
                 CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe", true);
-                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null, false);
+                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null, true);
                 CreateWork<FPIcoWork>(fp.Func_Ico, "Ico", true);
                 CreateWork<FPLightWork>(fp.Func_Explore, "Light", true); //LightはExploreに統合されました　処理自体はこちらで実施
                 CreateInstantiate(fp.Func_Link, "Link", true);

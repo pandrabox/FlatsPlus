@@ -26,6 +26,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncDanceController : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_DanceController);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncEmo), typeof(FPFuncWriteDefaultOn) };
         public override void DrawDetail()
         {
@@ -118,6 +119,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncHoppe : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_Hoppe);
+        public override bool PCOnly => true;
         protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncEmo), typeof(FPFuncMultiTool) };
 
         public override void DrawDetail()
