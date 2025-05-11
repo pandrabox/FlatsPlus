@@ -8,8 +8,6 @@ using UnityEngine.Animations;
 using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
 
-
-
 namespace com.github.pandrabox.flatsplus.editor
 {
 #if PANDRADBG
@@ -342,15 +340,15 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             Log.I.StartMethod("メニューの作成を開始します");
             MenuBuilder mb = new MenuBuilder(_prj);
-            mb.AddFolder("FlatsPlus", true).AddFolder(L("Menu/Carry"));
-            mb.AddRadial(__Distance, L("Menu/Carry/CallGate"), mainParameterName: __Adjusting).SetMessage(L("Menu/Carry/CallGate/Message"));
-            mb.AddToggle(__GateActive, menuName: L("Menu/Carry/GateActive")).SetMessage(L("Menu/Carry/GateActive/Message"));
-            mb.AddToggle(__CallTakeMe, menuName: L("Menu/Carry/CallTakeMe")).SetMessage(L("Menu/Carry/CallTakeMe/Message"));
-            mb.AddToggle(__AllowBlueGate, L("Menu/Carry/AllowBlueGate"), 1, ParameterSyncType.Bool, (_config.D_Carry_AllowBlueGateDefault ? 1 : 0), false);
-            mb.AddToggle(__HugOrCarry, L("Menu/Carry/Hug"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Hug/Message"));
-            mb.AddToggle(__HugOrCarry, L("Menu/Carry/Carry"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Carry/Message"));
-            mb.AddRadial(__Distance, L("Menu/Carry/Distance")).SetMessage(L("Menu/Carry/Distance/Message"));
-            mb.AddRadial(__Rotation, L("Menu/Carry/Rotation"), .5f).SetMessage(L("Menu/Carry/Rotation/Message"));
+            mb.AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Carry")).Ico("Carry_Rings");
+            mb.AddRadial(__Distance, L("Menu/Carry/CallGate"), mainParameterName: __Adjusting).SetMessage(L("Menu/Carry/CallGate/Message")).Ico("Carry_GrayRing1");
+            mb.AddToggle(__GateActive, menuName: L("Menu/Carry/GateActive")).SetMessage(L("Menu/Carry/GateActive/Message")).Ico("Carry_GrayRing2");
+            mb.AddToggle(__CallTakeMe, menuName: L("Menu/Carry/CallTakeMe")).SetMessage(L("Menu/Carry/CallTakeMe/Message")).Ico("Carry_Call1");
+            mb.AddToggle(__AllowBlueGate, L("Menu/Carry/AllowBlueGate"), 1, ParameterSyncType.Bool, (_config.D_Carry_AllowBlueGateDefault ? 1 : 0), false).Ico("Carry_Call2");
+            mb.AddToggle(__HugOrCarry, L("Menu/Carry/Hug"), 1, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Hug/Message")).Ico("Carry_Hug");
+            mb.AddToggle(__HugOrCarry, L("Menu/Carry/Carry"), 2, ParameterSyncType.Int).SetMessage(L("Menu/Carry/Carry/Message")).Ico("Carry_Carry");
+            mb.AddRadial(__Distance, L("Menu/Carry/Distance")).SetMessage(L("Menu/Carry/Distance/Message")).Ico("Distance");
+            mb.AddRadial(__Rotation, L("Menu/Carry/Rotation"), .5f).SetMessage(L("Menu/Carry/Rotation/Message")).Ico("Rotation");
             Log.I.EndMethod("メニューの作成が完了しました");
         }
     }

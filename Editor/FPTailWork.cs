@@ -47,7 +47,7 @@ namespace com.github.pandrabox.flatsplus.editor
             //throw new NotImplementedException();
             GetObjects();
             ObjectSetting();
-            if(_prj.BuildTargetIsPC)
+            if (_prj.BuildTargetIsPC)
             {
                 _bb = new BlendTreeBuilder("FlatsPlus/Tail");
                 _bb.RootDBT(() =>

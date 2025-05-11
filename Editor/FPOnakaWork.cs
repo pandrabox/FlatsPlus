@@ -7,8 +7,8 @@ using UnityEngine;
 using UnityEngine.Animations;
 using VRC.Dynamics;
 using VRC.SDK3.Dynamics.PhysBone.Components;
-using static com.github.pandrabox.pandravase.editor.Util;
 using static com.github.pandrabox.pandravase.editor.Localizer;
+using static com.github.pandrabox.pandravase.editor.Util;
 
 
 

@@ -59,7 +59,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
                 Localizer.SetLanguage(fp.Language);
 
-                CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool" ,true); // かなり最初のほうで実行する必要がある
+                CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool", true); // かなり最初のほうで実行する必要がある
                 CreateWork<FPCarryWork>(fp.Func_Carry, "Carry", true);
                 CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController", false);
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo", false);
@@ -95,7 +95,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void CreateWork<T>(bool runCondition, string path, bool pcOnly) where T : FlatsWorkBase
         {
-            if(pcOnly && !_p.BuildTargetIsPC)
+            if (pcOnly && !_p.BuildTargetIsPC)
             {
                 Log.I.Info("PC専用のためスキップします");
                 return;
