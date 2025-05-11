@@ -47,14 +47,16 @@ namespace com.github.pandrabox.flatsplus.editor
             //throw new NotImplementedException();
             GetObjects();
             ObjectSetting();
-            _bb = new BlendTreeBuilder("FlatsPlus/Tail");
-            _bb.RootDBT(() =>
+            if(_prj.BuildTargetIsPC)
             {
-                //Gravity();
-                CreateSize();
-            });
+                _bb = new BlendTreeBuilder("FlatsPlus/Tail");
+                _bb.RootDBT(() =>
+                {
+                    CreateSize();
+                });
+                _bb.Attach(_tail);
+            }
             CreateSwing();
-            _bb.Attach(_tail);
             CreateMenu();
         }
 

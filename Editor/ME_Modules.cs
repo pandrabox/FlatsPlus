@@ -301,6 +301,7 @@ namespace com.github.pandrabox.flatsplus.editor
     public class FPFuncMultiTool : ME_FuncBase
     {
         public override string ManagementFunc => nameof(FP.Func_MultiTool);
+        public override bool PCOnly => true;
     }
 
     public class FPFuncClippingCanceler : ME_FuncBase
