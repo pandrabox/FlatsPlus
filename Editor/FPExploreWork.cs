@@ -3,6 +3,7 @@ using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using nadena.dev.modular_avatar.core;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using static com.github.pandrabox.pandravase.editor.Localizer;
 using static com.github.pandrabox.pandravase.editor.Util;
@@ -79,6 +80,14 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateLine()
         {
             if (_config.D_Explore_Line == false) return;
+
+            AnimatorBuilder ab = new AnimatorBuilder("ExploreRouteClearControl");
+            ab.AddLayer("FlatsPlus/ExploreRouteClearControl");
+            ab.AddState("Clear")
+                .TransToCurrent(ab.InitialState)
+                    .AddCondition(AnimatorConditionMode.Greater, 0.5f, "FlatsPlus/Pen/Clear", true)
+                .SetParameterDriver("FlatsPlus/Pen/ExploreOverride", 0);
+            ab.Attach(_prj.RootObject);
 
             new MenuBuilder(_prj).AddFolder("FlatsPlus", true).Ico("FlatsPlus").AddFolder(L("Menu/Explore"), true).Ico("Explore_Pin")
                 .AddToggle("FlatsPlus/Pen/ExploreOverride", L("Menu/Explore/Path"), 1, ParameterSyncType.Bool, 0, false).SetMessage(L("Menu/Explore/Path/Enable"), L("Menu/Explore/Path/Disable")).Ico("Explore_Route")

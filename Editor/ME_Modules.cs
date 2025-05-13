@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using com.github.pandrabox.flatsplus.runtime;
 using com.github.pandrabox.pandravase.editor;
 using com.github.pandrabox.pandravase.runtime;
 using System;
@@ -107,7 +108,7 @@ namespace com.github.pandrabox.flatsplus.editor
     {
         public override string ManagementFunc => nameof(FP.Func_Explore);
         public override bool PCOnly => true;
-        //protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncMultiTool) };
+        protected override List<Type> Dependencies => new List<Type> { typeof(FPFuncPen), typeof(FPFuncMultiTool) }; //FPFuncMultiToolは直接不要なのだがPenに必要
         public override void DrawDetail()
         {
             DrawBoolField(nameof(FP.D_Explore_Pin));
