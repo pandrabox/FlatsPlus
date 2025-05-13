@@ -284,6 +284,26 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
+            Log.I.Info("FormalName完全一致による判定に失敗しました");
+
+            // FormalName部分一致による判定
+            tmpAvatarName = RootObject?.name;
+            if (tmpAvatarName != null)
+            {
+                foreach (AvatarType avatarType in Enum.GetValues(typeof(AvatarType)))
+                {
+                    if (avatarType == AvatarType.Undef) continue;
+                    var (ttAvatarName, stat) = GetDirect<string>(avatarType, "FormalName");
+                    if (stat && !string.IsNullOrEmpty(ttAvatarName) && tmpAvatarName.Contains(ttAvatarName))
+                    {
+                        _currentAvatarType = avatarType;
+                        Log.I.Info($"FormalName部分一致による判定: {tmpAvatarName} contains {ttAvatarName}");
+                        return;
+                    }
+                }
+            }
+            Log.I.Info("FormalName部分一致による判定に失敗しました");
+
             Log.I.Warning("アバターの判定に失敗しました");
         }
 
