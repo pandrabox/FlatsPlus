@@ -204,3 +204,9 @@ Fixed icon errors.
 修复了图标错误  
 修復了圖標錯誤  
 
+FlatsPlus v0.15.27  
+Improved control order (displaying dialogs faster, moving frequently used menus to the top).  
+制御順序の改善(ダイアログを早く出す、使用頻度の高そうなメニューを上に移動)  
+제어 순서를 개선했습니다 (대화 상자를 더 빨리 표시하고, 자주 사용하는 메뉴를 상단으로 이동)  
+改进了控制顺序（更快地显示对话框，将常用菜单移至顶部）  
+改進了控制順序（更快地顯示對話框，將常用菜單移至頂部）  

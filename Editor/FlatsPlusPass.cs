@@ -59,26 +59,31 @@ namespace com.github.pandrabox.flatsplus.editor
 
                 Localizer.SetLanguage(fp.Language);
 
+                CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka", false);//Questでエラーを出すため最初に実行
                 CreateWork<FPMultiToolWork>(fp.Func_MultiTool, "MultiTool", true); // かなり最初のほうで実行する必要がある
-                CreateWork<FPCarryWork>(fp.Func_Carry, "Carry", true);
-                CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController", false);
+
+                //メニューなし
                 CreateWork<FPEmoWork>(fp.Func_Emo, "Emo", false);
-                CreateWork<FPExploreWork>(fp.Func_Explore, "Explore", true);
-                CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe", true);
-                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null, true);
-                CreateWork<FPIcoWork>(fp.Func_Ico, "Ico", true);
-                CreateWork<FPLightWork>(fp.Func_Explore, "Light", true); //LightはExploreに統合されました　処理自体はこちらで実施
                 CreateInstantiate(fp.Func_Link, "Link", true);
-                CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo", true);
                 CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting", false);
-                CreateWork<FPMoveWork>(fp.Func_Move, "Move", true);
-                CreateWork<FPOnakaWork>(fp.Func_Onaka, "Onaka", false);
-                CreateWork<FPPenWork>(fp.Func_Pen, "Pen", true);
-                CreateInstantiate(fp.Func_PoseClipper, "FPPoseClipper", true);
+                CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn", false);
+
+                //////-------順番 = メニュー順序
                 CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep", true);
                 CreateWork<FPTailWork>(fp.Func_Tail, "Tail", false);
-                CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn", false);
-                CreateWork<FPGuideWork>(fp.Func_Guide, "Guide", true);
+                CreateWork<FPPenWork>(fp.Func_Pen, "Pen", true);
+                CreateWork<FPMoveWork>(fp.Func_Move, "Move", true);
+                CreateWork<FPMakeEmoWork>(fp.Func_MakeEmo, "MakeEmo", true);
+                CreateWork<FPCarryWork>(fp.Func_Carry, "Carry", true);
+                CreateWork<FPDanceControllerWork>(fp.Func_DanceController, "DanceController", false);
+                CreateWork<FPIcoWork>(fp.Func_Ico, "Ico", true);
+                CreateInstantiate(fp.Func_PoseClipper, "FPPoseClipper", true);
+                CreateWork<FPHoppePBWork>(fp.Func_Hoppe, "Hoppe", true);
+                CreateWork<FPHoppePoWork>(fp.Func_Hoppe, null, true);
+                CreateWork<FPExploreWork>(fp.Func_Explore, "Explore", true);
+                CreateWork<FPLightWork>(fp.Func_Explore, "Light", true); //LightはExploreに統合されました　処理自体はこちらで実施
+                /////-----------------
+                CreateWork<FPGuideWork>(fp.Func_Guide, "Guide", true);//最後
             }
             catch (Exception ex)
             {
