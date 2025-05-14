@@ -210,3 +210,17 @@ Improved control order (displaying dialogs faster, moving frequently used menus 
 제어 순서를 개선했습니다 (대화 상자를 더 빨리 표시하고, 자주 사용하는 메뉴를 상단으로 이동)  
 改进了控制顺序（更快地显示对话框，将常用菜单移至顶部）  
 改進了控制順序（更快地顯示對話框，將常用菜單移至頂部）  
+
+FlatsPlus v0.15.31  
+Relaxed avatar recognition to be more flexible, reduced error messages, decreased import errors, and fixed Explorer dependencies.  
+アバター認識を曖昧許容、エラーメッセージの削減、インポート時のエラー削減、Explorerの依存関係修正  
+아바타 인식을 유연하게 허용하고, 오류 메시지를 줄이고, 가져오기 오류를 감소시키고, Explorer 종속성을 수정했습니다  
+放宽了头像识别以更加灵活，减少了错误消息，减少了导入错误，并修复了Explorer依赖关系  
+放寬了頭像識別以更加靈活，減少了錯誤消息，減少了導入錯誤，並修復了Explorer依賴關係  
+
+FlatsPlus v0.15.32  
+Fine-tuned menu ordering again.  
+メニュー順序の再修正を行いました  
+메뉴 순서를 다시 미세 조정했습니다  
+再次微调了菜单顺序  
+再次微調了菜單順序  

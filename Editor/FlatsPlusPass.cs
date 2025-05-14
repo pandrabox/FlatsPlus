@@ -67,6 +67,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 CreateInstantiate(fp.Func_Link, "Link", true);
                 CreateWork<FPMeshSettingWork>(fp.Func_MeshSetting, "MeshSetting", false);
                 CreateInstantiate(fp.Func_WriteDefaultOn, "WriteDefaultOn", false);
+                CreateWork<FPMenuOrderWork>(true, "MenuOrder", false);
 
                 //////-------順番 = メニュー順序
                 CreateWork<FPSleepWork>(fp.Func_Sleep, "Sleep", true);
