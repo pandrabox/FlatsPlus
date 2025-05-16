@@ -78,11 +78,12 @@ namespace com.github.pandrabox.flatsplus.editor
 
         private void Activate(BlendTreeBuilder bb)
         {
-            bb.Param("1").Add1D(_prj.IsDance, () =>
-            {
-                bb.Param(0).AddMotion(_ac.OnAnim(__meshPath));
-                bb.Param(1).AddMotion(_ac.OffAnim(__meshPath));
-            });
+            bb.Param("1").AddMotion(_ac.OnAnim(__meshPath));
+            //bb.Param("1").Add1D(_prj.IsDance, () =>
+            //{
+            //    bb.Param(0).AddMotion(_ac.OnAnim(__meshPath));
+            //    bb.Param(1).AddMotion(_ac.OffAnim(__meshPath));
+            //});
         }
 
         private void ShapeToggle(BlendTreeBuilder bb, bool isActive, string shapeName)

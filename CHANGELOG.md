@@ -252,3 +252,11 @@ Adjusted menu ordering.
 메뉴 순서를 조정했습니다  
 调整了菜单顺序  
 調整了菜單順序  
+
+FlatsPlus v0.15.37  
+Fixed an issue where blush would not appear while dancing.  
+ダンス中頬紅が出ない不具合の修正  
+춤을 추는 동안 홍조가 나타나지 않는 문제를 수정했습니다  
+修复了跳舞时腮红不出现的问题  
+修復了跳舞時腮紅不出現的問題  
+
