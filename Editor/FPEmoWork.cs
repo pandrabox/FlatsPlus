@@ -205,7 +205,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     {
                         isDisHoppe = true;
                     }
-                    if (shape == _blushShape)
+                    if (shapeVal > 5 && shape == _blushShape)
                     {
                         isBlush = true;
                         if (_config.D_Hoppe_Blush) addThis = false;

@@ -232,3 +232,10 @@ Playモードで無限ループする不具合の修正
 修复了在Play模式下出现无限循环的问题  
 修復了在Play模式下出現無限循環的問題  
 
+FlatsPlus v0.15.34  
+Fixed an issue where blush would always be visible.  
+頬染めが常時見える不具合の修正  
+홍조가 항상 보이는 문제를 수정했습니다  
+修复了腮红总是可见的问题  
+修復了腮紅總是可見的問題  
+
