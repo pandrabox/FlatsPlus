@@ -21,9 +21,9 @@ namespace com.github.pandrabox.flatsplus.editor
                 L("Menu/Carry"),
                 L("Menu/Move"),
                 L("Menu/MakeEmo"),
+                L("Menu/Dance"),
                 L("Menu/MessageUI"),
                 L("Menu/Ico"),
-                L("Menu/Dance"),
                 L("Menu/Explore"),
                 "PoseClipper"
             };

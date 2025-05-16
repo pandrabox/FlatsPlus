@@ -246,3 +246,9 @@ Fixed an issue where white dots could be seen at the feet.
 修复了脚下可以看到白点的问题  
 修復了腳下可以看到白點的問題  
 
+FlatsPlus v0.15.36  
+Adjusted menu ordering.  
+メニュー順序の修正  
+메뉴 순서를 조정했습니다  
+调整了菜单顺序  
+調整了菜單順序  
