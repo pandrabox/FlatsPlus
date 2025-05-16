@@ -239,3 +239,10 @@ Fixed an issue where blush would always be visible.
 修复了腮红总是可见的问题  
 修復了腮紅總是可見的問題  
 
+FlatsPlus v0.15.35  
+Fixed an issue where white dots could be seen at the feet.  
+足元に白い点が見える不具合の修正  
+발밑에 흰 점이 보이는 문제를 수정했습니다  
+修复了脚下可以看到白点的问题  
+修復了腳下可以看到白點的問題  
+
