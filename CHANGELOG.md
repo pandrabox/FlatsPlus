@@ -224,3 +224,11 @@ Fine-tuned menu ordering again.
 메뉴 순서를 다시 미세 조정했습니다  
 再次微调了菜单顺序  
 再次微調了菜單順序  
+
+FlatsPlus v0.15.33  
+Fixed an issue where infinite loops would occur in Play mode.  
+Playモードで無限ループする不具合の修正  
+플레이 모드에서 무한 루프가 발생하는 문제를 수정했습니다  
+修复了在Play模式下出现无限循环的问题  
+修復了在Play模式下出現無限循環的問題  
+
