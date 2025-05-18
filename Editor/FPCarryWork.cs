@@ -169,8 +169,8 @@ namespace com.github.pandrabox.flatsplus.editor
             DefineMainControl("MC_Hide", false, false, 1, false, false, false, 0, 0, 1); //Objを非表示、Constraintはどこにしても同じなのだが、一応Fixの位置にしておく
             DefineMainControl("MC_TakeMe", true, true, 1, true, true, true, 1, 0, 1);
             DefineMainControl("MC_FixTakeMe", true, true, 1, false, true, true, 1, 0, 1); //最後にTakeMeした位置で固定
-            DefineMainControl("MC_Hug", false, false, 1, false, true, false, 0, 2, 3);
-            DefineMainControl("MC_Carry", false, false, 1, false, true, false, 0, 1, 2);
+            DefineMainControl("MC_Hug", false, false, 1, false, true, false, 0, 1, 2);
+            DefineMainControl("MC_Carry", false, false, 1, false, true, false, 0, 2, 3);
             DefineMainControl("MC_Adjust", true, true, 1, true, true, true, 0, 0, 1);
             DefineMainControl("MC_Fix", true, true, 1, false, true, true, 0, 0, 1); //最後にAdjustした位置で固定
         }

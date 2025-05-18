@@ -260,3 +260,10 @@ Fixed an issue where blush would not appear while dancing.
 修复了跳舞时腮红不出现的问题  
 修復了跳舞時腮紅不出現的問題  
 
+FlatsPlus v0.15.38  
+Fixed an issue where the positions of Hug and Carry were reversed.  
+HugとCarryの位置が逆である不具合の修正  
+허그와 캐리의 위치가 반대로 되어 있는 문제를 수정했습니다  
+修复了Hug和Carry位置颠倒的问题  
+修復了Hug和Carry位置顛倒的問題  
+
