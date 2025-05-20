@@ -80,7 +80,7 @@ namespace com.github.pandrabox.flatsplus.runtime
         public float Onaka_Immobile = 0.8f;
         public float Onaka_LimitAngle = 20f;
         public float Onaka_RadiusTuning = 1f;
-        public float Tail_SwingPeriod = 1.5f;
+        public float Tail_SwingPeriod = 2.8f;
         public float Tail_SwingAngle = 60;
         public float Tail_SizeMax = 1;
         public float Tail_SizeMin = 0.01f;
