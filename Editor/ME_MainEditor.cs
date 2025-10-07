@@ -22,7 +22,7 @@ namespace com.github.pandrabox.flatsplus.editor
             ME_LanguageManager.Instance.Initialize(ME_FuncManager.I.GetLanguageProperty());
 
             // ログ解析マネージャーの初期化
-            ME_LogAnalyzer.Instance.Initialize(this);
+            // ME_LogAnalyzer.Instance.Initialize(this);
         }
 
         protected override void OnInnerEnable()
@@ -37,7 +37,7 @@ namespace com.github.pandrabox.flatsplus.editor
             ME_LanguageManager.Instance.DrawLanguageSelector(serializedObject);
 
             // 更新情報表示
-            ME_Updater.I.DrawUpdateInfo();
+            // ME_Updater.I.DrawUpdateInfo();
 
             // 機能モジュールのメニュー表示
             ME_FuncManager.I.DrawAllMenus();
@@ -51,7 +51,7 @@ namespace com.github.pandrabox.flatsplus.editor
             DrawFlatPlusCheck();
 
             // ログ解析結果表示
-            ME_LogAnalyzer.Instance.DrawAnalysisResults();
+            // ME_LogAnalyzer.Instance.DrawAnalysisResults();
         }
 
         // 全機能の有効/無効切り替え
