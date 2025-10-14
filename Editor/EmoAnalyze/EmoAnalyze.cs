@@ -8,7 +8,7 @@ namespace com.github.pandrabox.flatsplus.editor
 {
     public class EmoAnalyzeMenuDefinition
     {
-        [MenuItem("PanDbg/EmoAnalyzer")]
+        [MenuItem("PanDbg/EmoAnalyzer_各shapeのpngを出力する")]
         private static void EmoAnalyzeM()
         {
             SetDebugMode(true);

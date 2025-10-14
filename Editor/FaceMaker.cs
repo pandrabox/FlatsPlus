@@ -45,9 +45,10 @@ namespace com.github.pandrabox.flatsplus.editor
             var FM = new FaceMaker(fp);
             foreach (var face in FM.Faces.All)
             {
-                OutpAsset(face.Tex);
+                /*OutpAsset(face.Tex);
                 OutpAsset(face.OnClip);
                 OutpAsset(face.OffClip);
+                */
             }
         }
         [MenuItem("PanDbg/FaceMaker/unit")]
@@ -145,6 +146,8 @@ namespace com.github.pandrabox.flatsplus.editor
                 foreach (var face in Faces.All)
                 {
                     skinnedMeshRenderer.SetBlendShapeWeight(face.BlendShapeCount, 100);
+                    skinnedMeshRenderer.enabled = false;
+                    skinnedMeshRenderer.enabled = true;
                     var t = c.ManualRun(cTgt, size, head, offset);
                     t.name = face.Name;
                     t.wrapMode = TextureWrapMode.Clamp;

@@ -15,7 +15,7 @@ namespace com.github.pandrabox.flatsplus.editor
 #if PANDRADBG
     public class EmoAnalyze2MenuDefinition
     {
-        [MenuItem("PanDbg/**EmoAnalyze2r")]
+        [MenuItem("PanDbg/**EmoAnalyze2r_各shapeの値をcsvで出力する")]
         private static void EmoAnalyze2M()
         {
             SetDebugMode(true);

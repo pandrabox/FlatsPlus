@@ -40,6 +40,67 @@ namespace com.github.pandrabox.flatsplus.editor
         //        }
         //    }
         //}
+        public static class FlatsProjectTool_GetAttributePoint
+        {
+            [MenuItem("PanDbg/FlatsProjectTool/LogAvatarAdditionMemo")]
+            public static void LogAvatarAdditionMemo()
+            {
+                Debug.Log("=== Avatar Addition Memo ===");
+                Debug.Log("Global.csのAvatarType列挙体に新しいアバタータイプを追加する");
+                Debug.Log("db.csvに新しいアバタータイプの列を追加する");
+                Debug.Log("正しく検出できるかどうかはチェック0でFlatsPlusをPlayすれば確認できる");
+                Debug.Log("これの並列メニューでAttributePointやBlendShapeを調べると便利");
+                Debug.Log("表情の解析と登録");
+                Debug.Log("EmoAnalyze2を実行する");
+                Debug.Log("Packages/FlatsPlus/Editor/EmoAnalyze2/resultにcsvができる");
+                Debug.Log("Packages/FlatsPlus/Assets/Emo/resに移動する");
+            }
+            [MenuItem("PanDbg/FlatsProjectTool/GetAttributePoint")]
+            public static void GetAttributePoint()
+            {
+                foreach (var a in AllAvatar)
+                {
+                    GameObject TargetAvatarObject = a.gameObject;
+                    string avatarName = a.name;
+                    Debug.Log($"Processing Avatar: {avatarName}");
+                    var body = a.GetComponentsInChildren<SkinnedMeshRenderer>().FirstOrDefault(x => x.name == "Body");
+                    if (body == null)
+                    {
+                        Debug.LogWarning($"Body SkinnedMeshRenderer not found in avatar: {avatarName}");
+                        continue;
+                    }
+                    var AttributePoint = body.sharedMesh.vertices[26];
+                    Log.I.Info($@"x::{AttributePoint.x},  name:{avatarName}");
+                }
+            }
+            [MenuItem("PanDbg/FlatsProjectTool/ListBodyBlendShapes")]
+            public static void ListBodyBlendShapes()
+            {
+                foreach (var a in AllAvatar)
+                {
+                    var body = a.GetComponentsInChildren<SkinnedMeshRenderer>().FirstOrDefault(x => x.name == "Body");
+                    if (body == null)
+                    {
+                        Debug.LogWarning($"Body SkinnedMeshRenderer not found in avatar: {a.name}");
+                        continue;
+                    }
+                    var mesh = body.sharedMesh;
+                    if (mesh == null)
+                    {
+                        Debug.LogWarning($"SharedMesh not found in Body for avatar: {a.name}");
+                        continue;
+                    }
+                    int blendShapeCount = mesh.blendShapeCount;
+                    List<string> blendShapeNames = new List<string>();
+                    for (int i = 0; i < blendShapeCount; i++)
+                    {
+                        blendShapeNames.Add(mesh.GetBlendShapeName(i));
+                    }
+                    string joinedNames = string.Join("-", blendShapeNames);
+                    Debug.Log($"BlendShapes for avatar: {a.name} (Count: {blendShapeCount})\n{joinedNames}");
+                }
+            }
+        }
         #endregion
 #endif
         public FlatsProject(VRCAvatarDescriptor desc, bool ImmediateInitialize = false)
@@ -237,7 +298,20 @@ namespace com.github.pandrabox.flatsplus.editor
         public void SetCurrentAvatar()
         {
             var body = RootTransform?.GetComponentsInChildren<SkinnedMeshRenderer>()?.FirstOrDefault(x => x.name == "Body");
-            Vector3? attributePoint = body?.sharedMesh?.vertices[ATTRIBUTEINDEX];
+        
+            Vector3? attributePoint = null;
+            if (body != null && body.sharedMesh != null)
+            {
+                if (body.sharedMesh.isReadable)
+                {
+                    attributePoint = body.sharedMesh.vertices[ATTRIBUTEINDEX];
+                }
+                else
+                {
+                    Log.I.Error($"[FlatsPlus AvatarDetect] 'Body'メッシュが読み取り不可です。AttributePointによる判定をスキップします。");
+                }
+            }
+        
             if (attributePoint != null)
             {
                 float attributeVal = AttributeFloor(((Vector3)attributePoint).x);
@@ -252,7 +326,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            Log.I.Info("AttributePointによる判定に失敗しました");
+            Log.I.Info($@"AttributePointによる判定に失敗しました");
 
             var tmpAvatarName = Animator?.avatar?.name;
             if (tmpAvatarName != null)
@@ -266,9 +340,13 @@ namespace com.github.pandrabox.flatsplus.editor
                         _currentAvatarType = avatarType;
                         return;
                     }
+                    else
+                    {
+                        Log.I.Info($"AnimatorAvatarName完全一致による判定失敗: {tmpAvatarName} != {ttAvatarName}");
+                    }
                 }
             }
-            Log.I.Info("AnimatorAvatarNameによる判定に失敗しました");
+            Log.I.Info($@"「{tmpAvatarName}」のAnimatorAvatarNameによる判定に失敗しました");
 
             tmpAvatarName = RootObject?.name;
             if (tmpAvatarName != null)
@@ -282,9 +360,13 @@ namespace com.github.pandrabox.flatsplus.editor
                         _currentAvatarType = avatarType;
                         return;
                     }
+                    else
+                    {
+                        Log.I.Info($"FormalName完全一致による判定失敗: {tmpAvatarName} != {ttAvatarName}");
+                    }
                 }
             }
-            Log.I.Info("FormalName完全一致による判定に失敗しました");
+            Log.I.Info($@"「{tmpAvatarName}」のFormalName完全一致による判定に失敗しました");
 
             // FormalName部分一致による判定
             tmpAvatarName = RootObject?.name;
@@ -302,9 +384,9 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                 }
             }
-            Log.I.Info("FormalName部分一致による判定に失敗しました");
+            Log.I.Info($@"「{tmpAvatarName}」のFormalName部分一致による判定に失敗しました");
 
-            Log.I.Warning("アバターの判定に失敗しました");
+            Log.I.Error("アバターの判定に失敗しました。FlatsPlus対応アバターであることを確認してください。");
         }
 
         /// <summary>
