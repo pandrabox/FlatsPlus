@@ -207,7 +207,7 @@ namespace com.github.pandrabox.flatsplus.editor
             mb.AddFolder(L("Menu/MakeEmo/Other")).SetMessage(L("Menu/MakeEmo/Other/Message")).Ico("EmoLockOthers");
             foreach (var o in _faces.Others)
             {
-                mb.AddToggle($"{other}/{o.Name}", localOnly: false).SetIco(o.Tex);
+                mb.AddToggle($"{other}/{o.Name}", parameterSyncType: ParameterSyncType.Bool, localOnly: false).SetIco(o.Tex);
             }
             mb.ExitFolder();
             mb.AddButton(_ui.Reset, L("Menu/MakeEmo/Reset")).SetMessage(L("Menu/MakeEmo/Clear")).Ico("EmoLockReset");
