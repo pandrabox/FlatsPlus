@@ -321,6 +321,23 @@ namespace com.github.pandrabox.flatsplus.editor
                     var (attributePosX, stat) = GetDirect<float>(avatarType, "AttributePosX");
                     if (stat && attributeVal == AttributeFloor(attributePosX))
                     {
+                        // Flat2/Flat3はAttributePosXが同じなのでBlendShapeCountで判定
+                        if (avatarType == AvatarType.Flat2 || avatarType == AvatarType.Flat3)
+                        {
+                            int blendShapeCount = body?.sharedMesh?.blendShapeCount ?? 0;
+                            if (avatarType == AvatarType.Flat2 && blendShapeCount == 42)
+                            {
+                                _currentAvatarType = avatarType;
+                                return;
+                            }
+                            else if (avatarType == AvatarType.Flat3 && blendShapeCount == 64)
+                            {
+                                _currentAvatarType = avatarType;
+                                return;
+                            }
+                            // 一致しなければ次のavatarTypeへ
+                            continue;
+                        }
                         _currentAvatarType = avatarType;
                         return;
                     }

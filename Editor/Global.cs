@@ -5,7 +5,7 @@ namespace com.github.pandrabox.flatsplus.editor
 {
     public enum AvatarType
     {
-        Undef, Flat, Flat2, Comodo, Fel, Heon, Kewf, ifflat
+        Undef, Flat, Flat2, Flat3, Comodo, Fel, Heon, Kewf, ifflat
     }
     public static class Global
     {

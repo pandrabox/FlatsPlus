@@ -1,7 +1,7 @@
 # FlatsPlus
 
 # 概要
-Flats(Flat, FlatAnniversary, Comodo, Fel, Heon, Kewf)に対応したアバターギミックセットです
+Flats(Flat, Flat2, Flat3, Comodo, Fel, Heon, Kewf, IFFlat)に対応したアバターギミックセットです
 
 # 実装済み
 
