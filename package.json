@@ -1,6 +1,6 @@
 {
   "name": "com.github.pandrabox.flatsplus",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "displayName": "FlatsPlus",
   "author": {
     "name": "pandra"
@@ -10,7 +10,7 @@
   "vpmDependencies": {
     "com.vrchat.avatars": ">=3.4.0",
     "nadena.dev.modular-avatar": ">=1.9.0",
-    "com.github.pandrabox.pandravase": "2.11.3"
+    "com.github.pandrabox.pandravase": "2.11.5"
   },
   "license": "MIT"
 }
