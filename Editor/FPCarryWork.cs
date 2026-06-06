@@ -61,6 +61,21 @@ namespace com.github.pandrabox.flatsplus.editor
             CreateDBT();
             CreateAPD();
             CreateMenu();
+            DisableStationColliders();
+        }
+
+        private void DisableStationColliders()
+        {
+            var stationX = _tgt.transform.Find("Obj/StationX/Station").NullCheck("StationX");
+            var stationH = _tgt.transform.Find("Obj/Head/StationH/Station").NullCheck("StationH");
+
+            var colliderX = stationX.GetComponent<BoxCollider>();
+            if (colliderX != null)
+                colliderX.enabled = false;
+
+            var colliderH = stationH.GetComponent<BoxCollider>();
+            if (colliderH != null)
+                colliderH.enabled = false;
         }
 
         private void GetMultiTool()
