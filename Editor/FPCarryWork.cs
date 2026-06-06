@@ -61,7 +61,7 @@ namespace com.github.pandrabox.flatsplus.editor
             CreateDBT();
             CreateAPD();
             CreateMenu();
-            DisableStationColliders();
+            DisableStationColliders(); // アニメーターがOFFの人から椅子が見えることの防止
         }
 
         private void DisableStationColliders()
@@ -211,7 +211,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     bb.Param(0.5f).AddMotion(_ac.Outp("Rot1").Zero());
                     bb.Param(1).AddMotion(_ac.Outp("Rot1"));
                 });
-                bb.NName("椅子有効化").Param("1").FMultiplicationBy1D(_ac.Outp("StationActive"), __isLocal, 0, 1, 1, 0);
+                bb.NName("椅子有効化").Param("1").FMultiplicationBy1D(_ac.Outp("StationActive"), __isLocal, 0, 1, 1, 0); // 非自分かつアニメーターがONの相手に椅子を有効化
                 bb.NName("TakeMe演算").Param(__AllowBlueGate).Add1D(_prj.LinkRx, () =>
                 {
                     bb.Param(_takeMeComm - .5f).AddAAP(__isTakeMe, 0);
