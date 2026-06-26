@@ -2150,26 +2150,31 @@ namespace com.github.pandrabox.flatsplus.editor
                 return;
             }
 
-            // 保存先フォルダが指定されていない場合は標準の保存ダイアログを表示
             string filePath;
             if (string.IsNullOrEmpty(ConfigSavePath))
             {
-                // 標準の保存ダイアログを表示
-                filePath = EditorUtility.SaveFilePanel(L("EmoMaker/SaveConfigFile"), "", "CustomEmo.csv", "csv");
+                // デフォルト保存先: Assets/Pan/FlatsPlus/Emo
+                string defaultSaveDir = System.IO.Path.Combine(Application.dataPath, "Pan", "FlatsPlus", "Emo");
+                if (!System.IO.Directory.Exists(defaultSaveDir))
+                {
+                    System.IO.Directory.CreateDirectory(defaultSaveDir);
+                    AssetDatabase.Refresh();
+                }
+                filePath = EditorUtility.SaveFilePanel(L("EmoMaker/SaveConfigFile"), defaultSaveDir, "CustomEmo.csv", "csv");
                 if (string.IsNullOrEmpty(filePath))
-                    return; // キャンセルされた場合
+                    return;
             }
             else
             {
-                // 保存先フォルダが指定されている場合はそこにデフォルト名で保存
-                string defaultFileName = "CustomEmo.csv";
-
-                // ユーザーが名前を指定できるようにする（オプション）
-                string fileName = EditorUtility.SaveFilePanel(L("EmoMaker/SpecifyFileName"), ConfigSavePath, defaultFileName, "csv");
-                if (string.IsNullOrEmpty(fileName))
-                    return; // キャンセルされた場合
-
-                filePath = fileName;
+                // ConfigSavePathが指定されている場合はダイアログなしで直接保存
+                string projectRoot = Application.dataPath.Substring(0, Application.dataPath.Length - 6);
+                string absoluteSaveDir = System.IO.Path.Combine(projectRoot, ConfigSavePath.Replace('/', System.IO.Path.DirectorySeparatorChar));
+                if (!System.IO.Directory.Exists(absoluteSaveDir))
+                {
+                    System.IO.Directory.CreateDirectory(absoluteSaveDir);
+                    AssetDatabase.Refresh();
+                }
+                filePath = System.IO.Path.Combine(absoluteSaveDir, "CustomEmo.csv");
             }
 
             try
@@ -2200,50 +2205,38 @@ namespace com.github.pandrabox.flatsplus.editor
                     }
                     writer.WriteLine();
 
-                    // 各表情の値を書き出し
+                    // 全64行を必ず出力（IsEmoDataFileが65行を要求するため）
                     int exportCount = 0;
                     for (int left = 0; left < 8; left++)
                     {
                         for (int right = 0; right < 8; right++)
                         {
                             int index = left * 8 + right;
-                            if (index < EmoMakerCommon.I.Emos.Length && EmoMakerCommon.I.Emos[index] != null)
+                            var emo = (index < EmoMakerCommon.I.Emos.Length) ? EmoMakerCommon.I.Emos[index] : null;
+
+                            writer.Write($"{left},{right}");
+
+                            foreach (var shapeName in allShapeNames)
                             {
-                                var emo = EmoMakerCommon.I.Emos[index];
-
-                                // 表情のいずれかのシェイプが0より大きい値を持っているかチェック
-                                bool hasNonZeroValue = false;
-                                foreach (var shape in emo.Shapes)
+                                int value = 0;
+                                if (emo?.Shapes != null)
                                 {
-                                    if (shape.Val > 0)
-                                    {
-                                        hasNonZeroValue = true;
-                                        break;
-                                    }
+                                    var shape = emo.Shapes.FirstOrDefault(s => s.ShortName == shapeName);
+                                    value = shape != null ? shape.Val : 0;
                                 }
-
-                                // 値がある表情のみ出力
-                                if (hasNonZeroValue)
-                                {
-                                    writer.Write($"{left},{right}");
-
-                                    // 各シェイプの値を出力
-                                    foreach (var shapeName in allShapeNames)
-                                    {
-                                        var shape = emo.Shapes.FirstOrDefault(s => s.ShortName == shapeName);
-                                        int value = shape != null ? shape.Val : 0;
-                                        writer.Write($",{value}");
-                                    }
-                                    writer.WriteLine();
-                                    exportCount++;
-                                }
+                                writer.Write($",{value}");
                             }
+                            writer.WriteLine();
+
+                            if (emo?.Shapes != null && emo.Shapes.Any(s => s.Val > 0))
+                                exportCount++;
                         }
                     }
 
-                    AssetDatabase.Refresh();
                     Debug.Log(string.Format(L("EmoMaker/ConfigExported"), exportCount, filePath));
                 }
+
+                AssetDatabase.Refresh();
 
                 string unityPath = ConvertToProjectRelativePath(filePath);
                 OnSaveAction?.Invoke(unityPath ?? filePath);

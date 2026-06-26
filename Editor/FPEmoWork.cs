@@ -162,8 +162,7 @@ namespace com.github.pandrabox.flatsplus.editor
         private void CreateEmoClips()
         {
             Log.I.Info($@"Emoの生成を行います　データファイル：{_emoDataFile}");
-            string dataText = File.ReadAllText(_emoDataFile);
-            string[] lines = dataText.Split('\n');
+            string[] lines = File.ReadAllLines(_emoDataFile);
             clips = new AnimationClipsBuilder();
 
             // 1. 全シェイプ名リストを作る
@@ -251,7 +250,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 int left = nTo / GESTURENUM;
                 int right = nTo % GESTURENUM;
-                ab.ChangeCurrentState(states[nTo]).TransFromAny(transitionDuration: _tgt.TransitionTime)
+                ab.ChangeCurrentState(states[nTo]).TransFromAny(transitionDuration: _config.Emo_TransitionTime)
                     .AddCondition(AnimatorConditionMode.Equals, left, "GestureLeft")
                     .AddCondition(AnimatorConditionMode.Equals, right, "GestureRight")
                     .AddCondition(AnimatorConditionMode.Less, 0.5f, "FlatsPlus/Emo/Disable");
