@@ -41,6 +41,7 @@ namespace com.github.pandrabox.flatsplus.editor
 
         public FlatsPlusMain(VRCAvatarDescriptor desc)
         {
+            var swTotal = System.Diagnostics.Stopwatch.StartNew();
             try
             {
                 Log.I.Initialize(LogFilePath, true, true);
@@ -93,7 +94,7 @@ namespace com.github.pandrabox.flatsplus.editor
             finally
             {
                 EditorUtility.ClearProgressBar();
-                Log.I.Info("FlatPlus Complete Works");
+                Log.I.Info($"FlatPlus Complete Works [FPTime] Total: {swTotal.ElapsedMilliseconds}ms");
             }
         }
 
@@ -113,6 +114,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 currentStep++;
                 EditorUtility.DisplayProgressBar(L("FlatsPlus_Progress"), $"{path}", (float)currentStep / totalSteps);
 
+                var sw = System.Diagnostics.Stopwatch.StartNew();
                 PrefabInstantiate(path);
                 if (typeof(T) == typeof(FlatsWorkBase))
                 {
@@ -126,6 +128,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 {
                     Activator.CreateInstance(typeof(T), _p);
                 }
+                Log.I.Info($"[FPTime] {typeof(T).Name}({path}): {sw.ElapsedMilliseconds}ms");
             }
             catch (Exception ex)
             {

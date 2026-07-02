@@ -130,6 +130,7 @@ namespace com.github.pandrabox.flatsplus.editor
         }
         public void CreateTex()
         {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
             var head = _prj.HumanoidGameObject(HumanBodyBones.Head);
             var offset = new Vector3(_prj.FaceCapX, _prj.FaceCapY, _prj.FaceCapZ);
             var size = _prj.FaceCapSize;
@@ -152,13 +153,14 @@ namespace com.github.pandrabox.flatsplus.editor
                     t.name = face.Name;
                     t.wrapMode = TextureWrapMode.Clamp;
                     face.Tex = t;
-                    OutpAsset(t);
+                    OutpAsset(t, debugOnly: true); //ビルド成果物はメモリ上のface.Texを参照するため、ファイル出力はデバッグ時のみ(毎ビルドのAssetDatabase.Refresh対策)
                     skinnedMeshRenderer.SetBlendShapeWeight(face.BlendShapeCount, 0);
                     if (_unitMode) break;
                     //OutpAsset(t);
                     //Log.I.Info($"FaceMaker CreateTex: {face.BlendShapeCount}{face.Name}");
                 }
             }
+            Log.I.Info($"[FPTime] FaceMaker.CreateTex: {Faces.Count} faces, {sw.ElapsedMilliseconds}ms");
         }
 
         // CreateTex向けDBのCap座標・サイズ取得用の開発専用コマンド

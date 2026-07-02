@@ -246,11 +246,14 @@ namespace com.github.pandrabox.flatsplus.editor
                     ab.SetParameterDriver(_prj.IsEmoBlush, _blushInfo[clipName] ? 1 : 0);
                 }
             }
+            // Emo_TransitionTimeは1/5して適用する(設定0.5→遷移0.1秒)。
+            // v1.1.5以前は常に0.1秒遷移だったため、既定値0.5のままでも同じ体感速度になるようにしている。
+            float transitionTime = _config.Emo_TransitionTime / 5f;
             for (int nTo = 0; nTo < GESTURENUM * GESTURENUM; nTo++)
             {
                 int left = nTo / GESTURENUM;
                 int right = nTo % GESTURENUM;
-                ab.ChangeCurrentState(states[nTo]).TransFromAny(transitionDuration: _config.Emo_TransitionTime)
+                ab.ChangeCurrentState(states[nTo]).TransFromAny(transitionDuration: transitionTime)
                     .AddCondition(AnimatorConditionMode.Equals, left, "GestureLeft")
                     .AddCondition(AnimatorConditionMode.Equals, right, "GestureRight")
                     .AddCondition(AnimatorConditionMode.Less, 0.5f, "FlatsPlus/Emo/Disable");
