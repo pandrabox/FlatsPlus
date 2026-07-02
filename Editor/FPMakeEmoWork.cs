@@ -61,7 +61,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _ui = _tgt.GetComponentInChildren<PVGridUI>();
             if (_ui == null)
             {
-                Log.I.Error("GridUI‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B");
+                Log.I.Error("GridUIï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½B");
             }
         }
 
@@ -75,7 +75,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _ui.LockSize = _config.MakeEmo_LockSize;
         }
 
-        // GridUI‚Ìì¬
+        // GridUIï¿½Ìì¬
         private void CreateGridUI()
         {
             int x, y;
@@ -91,7 +91,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _ui.MainTex = PackTexture(eyeTextures, x, x * TILESIZE, y * TILESIZE, _tgt.BackGroundColor, true, _config.MakeEmo_Margin);
         }
 
-        //§Œä•”
+        //ï¿½ï¿½ï¿½ä•”
         private void Control()
         {
             var bb = new BlendTreeBuilder("MakeEmoForBody");
@@ -139,7 +139,7 @@ namespace com.github.pandrabox.flatsplus.editor
             {
                 bb2.Param("IsLocal").AddD(() =>
                 {
-                    //GUI‚Ì•\¦§Œä(ONOFF,MODE)
+                    //GUIï¿½Ì•\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ONOFF,MODE)
                     bb2.Param("1").Add1D(eyeselecting, () =>
                     {
                         bb2.Param(0).Add1D(enable, () =>
@@ -186,7 +186,7 @@ namespace com.github.pandrabox.flatsplus.editor
             _prj.SetFrameCounter();
         }
 
-        // ƒƒjƒ…[‚Ìì¬
+        // ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½Ìì¬
         private void CreateExMenu()
         {
             MenuBuilder mb = new MenuBuilder(_prj);
@@ -202,7 +202,7 @@ namespace com.github.pandrabox.flatsplus.editor
                 var name = mouths[i].Name;
                 mb.AddToggle(mouth, name, i + 1, ParameterSyncType.Int).SetIco(mouths[i].Tex);
             }
-            _prj.VirtualSync(mouth, TransmissionBit(mouths.Count), PVnBitSync.nBitSyncMode.IntMode);
+            _prj.VirtualSync(mouth, TransmissionBit(mouths.Count + 1), PVnBitSync.nBitSyncMode.IntMode); // å€¤åŸŸã¯0(None)ï½mouths.Countã®ãŸã‚ç¨®é¡æ•°ã¯+1
             mb.ExitFolder();
             mb.AddFolder(L("Menu/MakeEmo/Other")).SetMessage(L("Menu/MakeEmo/Other/Message")).Ico("EmoLockOthers");
             foreach (var o in _faces.Others)

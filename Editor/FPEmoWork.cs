@@ -132,30 +132,43 @@ namespace com.github.pandrabox.flatsplus.editor
                 var runtimePlayable = _desc.baseAnimationLayers[m].animatorController;
                 if (runtimePlayable == null) continue;
                 var playable = runtimePlayable as AnimatorController;
+                if (playable == null)
+                {
+                    Log.I.Info($@"AnimatorController以外のコントローラのためスキップします: {runtimePlayable.name}");
+                    continue;
+                }
                 for (int i = playable.layers.Length - 1; i >= 0; i--)
                 {
-                    var layer = playable.layers[i];
-                    var stateMachine = layer.stateMachine;
-                    foreach (var childState in stateMachine.states)
-                    {
-                        var state = childState.state;
-                        var clip = state.motion as AnimationClip;
-                        if (clip == null) continue;
-
-                        var bindings = AnimationUtility.GetCurveBindings(clip);
-                        bool hasTargetShape = bindings.Any(b =>
-                            b.path == "Body" &&
-                            b.propertyName.StartsWith("blendShape.") &&
-                            targetShapeNames.Contains(b.propertyName.Substring("blendShape.".Length))
-                        );
-                        if (hasTargetShape)
-                        {
-                            state.motion = ac.DummyClip;
-                        }
-                    }
+                    ReplaceEmoStates(playable.layers[i].stateMachine, targetShapeNames, ac);
                 }
                 _desc.baseAnimationLayers[m].animatorController = playable;
                 _desc.baseAnimationLayers[m].isDefault = false;
+            }
+        }
+
+        // stateMachine内(サブステートマシン含む)で対象シェイプを操作するステートのMotionをDummyClipに差し替える
+        private void ReplaceEmoStates(AnimatorStateMachine stateMachine, List<string> targetShapeNames, AnimationClipsBuilder ac)
+        {
+            foreach (var childState in stateMachine.states)
+            {
+                var state = childState.state;
+                var clip = state.motion as AnimationClip;
+                if (clip == null) continue;
+
+                var bindings = AnimationUtility.GetCurveBindings(clip);
+                bool hasTargetShape = bindings.Any(b =>
+                    b.path == "Body" &&
+                    b.propertyName.StartsWith("blendShape.") &&
+                    targetShapeNames.Contains(b.propertyName.Substring("blendShape.".Length))
+                );
+                if (hasTargetShape)
+                {
+                    state.motion = ac.DummyClip;
+                }
+            }
+            foreach (var child in stateMachine.stateMachines)
+            {
+                ReplaceEmoStates(child.stateMachine, targetShapeNames, ac);
             }
         }
         // 表情クリップ生成

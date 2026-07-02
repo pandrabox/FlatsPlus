@@ -252,11 +252,7 @@ namespace com.github.pandrabox.flatsplus.editor
                     Log.I.Error($@"CSV:{FPFlatsCSV}が見つかりませんでした");
                     return;
                 }
-                string tmpPath = Path.Combine(TmpFolder, $"flatDB{Guid.NewGuid()}.csv");
-                CreateDir(TmpFolder);
-                File.Copy(FPFlatsCSV, tmpPath, true);
-
-                string[] lines = File.ReadAllLines(tmpPath);
+                string[] lines = File.ReadAllLines(FPFlatsCSV);
                 if (lines.Length < 2) return;
 
                 string[] headers = lines[0].Split(',');
@@ -281,9 +277,10 @@ namespace com.github.pandrabox.flatsplus.editor
                 SetCurrentAvatar();
                 Log.I.Info($@"FlatsProject Initialized By {CurrentAvatarName}");
             }
-            catch
+            catch (Exception ex)
             {
                 initialized = false;
+                Log.I.Exception(ex, "FlatsProjectの初期化(db.csv読み込み)に失敗しました");
             }
         }
 
