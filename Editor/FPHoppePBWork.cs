@@ -116,6 +116,12 @@ namespace com.github.pandrabox.flatsplus.editor
         {
             if (!_config.D_Hoppe_AllowTouch) return;
             var ac = new AnimationClipsBuilder();
+            ac.Clip("PBOn")
+                .Bind("Head/CheekSensor/CheekSensor_R", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(1)
+                .Bind("Head/CheekSensor/CheekSensor_L", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(1);
+            ac.Clip("PBOff")
+                .Bind("Head/CheekSensor/CheekSensor_R", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(0)
+                .Bind("Head/CheekSensor/CheekSensor_L", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(0);
             var bb = new BlendTreeBuilder("CheekControl");
             bb.RootDBT(() =>
             {
@@ -141,12 +147,6 @@ namespace com.github.pandrabox.flatsplus.editor
             });
             bb.Attach(_avatarHead.gameObject);
 
-            ac.Clip("PBOn")
-                .Bind("Head/CheekSensor/CheekSensor_R", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(1)
-                .Bind("Head/CheekSensor/CheekSensor_L", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(1);
-            ac.Clip("PBOff")
-                .Bind("Head/CheekSensor/CheekSensor_R", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(0)
-                .Bind("Head/CheekSensor/CheekSensor_L", typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone), "m_Enabled").Const2F(0);
             var bb2 = new BlendTreeBuilder("CheekControlPBSW");
             bb2.RootDBT(() =>
             {

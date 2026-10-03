@@ -122,11 +122,13 @@ namespace com.github.pandrabox.flatsplus.editor
             //追加元テクスチャの取得
             FPMultiTool multiTool = _prj.Descriptor.GetComponentInChildren<FPMultiTool>().NullCheck("MultiTool");
             SkinnedMeshRenderer smr = multiTool.MultiMeshSMR;
-            Texture2D multiTexture = smr.material.mainTexture as Texture2D;
+            Texture2D multiTexture = smr.sharedMaterial.mainTexture as Texture2D;
 
             //アイコンをパックして戻す
             Texture2D packedTexture = PackTexture(multiTexture, textures, new Vector2(1024, 1024), new Vector2(170, 170), 5);
-            smr.material.mainTexture = packedTexture;
+            var packedMat = new Material(smr.sharedMaterial);
+            packedMat.mainTexture = packedTexture;
+            smr.sharedMaterial = packedMat;
 
             //_prj.DebugOutp(packedTexture);
         }
