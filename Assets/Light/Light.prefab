@@ -180,7 +180,7 @@ ParticleSystem:
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
-  ringBufferMode: 2
+  ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 0}
   looping: 1
   prewarm: 0
@@ -736,7 +736,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 0
+    maxNumParticles: 1
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -5084,7 +5084,7 @@ ParticleSystem:
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
-  ringBufferMode: 2
+  ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 0}
   looping: 1
   prewarm: 0
@@ -5640,7 +5640,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 0
+    maxNumParticles: 1
     size3D: 0
     rotation3D: 0
     gravityModifier:

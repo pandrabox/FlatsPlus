@@ -106,10 +106,12 @@ namespace com.github.pandrabox.flatsplus.editor
 
             ac.Clip("ModeWrite")
                .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "InitialModule.startSize.scalar").Const2F(0.01f)
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "EmissionModule.rateOverDistance.scalar").Const2F(300f)
                .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[0].weight").Const2F(1)
                .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[1].weight").Const2F(0);
             ac.Clip("ModeExplore")
                .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "InitialModule.startSize.scalar").Const2F(0.1f)
+               .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParticleSystem), "EmissionModule.rateOverDistance.scalar").Const2F((1f / 0.12f))
                .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[0].weight").Const2F(0)
                .Bind("Obj/HandR/Offset/InkPos/Ink", typeof(ParentConstraint), "m_Sources.Array.data[1].weight").Const2F(1);
 
